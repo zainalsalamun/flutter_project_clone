@@ -31,7 +31,7 @@ class _HeaderSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: const Color(0xFF42A5F5),
+      // color: const Color(0xFF42A5F5),
       padding: const EdgeInsets.fromLTRB(20, 12, 20, 20),
       child: Row(
         children: [
@@ -108,9 +108,17 @@ class _MainContent extends StatelessWidget {
 
 //rekening section
 
-class _RekeningSection extends StatelessWidget {
+class _RekeningSection extends StatefulWidget {
   const _RekeningSection();
 
+  @override
+  State<_RekeningSection> createState() => _RekeningSectionState();
+}
+
+class _RekeningSectionState extends State<_RekeningSection> {
+  bool showBalance = false;
+
+  final String realBalance = "Rp 12.345.678";
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -128,14 +136,15 @@ class _RekeningSection extends StatelessWidget {
             padding: const EdgeInsets.fromLTRB(16, 20, 16, 10),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: const [
-                Text(
+              children: [
+                const Text(
                   "Rekening",
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
+
                 Row(
                   children: [
-                    Text(
+                    const Text(
                       "Saldo  ",
                       style: TextStyle(
                         color: Colors.blue,
@@ -143,9 +152,21 @@ class _RekeningSection extends StatelessWidget {
                         fontWeight: FontWeight.w600,
                       ),
                     ),
-                    Icon(Icons.visibility_off, size: 20, color: Colors.grey),
-                    SizedBox(width: 16),
-                    Text(
+
+                    GestureDetector(
+                      onTap: () {
+                        setState(() => showBalance = !showBalance);
+                      },
+                      child: Icon(
+                        showBalance ? Icons.visibility : Icons.visibility_off,
+                        size: 20,
+                        color: Colors.grey,
+                      ),
+                    ),
+
+                    const SizedBox(width: 16),
+
+                    const Text(
                       "Atur",
                       style: TextStyle(
                         color: Colors.blue,
@@ -153,8 +174,8 @@ class _RekeningSection extends StatelessWidget {
                         fontWeight: FontWeight.w600,
                       ),
                     ),
-                    SizedBox(width: 4),
-                    Icon(Icons.settings, size: 20, color: Colors.blue),
+                    const SizedBox(width: 4),
+                    const Icon(Icons.settings, size: 20, color: Colors.blue),
                   ],
                 ),
               ],
@@ -180,7 +201,7 @@ class _RekeningSection extends StatelessWidget {
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
+                      children: [
                         Text(
                           "Tabungan Mandiri",
                           style: TextStyle(
@@ -190,8 +211,8 @@ class _RekeningSection extends StatelessWidget {
                         ),
                         SizedBox(height: 6),
                         Text(
-                          "Rp *****",
-                          style: TextStyle(
+                          showBalance ? realBalance : "Rp *****",
+                          style: const TextStyle(
                             fontSize: 15,
                             fontWeight: FontWeight.bold,
                           ),
@@ -717,15 +738,31 @@ class _BottomNavBar extends StatelessWidget {
           ),
         ],
       ),
-      padding: const EdgeInsets.symmetric(horizontal: 14),
+      padding: const EdgeInsets.symmetric(horizontal: 4),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: const [
-          _BottomNavItem(icon: Icons.home, label: "Beranda", active: true),
-          _BottomNavItem(icon: Icons.credit_card, label: "Produk Anda"),
-          _QRButton(),
-          _BottomNavItem(icon: Icons.shopping_bag, label: "Sukha"),
-          _BottomNavItem(icon: Icons.stars, label: "Loyalty"),
+          Expanded(
+            child: _BottomNavItem(
+              icon: Icons.home,
+              label: "Beranda",
+              active: true,
+            ),
+          ),
+
+          Expanded(
+            child: _BottomNavItem(
+              icon: Icons.credit_card,
+              label: "Produk Anda",
+            ),
+          ),
+
+          Expanded(child: Center(child: _QRButton())),
+
+          Expanded(
+            child: _BottomNavItem(icon: Icons.shopping_bag, label: "Sukha"),
+          ),
+
+          Expanded(child: _BottomNavItem(icon: Icons.stars, label: "Loyalty")),
         ],
       ),
     );
@@ -745,32 +782,92 @@ class _BottomNavItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = active ? Colors.blue : Colors.grey;
+    final color = active ? Colors.blue : Colors.grey.shade500;
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Icon(icon, color: color, size: 26),
-        const SizedBox(height: 4),
-        Text(label, style: TextStyle(fontSize: 12, color: color)),
+        Icon(icon, color: color, size: 24),
+        const SizedBox(height: 3),
+        Text(
+          label,
+          style: TextStyle(
+            fontSize: 11.5,
+            fontWeight: active ? FontWeight.w600 : FontWeight.w500,
+            color: color,
+          ),
+        ),
       ],
     );
   }
 }
 
-class _QRButton extends StatelessWidget {
+class _QRButton extends StatefulWidget {
   const _QRButton();
 
   @override
+  State<_QRButton> createState() => _QRButtonState();
+}
+
+class _QRButtonState extends State<_QRButton> {
+  double scale = 1.0;
+  bool pressed = false;
+
+  void _animate() {
+    setState(() {
+      pressed = true;
+      scale = 1.12;
+    });
+
+    Future.delayed(const Duration(milliseconds: 140), () {
+      if (mounted) {
+        setState(() {
+          scale = 1.0;
+          pressed = false;
+        });
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 62,
-      height: 62,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: Colors.blue.shade300,
+    return GestureDetector(
+      onTapDown: (_) => _animate(),
+      onTapUp: (_) {},
+      onTapCancel: () {
+        if (mounted) {
+          setState(() => scale = 1.0);
+        }
+      },
+      child: Transform.translate(
+        offset: const Offset(0, -5),
+        child: AnimatedScale(
+          scale: scale,
+          duration: const Duration(milliseconds: 160),
+          curve: Curves.easeOutBack,
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 140),
+            width: 60,
+            height: 60,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: Colors.blue.shade400,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.blue.withOpacity(pressed ? 0.5 : 0.3),
+                  blurRadius: pressed ? 22 : 16,
+                  offset: const Offset(0, 6),
+                ),
+              ],
+            ),
+            child: const Icon(
+              Icons.qr_code_scanner,
+              color: Colors.white,
+              size: 30,
+            ),
+          ),
+        ),
       ),
-      child: const Icon(Icons.qr_code_scanner, color: Colors.white, size: 32),
     );
   }
 }
