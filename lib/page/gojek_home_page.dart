@@ -182,10 +182,16 @@ class _BannerSlider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // final banners = [
+    //   "https://images.pexels.com/photos/853199/pexels-photo-853199.jpeg?auto=compress&cs=tinysrgb&w=800",
+    //   "https://images.pexels.com/photos/140134/pexels-photo-140134.jpeg?auto=compress&cs=tinysrgb&w=800",
+    //   "https://images.pexels.com/photos/3186654/pexels-photo-3186654.jpeg?auto=compress&cs=tinysrgb&w=800",
+    // ];
     final banners = [
-      "https://images.pexels.com/photos/853199/pexels-photo-853199.jpeg?auto=compress&cs=tinysrgb&w=800",
-      "https://images.pexels.com/photos/140134/pexels-photo-140134.jpeg?auto=compress&cs=tinysrgb&w=800",
-      "https://images.pexels.com/photos/3186654/pexels-photo-3186654.jpeg?auto=compress&cs=tinysrgb&w=800",
+      "https://cdn-site.gojek.com/uploads/EN_GORIDE_c76b5ba317/EN_GORIDE_c76b5ba317.png",
+      "https://cdn-site.gojek.com/uploads/ID_GOCAR_961px_721px_9b02fc3146/ID_GOCAR_961px_721px_9b02fc3146.png",
+      "https://cdn-site.gojek.com/uploads/ID_GOSEND_961px_721px_e16f8abe50/ID_GOSEND_961px_721px_e16f8abe50.png",
+      "https://cdn-site.gojek.com/uploads/ID_GOFOOD_961px_721px_03ff957331/ID_GOFOOD_961px_721px_03ff957331.png",
     ];
 
     return Column(
@@ -217,19 +223,19 @@ class _BannerSlider extends StatelessWidget {
                           ),
                         ),
                       ),
-                      const Positioned(
-                        left: 18,
-                        bottom: 18,
-                        child: Text(
-                          "kejog 2025\nCek kilas balikmu sekarang!",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w700,
-                            fontSize: 18,
-                            height: 1.2,
-                          ),
-                        ),
-                      ),
+                      // const Positioned(
+                      //   left: 18,
+                      //   bottom: 18,
+                      //   child: Text(
+                      //     "kejog 2025\nCek kilas balikmu sekarang!",
+                      //     style: TextStyle(
+                      //       color: Colors.white,
+                      //       fontWeight: FontWeight.w700,
+                      //       fontSize: 18,
+                      //       height: 1.2,
+                      //     ),
+                      //   ),
+                      // ),
                     ],
                   ),
                 ),
