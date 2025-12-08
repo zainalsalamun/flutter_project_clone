@@ -70,7 +70,7 @@ class _HeaderSection extends StatelessWidget {
               SizedBox(width: 16),
               Icon(Icons.settings, color: Colors.white, size: 28),
               SizedBox(width: 16),
-              Icon(Icons.refresh, color: Colors.white, size: 28),
+              Icon(Icons.exit_to_app_outlined, color: Colors.white, size: 28),
             ],
           ),
         ],
