@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class GojekHomePage extends StatefulWidget {
   const GojekHomePage({super.key});
@@ -21,96 +22,103 @@ class _GojekHomePageState extends State<GojekHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      bottomNavigationBar: const _GojekBottomNav(),
-      body: SafeArea(
-        child: CustomScrollView(
-          slivers: [
-            SliverToBoxAdapter(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 10),
-                  _SearchAndProfile(),
-                  const SizedBox(height: 18),
-                  _BannerSlider(
-                    controller: _bannerController,
-                    onPageChanged: (i) => setState(() => _bannerIndex = i),
-                    index: _bannerIndex,
-                  ),
-                  const SizedBox(height: 18),
-                  _GoPayMiniCard(),
-                  const SizedBox(height: 18),
-                  _ServiceGrid(),
-                  const SizedBox(height: 18),
-                  _SimpleGreenStrip(),
-                  const SizedBox(height: 24),
-                  const _SectionTitleWithChip(
-                    title: "Bayangin rasanya deh (nyam!)",
-                    actionText: "Lihat semua",
-                  ),
-                  const SizedBox(height: 14),
-                  _HorizontalFoodRevealList(),
-                  const SizedBox(height: 24),
-                  const _SectionTitle(title: "Promo yang wajib dicek"),
-                  const SizedBox(height: 14),
-                  _PromoSlider(),
-                  const SizedBox(height: 26),
-                  const _SectionTitle(
-                    title: "Resto dengan rating jempolan",
-                    subtitle: "Ad",
-                  ),
-                  const SizedBox(height: 10),
-                  _HorizontalRestaurantCards(),
-                  const SizedBox(height: 24),
-                  const _SectionTitle(title: "Masih eksplor? Coba cek ini"),
-                  const SizedBox(height: 12),
-                  _BigFoodDiscoveryCard(),
-                  const SizedBox(height: 24),
-                  const _SectionTitle(
-                    title: "Maw ide liburan akhir tahun?",
-                    prefixLogo: "gojek",
-                    action: "Lihat semua",
-                  ),
-                  const SizedBox(height: 12),
-                  _DestinationHorizontalList(),
-                  const SizedBox(height: 24),
-                  const _SectionTitle(
-                    title: "Jangan ketinggalan promo ini!",
-                    prefixLogo: "gopay",
-                  ),
-                  const SizedBox(height: 12),
-                  _HorizontalShopPromoList(),
-                  const SizedBox(height: 24),
-                  const _SectionTitle(
-                    title: "BARU! Cobain GoGreen SM 🚗✨",
-                    prefixLogo: "gojek",
-                  ),
-                  const SizedBox(height: 12),
-                  const _BigImagePromoCard(
-                    imageUrl:
-                        "https://images.pexels.com/photos/4488630/pexels-photo-4488630.jpeg?auto=compress&cs=tinysrgb&w=800",
-                    title:
-                        "Tanpa langkah ekstra, cukup pilih tujuanmu dan langsung jalan! 💚",
-                  ),
-                  const SizedBox(height: 20),
-                  const _SectionTitle(
-                    title: "Kirim hampers lebih murah pakai GoSend!",
-                    prefixLogo: "gosend",
-                  ),
-                  const SizedBox(height: 12),
-                  const _BigImagePromoCard(
-                    imageUrl:
-                        "https://images.pexels.com/photos/264787/pexels-photo-264787.jpeg?auto=compress&cs=tinysrgb&w=800",
-                    title:
-                        "Dapatkan potongan ongkir 15RB pakai kode GOSENDHAMPERS 🎁 Klik di sini!",
-                  ),
-                  const SizedBox(height: 32),
-                ],
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: SystemUiOverlayStyle.dark.copyWith(
+        statusBarColor: Colors.transparent,
+        statusBarIconBrightness: Brightness.dark,
+        statusBarBrightness: Brightness.light,
+      ),
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        bottomNavigationBar: const _GojekBottomNav(),
+        body: SafeArea(
+          child: CustomScrollView(
+            slivers: [
+              SliverToBoxAdapter(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 10),
+                    _SearchAndProfile(),
+                    const SizedBox(height: 18),
+                    _BannerSlider(
+                      controller: _bannerController,
+                      onPageChanged: (i) => setState(() => _bannerIndex = i),
+                      index: _bannerIndex,
+                    ),
+                    const SizedBox(height: 18),
+                    _GoPayMiniCard(),
+                    const SizedBox(height: 18),
+                    _ServiceGrid(),
+                    const SizedBox(height: 18),
+                    _SimpleGreenStrip(),
+                    const SizedBox(height: 24),
+                    const _SectionTitleWithChip(
+                      title: "Bayangin rasanya deh (nyam!)",
+                      actionText: "Lihat semua",
+                    ),
+                    const SizedBox(height: 14),
+                    _HorizontalFoodRevealList(),
+                    const SizedBox(height: 24),
+                    const _SectionTitle(title: "Promo yang wajib dicek"),
+                    const SizedBox(height: 14),
+                    _PromoSlider(),
+                    const SizedBox(height: 26),
+                    const _SectionTitle(
+                      title: "Resto dengan rating jempolan",
+                      subtitle: "Ad",
+                    ),
+                    const SizedBox(height: 10),
+                    _HorizontalRestaurantCards(),
+                    const SizedBox(height: 24),
+                    const _SectionTitle(title: "Masih eksplor? Coba cek ini"),
+                    const SizedBox(height: 12),
+                    _BigFoodDiscoveryCard(),
+                    const SizedBox(height: 24),
+                    const _SectionTitle(
+                      title: "Maw ide liburan akhir tahun?",
+                      prefixLogo: "gojek",
+                      action: "Lihat semua",
+                    ),
+                    const SizedBox(height: 12),
+                    _DestinationHorizontalList(),
+                    const SizedBox(height: 24),
+                    const _SectionTitle(
+                      title: "Jangan ketinggalan promo ini!",
+                      prefixLogo: "gopay",
+                    ),
+                    const SizedBox(height: 12),
+                    _HorizontalShopPromoList(),
+                    const SizedBox(height: 24),
+                    const _SectionTitle(
+                      title: "BARU! Cobain GoGreen SM 🚗✨",
+                      prefixLogo: "gojek",
+                    ),
+                    const SizedBox(height: 12),
+                    const _BigImagePromoCard(
+                      imageUrl:
+                          "https://images.pexels.com/photos/4488630/pexels-photo-4488630.jpeg?auto=compress&cs=tinysrgb&w=800",
+                      title:
+                          "Tanpa langkah ekstra, cukup pilih tujuanmu dan langsung jalan! 💚",
+                    ),
+                    const SizedBox(height: 20),
+                    const _SectionTitle(
+                      title: "Kirim hampers lebih murah pakai GoSend!",
+                      prefixLogo: "gosend",
+                    ),
+                    const SizedBox(height: 12),
+                    const _BigImagePromoCard(
+                      imageUrl:
+                          "https://images.pexels.com/photos/264787/pexels-photo-264787.jpeg?auto=compress&cs=tinysrgb&w=800",
+                      title:
+                          "Dapatkan potongan ongkir 15RB pakai kode GOSENDHAMPERS 🎁 Klik di sini!",
+                    ),
+                    const SizedBox(height: 32),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
