@@ -297,7 +297,7 @@ class _BalanceCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             const Text(
-              "Rp 12.525",
+              "Rp 12.525.980",
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 30,
