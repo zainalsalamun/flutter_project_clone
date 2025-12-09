@@ -83,11 +83,10 @@ class _OVOHomePageState extends State<OVOHomePage> {
             ),
           ),
 
-          // 🔥 HEADER FIXED & AMAN DARI NOTCH, JAM, SINYAL
           Container(
-            height: status + 70, // 🔥 FIXED
+            height: status + 70,
             width: double.infinity,
-            padding: EdgeInsets.only(top: status + 10), // 🔥 FIXED
+            padding: EdgeInsets.only(top: status + 10),
             decoration: const BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
@@ -621,7 +620,6 @@ class _ParallaxBannerState extends State<_ParallaxBanner> {
 
           const SizedBox(height: 8),
 
-          /// PAGE INDICATOR
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: List.generate(banners.length, (i) {
@@ -773,7 +771,7 @@ class _BottomNav extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 80,
+      height: 100,
       decoration: const BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.vertical(top: Radius.circular(22)),
