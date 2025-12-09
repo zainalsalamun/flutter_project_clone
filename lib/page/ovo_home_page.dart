@@ -557,8 +557,18 @@ class _ParallaxBanner extends StatefulWidget {
 }
 
 class _ParallaxBannerState extends State<_ParallaxBanner> {
-  final PageController pageController = PageController(viewportFraction: 0.88);
+  final PageController pageController = PageController(viewportFraction: 0.90);
   int indexNow = 0;
+
+  final List<String> banners = [
+    "https://images-loyalty.ovo.id/public/deal/36/44/l/39109.jpg?ver=1",
+    "https://images-loyalty.ovo.id/public/deal/90/23/l/30288.jpg?ver=1",
+    "https://images-loyalty.ovo.id/public/deal/03/19/l/39001.jpg?ver=1",
+    "https://images-loyalty.ovo.id/public/deal/89/64/l/27980.jpg?ver=1",
+    "https://images-loyalty.ovo.id/public/deal/42/35/l/27041.jpg?ver=1",
+    "https://images-loyalty.ovo.id/public/deal/89/64/l/27980.jpg?ver=1",
+    "https://www.k24klik.com/blog/wp-content/uploads/2021/03/blog-banner-OVO-CLBK.jpg",
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -567,6 +577,7 @@ class _ParallaxBannerState extends State<_ParallaxBanner> {
             .findAncestorStateOfType<_OVOHomePageState>()!
             .balanceController
             .offset;
+
     final offset = (scroll / 20).clamp(0, 16).toDouble();
 
     return Transform.translate(
@@ -574,57 +585,60 @@ class _ParallaxBannerState extends State<_ParallaxBanner> {
       child: Column(
         children: [
           SizedBox(
-            height: 140,
-            child: PageView(
+            height: 170,
+            child: PageView.builder(
               controller: pageController,
+              itemCount: banners.length,
               onPageChanged: (i) => setState(() => indexNow = i),
-              children: const [
-                _banner("Promo 1"),
-                _banner("Promo 2"),
-                _banner("Promo 3"),
-              ],
+              itemBuilder: (_, i) {
+                return Padding(
+                  padding: const EdgeInsets.only(right: 6),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(22),
+                    child: Stack(
+                      fit: StackFit.expand,
+                      children: [
+                        Image.network(banners[i], fit: BoxFit.cover),
+                        Container(
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment.bottomCenter,
+                              end: Alignment.topCenter,
+                              colors: [
+                                Colors.black.withOpacity(0.45),
+                                Colors.transparent,
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
             ),
           ),
-          const SizedBox(height: 10),
+
+          const SizedBox(height: 8),
+
+          /// PAGE INDICATOR
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: List.generate(
-              3,
-              (i) => AnimatedContainer(
-                duration: const Duration(milliseconds: 200),
-                width: i == indexNow ? 10 : 6,
-                height: i == indexNow ? 10 : 6,
+            children: List.generate(banners.length, (i) {
+              final active = i == indexNow;
+              return AnimatedContainer(
+                duration: const Duration(milliseconds: 250),
                 margin: const EdgeInsets.symmetric(horizontal: 4),
+                width: active ? 12 : 7,
+                height: 7,
                 decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: i == indexNow ? OVOColor.purple : Colors.grey.shade400,
+                  borderRadius: BorderRadius.circular(6),
+                  color: active ? OVOColor.purple : Colors.grey.shade400,
                 ),
-              ),
-            ),
+              );
+            }),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class _banner extends StatelessWidget {
-  final String text;
-  const _banner(this.text);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 10),
-      decoration: BoxDecoration(
-        color: OVOColor.purple,
-        borderRadius: BorderRadius.circular(18),
-      ),
-      child: Center(
-        child: Text(
-          text,
-          style: const TextStyle(fontSize: 28, color: Colors.white),
-        ),
       ),
     );
   }
