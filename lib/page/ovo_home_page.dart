@@ -718,48 +718,196 @@ class _RecommendationSection extends StatelessWidget {
   }
 }
 
-class _StampButton extends StatelessWidget {
+// class _StampButton extends StatelessWidget {
+//   const _StampButton();
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//       height: 42,
+//       padding: const EdgeInsets.symmetric(horizontal: 10),
+//       decoration: BoxDecoration(
+//         color: Colors.white,
+//         borderRadius: BorderRadius.circular(24),
+//         boxShadow: [
+//           BoxShadow(
+//             color: Colors.black.withOpacity(.15),
+//             blurRadius: 8,
+//             offset: const Offset(0, 3),
+//           ),
+//         ],
+//       ),
+//       child: Row(
+//         children: [
+//           Container(
+//             width: 28,
+//             height: 28,
+//             decoration: BoxDecoration(
+//               shape: BoxShape.circle,
+//               color: Colors.yellow.shade600,
+//             ),
+//             child: const Center(
+//               child: Text("S", style: TextStyle(fontWeight: FontWeight.bold)),
+//             ),
+//           ),
+//           const SizedBox(width: 6),
+//           const Text(
+//             "Mulai Misi!",
+//             style: TextStyle(
+//               color: Colors.green,
+//               fontWeight: FontWeight.bold,
+//               fontSize: 13,
+//             ),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }
+
+// class _StampButton extends StatefulWidget {
+//   const _StampButton();
+
+//   @override
+//   State<_StampButton> createState() => _StampButtonState();
+// }
+
+// class _StampButtonState extends State<_StampButton> {
+//   double posX = 20;
+//   double posY = 400;
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Positioned(
+//       left: posX,
+//       top: posY,
+//       child: GestureDetector(
+//         onPanUpdate: (details) {
+//           setState(() {
+//             posX += details.delta.dx;
+//             posY += details.delta.dy;
+//           });
+//         },
+//         child: Container(
+//           height: 42,
+//           padding: const EdgeInsets.symmetric(horizontal: 10),
+//           decoration: BoxDecoration(
+//             color: Colors.white,
+//             borderRadius: BorderRadius.circular(24),
+//             boxShadow: [
+//               BoxShadow(
+//                 color: Colors.black.withOpacity(.15),
+//                 blurRadius: 8,
+//                 offset: const Offset(0, 3),
+//               ),
+//             ],
+//           ),
+//           child: Row(
+//             children: [
+//               Container(
+//                 width: 28,
+//                 height: 28,
+//                 decoration: BoxDecoration(
+//                   shape: BoxShape.circle,
+//                   color: Colors.yellow.shade600,
+//                 ),
+//                 child: const Center(
+//                   child: Text(
+//                     "S",
+//                     style: TextStyle(fontWeight: FontWeight.bold),
+//                   ),
+//                 ),
+//               ),
+//               const SizedBox(width: 6),
+//               const Text(
+//                 "Mulai Misi!",
+//                 style: TextStyle(
+//                   color: Colors.green,
+//                   fontWeight: FontWeight.bold,
+//                   fontSize: 13,
+//                 ),
+//               ),
+//             ],
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }
+
+class _StampButton extends StatefulWidget {
   const _StampButton();
 
   @override
+  State<_StampButton> createState() => _StampButtonState();
+}
+
+class _StampButtonState extends State<_StampButton> {
+  double posX = 20;
+  double posY = 400;
+
+  @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 42,
-      padding: const EdgeInsets.symmetric(horizontal: 10),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(24),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(.15),
-            blurRadius: 8,
-            offset: const Offset(0, 3),
-          ),
-        ],
-      ),
-      child: Row(
-        children: [
-          Container(
-            width: 28,
-            height: 28,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: Colors.yellow.shade600,
+    return Positioned(
+      left: posX,
+      top: posY,
+      child: GestureDetector(
+        onPanUpdate: (details) {
+          setState(() {
+            posX += details.delta.dx;
+            posY += details.delta.dy;
+          });
+        },
+        child: Column(
+          children: [
+            Container(
+              width: 70,
+              height: 70,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(.15),
+                    blurRadius: 8,
+                    offset: const Offset(0, 3),
+                  ),
+                ],
+              ),
+              child: ClipOval(
+                child: Image.network(
+                  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ_UOGkMQAovrXZI-H82vZiuJsf8WddlpTY1Q&s", // ilustrasi gambar badge
+                  fit: BoxFit.cover,
+                ),
+              ),
             ),
-            child: const Center(
-              child: Text("S", style: TextStyle(fontWeight: FontWeight.bold)),
+
+            const SizedBox(height: 4),
+
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+              decoration: BoxDecoration(
+                color: Colors.green,
+                borderRadius: BorderRadius.circular(20),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(.12),
+                    blurRadius: 4,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+              ),
+              child: const Text(
+                "Mulai Misi!",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 12,
+                ),
+              ),
             ),
-          ),
-          const SizedBox(width: 6),
-          const Text(
-            "Mulai Misi!",
-            style: TextStyle(
-              color: Colors.green,
-              fontWeight: FontWeight.bold,
-              fontSize: 13,
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
