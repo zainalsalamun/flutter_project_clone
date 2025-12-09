@@ -66,11 +66,11 @@ class _OVOHomePageState extends State<OVOHomePage> {
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: const [
                           _InfoBanner(),
-                          SizedBox(height: 18),
+                          SizedBox(height: 10),
                           _CategoryTabs(),
-                          SizedBox(height: 18),
+                          SizedBox(height: 10),
                           _GridFavoriteMenu(),
-                          SizedBox(height: 20),
+                          SizedBox(height: 10),
                           _ParallaxBanner(),
                           SizedBox(height: 24),
                           _RecommendationSection(),
@@ -330,7 +330,7 @@ class _BalanceCard extends StatelessWidget {
           children: const [
             _BalanceAction(icon: Icons.add, label: "Top Up"),
             _BalanceAction(icon: Icons.call_made, label: "Transfer"),
-            _BalanceAction(icon: Icons.lock_outline, label: "Tarik Tunai"),
+            _BalanceAction(icon: Icons.money_outlined, label: "Tarik Tunai"),
             _BalanceAction(icon: Icons.menu, label: "History"),
           ],
         ),
@@ -342,7 +342,6 @@ class _BalanceCard extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: const [
-        // SALDO LEFT
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -362,7 +361,6 @@ class _BalanceCard extends StatelessWidget {
           ],
         ),
 
-        // SUPERBANK RIGHT
         Text(
           "superbank",
           style: TextStyle(
