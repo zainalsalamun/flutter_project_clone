@@ -223,19 +223,6 @@ class _BannerSlider extends StatelessWidget {
                           ),
                         ),
                       ),
-                      // const Positioned(
-                      //   left: 18,
-                      //   bottom: 18,
-                      //   child: Text(
-                      //     "kejog 2025\nCek kilas balikmu sekarang!",
-                      //     style: TextStyle(
-                      //       color: Colors.white,
-                      //       fontWeight: FontWeight.w700,
-                      //       fontSize: 18,
-                      //       height: 1.2,
-                      //     ),
-                      //   ),
-                      // ),
                     ],
                   ),
                 ),
