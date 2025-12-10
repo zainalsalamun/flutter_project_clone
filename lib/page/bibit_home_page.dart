@@ -1,33 +1,49 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class BibitHomePage extends StatelessWidget {
   const BibitHomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+    SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+        statusBarIconBrightness: Brightness.dark,
+        statusBarBrightness: Brightness.light,
+      ),
+    );
+
     return Scaffold(
       backgroundColor: const Color(0xFFF8F8F8),
+
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(60),
+        child: SafeArea(
+          child: _bibitBar(),
+        ), // 🔥 TIDAK SCROLL + STATUS BAR MUNCUL
+      ),
+
       bottomNavigationBar: _bottomNavBar(),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _bibitBar(),
-              _portfolioCard(),
-              _menuRow(),
-              _produkInvestasi(),
-              _moneyMarketCard(),
-              _topReksaDana(),
-              _rekomendasiRobo(),
-              _liveTransaction(),
-              _promoSection(),
-              _artikelSection(),
-              _eventSection(),
-              _academyEducationSection(),
-              const SizedBox(height: 40),
-            ],
-          ),
+
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _portfolioCard(),
+            _menuRow(),
+            _produkInvestasi(),
+            _moneyMarketCard(),
+            _topReksaDana(),
+            _rekomendasiRobo(),
+            _liveTransaction(),
+            _promoSection(),
+            _artikelSection(),
+            _eventSection(),
+            _academyEducationSection(),
+            const SizedBox(height: 40),
+          ],
         ),
       ),
     );
