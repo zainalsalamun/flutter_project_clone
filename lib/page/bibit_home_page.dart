@@ -83,9 +83,6 @@ class BibitHomePage extends StatelessWidget {
     );
   }
 
-  // ----------------------------------------------------------
-  // PORTFOLIO CARD
-  // ----------------------------------------------------------
   Widget _portfolioCard() {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
@@ -157,9 +154,6 @@ class BibitHomePage extends StatelessWidget {
     );
   }
 
-  // ----------------------------------------------------------
-  // MENU ICON ROW
-  // ----------------------------------------------------------
   Widget _menuRow() {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -190,9 +184,6 @@ class BibitHomePage extends StatelessWidget {
     );
   }
 
-  // ----------------------------------------------------------
-  // PRODUK INVESTASI
-  // ----------------------------------------------------------
   Widget _produkInvestasi() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
@@ -238,9 +229,6 @@ class BibitHomePage extends StatelessWidget {
     );
   }
 
-  // ----------------------------------------------------------
-  // MAJORIS PASAR UANG CARD
-  // ----------------------------------------------------------
   Widget _moneyMarketCard() {
     return Container(
       margin: const EdgeInsets.only(top: 18, left: 16, right: 16),
@@ -317,16 +305,12 @@ class BibitHomePage extends StatelessWidget {
     );
   }
 
-  // ----------------------------------------------------------
-  // TOP REKSA DANA SECTION
-  // ----------------------------------------------------------
   Widget _topReksaDana() {
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 25, 20, 0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // TITLE ROW
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: const [
@@ -354,7 +338,6 @@ class BibitHomePage extends StatelessWidget {
 
           const SizedBox(height: 20),
 
-          // TAB BAR MANUAL
           Container(
             padding: const EdgeInsets.all(6),
             decoration: BoxDecoration(
@@ -373,7 +356,6 @@ class BibitHomePage extends StatelessWidget {
 
           const SizedBox(height: 22),
 
-          // LIST RANKING
           _rankItem(
             rank: 1,
             color: Color(0xFFFFD700),
@@ -441,7 +423,6 @@ class BibitHomePage extends StatelessWidget {
         children: [
           const SizedBox(width: 6),
 
-          // Medal icon or rank circle
           Container(
             width: 32,
             height: 32,
@@ -463,7 +444,6 @@ class BibitHomePage extends StatelessWidget {
 
           const SizedBox(width: 14),
 
-          // Fund title
           Expanded(
             child: Text(
               title,
@@ -475,7 +455,6 @@ class BibitHomePage extends StatelessWidget {
             ),
           ),
 
-          // Return
           Text(
             return1Y,
             style: const TextStyle(
@@ -491,9 +470,6 @@ class BibitHomePage extends StatelessWidget {
     );
   }
 
-  // ----------------------------------------------------------
-  // REKOMENDASI ROBO KAMU
-  // ----------------------------------------------------------
   Widget _rekomendasiRobo() {
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
@@ -521,7 +497,6 @@ class BibitHomePage extends StatelessWidget {
 
           const SizedBox(height: 14),
 
-          // Banner Hijau
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
@@ -557,7 +532,6 @@ class BibitHomePage extends StatelessWidget {
 
           const SizedBox(height: 18),
 
-          // Card Dana Pensiun
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
@@ -567,7 +541,6 @@ class BibitHomePage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Title Dana Pensiun + kanan "Ubah"
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: const [
@@ -597,7 +570,6 @@ class BibitHomePage extends StatelessWidget {
 
                 const SizedBox(height: 16),
 
-                // Breakdown list
                 _roboItem(
                   color: const Color(0xFF00A86B),
                   title: "Pasar Uang",
@@ -662,7 +634,6 @@ class BibitHomePage extends StatelessWidget {
   }) {
     return Row(
       children: [
-        // Colored line indicator (Bibit style)
         Container(
           width: 4,
           height: 45,
@@ -674,7 +645,6 @@ class BibitHomePage extends StatelessWidget {
 
         const SizedBox(width: 12),
 
-        // Fund info
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -712,9 +682,6 @@ class BibitHomePage extends StatelessWidget {
     );
   }
 
-  // ----------------------------------------------------------
-  // LIVE TRANSACTION SECTION
-  // ----------------------------------------------------------
   Widget _liveTransaction() {
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
@@ -749,7 +716,6 @@ class BibitHomePage extends StatelessWidget {
 
           const SizedBox(height: 16),
 
-          // 3 items example (bisa di-loop nanti)
           _liveItem(
             avatarColor: Color(0xFF00A86B),
             name: "Bibit User",
@@ -799,7 +765,6 @@ class BibitHomePage extends StatelessWidget {
       ),
       child: Row(
         children: [
-          // Avatar bulat warna
           Container(
             width: 46,
             height: 46,
@@ -843,9 +808,6 @@ class BibitHomePage extends StatelessWidget {
     );
   }
 
-  // ----------------------------------------------------------
-  // PROMO SECTION
-  // ----------------------------------------------------------
   Widget _promoSection() {
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 10, 0, 0),
@@ -961,9 +923,6 @@ class BibitHomePage extends StatelessWidget {
     );
   }
 
-  // ----------------------------------------------------------
-  // ARTIKEL SECTION
-  // ----------------------------------------------------------
   Widget _artikelSection() {
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 10, 0, 0),
@@ -1105,9 +1064,6 @@ class BibitHomePage extends StatelessWidget {
     );
   }
 
-  // ----------------------------------------------------------
-  // EVENT SECTION
-  // ----------------------------------------------------------
   Widget _eventSection() {
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 10, 0, 0),
@@ -1130,7 +1086,7 @@ class BibitHomePage extends StatelessWidget {
           const SizedBox(height: 16),
 
           SizedBox(
-            height: 260, // FIX OVERFLOW — card tinggi total ~250 px
+            height: 260,
             child: ListView(
               scrollDirection: Axis.horizontal,
               children: [
@@ -1251,27 +1207,32 @@ class BibitHomePage extends StatelessWidget {
     );
   }
 
-  // ----------------------------------------------------------
-  // ACADEMY EDUCATION BANNER SECTION (like Bibit)
-  // ----------------------------------------------------------
   Widget _academyEducationSection() {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(20, 15, 0, 0),
+      padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Logo + Title
+          // ACADEMY HEADER
           Row(
-            children: const [
-              Icon(Icons.school, color: Color(0xFF00A86B), size: 26),
-              SizedBox(width: 6),
-              Text(
-                "Academy",
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w600,
-                  color: Color(0xFF1D1D1D),
-                ),
+            children: [
+              Row(
+                children: [
+                  Icon(
+                    Icons.school_rounded,
+                    color: Color(0xFF00A86B),
+                    size: 24,
+                  ),
+                  SizedBox(width: 6),
+                  Text(
+                    "Academy",
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w600,
+                      color: Color(0xFF1D1D1D),
+                    ),
+                  ),
+                ],
               ),
               Spacer(),
               Text(
@@ -1282,61 +1243,54 @@ class BibitHomePage extends StatelessWidget {
                   fontWeight: FontWeight.w500,
                 ),
               ),
-              SizedBox(width: 20),
             ],
           ),
 
-          const SizedBox(height: 14),
+          SizedBox(height: 16),
 
-          const Text(
+          // TITLE
+          Text(
             "Pusat Edukasi Investasi",
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
           ),
 
-          const SizedBox(height: 14),
+          SizedBox(height: 14),
 
-          // Carousel container
+          // CAROUSEL
           SizedBox(
             height: 220,
             child: ListView(
               scrollDirection: Axis.horizontal,
               children: [
                 _academyBannerCard(
-                  bgColor: const Color(0xFFFFEFEF),
-                  image: "https://picsum.photos/id/50/400/300",
+                  bgColor: Color(0xFFFFEFEF),
                   title: "Surat Berharga Negara (SBN)",
                   teacher: "Ricky Susanto Joeng, CFP®",
                   videos: "8 Video",
+                  image: "https://picsum.photos/id/57/600/400",
                 ),
-                const SizedBox(width: 14),
+                SizedBox(width: 14),
                 _academyBannerCard(
-                  bgColor: const Color(0xFFEFF7FF),
-                  image: "https://picsum.photos/id/60/400/300",
+                  bgColor: Color(0xFFEFF7FF),
                   title: "Obligasi Syariah",
                   teacher: "Galih Pratama, CFP®",
                   videos: "9 Video",
-                ),
-                const SizedBox(width: 14),
-                _academyBannerCard(
-                  bgColor: const Color(0xFFEFFEF4),
-                  image: "https://picsum.photos/id/70/400/300",
-                  title: "Dasar-Dasar Investasi",
-                  teacher: "Andi Wijaya",
-                  videos: "12 Video",
+                  image: "https://picsum.photos/id/47/600/400",
                 ),
               ],
             ),
           ),
 
-          const SizedBox(height: 10),
+          SizedBox(height: 12),
 
-          // Page Indicator (static for now)
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [_dot(true), _dot(false), _dot(false)],
+            children: [_dot(true), _dot(false)],
           ),
 
-          const SizedBox(height: 25),
+          SizedBox(height: 24),
+
+          _bibitInfoCards(),
         ],
       ),
     );
@@ -1344,12 +1298,12 @@ class BibitHomePage extends StatelessWidget {
 
   Widget _dot(bool active) {
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 250),
-      margin: const EdgeInsets.symmetric(horizontal: 4),
+      duration: Duration(milliseconds: 250),
+      margin: EdgeInsets.symmetric(horizontal: 4),
       width: active ? 20 : 8,
       height: 8,
       decoration: BoxDecoration(
-        color: active ? const Color(0xFF00A86B) : Colors.grey.shade400,
+        color: active ? Color(0xFF00A86B) : Colors.grey.shade400,
         borderRadius: BorderRadius.circular(10),
       ),
     );
@@ -1357,35 +1311,44 @@ class BibitHomePage extends StatelessWidget {
 
   Widget _academyBannerCard({
     required Color bgColor,
-    required String image,
     required String title,
     required String teacher,
     required String videos,
+    required String image,
   }) {
     return Container(
-      width: 310,
+      width: 320,
       decoration: BoxDecoration(
         color: bgColor,
         borderRadius: BorderRadius.circular(18),
       ),
       child: Stack(
         children: [
-          // Right-side image (teacher)
+          // IMAGE POSITION EXACT LIKE BIBIT
           Positioned(
-            right: -10,
+            right: 0,
             bottom: 0,
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(18),
-              child: Image.network(image, height: 170, fit: BoxFit.cover),
+              borderRadius: BorderRadius.only(
+                topRight: Radius.circular(18),
+                bottomRight: Radius.circular(18),
+              ),
+              child: Image.network(
+                image,
+                width: 160,
+                height: 180,
+                fit: BoxFit.cover, // menjaga proporsi
+              ),
             ),
           ),
 
-          // Left-side text
+          // TEXT LEFT
           Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(18),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                // Title
                 Text(
                   title,
                   maxLines: 2,
@@ -1398,6 +1361,7 @@ class BibitHomePage extends StatelessWidget {
 
                 const SizedBox(height: 6),
 
+                // Teacher text
                 Text(
                   teacher,
                   style: const TextStyle(
@@ -1408,26 +1372,24 @@ class BibitHomePage extends StatelessWidget {
 
                 const Spacer(),
 
+                // Video count badge
                 Container(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 12,
-                    vertical: 6,
+                    vertical: 5,
                   ),
                   decoration: BoxDecoration(
-                    color: Colors.black.withOpacity(0.1),
+                    color: Colors.black.withOpacity(0.15),
                     borderRadius: BorderRadius.circular(6),
                   ),
                   child: Text(
                     videos,
                     style: const TextStyle(
                       fontSize: 12,
-                      color: Colors.black,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
                 ),
-
-                const SizedBox(height: 16),
               ],
             ),
           ),
@@ -1436,12 +1398,91 @@ class BibitHomePage extends StatelessWidget {
     );
   }
 
-  // ----------------------------------------------------------
-  // BOTTOM NAVIGATION
-  // ----------------------------------------------------------
+  Widget _bibitInfoCards() {
+    return Column(
+      children: [
+        Container(
+          padding: EdgeInsets.all(18),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(14),
+          ),
+          child: Row(
+            children: [
+              Image.network(
+                "https://img.icons8.com/color/96/gift.png",
+                height: 60,
+              ),
+              SizedBox(width: 14),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Gift Card Reksa Dana",
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    SizedBox(height: 6),
+                    Text(
+                      "Hadiahkan reksa dana ke teman dan keluarga kamu.",
+                      style: TextStyle(fontSize: 13, color: Color(0xFF6F6F6F)),
+                    ),
+                  ],
+                ),
+              ),
+              Icon(Icons.chevron_right, color: Colors.grey),
+            ],
+          ),
+        ),
+
+        SizedBox(height: 14),
+
+        Container(
+          padding: EdgeInsets.all(18),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(14),
+          ),
+          child: Row(
+            children: [
+              Image.network(
+                "https://img.icons8.com/color/96/whatsapp.png",
+                height: 60,
+              ),
+              SizedBox(width: 14),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Ikuti WhatsApp Channel Bibit",
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    SizedBox(height: 6),
+                    Text(
+                      "Dapatkan informasi terbaru seputar Bibit dan investasi.",
+                      style: TextStyle(fontSize: 13, color: Color(0xFF6F6F6F)),
+                    ),
+                  ],
+                ),
+              ),
+              Icon(Icons.chevron_right, color: Colors.grey),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
   Widget _bottomNavBar() {
     return Container(
-      height: 70,
+      height: 90,
       decoration: BoxDecoration(
         color: Colors.white,
         border: Border(top: BorderSide(color: Colors.grey.shade300)),
@@ -1449,7 +1490,7 @@ class BibitHomePage extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: const [
-          _navItem(Icons.home_outlined, "Home"),
+          _navItem(Icons.home_outlined, "Home", active: true),
           _navItem(Icons.pie_chart_outline, "Portfolio"),
           _navItem(Icons.search, "Explore"),
           _navItem(Icons.swap_horiz_rounded, "Transaksi"),
@@ -1460,21 +1501,28 @@ class BibitHomePage extends StatelessWidget {
   }
 }
 
-// NAV ITEM
 class _navItem extends StatelessWidget {
   final IconData icon;
   final String label;
+  final bool active;
 
-  const _navItem(this.icon, this.label);
+  const _navItem(this.icon, this.label, {this.active = false});
 
   @override
   Widget build(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Icon(icon, color: Color(0xFF00A86B)),
-        const SizedBox(height: 4),
-        Text(label, style: const TextStyle(fontSize: 12)),
+        Icon(icon, color: active ? Color(0xFF00A86B) : Colors.grey, size: 26),
+        SizedBox(height: 4),
+        Text(
+          label,
+          style: TextStyle(
+            fontSize: 12,
+            color: active ? Color(0xFF00A86B) : Colors.grey,
+            fontWeight: active ? FontWeight.w600 : FontWeight.w400,
+          ),
+        ),
       ],
     );
   }
