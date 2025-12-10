@@ -20,9 +20,7 @@ class BibitHomePage extends StatelessWidget {
 
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(60),
-        child: SafeArea(
-          child: _bibitBar(),
-        ), // 🔥 TIDAK SCROLL + STATUS BAR MUNCUL
+        child: SafeArea(child: _bibitBar()),
       ),
 
       bottomNavigationBar: _bottomNavBar(),
