@@ -35,13 +35,6 @@ Semua halaman dapat diakses melalui 1 halaman utama:
 
 ---
 
-## 🧭 How to Run
-
-```bash
-flutter pub get
-flutter run
-Pastikan device/emulator sudah tersedia.
-
 ### 📸 Screenshots
 
 <img src="assets/screenshot/all_demo.png" width="22%" />
@@ -54,6 +47,14 @@ Pastikan device/emulator sudah tersedia.
 <img src="assets/screenshot/ovo_home.png" width="22%" />
 <img src="assets/screenshot/shoppe_home.png" width="22%" />
 
+
+
+## 🧭 How to Run
+
+```bash
+flutter pub get
+flutter run
+Pastikan device/emulator sudah tersedia.
 
 
 
