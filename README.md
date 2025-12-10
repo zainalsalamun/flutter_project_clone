@@ -22,22 +22,14 @@ Semua halaman dapat diakses melalui 1 halaman utama:
 
 ---
 
-## 📂 Project Structure
-
-lib/
-│
-├── all_pages_demo.dart // Halaman utama berisi list menu UI
-│
-├── bibit_home_page.dart // UI clone Bibit
-├── gojek_home_page.dart // UI clone Gojek
-├── livin_home_page.dart // UI clone Livin Mandiri
-├── ovo_home_page.dart // UI clone OVO
-└── shopeepay_page.dart // UI clone ShopeePay
-
-yaml
-Copy code
-
----
+📂 Project Structure (Table Version)
+File	Deskripsi
+lib/all_pages_demo.dart	Halaman utama berisi list menu UI
+lib/bibit_home_page.dart	UI clone Bibit
+lib/gojek_home_page.dart	UI clone Gojek
+lib/livin_home_page.dart	UI clone Livin Mandiri
+lib/ovo_home_page.dart	UI clone OVO
+lib/shopeepay_page.dart	UI clone ShopeePay
 
 ## 🧭 How to Run
 
@@ -47,21 +39,34 @@ flutter run
 Pastikan device/emulator sudah tersedia.
 
 🖼 Screenshot
-Tambahkan screenshot tampilan aplikasi di bawah ini:
+<table>
+  <tr>
+    <td><img src="assets/all_demo.png" width="250"></td>
+    <td><img src="assets/bibit_home.png" width="250"></td>
+    <td><img src="assets/gojek_home.png" width="250"></td>
+    <td><img src="assets/livin_home.png" width="250"></td>
+  </tr>
+  <tr>
+    <th>All Pages Demo</th>
+    <th>Bibit Home</th>
+    <th>Gojek Home</th>
+    <th>Livin Home</th>
+  </tr>
+</table>
 
-⭐ All Pages Demo (Menu Utama)
+<br>
 
-📘 Bibit Home Page
+<table>
+  <tr>
+    <td><img src="assets/ovo_home.png" width="250"></td>
+    <td><img src="assets/shoppe_home.png" width="250"></td>
+  </tr>
+  <tr>
+    <th>OVO Home</th>
+    <th>ShopeePay Home</th>
+  </tr>
+</table>
 
-🟢 Gojek Home Page
-
-🔵 Livin Mandiri Home Page
-
-🟣 OVO Home Page
-
-🟧 ShopeePay Page
-
-Simpan screenshot di folder:
 
 bash
 Copy code
