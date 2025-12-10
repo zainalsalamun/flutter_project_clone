@@ -36,17 +36,33 @@ Semua halaman dapat diakses melalui 1 halaman utama:
 ---
 
 ### 📸 Screenshots
+<table>
+  <tr>
+    <td><img src="assets/screenshot/all_demo.png" width="250"></td>
+    <td><img src="assets/screenshot/bibit_home.png" width="250"></td>
+    <td><img src="assets/screenshot/gojek_home.png" width="250"></td>
+    <td><img src="assets/screenshot/livin_home.png" width="250"></td>
+  </tr>
+  <tr>
+    <th>All Pages Demo</th>
+    <th>Bibit Home</th>
+    <th>Gojek Home</th>
+    <th>Livin Home</th>
+  </tr>
+</table>
 
-<img src="assets/screenshot/all_demo.png" width="22%" />
-<img src="assets/screenshot/bibit_home.png" width="22%" />
-<img src="assets/screenshot/gojek_home.png" width="22%" />
-<img src="assets/screenshot/livin_home.png" width="22%" />
+<br>
 
-<br/>
-
-<img src="assets/screenshot/ovo_home.png" width="22%" />
-<img src="assets/screenshot/shoppe_home.png" width="22%" />
-
+<table>
+  <tr>
+    <td><img src="assets/screenshot/ovo_home.png" width="250"></td>
+    <td><img src="assets/screenshot/shoppe_home.png" width="250"></td>
+  </tr>
+  <tr>
+    <th>OVO Home</th>
+    <th>ShopeePay Home</th>
+  </tr>
+</table>
 
 
 ## 🧭 How to Run
@@ -54,9 +70,26 @@ Semua halaman dapat diakses melalui 1 halaman utama:
 ```bash
 flutter pub get
 flutter run
-Pastikan device/emulator sudah tersedia.
+
+🏗 How to Build (Release Build)
+Build APK (universal)
+flutter build apk --release
+
+Build APK per ABI (lebih kecil)
+flutter build apk --release --split-per-abi
 
 
+Output ada di:
+
+build/app/outputs/flutter-apk/
+
+Build AppBundle (AAB) untuk Play Store
+flutter build appbundle --release
+
+
+Output ada di:
+
+build/app/outputs/bundle/release/app-release.aab
 
 🛠 Tech Stack
 Flutter
