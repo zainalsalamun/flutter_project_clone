@@ -43,7 +43,34 @@ flutter run
 Pastikan device/emulator sudah tersedia.
 
 🖼 Screenshots
-<table> <tr> <td><img src="assets/all_demo.png" width="250"></td> <td><img src="assets/bibit_home.png" width="250"></td> <td><img src="assets/gojek_home.png" width="250"></td> <td><img src="assets/livin_home.png" width="250"></td> </tr> <tr> <th>All Pages Demo</th> <th>Bibit Home</th> <th>Gojek Home</th> <th>Livin Home</th> </tr> </table> <br> <table> <tr> <td><img src="assets/ovo_home.png" width="250"></td> <td><img src="assets/shoppe_home.png" width="250"></td> </tr> <tr> <th>OVO Home</th> <th>ShopeePay Home</th> </tr> </table>
+<table>
+  <tr>
+    <td><img src="assets/all_demo.png" width="250"></td>
+    <td><img src="assets/bibit_home.png" width="250"></td>
+    <td><img src="assets/gojek_home.png" width="250"></td>
+    <td><img src="assets/livin_home.png" width="250"></td>
+  </tr>
+  <tr>
+    <th>All Pages Demo</th>
+    <th>Bibit Home</th>
+    <th>Gojek Home</th>
+    <th>Livin Home</th>
+  </tr>
+</table>
+
+<br>
+
+<table>
+  <tr>
+    <td><img src="assets/ovo_home.png" width="250"></td>
+    <td><img src="assets/shoppe_home.png" width="250"></td>
+  </tr>
+  <tr>
+    <th>OVO Home</th>
+    <th>ShopeePay Home</th>
+  </tr>
+</table>
+
 
 🛠 Tech Stack
 Flutter
