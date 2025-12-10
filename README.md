@@ -42,17 +42,18 @@ flutter pub get
 flutter run
 Pastikan device/emulator sudah tersedia.
 
-### 📸 Screenshots  
+### 📸 Screenshots
 
-<img src="assets/all_demo.png" width="22%" />
-<img src="assets/bibit_home.png" width="22%" />
-<img src="assets/gojek_home.png" width="22%" />
-<img src="assets/livin_home.png" width="22%" />
+<img src="assets/screenshot/all_demo.png" width="22%" />
+<img src="assets/screenshot/bibit_home.png" width="22%" />
+<img src="assets/screenshot/gojek_home.png" width="22%" />
+<img src="assets/screenshot/livin_home.png" width="22%" />
 
-<br>
+<br/>
 
-<img src="assets/ovo_home.png" width="22%" />
-<img src="assets/shoppe_home.png" width="22%" />
+<img src="assets/screenshot/ovo_home.png" width="22%" />
+<img src="assets/screenshot/shoppe_home.png" width="22%" />
+
 
 
 
