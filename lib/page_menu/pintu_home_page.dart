@@ -284,6 +284,36 @@ class PintuHomePage extends StatelessWidget {
 
   Widget _moverCard(String name, String price, String change) {
     final isUp = change.contains("+");
+
+    IconData icon;
+    Color bgColor;
+    Color iconColor;
+
+    switch (name) {
+      case "MAVIA":
+        icon = Icons.token;
+        bgColor = Colors.yellow.shade100;
+        iconColor = Colors.orange.shade700;
+        break;
+
+      case "HEI":
+        icon = Icons.hexagon;
+        bgColor = Colors.purple.shade100;
+        iconColor = Colors.purple.shade700;
+        break;
+
+      case "FWOG":
+        icon = Icons.pets;
+        bgColor = Colors.green.shade100;
+        iconColor = Colors.green.shade700;
+        break;
+
+      default:
+        icon = Icons.circle;
+        bgColor = Colors.grey.shade200;
+        iconColor = Colors.grey.shade600;
+    }
+
     return Container(
       width: 120,
       margin: const EdgeInsets.only(right: 12),
@@ -295,15 +325,36 @@ class PintuHomePage extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(name, style: const TextStyle(fontWeight: FontWeight.bold)),
-          const SizedBox(height: 6),
-          Text(price),
-          const SizedBox(height: 6),
+          Row(
+            children: [
+              CircleAvatar(
+                radius: 12,
+                backgroundColor: bgColor,
+                child: Icon(icon, size: 14, color: iconColor),
+              ),
+              const SizedBox(width: 8),
+              Text(
+                name,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 13,
+                ),
+              ),
+            ],
+          ),
+
+          const SizedBox(height: 12),
+
+          Text(price, style: const TextStyle(fontSize: 13)),
+
+          const SizedBox(height: 8),
+
           Text(
             change,
             style: TextStyle(
               fontWeight: FontWeight.bold,
               color: isUp ? Colors.green : Colors.red,
+              fontSize: 13,
             ),
           ),
         ],
