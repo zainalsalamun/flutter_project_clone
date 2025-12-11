@@ -730,26 +730,79 @@ class PintuHomePage extends StatelessWidget {
   }
 
   Widget _faq() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        _faqItem("Cara Deposit Rupiah"),
-        _faqItem("Jumlah Min/Maks Trading"),
-        _faqItem("Cara Tarik Rupiah"),
+    final faqItems = [
+      [
+        "Cara Deposit via OVO",
+        "https://blog.pintu.co.id/wp-content/uploads/2021/07/Deposit-Via-Ovo-Blog-Banner2-1-300x226.png",
       ],
+      [
+        "Deposit via BCA",
+        "https://blog.pintu.co.id/wp-content/uploads/2024/03/Tutorial-deposit-di-pintu-dengan-bca-300x226.jpg",
+      ],
+      [
+        "Deposit via Virtual Account",
+        "https://blog.pintu.co.id/wp-content/uploads/2025/02/Pintu-Deposit-VA-Blog-300x226.jpg",
+      ],
+      [
+        "Deposit IDR (Pintu Pro)",
+        "https://blog.pintu.co.id/wp-content/uploads/2025/06/Pintu-Pro-FiatIDRDeposit-Blog-1020x768-1-300x226.jpg",
+      ],
+    ];
+
+    return SizedBox(
+      height: 150,
+      child: Row(
+        children: faqItems.map((item) => _faqItem(item[0], item[1])).toList(),
+      ),
     );
   }
 
-  Widget _faqItem(String title) {
+  Widget _faqItem(String title, String imageUrl) {
     return Expanded(
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 4),
-        padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
-          color: Colors.grey.shade200,
           borderRadius: BorderRadius.circular(14),
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.06),
+              blurRadius: 6,
+              offset: const Offset(0, 3),
+            ),
+          ],
         ),
-        child: Text(title),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Thumbnail image
+            ClipRRect(
+              borderRadius: const BorderRadius.vertical(
+                top: Radius.circular(14),
+              ),
+              child: Image.network(
+                imageUrl,
+                height: 80,
+                width: double.infinity,
+                fit: BoxFit.cover,
+              ),
+            ),
+
+            // Title
+            Padding(
+              padding: const EdgeInsets.all(8),
+              child: Text(
+                title,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 12,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -783,8 +836,7 @@ class PintuHomePage extends StatelessWidget {
     );
   }
 
-  // -------------------------------------------------------------------------
-  // BOTTOM NAV BAR
+  //bottom
   Widget _bottomNav() {
     return BottomNavigationBar(
       selectedItemColor: Colors.black,
