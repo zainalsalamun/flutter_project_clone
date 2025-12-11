@@ -3,6 +3,7 @@ import 'package:shoppe_clone/page_menu/bibit_home_page.dart';
 import 'package:shoppe_clone/page_menu/gojek_home_page.dart';
 import 'package:shoppe_clone/page_menu/livin_home_page.dart';
 import 'package:shoppe_clone/page_menu/ovo_home_page.dart';
+import 'package:shoppe_clone/page_menu/pintu_home_page.dart';
 import 'package:shoppe_clone/page_menu/shopeepay_page.dart';
 
 class AllPagesDemo extends StatelessWidget {
@@ -58,6 +59,13 @@ class AllPagesDemo extends StatelessWidget {
             icon: Icons.shopping_bag,
             iconColor: Colors.orange,
             page: const ShopeePayPage(),
+          ),
+          _menuCard(
+            context,
+            title: "Pintu Page",
+            icon: Icons.door_back_door,
+            iconColor: Colors.lightBlue,
+            page: const PintuHomePage(),
           ),
         ],
       ),
