@@ -1023,9 +1023,9 @@ class _GojekBottomNav extends StatelessWidget {
       child: Row(
         children: const [
           _BottomNavItem(icon: Icons.home, label: "Beranda", active: true),
-          _BottomNavItem(icon: Icons.local_offer_outlined, label: "Promo"),
+          _BottomNavItem(icon: Icons.local_attraction, label: "Promo"),
           _BottomNavItem(icon: Icons.receipt_long, label: "Aktivitas"),
-          _BottomNavItem(icon: Icons.chat_bubble_outline, label: "Chat"),
+          _BottomNavItem(icon: Icons.chat_outlined, label: "Chat"),
         ],
       ),
     );
