@@ -634,28 +634,98 @@ class PintuHomePage extends StatelessWidget {
   }
 
   Widget _learnCryptoCarousel() {
+    final items = [
+      [
+        "Apa itu Bitcoin?",
+        "https://pintu-academy.pintukripto.com/wp-content/uploads/2021/12/What-is-Bitcoin-768x576.png",
+      ],
+      [
+        "Bitcoin ETF",
+        "https://pintu-academy.pintukripto.com/wp-content/uploads/2023/06/Bitcoin-ETF-2-768x576.png",
+      ],
+      [
+        "Bitcoin vs Bitcoin Cash",
+        "https://pintu-academy.pintukripto.com/wp-content/uploads/2023/07/Bitcoin-BCH-768x576.png",
+      ],
+      [
+        "Apa itu Taproot?",
+        "https://pintu-academy.pintukripto.com/wp-content/uploads/2021/12/Apa-itu-Taproot-768x576.png",
+      ],
+      [
+        "Bitcoin Halving",
+        "https://pintu-academy.pintukripto.com/wp-content/uploads/2021/03/Bitcoin_Halving-768x576.png",
+      ],
+      [
+        "Coin Mixer & Coin Join",
+        "https://pintu-academy.pintukripto.com/wp-content/uploads/2022/06/Coin-Mixer-dan-Coin-Join-768x576.png",
+      ],
+      [
+        "Sejarah Bitcoin",
+        "https://pintu-academy.pintukripto.com/wp-content/uploads/2023/03/Sejarah-Bitcoin-768x576.png",
+      ],
+      [
+        "Bitcoin Maximalism",
+        "https://pintu-academy.pintukripto.com/wp-content/uploads/2023/09/Bitcoin-Maximalism-dan-Crypto-Tribalism-768x576.png",
+      ],
+      [
+        "Adopsi Bitcoin Sebagai Cadangan",
+        "https://pintu-academy.pintukripto.com/wp-content/uploads/2025/08/Adopsi-Bitcoin-Sebagai-Cadangan-768x576.png",
+      ],
+    ];
+
     return SizedBox(
-      height: 170,
+      height: 180,
       child: ListView(
         scrollDirection: Axis.horizontal,
-        children: [
-          _learnCard("Apa itu Bitcoin? Cara Kerja, Membeli dan Legalitasnya"),
-          _learnCard("Apa itu Crypto Futures?"),
-        ],
+        children: items.map((item) => _learnCard(item[0], item[1])).toList(),
       ),
     );
   }
 
-  Widget _learnCard(String title) {
+  Widget _learnCard(String title, String imageUrl) {
     return Container(
-      width: 200,
-      margin: const EdgeInsets.only(right: 12),
+      width: 220,
+      margin: const EdgeInsets.only(right: 14),
       decoration: BoxDecoration(
-        color: Colors.grey.shade200,
         borderRadius: BorderRadius.circular(16),
+        image: DecorationImage(
+          image: NetworkImage(imageUrl),
+          fit: BoxFit.cover,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.08),
+            blurRadius: 8,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
-      padding: const EdgeInsets.all(12),
-      child: Text(title, style: const TextStyle(fontWeight: FontWeight.w600)),
+      child: Container(
+        padding: const EdgeInsets.all(14),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(16),
+          gradient: LinearGradient(
+            begin: Alignment.bottomCenter,
+            end: Alignment.topCenter,
+            colors: [
+              Colors.black.withOpacity(0.45),
+              Colors.black.withOpacity(0.10),
+              Colors.transparent,
+            ],
+          ),
+        ),
+        alignment: Alignment.bottomLeft,
+        child: Text(
+          title,
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
+          style: const TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.w700,
+            fontSize: 14,
+          ),
+        ),
+      ),
     );
   }
 
