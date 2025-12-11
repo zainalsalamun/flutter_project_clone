@@ -79,6 +79,7 @@ class PintuHomePage extends StatelessWidget {
   Widget _tabSwitch() {
     return Container(
       height: 36,
+      width: 200,
       padding: const EdgeInsets.all(2),
       decoration: BoxDecoration(
         color: Colors.grey.shade200,
