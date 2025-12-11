@@ -809,16 +809,54 @@ class PintuHomePage extends StatelessWidget {
 
   Widget _newsList() {
     final items = [
-      "Bagaimana Sembilan Hari Mengubah Kepemilikan Bitcoin",
-      "Ledger Finds Popular Smartphone Chip Vulnerability",
-      "High-Leverage Crypto ETF Applications Ditahan SEC",
-      "BlackRock Remains Risk-on as Mega Forces Transform Markets",
+      [
+        "Pippin Crypto Melonjak Hari Ini",
+        "https://blog.pintu.co.id/wp-content/uploads/2025/12/pippin-crypto-300x169.jpg",
+      ],
+      [
+        "Solana Kembali Menguat",
+        "https://blog.pintu.co.id/wp-content/uploads/2025/07/solana-300x174.png",
+      ],
+      [
+        "Mengapa Crypto Turun Hari Ini?",
+        "https://blog.pintu.co.id/wp-content/uploads/2025/11/mengapa-crypto-turun-hari-ini-300x171.jpg",
+      ],
+      [
+        "10 Crypto Potensial untuk Tahun 2026",
+        "https://blog.pintu.co.id/wp-content/uploads/2025/10/10-crypto-2026-300x171.jpg",
+      ],
+      [
+        "XRP Disetujui di Hong Kong",
+        "https://blog.pintu.co.id/wp-content/uploads/2025/12/xrp-hong-kong-300x169.jpg",
+      ],
+      [
+        "Chainlink: Kenaikan On-chain Activity",
+        "https://blog.pintu.co.id/wp-content/uploads/2024/09/chainlink-300x227.jpg",
+      ],
+      [
+        "JioCoin Menjadi Sorotan Baru",
+        "https://blog.pintu.co.id/wp-content/uploads/2025/12/jiocoin-300x169.jpg",
+      ],
+      [
+        "Harga Dogecoin Naik Tajam",
+        "https://blog.pintu.co.id/wp-content/uploads/2025/07/harga-dogecoin-naik-300x172.jpg",
+      ],
+      [
+        "Market Crypto Bergerak Campuran",
+        "https://blog.pintu.co.id/wp-content/uploads/2025/06/image-69-300x169.jpg",
+      ],
+      [
+        "Kenapa Crypto Turun Hari Ini?",
+        "https://blog.pintu.co.id/wp-content/uploads/2024/07/kenapa-crypto-turun-hari-ini-300x171.jpg",
+      ],
     ];
 
-    return Column(children: items.map((t) => _newsItem(t)).toList());
+    return Column(
+      children: items.map((item) => _newsItem(item[0], item[1])).toList(),
+    );
   }
 
-  Widget _newsItem(String title) {
+  Widget _newsItem(String title, String imageUrl) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 14),
       decoration: BoxDecoration(
@@ -826,10 +864,27 @@ class PintuHomePage extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Container(width: 60, height: 60, color: Colors.grey.shade300),
+          // Thumbnail
+          ClipRRect(
+            borderRadius: BorderRadius.circular(8),
+            child: Image.network(
+              imageUrl,
+              width: 70,
+              height: 70,
+              fit: BoxFit.cover,
+            ),
+          ),
+
           const SizedBox(width: 12),
+
+          // Title
           Expanded(
-            child: Text(title, maxLines: 2, overflow: TextOverflow.ellipsis),
+            child: Text(
+              title,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
+            ),
           ),
         ],
       ),
