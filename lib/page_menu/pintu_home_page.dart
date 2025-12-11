@@ -394,18 +394,24 @@ class PintuHomePage extends StatelessWidget {
 
   Widget _watchItem(String coin, String price, String change) {
     final isUp = change.contains("+");
+
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 14),
       decoration: BoxDecoration(
         border: Border(bottom: BorderSide(color: Colors.grey.shade300)),
       ),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            coin,
-            style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
+          _coinIcon(coin),
+          const SizedBox(width: 12),
+
+          Expanded(
+            child: Text(
+              coin,
+              style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
+            ),
           ),
+
           Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
@@ -421,6 +427,55 @@ class PintuHomePage extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _coinIcon(String coin) {
+    IconData icon;
+    Color bg;
+    Color color;
+
+    switch (coin) {
+      case "Bitcoin":
+        icon = Icons.currency_bitcoin;
+        bg = Colors.orange.shade100;
+        color = Colors.orange.shade700;
+        break;
+
+      case "Ethereum":
+        icon = Icons.hexagon;
+        bg = Colors.grey.shade300;
+        color = Colors.grey.shade800;
+        break;
+
+      case "BNB":
+        icon = Icons.diamond;
+        bg = Colors.yellow.shade100;
+        color = Colors.amber.shade700;
+        break;
+
+      case "Solana":
+        icon = Icons.blur_on;
+        bg = Colors.green.shade100;
+        color = Colors.green.shade700;
+        break;
+
+      case "Cosmos":
+        icon = Icons.bubble_chart;
+        bg = Colors.blue.shade100;
+        color = Colors.blue.shade700;
+        break;
+
+      default:
+        icon = Icons.circle;
+        bg = Colors.grey.shade200;
+        color = Colors.grey.shade600;
+    }
+
+    return CircleAvatar(
+      radius: 14,
+      backgroundColor: bg,
+      child: Icon(icon, size: 16, color: color),
     );
   }
 
