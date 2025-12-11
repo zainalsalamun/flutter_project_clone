@@ -968,23 +968,41 @@ class PintuHomePage extends StatelessWidget {
 
   //bottom
   Widget _bottomNav() {
-    return BottomNavigationBar(
-      selectedItemColor: Colors.black,
-      unselectedItemColor: Colors.grey.shade500,
-      showUnselectedLabels: true,
-      items: const [
-        BottomNavigationBarItem(icon: Icon(Icons.home), label: "Beranda"),
-        BottomNavigationBarItem(icon: Icon(Icons.search), label: "Jelajah"),
-        BottomNavigationBarItem(icon: Icon(Icons.bar_chart), label: "Market"),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.trending_up),
-          label: "Futures",
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.08),
+            blurRadius: 12,
+            offset: const Offset(0, -2),
+          ),
+        ],
+        border: Border(
+          top: BorderSide(color: Colors.grey.shade300, width: 0.8),
         ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.account_balance_wallet),
-          label: "Wallet",
-        ),
-      ],
+      ),
+      child: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        backgroundColor: Colors.white,
+        elevation: 0,
+        selectedItemColor: Colors.black,
+        unselectedItemColor: Colors.grey.shade500,
+        showUnselectedLabels: true,
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Beranda"),
+          BottomNavigationBarItem(icon: Icon(Icons.search), label: "Jelajah"),
+          BottomNavigationBarItem(icon: Icon(Icons.bar_chart), label: "Market"),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.trending_up),
+            label: "Futures",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.account_balance_wallet),
+            label: "Wallet",
+          ),
+        ],
+      ),
     );
   }
 }
