@@ -546,28 +546,90 @@ class PintuHomePage extends StatelessWidget {
   }
 
   Widget _academyCarousel() {
+    final items = [
+      [
+        "Cara Kelola Risiko Trading Futures Dengan Leverage 25x",
+        "https://pintu-academy.pintukripto.com/wp-content/uploads/2025/07/Cara-Kelola-Risiko-Trading-Futures-Dengan-Leverage-25x-768x576.png",
+      ],
+      [
+        "Manajemen Risiko di Crypto",
+        "https://pintu-academy.pintukripto.com/wp-content/uploads/2023/07/Manajemen-Risiko-di-crypto-768x576.png",
+      ],
+      [
+        "Risk Management Future Trading",
+        "https://pintu-academy.pintukripto.com/wp-content/uploads/2025/06/Risk-Management-Future-Trading-768x576.png",
+      ],
+      [
+        "How to Count Risk (Pintu Academy)",
+        "https://pintu-academy.pintukripto.com/wp-content/uploads/2025/11/Pintu-AcademyArticle-10-14Nov-02-HowtoCountRisk-768x578.png",
+      ],
+      [
+        "How to Succeed in Bull Market",
+        "https://pintu-academy.pintukripto.com/wp-content/uploads/2024/12/How-to-succeed-in-bull-market-768x576.png",
+      ],
+      [
+        "Barbell Strategy",
+        "https://pintu-academy.pintukripto.com/wp-content/uploads/2023/10/Barbell-Strategy-1-768x576.png",
+      ],
+      [
+        "Strategi Hedging Futures",
+        "https://pintu-academy.pintukripto.com/wp-content/uploads/2025/06/Strategi-Hedgin-Futures-768x576.png",
+      ],
+    ];
+
     return SizedBox(
-      height: 180,
+      height: 200,
       child: ListView(
         scrollDirection: Axis.horizontal,
-        children: [
-          _academyCard("Cara Kelola Risiko Trading Futures"),
-          _academyCard("Apa itu Fusaka Hardfork Ethereum?"),
-        ],
+        children: items.map((item) => _academyCard(item[0], item[1])).toList(),
       ),
     );
   }
 
-  Widget _academyCard(String title) {
+  Widget _academyCard(String title, String imageUrl) {
     return Container(
-      width: 200,
-      margin: const EdgeInsets.only(right: 12),
+      width: 220,
+      margin: const EdgeInsets.only(right: 14),
       decoration: BoxDecoration(
-        color: Colors.grey.shade200,
         borderRadius: BorderRadius.circular(16),
+        image: DecorationImage(
+          image: NetworkImage(imageUrl),
+          fit: BoxFit.cover,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.08),
+            blurRadius: 8,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
-      padding: const EdgeInsets.all(12),
-      child: Text(title, style: const TextStyle(fontWeight: FontWeight.w600)),
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(16),
+          gradient: LinearGradient(
+            begin: Alignment.bottomCenter,
+            end: Alignment.topCenter,
+            colors: [
+              Colors.black.withOpacity(0.45),
+              Colors.black.withOpacity(0.10),
+              Colors.transparent,
+            ],
+          ),
+        ),
+        padding: const EdgeInsets.all(14),
+        alignment: Alignment.bottomLeft,
+        child: Text(
+          title,
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 14,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+      ),
     );
   }
 
