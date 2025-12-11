@@ -32,6 +32,7 @@ Semua halaman dapat diakses melalui 1 halaman utama:
 | `lib/livin_home_page.dart` | UI clone Livin Mandiri |
 | `lib/ovo_home_page.dart` | UI clone OVO |
 | `lib/shopeepay_page.dart` | UI clone ShopeePay |
+| `lib/pintu_home_page.dart` | UI clone Pintu |
 
 ---
 
@@ -57,10 +58,12 @@ Semua halaman dapat diakses melalui 1 halaman utama:
   <tr>
     <td><img src="assets/screenshot/ovo_home.png" width="250"></td>
     <td><img src="assets/screenshot/shoppe_home.png" width="250"></td>
+     <td><img src="assets/screenshot/pintu_home.png" width="250"></td>
   </tr>
   <tr>
     <th>OVO Home</th>
     <th>ShopeePay Home</th>
+    <th>Pintu Home</th>
   </tr>
 </table>
 
