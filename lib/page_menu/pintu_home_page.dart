@@ -492,29 +492,53 @@ class PintuHomePage extends StatelessWidget {
       height: 160,
       child: PageView(
         children: [
-          _bannerCard(Colors.blue.shade700, "Trading Futures dapat Rp 100 rb"),
-          _bannerCard(Colors.deepPurple, "Promo Lainnya"),
+          _bannerCard(
+            imageUrl: "https://pintu.co.id/static/images/pro/hero.png",
+            title: "Trading Futures dapat Rp 100 rb",
+          ),
+          _bannerCard(
+            imageUrl:
+                "https://pintu.co.id/static/images/pro/future/hero-new.webp",
+            title: "Promo Lainnya",
+          ),
         ],
       ),
     );
   }
 
-  Widget _bannerCard(Color color, String text) {
+  Widget _bannerCard({required String imageUrl, required String title}) {
     return Container(
       margin: const EdgeInsets.only(right: 12),
       decoration: BoxDecoration(
-        color: color,
         borderRadius: BorderRadius.circular(16),
+        image: DecorationImage(
+          image: NetworkImage(imageUrl),
+          fit: BoxFit.cover,
+        ),
       ),
-      padding: const EdgeInsets.all(20),
-      child: Align(
-        alignment: Alignment.bottomLeft,
-        child: Text(
-          text,
-          style: const TextStyle(
-            color: Colors.white,
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
+      child: Container(
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(16),
+          gradient: LinearGradient(
+            begin: Alignment.bottomCenter,
+            end: Alignment.topCenter,
+            colors: [
+              Colors.black.withOpacity(0.45),
+              Colors.black.withOpacity(0.15),
+              Colors.transparent,
+            ],
+          ),
+        ),
+        child: Align(
+          alignment: Alignment.bottomLeft,
+          child: Text(
+            title,
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
       ),
