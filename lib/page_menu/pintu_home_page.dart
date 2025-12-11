@@ -217,21 +217,29 @@ class PintuHomePage extends StatelessWidget {
 
   // menu grid
   Widget _quickMenu() {
-    return GridView.count(
-      crossAxisCount: 4,
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      childAspectRatio: 1,
-      children: [
-        _menuItem(Icons.savings, "Earn"),
-        _menuItem(Icons.account_balance_wallet, "PTU Staking"),
-        _menuItem(Icons.calendar_today, "Nabung Rutin"),
-        _menuItem(Icons.notifications, "Price Alert"),
-        _menuItem(Icons.card_giftcard, "Referral"),
-        _menuItem(Icons.card_membership, "Reward"),
-        _menuItem(Icons.lightbulb, "Academy"),
-        _menuItem(Icons.more_horiz, "Lainnya"),
-      ],
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 12),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: Colors.grey.shade300, width: 1),
+      ),
+      child: GridView.count(
+        crossAxisCount: 4,
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        childAspectRatio: 0.85,
+        children: [
+          _menuItem(Icons.savings, "Earn"),
+          _menuItem(Icons.account_balance_wallet, "PTU Staking"),
+          _menuItem(Icons.calendar_today, "Nabung Rutin"),
+          _menuItem(Icons.notifications, "Price Alert"),
+          _menuItem(Icons.card_giftcard, "Referral"),
+          _menuItem(Icons.card_membership, "Reward"),
+          _menuItem(Icons.lightbulb, "Academy"),
+          _menuItem(Icons.more_horiz, "Lainnya"),
+        ],
+      ),
     );
   }
 
@@ -239,9 +247,13 @@ class PintuHomePage extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Icon(icon, size: 28),
+        Icon(icon, size: 26),
         const SizedBox(height: 6),
-        Text(label, style: TextStyle(fontSize: 13)),
+        Text(
+          label,
+          style: const TextStyle(fontSize: 13),
+          textAlign: TextAlign.center,
+        ),
       ],
     );
   }
