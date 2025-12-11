@@ -56,8 +56,7 @@ class PintuHomePage extends StatelessWidget {
     );
   }
 
-  // -------------------------------------------------------------------------
-  // APP BAR
+  //App Bar
   Widget _topSection() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -76,8 +75,7 @@ class PintuHomePage extends StatelessWidget {
     );
   }
 
-  // -------------------------------------------------------------------------
-  // TAB SWITCH
+  //switch tab
   Widget _tabSwitch() {
     return Container(
       height: 36,
@@ -123,8 +121,7 @@ class PintuHomePage extends StatelessWidget {
     );
   }
 
-  // -------------------------------------------------------------------------
-  // TOTAL ASET & BALANCE
+  //assets dan balance
   Widget _totalAsetSection() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -194,8 +191,7 @@ class PintuHomePage extends StatelessWidget {
     );
   }
 
-  // -------------------------------------------------------------------------
-  // ANNOUNCEMENT CARD
+  // card
   Widget _announcementCard() {
     return Container(
       padding: const EdgeInsets.all(14),
@@ -218,8 +214,7 @@ class PintuHomePage extends StatelessWidget {
     );
   }
 
-  // -------------------------------------------------------------------------
-  // QUICK MENU GRID
+  // menu grid
   Widget _quickMenu() {
     return GridView.count(
       crossAxisCount: 4,
@@ -239,7 +234,6 @@ class PintuHomePage extends StatelessWidget {
     );
   }
 
-  // ignore: non_constant_identifier_names
   static Widget _menuItem(IconData icon, String label) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -251,8 +245,6 @@ class PintuHomePage extends StatelessWidget {
     );
   }
 
-  // -------------------------------------------------------------------------
-  // TOP MOVERS HORIZONTAL
   Widget _topMovers() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -306,8 +298,6 @@ class PintuHomePage extends StatelessWidget {
     );
   }
 
-  // -------------------------------------------------------------------------
-  // WATCHLIST
   Widget _watchlistHeader() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -370,8 +360,6 @@ class PintuHomePage extends StatelessWidget {
     );
   }
 
-  // -------------------------------------------------------------------------
-  // GENERIC SECTION TITLE
   Widget _sectionTitle(String text) {
     return Text(
       text,
@@ -379,8 +367,7 @@ class PintuHomePage extends StatelessWidget {
     );
   }
 
-  // -------------------------------------------------------------------------
-  // PROMO CAROUSEL
+  //promo carousel
   Widget _promoCarousel() {
     return SizedBox(
       height: 160,
@@ -415,8 +402,6 @@ class PintuHomePage extends StatelessWidget {
     );
   }
 
-  // -------------------------------------------------------------------------
-  // ACADEMY CAROUSEL
   Widget _academyCarousel() {
     return SizedBox(
       height: 180,
@@ -443,8 +428,6 @@ class PintuHomePage extends StatelessWidget {
     );
   }
 
-  // -------------------------------------------------------------------------
-  // BELAJAR CRYPTO
   Widget _learnCryptoCarousel() {
     return SizedBox(
       height: 170,
@@ -471,8 +454,6 @@ class PintuHomePage extends StatelessWidget {
     );
   }
 
-  // -------------------------------------------------------------------------
-  // FAQ
   Widget _faq() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -498,8 +479,6 @@ class PintuHomePage extends StatelessWidget {
     );
   }
 
-  // -------------------------------------------------------------------------
-  // NEWS LIST
   Widget _newsList() {
     final items = [
       "Bagaimana Sembilan Hari Mengubah Kepemilikan Bitcoin",
