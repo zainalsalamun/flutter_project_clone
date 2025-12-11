@@ -64,11 +64,39 @@ class PintuHomePage extends StatelessWidget {
         Expanded(
           child: Align(alignment: Alignment.centerLeft, child: _tabSwitch()),
         ),
+
         Row(
           children: [
-            Icon(Icons.mail_outline, size: 26),
+            // EMAIL WITH BADGE
+            Stack(
+              clipBehavior: Clip.none,
+              children: [
+                const Icon(Icons.mail_outline, size: 26),
+
+                Positioned(
+                  right: -2,
+                  top: -2,
+                  child: Container(
+                    padding: const EdgeInsets.all(3),
+                    decoration: const BoxDecoration(
+                      color: Colors.red,
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Text(
+                      "4",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 10,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+
             const SizedBox(width: 16),
-            Icon(Icons.person_outline, size: 28),
+            const Icon(Icons.person_outline, size: 28),
           ],
         ),
       ],
