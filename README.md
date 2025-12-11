@@ -27,12 +27,12 @@ Semua halaman dapat diakses melalui 1 halaman utama:
 | File | Deskripsi |
 |------|-----------|
 | `lib/all_pages_demo.dart` | Halaman utama berisi list menu UI |
-| `lib/bibit_home_page.dart` | UI clone Bibit |
-| `lib/gojek_home_page.dart` | UI clone Gojek |
-| `lib/livin_home_page.dart` | UI clone Livin Mandiri |
-| `lib/ovo_home_page.dart` | UI clone OVO |
-| `lib/shopeepay_page.dart` | UI clone ShopeePay |
-| `lib/pintu_home_page.dart` | UI clone Pintu |
+| `lib/page_menu/bibit_home_page.dart` | UI clone Bibit |
+| `lib/page_menu/gojek_home_page.dart` | UI clone Gojek |
+| `lib/page_menu/livin_home_page.dart` | UI clone Livin Mandiri |
+| `lib/page_menu/ovo_home_page.dart` | UI clone OVO |
+| `lib/page_menu/shopeepay_page.dart` | UI clone ShopeePay |
+| `lib/page_menu/pintu_home_page.dart` | UI clone Pintu |
 
 ---
 
