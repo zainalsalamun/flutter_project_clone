@@ -287,6 +287,17 @@ class PintuHomePage extends StatelessWidget {
   }
 
   Widget _topMovers() {
+    final movers = [
+      ["MAVIA", "Rp 1.100", "+32,2%"],
+      ["HEI", "Rp 2.666", "-29,34%"],
+      ["FWOG", "Rp 262,4", "+22,5%"],
+      ["Bitcoin", "Rp 1.554.648.779", "+1,36%"],
+      ["Ethereum", "Rp 53.453.202", "+6,61%"],
+      ["BNB", "Rp 15.362.919", "+4,54%"],
+      ["Solana", "Rp 2.407.016", "+4,27%"],
+      ["Cosmos", "Rp 39.501", "-0,23%"],
+    ];
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -299,11 +310,7 @@ class PintuHomePage extends StatelessWidget {
           height: 110,
           child: ListView(
             scrollDirection: Axis.horizontal,
-            children: [
-              _moverCard("MAVIA", "Rp 1.100", "+32,2%"),
-              _moverCard("HEI", "Rp 2.666", "-29,34%"),
-              _moverCard("FWOG", "Rp 262,4", "+22,5%"),
-            ],
+            children: movers.map((m) => _moverCard(m[0], m[1], m[2])).toList(),
           ),
         ),
       ],
@@ -336,6 +343,36 @@ class PintuHomePage extends StatelessWidget {
         iconColor = Colors.green.shade700;
         break;
 
+      case "Bitcoin":
+        icon = Icons.currency_bitcoin;
+        bgColor = Colors.orange.shade100;
+        iconColor = Colors.orange.shade700;
+        break;
+
+      case "Ethereum":
+        icon = Icons.hexagon_outlined;
+        bgColor = Colors.grey.shade300;
+        iconColor = Colors.grey.shade800;
+        break;
+
+      case "BNB":
+        icon = Icons.diamond;
+        bgColor = Colors.yellow.shade100;
+        iconColor = Colors.amber.shade700;
+        break;
+
+      case "Solana":
+        icon = Icons.blur_on;
+        bgColor = Colors.green.shade100;
+        iconColor = Colors.green.shade700;
+        break;
+
+      case "Cosmos":
+        icon = Icons.bubble_chart;
+        bgColor = Colors.blue.shade100;
+        iconColor = Colors.blue.shade600;
+        break;
+
       default:
         icon = Icons.circle;
         bgColor = Colors.grey.shade200;
@@ -361,21 +398,31 @@ class PintuHomePage extends StatelessWidget {
                 child: Icon(icon, size: 14, color: iconColor),
               ),
               const SizedBox(width: 8),
-              Text(
-                name,
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 13,
+              Expanded(
+                child: Text(
+                  name,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 13,
+                  ),
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
             ],
           ),
 
-          const SizedBox(height: 12),
-
-          Text(price, style: const TextStyle(fontSize: 13)),
-
           const SizedBox(height: 8),
+
+          // fix text size overflow
+          FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Text(
+              price,
+              style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
+            ),
+          ),
+
+          const SizedBox(height: 6),
 
           Text(
             change,
