@@ -15,6 +15,7 @@ class _TravelokaHomePageState extends State<TravelokaHomePage> {
   int menuPageIndex = 0;
   bool isHotelSelected = true;
   final Set<int> _wishlist = {};
+  bool isExploreLoading = true;
 
   final PageController _menuController = PageController();
 
@@ -285,6 +286,9 @@ class _TravelokaHomePageState extends State<TravelokaHomePage> {
             _scrollOffset = _scrollController.offset;
           });
         });
+    Future.delayed(const Duration(milliseconds: 800), () {
+      if (mounted) setState(() => isExploreLoading = false);
+    });
   }
 
   @override
@@ -813,14 +817,79 @@ class _TravelokaHomePageState extends State<TravelokaHomePage> {
   }
 
   Widget _exploreMasonrySection() {
+    if (!isExploreLoading && exploreGridData.isEmpty) {
+      return SliverToBoxAdapter(
+        child: Padding(
+          padding: const EdgeInsets.all(32),
+          child: Column(
+            children: const [
+              Icon(Icons.search_off, size: 48, color: Colors.grey),
+              SizedBox(height: 12),
+              Text(
+                "Belum ada rekomendasi",
+                style: TextStyle(color: Colors.grey),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
+    if (isExploreLoading) {
+      return SliverMasonryGrid.count(
+        crossAxisCount: 2,
+        mainAxisSpacing: 12,
+        crossAxisSpacing: 12,
+        childCount: 6,
+        itemBuilder: (_, __) => _exploreSkeleton(),
+      );
+    }
+
     return SliverMasonryGrid.count(
       crossAxisCount: 2,
       mainAxisSpacing: 12,
       crossAxisSpacing: 12,
       childCount: exploreGridData.length,
-      itemBuilder: (context, index) {
-        return _exploreCard(exploreGridData[index]);
+      itemBuilder: (_, i) {
+        return GestureDetector(
+          onTap: () {
+            HapticFeedback.selectionClick();
+          },
+          child: _exploreCard(exploreGridData[i]),
+        );
       },
+    );
+  }
+
+  Widget _exploreSkeleton() {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Column(
+        children: [
+          Container(
+            height: 140,
+            decoration: BoxDecoration(
+              color: Colors.grey.shade300,
+              borderRadius: const BorderRadius.vertical(
+                top: Radius.circular(16),
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(10),
+            child: Column(
+              children: [
+                Container(height: 12, color: Colors.grey.shade300),
+                const SizedBox(height: 8),
+                Container(height: 12, width: 80, color: Colors.grey.shade300),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 
