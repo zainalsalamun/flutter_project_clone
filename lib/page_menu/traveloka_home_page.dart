@@ -15,11 +15,9 @@ class _TravelokaHomePageState extends State<TravelokaHomePage> {
 
   final PageController _menuController = PageController();
 
-  // 🔥 SCROLL CONTROLLER (UNTUK ANIMASI SEARCH)
   late final ScrollController _scrollController;
   double _scrollOffset = 0;
 
-  // ================= MENU DATA =================
   final List<List<Map<String, dynamic>>> menuPages = [
     [
       {"title": "12.12 Sale", "icon": Icons.percent},
@@ -39,7 +37,6 @@ class _TravelokaHomePageState extends State<TravelokaHomePage> {
     ],
   ];
 
-  // ================= MOCK DATA =================
   final hotelData = [
     {
       "title": "Elsotel Purwokerto",
@@ -72,7 +69,6 @@ class _TravelokaHomePageState extends State<TravelokaHomePage> {
     },
   ];
 
-  // ================= INIT =================
   @override
   void initState() {
     super.initState();
@@ -90,7 +86,6 @@ class _TravelokaHomePageState extends State<TravelokaHomePage> {
     super.dispose();
   }
 
-  // ================= BUILD =================
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -115,7 +110,6 @@ class _TravelokaHomePageState extends State<TravelokaHomePage> {
     );
   }
 
-  // ================= SLIVER HEADER (ANIMATED) =================
   SliverAppBar _sliverHeader(BuildContext context) {
     const double maxScroll = 80;
     final double t = (_scrollOffset / maxScroll).clamp(0.0, 1.0);
@@ -138,11 +132,11 @@ class _TravelokaHomePageState extends State<TravelokaHomePage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Transform.translate(
-                offset: Offset(0, -t * 20), // 🔥 cuma geser Y
+                offset: Offset(0, -t * 20),
                 child: _searchBar(),
               ),
               const SizedBox(height: 12),
-              _keywordChips(), // 🔥 chip keyword
+              _keywordChips(),
             ],
           ),
         ),
@@ -150,7 +144,6 @@ class _TravelokaHomePageState extends State<TravelokaHomePage> {
     );
   }
 
-  // ================= SEARCH BAR =================
   Widget _searchBar() {
     return Container(
       height: 48,
@@ -217,7 +210,6 @@ class _TravelokaHomePageState extends State<TravelokaHomePage> {
     );
   }
 
-  // ================= MENU SECTION =================
   Widget _menuSection() {
     return Container(
       margin: const EdgeInsets.all(16),
@@ -289,7 +281,6 @@ class _TravelokaHomePageState extends State<TravelokaHomePage> {
     );
   }
 
-  // ================= TOGGLE =================
   Widget _activityToggle() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -327,7 +318,6 @@ class _TravelokaHomePageState extends State<TravelokaHomePage> {
     );
   }
 
-  // ================= HORIZONTAL LIST =================
   Widget _horizontalList(List data) {
     return SizedBox(
       height: 220,
@@ -405,7 +395,6 @@ class _TravelokaHomePageState extends State<TravelokaHomePage> {
     );
   }
 
-  // ================= PAYLATER =================
   Widget _payLaterBanner() {
     return Container(
       margin: const EdgeInsets.all(16),
@@ -433,7 +422,6 @@ class _TravelokaHomePageState extends State<TravelokaHomePage> {
     );
   }
 
-  // ================= BOTTOM NAV =================
   Widget _bottomNav() {
     return BottomNavigationBar(
       type: BottomNavigationBarType.fixed,
