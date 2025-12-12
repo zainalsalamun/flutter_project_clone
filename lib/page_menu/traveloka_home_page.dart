@@ -207,6 +207,72 @@ class _TravelokaHomePageState extends State<TravelokaHomePage> {
     },
   ];
 
+  final promoGridData = [
+    {
+      "title": "12.12 Super Sale",
+      "image": "https://images.unsplash.com/photo-1607082349566-187342175e2f",
+      "type": "banner",
+    },
+    {
+      "title": "Kupon Instant Cashback",
+      "image": "https://images.unsplash.com/photo-1607082348824-0f2f4b6b1c4d",
+      "type": "banner",
+    },
+    {
+      "title": "Green Valley Resort\nBaturraden",
+      "subtitle": "7.8 / 10 • 1.3rb ulasan",
+      "price": "Rp 633.588",
+      "image": "https://images.unsplash.com/photo-1501117716987-c8e1ecb2109f",
+      "type": "hotel",
+    },
+    {
+      "title": "Hotel Besar Purwokerto",
+      "subtitle": "8.5 / 10 • 778 ulasan",
+      "price": "Rp 353.595",
+      "image": "https://images.unsplash.com/photo-1566073771259-6a8506099945",
+      "type": "hotel",
+    },
+  ];
+
+  final exploreGridData = [
+    {
+      "type": "xperience",
+      "title": "Re-inkarnasi Cinta Roro Jonggrang",
+      "location": "Gondomanan",
+      "rating": "9.0/10 • 8 ulasan",
+      "price": "Rp 80.000",
+      "badge": "Hemat 20%",
+      "image": "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee",
+    },
+    {
+      "type": "hotel",
+      "title": "Premier Guest House",
+      "location": "Kalasan",
+      "rating": "8.7/10 • 112 ulasan",
+      "price": "Rp 372.584",
+      "badge": "Hemat 25%",
+      "image": "https://images.unsplash.com/photo-1566073771259-6a8506099945",
+    },
+    {
+      "type": "flight",
+      "title": "Jakarta – Kuala Lumpur",
+      "price": "Rp 2.515.800",
+      "image": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e",
+    },
+    {
+      "type": "flight",
+      "title": "Jakarta – Surabaya",
+      "price": "Rp 1.999.494",
+      "image": "https://images.unsplash.com/photo-1512453979798-5ea266f8880c",
+    },
+    {
+      "type": "banner",
+      "title": "Inspirasi Liburan Fall / Winter",
+      "price": "Rp 1.999.494",
+      "image": "https://images.unsplash.com/photo-1566073771259-6a8506099945",
+    },
+  ];
+
   @override
   void initState() {
     super.initState();
@@ -242,6 +308,8 @@ class _TravelokaHomePageState extends State<TravelokaHomePage> {
                     : _horizontalList(experienceData),
           ),
           SliverToBoxAdapter(child: _payLaterBanner()),
+          SliverToBoxAdapter(child: _promoGridSection()),
+          SliverToBoxAdapter(child: _exploreGridSection()),
           const SliverToBoxAdapter(child: SizedBox(height: 32)),
         ],
       ),
@@ -625,6 +693,271 @@ class _TravelokaHomePageState extends State<TravelokaHomePage> {
           Text(
             "Cari tahu",
             style: TextStyle(color: primaryBlue, fontWeight: FontWeight.bold),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _promoGridSection() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SizedBox(height: 8),
+          const Text(
+            "Penawaran 12.12 di Indonesia",
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 12),
+
+          GridView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: promoGridData.length,
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              crossAxisSpacing: 12,
+              mainAxisSpacing: 12,
+              childAspectRatio: .72,
+            ),
+            itemBuilder: (context, index) {
+              final item = promoGridData[index];
+              return _promoGridCard(item);
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _promoGridCard(Map<String, dynamic> item) {
+    final isBanner = item['type'] == 'banner';
+
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(.05),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // IMAGE
+          ClipRRect(
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+            child: Image.network(
+              item['image'],
+              height: isBanner ? 160 : 140,
+              width: double.infinity,
+              fit: BoxFit.cover,
+              errorBuilder: (_, __, ___) {
+                return Container(
+                  height: 140,
+                  color: Colors.grey.shade300,
+                  child: const Icon(Icons.image, size: 40),
+                );
+              },
+            ),
+          ),
+
+          Padding(
+            padding: const EdgeInsets.all(10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  item['title'],
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 13,
+                  ),
+                ),
+
+                if (!isBanner) ...[
+                  const SizedBox(height: 6),
+                  Text(
+                    item['subtitle'],
+                    style: const TextStyle(fontSize: 11, color: Colors.black54),
+                  ),
+                  const SizedBox(height: 6),
+                  Text(
+                    item['price'],
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.orange,
+                    ),
+                  ),
+                ],
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _exploreGridSection() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: GridView.builder(
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        itemCount: exploreGridData.length,
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          crossAxisSpacing: 12,
+          mainAxisSpacing: 12,
+          childAspectRatio: .7,
+        ),
+        itemBuilder: (_, i) {
+          final item = exploreGridData[i];
+          return _exploreCard(item);
+        },
+      ),
+    );
+  }
+
+  Widget _exploreCard(Map<String, dynamic> item) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.06),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ClipRRect(
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+            child: Stack(
+              children: [
+                Image.network(
+                  item['image'],
+                  height: 110,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                  errorBuilder: (_, __, ___) {
+                    return Container(
+                      height: 110,
+                      color: Colors.grey.shade200,
+                      child: const Icon(
+                        Icons.image,
+                        size: 32,
+                        color: Colors.grey,
+                      ),
+                    );
+                  },
+                ),
+
+                if (item['location'] != null)
+                  Positioned(
+                    top: 8,
+                    left: 8,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 4,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.black.withOpacity(0.55),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Text(
+                        item['location'],
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 10,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ),
+
+                if (item['badge'] != null)
+                  Positioned(
+                    bottom: 8,
+                    right: 8,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 4,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.orange,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Text(
+                        item['badge'],
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 10,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+          ),
+
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    item['title'],
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w600,
+                      color: Color(0xFF1D1B20),
+                    ),
+                  ),
+
+                  const SizedBox(height: 4),
+
+                  if (item['rating'] != null)
+                    Text(
+                      item['rating'],
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        fontSize: 11,
+                        color: Colors.black54,
+                      ),
+                    ),
+
+                  const Spacer(),
+                  Text(
+                    item['price'],
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.orange,
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
         ],
       ),
