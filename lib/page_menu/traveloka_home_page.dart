@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 class TravelokaHomePage extends StatefulWidget {
@@ -13,6 +14,7 @@ class _TravelokaHomePageState extends State<TravelokaHomePage> {
 
   int menuPageIndex = 0;
   bool isHotelSelected = true;
+  final Set<int> _wishlist = {};
 
   final PageController _menuController = PageController();
 
@@ -310,27 +312,14 @@ class _TravelokaHomePageState extends State<TravelokaHomePage> {
           ),
           SliverToBoxAdapter(child: _payLaterBanner()),
           SliverToBoxAdapter(child: _promoGridSection()),
-          // SliverToBoxAdapter(child: _exploreGridSection()),
+          SliverToBoxAdapter(child: _exploreHeader()),
           SliverPadding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             sliver: _exploreMasonrySection(),
           ),
-
           const SliverToBoxAdapter(child: SizedBox(height: 32)),
         ],
       ),
-    );
-  }
-
-  Widget _exploreMasonrySection() {
-    return SliverMasonryGrid.count(
-      crossAxisCount: 2,
-      mainAxisSpacing: 12,
-      crossAxisSpacing: 12,
-      childCount: exploreGridData.length,
-      itemBuilder: (context, index) {
-        return _exploreCard(exploreGridData[index]);
-      },
     );
   }
 
@@ -823,7 +812,21 @@ class _TravelokaHomePageState extends State<TravelokaHomePage> {
     );
   }
 
+  Widget _exploreMasonrySection() {
+    return SliverMasonryGrid.count(
+      crossAxisCount: 2,
+      mainAxisSpacing: 12,
+      crossAxisSpacing: 12,
+      childCount: exploreGridData.length,
+      itemBuilder: (context, index) {
+        return _exploreCard(exploreGridData[index]);
+      },
+    );
+  }
+
   Widget _exploreCard(Map<String, dynamic> item) {
+    final bool isWishlisted = _wishlist.contains(item.hashCode);
+
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -848,8 +851,8 @@ class _TravelokaHomePageState extends State<TravelokaHomePage> {
                   item['image'],
                   width: double.infinity,
                   fit: BoxFit.cover,
-                  loadingBuilder: (c, w, p) {
-                    if (p == null) return w;
+                  loadingBuilder: (context, child, progress) {
+                    if (progress == null) return child;
                     return Container(height: 140, color: Colors.grey.shade200);
                   },
                   errorBuilder: (_, __, ___) {
@@ -865,24 +868,50 @@ class _TravelokaHomePageState extends State<TravelokaHomePage> {
                   },
                 ),
 
+                Positioned(
+                  top: 8,
+                  right: 8,
+                  child: GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        isWishlisted
+                            ? _wishlist.remove(item.hashCode)
+                            : _wishlist.add(item.hashCode);
+                      });
+                      HapticFeedback.lightImpact();
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.all(6),
+                      decoration: BoxDecoration(
+                        color: Colors.black.withOpacity(0.45),
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(
+                        isWishlisted ? Icons.favorite : Icons.favorite_border,
+                        color: Colors.white,
+                        size: 16,
+                      ),
+                    ),
+                  ),
+                ),
+
                 if (item['location'] != null)
                   Positioned(
                     top: 8,
                     left: 8,
-                    child: _chip(item['location'], Colors.black87),
+                    child: _exploreChip(item['location'], Colors.black87),
                   ),
 
                 if (item['badge'] != null)
                   Positioned(
                     bottom: 8,
                     right: 8,
-                    child: _chip(item['badge'], Colors.orange),
+                    child: _exploreChip(item['badge'], Colors.orange),
                   ),
               ],
             ),
           ),
 
-          // CONTENT
           Padding(
             padding: const EdgeInsets.all(10),
             child: Column(
@@ -896,6 +925,7 @@ class _TravelokaHomePageState extends State<TravelokaHomePage> {
                   style: const TextStyle(
                     fontSize: 13,
                     fontWeight: FontWeight.w600,
+                    color: Color(0xFF1D1B20),
                   ),
                 ),
 
@@ -904,6 +934,8 @@ class _TravelokaHomePageState extends State<TravelokaHomePage> {
                 if (item['rating'] != null)
                   Text(
                     item['rating'],
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                     style: const TextStyle(fontSize: 11, color: Colors.black54),
                   ),
 
@@ -925,11 +957,11 @@ class _TravelokaHomePageState extends State<TravelokaHomePage> {
     );
   }
 
-  Widget _chip(String text, Color bgColor) {
+  Widget _exploreChip(String text, Color color) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
       decoration: BoxDecoration(
-        color: bgColor.withOpacity(0.85),
+        color: color.withOpacity(0.85),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Text(
@@ -939,6 +971,28 @@ class _TravelokaHomePageState extends State<TravelokaHomePage> {
           fontSize: 10,
           fontWeight: FontWeight.w600,
         ),
+      ),
+    );
+  }
+
+  Widget _exploreHeader() {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 8, 16, 12),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: const [
+          Text(
+            "Jelajahi untuk Kamu",
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          ),
+          Text(
+            "Lihat Semua",
+            style: TextStyle(
+              color: Color(0xFF00A7E1),
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ],
       ),
     );
   }
