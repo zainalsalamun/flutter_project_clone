@@ -5,6 +5,7 @@ import 'package:shoppe_clone/page_menu/livin_home_page.dart';
 import 'package:shoppe_clone/page_menu/ovo_home_page.dart';
 import 'package:shoppe_clone/page_menu/pintu_home_page.dart';
 import 'package:shoppe_clone/page_menu/shopeepay_page.dart';
+import 'package:shoppe_clone/page_menu/traveloka_home_page.dart';
 
 class AllPagesDemo extends StatelessWidget {
   const AllPagesDemo({super.key});
@@ -66,6 +67,13 @@ class AllPagesDemo extends StatelessWidget {
             icon: Icons.door_back_door,
             iconColor: Colors.lightBlue,
             page: const PintuHomePage(),
+          ),
+          _menuCard(
+            context,
+            title: "Traveloka Home Page",
+            icon: Icons.flight,
+            iconColor: Colors.lightBlue,
+            page: const TravelokaHomePage(),
           ),
         ],
       ),
