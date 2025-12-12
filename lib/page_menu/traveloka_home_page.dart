@@ -1067,17 +1067,32 @@ class _TravelokaHomePageState extends State<TravelokaHomePage> {
   }
 
   Widget _bottomNav() {
-    return BottomNavigationBar(
-      type: BottomNavigationBarType.fixed,
-      selectedItemColor: primaryBlue,
-      unselectedItemColor: Colors.grey,
-      items: const [
-        BottomNavigationBarItem(icon: Icon(Icons.home), label: "Awal"),
-        BottomNavigationBarItem(icon: Icon(Icons.explore), label: "Explore"),
-        BottomNavigationBarItem(icon: Icon(Icons.receipt), label: "Pesanan"),
-        BottomNavigationBarItem(icon: Icon(Icons.bookmark), label: "Simpan"),
-        BottomNavigationBarItem(icon: Icon(Icons.person), label: "Akun"),
-      ],
+    return Container(
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        border: Border(top: BorderSide(color: Color(0xFFE9ECEF), width: 1)),
+      ),
+      child: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        backgroundColor: Colors.white,
+        selectedItemColor: primaryBlue,
+        unselectedItemColor: const Color(0xFFADB5BD),
+        selectedLabelStyle: const TextStyle(
+          fontSize: 11,
+          fontWeight: FontWeight.w600,
+        ),
+        unselectedLabelStyle: const TextStyle(
+          fontSize: 11,
+          fontWeight: FontWeight.w500,
+        ),
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Awal"),
+          BottomNavigationBarItem(icon: Icon(Icons.explore), label: "Explore"),
+          BottomNavigationBarItem(icon: Icon(Icons.receipt), label: "Pesanan"),
+          BottomNavigationBarItem(icon: Icon(Icons.bookmark), label: "Simpan"),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: "Akun"),
+        ],
+      ),
     );
   }
 }
