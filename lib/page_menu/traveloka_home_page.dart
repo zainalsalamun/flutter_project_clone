@@ -20,20 +20,157 @@ class _TravelokaHomePageState extends State<TravelokaHomePage> {
 
   final List<List<Map<String, dynamic>>> menuPages = [
     [
-      {"title": "12.12 Sale", "icon": Icons.percent},
-      {"title": "Tiket Pesawat", "icon": Icons.flight},
-      {"title": "Hotel", "icon": Icons.hotel},
-      {"title": "Xperience", "icon": Icons.local_activity},
-      {"title": "Bus & Travel", "icon": Icons.directions_bus},
-      {"title": "Cruises", "icon": Icons.directions_boat},
-      {"title": "Kereta Api", "icon": Icons.train},
-      {"title": "Antar Jemput", "icon": Icons.directions_car},
+      {
+        "title": "12.12 Sale",
+        "icon": Icons.percent,
+        "bgColor": const Color(0xFF1976D2),
+        "iconColor": Colors.white,
+        "isPromo": true,
+        "useCircle": true,
+      },
+      {
+        "title": "Tiket Pesawat",
+        "icon": Icons.flight,
+        "bgColor": const Color(0xFF03A9F4),
+        "iconColor": Colors.white,
+        "isPromo": true,
+        "useCircle": true,
+      },
+      {
+        "title": "Hotel",
+        "icon": Icons.hotel,
+        "bgColor": const Color(0xFF0D47A1),
+        "iconColor": Colors.white,
+        "isPromo": true,
+        "useCircle": true,
+      },
+      {
+        "title": "Xperience",
+        "icon": Icons.local_activity,
+        "bgColor": const Color(0xFFEF5350),
+        "iconColor": Colors.white,
+        "isPromo": true,
+        "useCircle": true,
+      },
+      {
+        "title": "Tiket Bus & Travel",
+        "icon": Icons.directions_bus,
+        "bgColor": const Color(0xFF43A047),
+        "iconColor": Colors.white,
+        "isPromo": true,
+        "useCircle": true,
+      },
+      {
+        "title": "Cruises",
+        "icon": Icons.directions_boat,
+        "bgColor": const Color(0xFFEF5350),
+        "iconColor": Colors.white,
+        "isPromo": true,
+        "useCircle": true,
+      },
+      {
+        "title": "Tiket Kereta Api",
+        "icon": Icons.train,
+        "bgColor": const Color(0xFFF9A825),
+        "iconColor": Colors.white,
+        "isPromo": true,
+        "useCircle": true,
+      },
+      {
+        "title": "Antar Jemput",
+        "icon": Icons.directions_car,
+        "bgColor": const Color(0xFF4DB6AC),
+        "iconColor": Colors.white,
+        "isPromo": true,
+        "useCircle": true,
+      },
     ],
+
     [
-      {"title": "Whoosh", "icon": Icons.trending_up},
-      {"title": "TPayLater", "icon": Icons.credit_card},
-      {"title": "Sewa Mobil", "icon": Icons.car_rental},
-      {"title": "Semua Produk", "icon": Icons.grid_view},
+      {
+        "title": "Paket Wisata",
+        "icon": Icons.card_travel,
+        "bgColor": const Color(0xFF7E57C2),
+        "iconColor": Colors.white,
+        "isPromo": true,
+        "useCircle": true,
+      },
+      {
+        "title": "Mobil",
+        "icon": Icons.directions_car_filled,
+        "bgColor": const Color(0xFF00897B),
+        "iconColor": Colors.white,
+        "isPromo": true,
+        "useCircle": true,
+      },
+      {
+        "title": "Asuransi",
+        "icon": Icons.security,
+        "bgColor": Colors.transparent,
+        "iconColor": const Color(0xFF1565C0),
+        "isPromo": false,
+        "useCircle": false,
+      },
+      {
+        "title": "Pesawat + Hotel",
+        "icon": Icons.apartment,
+        "bgColor": Colors.transparent,
+        "iconColor": const Color(0xFFD81B60),
+        "isPromo": false,
+        "useCircle": false,
+      },
+
+      {
+        "title": "JR Pass",
+        "icon": Icons.train,
+        "bgColor": Colors.transparent,
+        "iconColor": const Color(0xFFF57C00),
+        "isPromo": false,
+        "useCircle": false,
+      },
+      {
+        "title": "Panduan Wisata",
+        "icon": Icons.map,
+        "bgColor": Colors.transparent,
+        "iconColor": const Color(0xFF26A69A),
+        "isPromo": false,
+        "useCircle": false,
+      },
+      {
+        "title": "Hotel Last-minute",
+        "icon": Icons.access_time,
+        "bgColor": Colors.transparent,
+        "iconColor": const Color(0xFF1565C0),
+        "isPromo": false,
+        "useCircle": false,
+      },
+      {
+        "title": "Voucher Hadiah",
+        "icon": Icons.card_giftcard,
+        "bgColor": Colors.transparent,
+        "iconColor": const Color(0xFFD32F2F),
+        "isPromo": false,
+        "useCircle": false,
+      },
+    ],
+
+    [
+      {
+        "title": "Traveloka Mandiri Card",
+        "icon": Icons.credit_card,
+        "bgColor": Colors.transparent,
+        "iconColor": const Color(0xFF0D47A1),
+        "isPromo": false,
+        "useCircle": false,
+      },
+      {
+        "title": "Semua Produk",
+        "icon": Icons.grid_view,
+        "bgColor": const Color(0xFFF5F5F5),
+        "iconColor": const Color(0xFF424242),
+        "isPromo": false,
+        "useCircle": true,
+      },
     ],
   ];
 
@@ -240,18 +377,59 @@ class _TravelokaHomePageState extends State<TravelokaHomePage> {
                   ),
                   itemBuilder: (_, i) {
                     final item = menuPages[pageIndex][i];
+
                     return Column(
                       children: [
-                        CircleAvatar(
-                          radius: 24,
-                          backgroundColor: const Color(0xFFE6F7FF),
-                          child: Icon(item["icon"], color: primaryBlue),
+                        Stack(
+                          clipBehavior: Clip.none,
+                          children: [
+                            item['useCircle'] == true
+                                ? CircleAvatar(
+                                  radius: 26,
+                                  backgroundColor: item['bgColor'],
+                                  child: Icon(
+                                    item['icon'],
+                                    color: item['iconColor'],
+                                    size: 26,
+                                  ),
+                                )
+                                : Icon(
+                                  item['icon'],
+                                  color: item['iconColor'],
+                                  size: 32,
+                                ),
+
+                            if (item['isPromo'] == true)
+                              Positioned(
+                                top: -4,
+                                right: -4,
+                                child: Container(
+                                  padding: const EdgeInsets.all(4),
+                                  decoration: const BoxDecoration(
+                                    color: Colors.red,
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: const Icon(
+                                    Icons.percent,
+                                    size: 10,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                          ],
                         ),
+
                         const SizedBox(height: 6),
+
                         Text(
                           item["title"],
+                          maxLines: 2,
                           textAlign: TextAlign.center,
-                          style: const TextStyle(fontSize: 11),
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                            fontSize: 11,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
                       ],
                     );
@@ -260,14 +438,17 @@ class _TravelokaHomePageState extends State<TravelokaHomePage> {
               },
             ),
           ),
-          const SizedBox(height: 8),
+
+          const SizedBox(height: 10),
+
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: List.generate(
               menuPages.length,
-              (i) => Container(
+              (i) => AnimatedContainer(
+                duration: const Duration(milliseconds: 200),
                 margin: const EdgeInsets.symmetric(horizontal: 4),
-                width: menuPageIndex == i ? 8 : 6,
+                width: menuPageIndex == i ? 10 : 6,
                 height: 6,
                 decoration: BoxDecoration(
                   color:
