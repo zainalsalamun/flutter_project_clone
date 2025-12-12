@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 class TravelokaHomePage extends StatefulWidget {
   const TravelokaHomePage({super.key});
@@ -309,10 +310,27 @@ class _TravelokaHomePageState extends State<TravelokaHomePage> {
           ),
           SliverToBoxAdapter(child: _payLaterBanner()),
           SliverToBoxAdapter(child: _promoGridSection()),
-          SliverToBoxAdapter(child: _exploreGridSection()),
+          // SliverToBoxAdapter(child: _exploreGridSection()),
+          SliverPadding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            sliver: _exploreMasonrySection(),
+          ),
+
           const SliverToBoxAdapter(child: SizedBox(height: 32)),
         ],
       ),
+    );
+  }
+
+  Widget _exploreMasonrySection() {
+    return SliverMasonryGrid.count(
+      crossAxisCount: 2,
+      mainAxisSpacing: 12,
+      crossAxisSpacing: 12,
+      childCount: exploreGridData.length,
+      itemBuilder: (context, index) {
+        return _exploreCard(exploreGridData[index]);
+      },
     );
   }
 
@@ -750,7 +768,6 @@ class _TravelokaHomePageState extends State<TravelokaHomePage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // IMAGE
           ClipRRect(
             borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
             child: Image.network(
@@ -806,27 +823,6 @@ class _TravelokaHomePageState extends State<TravelokaHomePage> {
     );
   }
 
-  Widget _exploreGridSection() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: GridView.builder(
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        itemCount: exploreGridData.length,
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          crossAxisSpacing: 12,
-          mainAxisSpacing: 12,
-          childAspectRatio: .7,
-        ),
-        itemBuilder: (_, i) {
-          final item = exploreGridData[i];
-          return _exploreCard(item);
-        },
-      ),
-    );
-  }
-
   Widget _exploreCard(Map<String, dynamic> item) {
     return Container(
       decoration: BoxDecoration(
@@ -842,6 +838,7 @@ class _TravelokaHomePageState extends State<TravelokaHomePage> {
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
         children: [
           ClipRRect(
             borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
@@ -849,12 +846,15 @@ class _TravelokaHomePageState extends State<TravelokaHomePage> {
               children: [
                 Image.network(
                   item['image'],
-                  height: 110,
                   width: double.infinity,
                   fit: BoxFit.cover,
+                  loadingBuilder: (c, w, p) {
+                    if (p == null) return w;
+                    return Container(height: 140, color: Colors.grey.shade200);
+                  },
                   errorBuilder: (_, __, ___) {
                     return Container(
-                      height: 110,
+                      height: 140,
                       color: Colors.grey.shade200,
                       child: const Icon(
                         Icons.image,
@@ -869,97 +869,76 @@ class _TravelokaHomePageState extends State<TravelokaHomePage> {
                   Positioned(
                     top: 8,
                     left: 8,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 10,
-                        vertical: 4,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Colors.black.withOpacity(0.55),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Text(
-                        item['location'],
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 10,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
+                    child: _chip(item['location'], Colors.black87),
                   ),
 
                 if (item['badge'] != null)
                   Positioned(
                     bottom: 8,
                     right: 8,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 10,
-                        vertical: 4,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Colors.orange,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Text(
-                        item['badge'],
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 10,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                    ),
+                    child: _chip(item['badge'], Colors.orange),
                   ),
               ],
             ),
           ),
 
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
+          // CONTENT
+          Padding(
+            padding: const EdgeInsets.all(10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  item['title'],
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+
+                const SizedBox(height: 4),
+
+                if (item['rating'] != null)
                   Text(
-                    item['title'],
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w600,
-                      color: Color(0xFF1D1B20),
-                    ),
+                    item['rating'],
+                    style: const TextStyle(fontSize: 11, color: Colors.black54),
                   ),
 
-                  const SizedBox(height: 4),
+                const SizedBox(height: 8),
 
-                  if (item['rating'] != null)
-                    Text(
-                      item['rating'],
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                        fontSize: 11,
-                        color: Colors.black54,
-                      ),
-                    ),
-
-                  const Spacer(),
-                  Text(
-                    item['price'],
-                    style: const TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.orange,
-                    ),
+                Text(
+                  item['price'],
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.orange,
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _chip(String text, Color bgColor) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+      decoration: BoxDecoration(
+        color: bgColor.withOpacity(0.85),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Text(
+        text,
+        style: const TextStyle(
+          color: Colors.white,
+          fontSize: 10,
+          fontWeight: FontWeight.w600,
+        ),
       ),
     );
   }
