@@ -33,6 +33,7 @@ Semua halaman dapat diakses melalui 1 halaman utama:
 | `lib/page_menu/ovo_home_page.dart` | UI clone OVO |
 | `lib/page_menu/shopeepay_page.dart` | UI clone ShopeePay |
 | `lib/page_menu/pintu_home_page.dart` | UI clone Pintu |
+| `lib/page_menu/traveloka_home_page.dart` | UI clone Traveloka |
 
 ---
 
@@ -58,12 +59,14 @@ Semua halaman dapat diakses melalui 1 halaman utama:
   <tr>
     <td><img src="assets/screenshot/ovo_home.png" width="250"></td>
     <td><img src="assets/screenshot/shoppe_home.png" width="250"></td>
-     <td><img src="assets/screenshot/pintu_home.png" width="250"></td>
+    <td><img src="assets/screenshot/pintu_home.png" width="250"></td>
+    <td><img src="assets/screenshot/traveloka_home.png" width="250"></td>
   </tr>
   <tr>
     <th>OVO Home</th>
     <th>ShopeePay Home</th>
     <th>Pintu Home</th>
+    <th>Traveloka Hone</th>
   </tr>
 </table>
 
