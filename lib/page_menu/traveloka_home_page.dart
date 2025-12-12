@@ -40,15 +40,14 @@ class _TravelokaHomePageState extends State<TravelokaHomePage> {
   final hotelData = [
     {
       "title": "Elsotel Purwokerto",
-      "image":
-          "https://ik.imagekit.io/tvlk/apr-asset/dgXfoyh24ryQLRcGq00cIdKHRmotrWLNlvG-TxlcLxGkiDwaUSggleJNPRgIHCX6/hotel/asset/20055615-64991677955ac2ee6a625110ea463ff9.jpeg?_src=imagekit&tr=dpr-2,f-jpg,fo-auto,h-161,pr-true,q-80,w-300",
+      "image": "https://picsum.photos/400/200?random=1",
       "rating": "9.1 / 10 • 977 ulasan",
       "price": "Rp 436.499",
     },
     {
       "title": "Green Valley Resort",
       "image":
-          "https://ik.imagekit.io/tvlk/apr-asset/dgXfoyh24ryQLRcGq00cIdKHRmotrWLNlvG-TxlcLxGkiDwaUSggleJNPRgIHCX6/hotel/asset/10040050-2000x1333-FIT_AND_TRIM-a21b84e741cb75d21b106e0349b8e72a.jpeg?_src=imagekit&tr=dpr-2,f-jpg,fo-auto,h-161,pr-true,q-80,w-300",
+          "https://images.pexels.com/photos/164595/pexels-photo-164595.jpeg",
       "rating": "7.8 / 10 • 1.3rb ulasan",
       "price": "Rp 633.588",
     },
@@ -57,13 +56,15 @@ class _TravelokaHomePageState extends State<TravelokaHomePage> {
   final experienceData = [
     {
       "title": "Ramayana Ballet Jogja",
-      "image": "https://images.unsplash.com/photo-1587502537745-84c0e6b0f8a1",
+      "image":
+          "https://images.pexels.com/photos/1190298/pexels-photo-1190298.jpeg",
       "rating": "9.3 / 10 • 612 ulasan",
       "price": "Rp 120.000",
     },
     {
       "title": "Obelix Hills",
-      "image": "https://images.unsplash.com/photo-1600435335786-d74d2bb6de37",
+      "image":
+          "https://images.pexels.com/photos/417074/pexels-photo-417074.jpeg",
       "rating": "9.0 / 10 • 23 ulasan",
       "price": "Rp 30.000",
     },
@@ -301,11 +302,21 @@ class _TravelokaHomePageState extends State<TravelokaHomePage> {
   Widget _toggleChip(String text, bool active, VoidCallback onTap) {
     return GestureDetector(
       onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 8),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
         decoration: BoxDecoration(
           color: active ? primaryBlue : Colors.white,
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(30),
+          boxShadow:
+              active
+                  ? [
+                    BoxShadow(
+                      color: primaryBlue.withOpacity(.25),
+                      blurRadius: 10,
+                    ),
+                  ]
+                  : [],
         ),
         child: Text(
           text,
@@ -320,71 +331,88 @@ class _TravelokaHomePageState extends State<TravelokaHomePage> {
 
   Widget _horizontalList(List data) {
     return SizedBox(
-      height: 220,
+      height: 200,
       child: ListView.separated(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         scrollDirection: Axis.horizontal,
         itemCount: data.length,
         separatorBuilder: (_, __) => const SizedBox(width: 12),
         itemBuilder: (_, i) {
           final item = data[i];
+
           return Container(
             width: 260,
+            padding: const EdgeInsets.all(14),
             decoration: BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(20),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(.05),
+                  blurRadius: 10,
+                  offset: const Offset(0, 4),
+                ),
+              ],
             ),
             child: Row(
               children: [
+                // 🔥 IMAGE PINPU STYLE
                 ClipRRect(
-                  borderRadius: const BorderRadius.horizontal(
-                    left: Radius.circular(16),
-                  ),
+                  borderRadius: BorderRadius.circular(14),
                   child: Image.network(
                     item['image'],
-                    width: 90,
-                    height: double.infinity,
+                    width: 72,
+                    height: 72,
                     fit: BoxFit.cover,
-                    errorBuilder:
-                        (_, __, ___) => Container(
-                          width: 90,
-                          color: Colors.grey.shade300,
-                          child: const Icon(Icons.image, color: Colors.grey),
+                    errorBuilder: (_, __, ___) {
+                      return Container(
+                        width: 72,
+                        height: 72,
+                        color: const Color(0xFFF1F3F5),
+                        child: const Icon(
+                          Icons.hotel,
+                          color: Color(0xFFADB5BD),
+                          size: 32,
                         ),
+                      );
+                    },
                   ),
                 ),
+
+                const SizedBox(width: 14),
+
                 Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          item['title'],
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(fontWeight: FontWeight.w600),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        item['title'],
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 14,
                         ),
-                        const SizedBox(height: 6),
-                        Text(
-                          item['rating'],
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(fontSize: 11),
+                      ),
+                      const SizedBox(height: 6),
+                      Text(
+                        item['rating'],
+                        style: const TextStyle(
+                          fontSize: 12,
+                          color: Colors.black54,
                         ),
-                        const SizedBox(height: 6),
-                        Text(
-                          item['price'],
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.orange,
-                          ),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        item['price'],
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.orange,
+                          fontSize: 14,
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ],
