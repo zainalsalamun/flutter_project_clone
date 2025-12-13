@@ -174,7 +174,7 @@ class PintuHomePage extends StatelessWidget {
         Row(
           children: [
             const Text(
-              "Rp 2.189.519",
+              "Rp 2.189.519.880",
               style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
             ),
             const SizedBox(width: 10),
@@ -183,7 +183,7 @@ class PintuHomePage extends StatelessWidget {
         ),
         const SizedBox(height: 4),
         Text(
-          "Saldo Aktif Rupiah Rp 1.140.000",
+          "Saldo Aktif Rupiah Rp 1.140.000.000",
           style: TextStyle(color: Colors.grey.shade700, fontSize: 14),
         ),
         const SizedBox(height: 16),
