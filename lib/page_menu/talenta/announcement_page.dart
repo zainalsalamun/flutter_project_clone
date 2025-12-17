@@ -26,7 +26,6 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
     );
   }
 
-  // ================= APP BAR =================
   PreferredSizeWidget _appBar() {
     return AppBar(
       backgroundColor: const Color(0xFFB31212),
@@ -46,7 +45,6 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
     );
   }
 
-  // ================= SEARCH =================
   Widget _searchBar() {
     return Container(
       color: const Color(0xFFB31212),
@@ -70,7 +68,6 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
     );
   }
 
-  // ================= INFO =================
   Widget _infoText() {
     return const Padding(
       padding: EdgeInsets.fromLTRB(16, 16, 16, 8),
@@ -88,7 +85,6 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
     );
   }
 
-  // ================= LIST =================
   Widget _announcementList() {
     return ListView.separated(
       controller: _scrollController,
@@ -176,7 +172,6 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
     );
   }
 
-  // ================= FAB =================
   Widget _scrollToTopButton() {
     return FloatingActionButton(
       backgroundColor: const Color(0xFF0D47A1),
@@ -191,8 +186,6 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
     );
   }
 }
-
-// ================= MODEL & DUMMY DATA =================
 
 class AnnouncementItem {
   final String title;

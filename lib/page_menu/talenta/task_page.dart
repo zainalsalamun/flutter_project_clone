@@ -21,7 +21,6 @@ class TaskPage extends StatelessWidget {
     );
   }
 
-  // ================= APP BAR =================
   PreferredSizeWidget _appBar() {
     return AppBar(
       backgroundColor: const Color(0xFFF6F3EF),
@@ -41,7 +40,6 @@ class TaskPage extends StatelessWidget {
     );
   }
 
-  // ================= SUMMARY =================
   Widget _summarySection() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -143,7 +141,6 @@ class TaskPage extends StatelessWidget {
     );
   }
 
-  // ================= TASK LIST =================
   Widget _taskList() {
     return ListView.separated(
       padding: const EdgeInsets.fromLTRB(16, 8, 16, 100),
@@ -244,7 +241,7 @@ class _StatusCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
       ),
       child: Column(
-        mainAxisSize: MainAxisSize.min, // ✅ KUNCI UTAMA
+        mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Icon(Icons.checklist, color: color, size: 22),
