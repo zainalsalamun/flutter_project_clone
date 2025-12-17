@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shoppe_clone/page_menu/bibit_home_page.dart';
 import 'package:shoppe_clone/page_menu/gojek_home_page.dart';
+import 'package:shoppe_clone/page_menu/hr_home_page.dart';
 import 'package:shoppe_clone/page_menu/livin_home_page.dart';
 import 'package:shoppe_clone/page_menu/ovo_home_page.dart';
 import 'package:shoppe_clone/page_menu/pintu_home_page.dart';
@@ -75,6 +76,14 @@ class AllPagesDemo extends StatelessWidget {
             iconColor: Colors.lightBlue,
             page: const TravelokaHomePage(),
           ),
+          _menuCard(
+            context,
+            title: "HR Home Page",
+            icon: Icons.groups_2_outlined,
+            iconColor: Colors.red.shade700,
+            page: const HrHomePage(),
+          ),
+          const SizedBox(height: 16),
         ],
       ),
     );
