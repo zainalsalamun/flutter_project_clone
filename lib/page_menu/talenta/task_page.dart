@@ -95,7 +95,6 @@ class TaskPage extends StatelessWidget {
     );
   }
 
-  // ================= STATUS CARDS =================
   Widget _statusCards() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -281,17 +280,17 @@ class TaskItem {
 
 final dummyTasks = [
   TaskItem(
-    title: 'Information Security Awareness',
+    title: 'Information Security Policy',
     meta: 'ID: 819  ·  Due date: No due date',
     done: false,
   ),
   TaskItem(
-    title: 'Kerangka Manajemen Risiko',
+    title: 'Kerangka Pengelolaan Risiko',
     meta: 'ID: 813  ·  Due date: No due date',
     done: false,
   ),
   TaskItem(
-    title: 'Pendaftaran Asuransi Mandiri Inhealth',
+    title: 'Pendaftaran Asuransi Karyawan',
     meta: 'ID: 807  ·  Due date: No due date',
     done: false,
   ),
@@ -301,7 +300,7 @@ final dummyTasks = [
     done: false,
   ),
   TaskItem(
-    title: 'Materi Onboarding',
+    title: 'Materi Desember',
     meta: 'ID: 797  ·  Due date: No due date',
     done: false,
   ),
