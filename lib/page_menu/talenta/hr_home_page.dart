@@ -254,7 +254,7 @@ class _HrHomePageState extends State<HrHomePage> {
       child: Column(
         children: [
           SizedBox(
-            height: 210,
+            height: 210, // ✅ FIX UTAMA
             child: PageView.builder(
               controller: _menuController,
               onPageChanged: (i) => setState(() => _menuPage = i),
@@ -418,6 +418,11 @@ class _HrHomePageState extends State<HrHomePage> {
     return _whiteSection(
       headerLeft: 'Announcement',
       headerRight: 'View All',
+      onTapViewAll: () {
+        Navigator.of(
+          context,
+        ).push(MaterialPageRoute(builder: (_) => const AnnouncementPage()));
+      },
       child: Column(
         children: const [
           _RowTitleDate(
@@ -443,6 +448,11 @@ class _HrHomePageState extends State<HrHomePage> {
     return _whiteSection(
       headerLeft: 'Task',
       headerRight: 'View All',
+      onTapViewAll: () {
+        Navigator.of(
+          context,
+        ).push(MaterialPageRoute(builder: (_) => const TaskPage()));
+      },
       child: Column(
         children: const [
           _TaskRow(
@@ -502,6 +512,7 @@ class _HrHomePageState extends State<HrHomePage> {
     required String headerLeft,
     required String headerRight,
     required Widget child,
+    VoidCallback? onTapViewAll,
   }) {
     return Container(
       width: double.infinity,
@@ -530,18 +541,12 @@ class _HrHomePageState extends State<HrHomePage> {
                 ),
               ),
               const Spacer(),
-              GestureDetector(
-                onTap: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(builder: (_) => const AnnouncementPage()),
-                  );
-                },
-                child: GestureDetector(
-                  onTap: () {
-                    Navigator.of(
-                      context,
-                    ).push(MaterialPageRoute(builder: (_) => const TaskPage()));
-                  },
+
+              // ⬇️ View All jadi fleksibel
+              if (onTapViewAll != null)
+                GestureDetector(
+                  onTap: onTapViewAll,
+                  behavior: HitTestBehavior.opaque,
                   child: Text(
                     headerRight,
                     style: const TextStyle(
@@ -551,7 +556,6 @@ class _HrHomePageState extends State<HrHomePage> {
                     ),
                   ),
                 ),
-              ),
             ],
           ),
           const SizedBox(height: 10),
