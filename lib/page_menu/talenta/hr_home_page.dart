@@ -141,11 +141,11 @@ class _HrHomePageState extends State<HrHomePage> {
         ),
       ),
       child: Column(
-        mainAxisSize: MainAxisSize.min, // ✅ penting
+        mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(
-            height: 54, // ✅ FIX OVERFLOW
+            height: 54,
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
@@ -254,7 +254,7 @@ class _HrHomePageState extends State<HrHomePage> {
       child: Column(
         children: [
           SizedBox(
-            height: 210, // ✅ FIX UTAMA
+            height: 210,
             child: PageView.builder(
               controller: _menuController,
               onPageChanged: (i) => setState(() => _menuPage = i),

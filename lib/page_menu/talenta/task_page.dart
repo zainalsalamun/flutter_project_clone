@@ -193,7 +193,6 @@ class TaskPage extends StatelessWidget {
     );
   }
 
-  // ================= BOTTOM BUTTON =================
   Widget _createTaskButton() {
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
