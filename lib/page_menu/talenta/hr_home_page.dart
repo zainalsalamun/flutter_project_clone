@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shoppe_clone/page_menu/talenta/announcement_page.dart';
+import 'package:shoppe_clone/page_menu/talenta/menu/attendance_log.dart';
+import 'package:shoppe_clone/page_menu/talenta/menu/reimbursement.dart';
 import 'package:shoppe_clone/page_menu/talenta/task_page.dart';
 
 class HrHomePage extends StatefulWidget {
@@ -17,26 +19,7 @@ class _HrHomePageState extends State<HrHomePage> {
   int _promoPage = 0;
   int _bottomIndex = 0;
 
-  final _menuPages = <List<_MenuItem>>[
-    [
-      _MenuItem('Reimbursement', Icons.receipt_long, const Color(0xFF2BB7C5)),
-      _MenuItem('Attendance\nLog', Icons.note_alt, const Color(0xFFF39C2D)),
-      _MenuItem('Calendar', Icons.calendar_month, const Color(0xFF2F74FF)),
-      _MenuItem('My Payslip', Icons.payments, const Color(0xFF18B07A)),
-      _MenuItem('Time Off', Icons.access_time, const Color(0xFF2F74FF)),
-      _MenuItem('Live\nAttendance', Icons.location_on, const Color(0xFFF4B400)),
-      _MenuItem('Overtime', Icons.timelapse, const Color(0xFFF39C2D)),
-      _MenuItem('My Task', Icons.folder_open, const Color(0xFFF4B400)),
-    ],
-    [
-      _MenuItem('My Payslip', Icons.payments, const Color(0xFF18B07A)),
-      _MenuItem('Forms', Icons.description, const Color(0xFF7A5CFF)),
-      _MenuItem('Goals', Icons.refresh, const Color(0xFFF39C2D)),
-      _MenuItem('My files', Icons.folder, const Color(0xFFF4B400)),
-      _MenuItem('Reviews', Icons.leaderboard, const Color(0xFF18B07A)),
-      _MenuItem('Assets', Icons.all_inbox, const Color(0xFF2F74FF)),
-    ],
-  ];
+  late final List<List<_MenuItem>> _menuPages;
 
   final _promoCards = const [
     _PromoData(
@@ -56,6 +39,64 @@ class _HrHomePageState extends State<HrHomePage> {
       rightEmoji: '💸',
     ),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+
+    _menuPages = [
+      [
+        _MenuItem(
+          'Reimbursement',
+          Icons.receipt_long,
+          const Color(0xFF2BB7C5),
+          onTap: () {
+            Navigator.of(
+              context,
+            ).push(MaterialPageRoute(builder: (_) => const Reimbursement()));
+          },
+        ),
+        _MenuItem(
+          'Attendance\nLog',
+          Icons.note_alt,
+          const Color(0xFFF39C2D),
+          onTap: () {
+            Navigator.of(
+              context,
+            ).push(MaterialPageRoute(builder: (_) => const AttendanceLog()));
+          },
+        ),
+        _MenuItem('Calendar', Icons.calendar_month, const Color(0xFF2F74FF)),
+        _MenuItem('My Payslip', Icons.payments, const Color(0xFF18B07A)),
+        _MenuItem('Time Off', Icons.access_time, const Color(0xFF2F74FF)),
+        _MenuItem(
+          'Live\nAttendance',
+          Icons.location_on,
+          const Color(0xFFF4B400),
+        ),
+        _MenuItem('Overtime', Icons.timelapse, const Color(0xFFF39C2D)),
+
+        _MenuItem(
+          'My Task',
+          Icons.folder_open,
+          const Color(0xFFF4B400),
+          onTap: () {
+            Navigator.of(
+              context,
+            ).push(MaterialPageRoute(builder: (_) => const TaskPage()));
+          },
+        ),
+      ],
+      [
+        _MenuItem('My Payslip', Icons.payments, const Color(0xFF18B07A)),
+        _MenuItem('Forms', Icons.description, const Color(0xFF7A5CFF)),
+        _MenuItem('Goals', Icons.refresh, const Color(0xFFF39C2D)),
+        _MenuItem('My files', Icons.folder, const Color(0xFFF4B400)),
+        _MenuItem('Reviews', Icons.leaderboard, const Color(0xFF18B07A)),
+        _MenuItem('Assets', Icons.all_inbox, const Color(0xFF2F74FF)),
+      ],
+    ];
+  }
 
   @override
   void dispose() {
@@ -254,7 +295,7 @@ class _HrHomePageState extends State<HrHomePage> {
       child: Column(
         children: [
           SizedBox(
-            height: 210, // ✅ FIX UTAMA
+            height: 210,
             child: PageView.builder(
               controller: _menuController,
               onPageChanged: (i) => setState(() => _menuPage = i),
@@ -291,32 +332,36 @@ class _HrHomePageState extends State<HrHomePage> {
   }
 
   Widget _menuTile(_MenuItem item) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Container(
-          width: 44,
-          height: 44,
-          decoration: BoxDecoration(
-            color: item.color.withOpacity(0.12),
-            borderRadius: BorderRadius.circular(14),
+    return InkWell(
+      onTap: item.onTap,
+      borderRadius: BorderRadius.circular(14),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            width: 44,
+            height: 44,
+            decoration: BoxDecoration(
+              color: item.color.withOpacity(0.12),
+              borderRadius: BorderRadius.circular(14),
+            ),
+            child: Icon(item.icon, color: item.color, size: 26),
           ),
-          child: Icon(item.icon, color: item.color, size: 26),
-        ),
-        const SizedBox(height: 6),
-        Text(
-          item.title,
-          maxLines: 2,
-          overflow: TextOverflow.ellipsis,
-          textAlign: TextAlign.center,
-          style: const TextStyle(
-            fontSize: 12.5,
-            fontWeight: FontWeight.w600,
-            color: Color(0xFF4A4A4A),
-            height: 1.1,
+          const SizedBox(height: 6),
+          Text(
+            item.title,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              fontSize: 12.5,
+              fontWeight: FontWeight.w600,
+              color: Color(0xFF4A4A4A),
+              height: 1.1,
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -650,7 +695,9 @@ class _MenuItem {
   final String title;
   final IconData icon;
   final Color color;
-  const _MenuItem(this.title, this.icon, this.color);
+  final VoidCallback? onTap;
+
+  const _MenuItem(this.title, this.icon, this.color, {this.onTap});
 }
 
 class _TinyIconCircle extends StatelessWidget {
