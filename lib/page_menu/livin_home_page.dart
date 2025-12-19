@@ -118,7 +118,7 @@ class _RekeningSection extends StatefulWidget {
 class _RekeningSectionState extends State<_RekeningSection> {
   bool showBalance = false;
 
-  final String realBalance = "Rp 92.345.678";
+  final String realBalance = "Rp 152.345.678";
   @override
   Widget build(BuildContext context) {
     return Container(
