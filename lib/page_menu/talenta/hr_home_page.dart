@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:shoppe_clone/page_menu/talenta/announcement_page.dart';
-import 'package:shoppe_clone/page_menu/talenta/menu/attendance_log.dart';
-import 'package:shoppe_clone/page_menu/talenta/menu/reimbursement.dart';
-import 'package:shoppe_clone/page_menu/talenta/task_page.dart';
+import 'package:project_clone/page_menu/talenta/announcement_page.dart';
+import 'package:project_clone/page_menu/talenta/menu/attendance_log.dart';
+import 'package:project_clone/page_menu/talenta/menu/reimbursement.dart';
+import 'package:project_clone/page_menu/talenta/task_page.dart';
 
 class HrHomePage extends StatefulWidget {
   const HrHomePage({super.key});

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:shoppe_clone/page_menu/bibit_home_page.dart';
-import 'package:shoppe_clone/page_menu/gojek_home_page.dart';
-import 'package:shoppe_clone/page_menu/talenta/hr_home_page.dart';
-import 'package:shoppe_clone/page_menu/livin_home_page.dart';
-import 'package:shoppe_clone/page_menu/ovo_home_page.dart';
-import 'package:shoppe_clone/page_menu/pintu_home_page.dart';
-import 'package:shoppe_clone/page_menu/shopeepay_page.dart';
-import 'package:shoppe_clone/page_menu/traveloka_home_page.dart';
+import 'package:project_clone/page_menu/bibit_home_page.dart';
+import 'package:project_clone/page_menu/gojek_home_page.dart';
+import 'package:project_clone/page_menu/talenta/hr_home_page.dart';
+import 'package:project_clone/page_menu/livin_home_page.dart';
+import 'package:project_clone/page_menu/ovo_home_page.dart';
+import 'package:project_clone/page_menu/pintu_home_page.dart';
+import 'package:project_clone/page_menu/shopeepay_page.dart';
+import 'package:project_clone/page_menu/traveloka_home_page.dart';
 
 class AllPagesDemo extends StatelessWidget {
   const AllPagesDemo({super.key});

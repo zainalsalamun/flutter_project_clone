@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shoppe_clone/page/all_pages_demo.dart';
+import 'package:project_clone/page/all_pages_demo.dart';
 
 void main() {
   runApp(const MyApp());
