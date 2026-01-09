@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:project_clone/page_menu/talenta/menu/clock_success_page.dart';
 import 'package:project_clone/page_menu/talenta/menu/location_page.dart';
 
-class ClockInPage extends StatefulWidget {
+class ClockInOutPage extends StatefulWidget {
   final String pageTitle;
 
-  const ClockInPage({super.key, this.pageTitle = 'Clock in'});
+  const ClockInOutPage({super.key, this.pageTitle = 'Clock in'});
 
   @override
-  State<ClockInPage> createState() => _ClockInPageState();
+  State<ClockInOutPage> createState() => _ClockInPageState();
 }
 
-class _ClockInPageState extends State<ClockInPage> {
+class _ClockInPageState extends State<ClockInOutPage> {
   final TextEditingController _notesController = TextEditingController();
 
   @override
