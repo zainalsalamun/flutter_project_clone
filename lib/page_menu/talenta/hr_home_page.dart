@@ -352,7 +352,8 @@ class _HrHomePageState extends State<HrHomePage> {
                       Navigator.of(context).push(
                         MaterialPageRoute(
                           builder:
-                              (_) => const ClockInPage(pageTitle: 'Clock in'),
+                              (_) =>
+                                  const ClockInOutPage(pageTitle: 'Clock in'),
                         ),
                       );
                     },
@@ -381,7 +382,8 @@ class _HrHomePageState extends State<HrHomePage> {
                       Navigator.of(context).push(
                         MaterialPageRoute(
                           builder:
-                              (_) => const ClockInPage(pageTitle: 'Clock out'),
+                              (_) =>
+                                  const ClockInOutPage(pageTitle: 'Clock out'),
                         ),
                       );
                     },
