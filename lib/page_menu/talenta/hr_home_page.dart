@@ -2,6 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:project_clone/page_menu/talenta/announcement_page.dart';
 import 'package:project_clone/page_menu/talenta/menu/attendance_log.dart';
 import 'package:project_clone/page_menu/talenta/menu/reimbursement.dart';
+import 'package:project_clone/page_menu/talenta/menu/new_menu.dart';
+
+import 'package:project_clone/page_menu/talenta/menu/calendar_page.dart';
+import 'package:project_clone/page_menu/talenta/menu/my_payslip.dart';
+import 'package:project_clone/page_menu/talenta/menu/time_off.dart';
+import 'package:project_clone/page_menu/talenta/menu/live_attendance.dart';
+import 'package:project_clone/page_menu/talenta/menu/overtime.dart';
+import 'package:project_clone/page_menu/talenta/menu/forms_page.dart';
+import 'package:project_clone/page_menu/talenta/menu/goals_page.dart';
+import 'package:project_clone/page_menu/talenta/menu/my_files.dart';
+import 'package:project_clone/page_menu/talenta/menu/reviews_page.dart';
+import 'package:project_clone/page_menu/talenta/menu/assets_page.dart';
 import 'package:project_clone/page_menu/talenta/task_page.dart';
 
 class HrHomePage extends StatefulWidget {
@@ -66,15 +78,56 @@ class _HrHomePageState extends State<HrHomePage> {
             ).push(MaterialPageRoute(builder: (_) => const AttendanceLog()));
           },
         ),
-        _MenuItem('Calendar', Icons.calendar_month, const Color(0xFF2F74FF)),
-        _MenuItem('My Payslip', Icons.payments, const Color(0xFF18B07A)),
-        _MenuItem('Time Off', Icons.access_time, const Color(0xFF2F74FF)),
+        _MenuItem(
+          'Calendar',
+          Icons.calendar_month,
+          const Color(0xFF2F74FF),
+          onTap: () {
+            Navigator.of(
+              context,
+            ).push(MaterialPageRoute(builder: (_) => const CalendarPage()));
+          },
+        ),
+        _MenuItem(
+          'My Payslip',
+          Icons.payments,
+          const Color(0xFF18B07A),
+          onTap: () {
+            Navigator.of(
+              context,
+            ).push(MaterialPageRoute(builder: (_) => const MyPayslip()));
+          },
+        ),
+        _MenuItem(
+          'Time Off',
+          Icons.access_time,
+          const Color(0xFF2F74FF),
+          onTap: () {
+            Navigator.of(
+              context,
+            ).push(MaterialPageRoute(builder: (_) => const TimeOff()));
+          },
+        ),
         _MenuItem(
           'Live\nAttendance',
           Icons.location_on,
           const Color(0xFFF4B400),
+          onTap: () {
+            Navigator.of(
+              context,
+            ).push(MaterialPageRoute(builder: (_) => const LiveAttendance()));
+          },
         ),
-        _MenuItem('Overtime', Icons.timelapse, const Color(0xFFF39C2D)),
+        _MenuItem(
+          'Overtime',
+          Icons.timelapse,
+          const Color(0xFFF39C2D),
+          onTap: () {
+            Navigator.of(
+              context,
+            ).push(MaterialPageRoute(builder: (_) => const Overtime()));
+          },
+        ),
 
         _MenuItem(
           'My Task',
@@ -88,12 +141,77 @@ class _HrHomePageState extends State<HrHomePage> {
         ),
       ],
       [
-        _MenuItem('My Payslip', Icons.payments, const Color(0xFF18B07A)),
-        _MenuItem('Forms', Icons.description, const Color(0xFF7A5CFF)),
-        _MenuItem('Goals', Icons.refresh, const Color(0xFFF39C2D)),
-        _MenuItem('My files', Icons.folder, const Color(0xFFF4B400)),
-        _MenuItem('Reviews', Icons.leaderboard, const Color(0xFF18B07A)),
-        _MenuItem('Assets', Icons.all_inbox, const Color(0xFF2F74FF)),
+        _MenuItem(
+          'My Payslip',
+          Icons.payments,
+          const Color(0xFF18B07A),
+          onTap: () {
+            Navigator.of(
+              context,
+            ).push(MaterialPageRoute(builder: (_) => const MyPayslip()));
+          },
+        ),
+        _MenuItem(
+          'Forms',
+          Icons.description,
+          const Color(0xFF7A5CFF),
+          onTap: () {
+            Navigator.of(
+              context,
+            ).push(MaterialPageRoute(builder: (_) => const FormsPage()));
+          },
+        ),
+        _MenuItem(
+          'Goals',
+          Icons.refresh,
+          const Color(0xFFF39C2D),
+          onTap: () {
+            Navigator.of(
+              context,
+            ).push(MaterialPageRoute(builder: (_) => const GoalsPage()));
+          },
+        ),
+        _MenuItem(
+          'My files',
+          Icons.folder,
+          const Color(0xFFF4B400),
+          onTap: () {
+            Navigator.of(
+              context,
+            ).push(MaterialPageRoute(builder: (_) => const MyFiles()));
+          },
+        ),
+        _MenuItem(
+          'Reviews',
+          Icons.leaderboard,
+          const Color(0xFF18B07A),
+          onTap: () {
+            Navigator.of(
+              context,
+            ).push(MaterialPageRoute(builder: (_) => const ReviewsPage()));
+          },
+        ),
+
+        _MenuItem(
+          'Assets',
+          Icons.all_inbox,
+          const Color(0xFF2F74FF),
+          onTap: () {
+            Navigator.of(
+              context,
+            ).push(MaterialPageRoute(builder: (_) => const AssetsPage()));
+          },
+        ),
+        _MenuItem(
+          'New Menu',
+          Icons.star,
+          const Color(0xFFE91E63),
+          onTap: () {
+            Navigator.of(
+              context,
+            ).push(MaterialPageRoute(builder: (_) => const NewMenu()));
+          },
+        ),
       ],
     ];
   }
