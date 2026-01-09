@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:project_clone/page_menu/talenta/menu/clock_in_out_page.dart';
 
 class LiveAttendance extends StatelessWidget {
   const LiveAttendance({super.key});
@@ -19,29 +20,7 @@ class LiveAttendance extends StatelessWidget {
             child: SafeArea(
               child: Column(
                 children: [
-                  // AppBar
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8),
-                    child: Row(
-                      children: [
-                        const BackButton(color: Colors.white),
-                        const Expanded(
-                          child: Text(
-                            'Live Attendance',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 17,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ),
-                        // Balance spacing for back button
-                        const SizedBox(width: 48),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 60), // Space for AppBar
                   // Clock
                   const Text(
                     '11 12', // Mock time
@@ -154,7 +133,16 @@ class LiveAttendance extends StatelessWidget {
                           children: [
                             Expanded(
                               child: ElevatedButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder:
+                                          (_) => const ClockInOutPage(
+                                            pageTitle: 'Clock in',
+                                          ),
+                                    ),
+                                  );
+                                },
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: const Color(
                                     0xFF0D47A1,
@@ -179,7 +167,16 @@ class LiveAttendance extends StatelessWidget {
                             const SizedBox(width: 16),
                             Expanded(
                               child: ElevatedButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder:
+                                          (_) => const ClockInOutPage(
+                                            pageTitle: 'Clock out',
+                                          ),
+                                    ),
+                                  );
+                                },
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: const Color(
                                     0xFF0D47A1,
@@ -283,6 +280,36 @@ class LiveAttendance extends StatelessWidget {
                 ),
                 const SizedBox(height: 20),
               ],
+            ),
+          ),
+
+          // AppBar (Top Layer)
+          Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            child: SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                child: Row(
+                  children: [
+                    const BackButton(color: Colors.white),
+                    const Expanded(
+                      child: Text(
+                        'Live Attendance',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 17,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                    // Balance spacing for back button
+                    const SizedBox(width: 48),
+                  ],
+                ),
+              ),
             ),
           ),
         ],
