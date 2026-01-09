@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:project_clone/page_menu/talenta/announcement_page.dart';
+import 'package:project_clone/page_menu/talenta/menu/clock_in_out_page.dart';
 import 'package:project_clone/page_menu/talenta/menu/attendance_log.dart';
 import 'package:project_clone/page_menu/talenta/menu/reimbursement.dart';
-import 'package:project_clone/page_menu/talenta/menu/new_menu.dart';
+import 'package:project_clone/page_menu/talenta/menu/company_news.dart';
 
 import 'package:project_clone/page_menu/talenta/menu/calendar_page.dart';
 import 'package:project_clone/page_menu/talenta/menu/my_payslip.dart';
@@ -203,13 +204,13 @@ class _HrHomePageState extends State<HrHomePage> {
           },
         ),
         _MenuItem(
-          'New Menu',
+          'Company News',
           Icons.star,
           const Color(0xFFE91E63),
           onTap: () {
             Navigator.of(
               context,
-            ).push(MaterialPageRoute(builder: (_) => const NewMenu()));
+            ).push(MaterialPageRoute(builder: (_) => const CompanyNews()));
           },
         ),
       ],
@@ -347,7 +348,14 @@ class _HrHomePageState extends State<HrHomePage> {
                 Expanded(
                   child: InkWell(
                     borderRadius: BorderRadius.circular(10),
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder:
+                              (_) => const ClockInPage(pageTitle: 'Clock in'),
+                        ),
+                      );
+                    },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: const [
@@ -369,7 +377,14 @@ class _HrHomePageState extends State<HrHomePage> {
                 Expanded(
                   child: InkWell(
                     borderRadius: BorderRadius.circular(10),
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder:
+                              (_) => const ClockInPage(pageTitle: 'Clock out'),
+                        ),
+                      );
+                    },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: const [
