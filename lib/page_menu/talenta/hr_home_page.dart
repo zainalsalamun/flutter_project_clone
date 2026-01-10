@@ -4,7 +4,6 @@ import 'package:project_clone/page_menu/talenta/menu/clock_in_out_page.dart';
 import 'package:project_clone/page_menu/talenta/menu/attendance_log.dart';
 import 'package:project_clone/page_menu/talenta/menu/reimbursement.dart';
 import 'package:project_clone/page_menu/talenta/menu/company_news.dart';
-
 import 'package:project_clone/page_menu/talenta/menu/calendar_page.dart';
 import 'package:project_clone/page_menu/talenta/menu/my_payslip.dart';
 import 'package:project_clone/page_menu/talenta/menu/time_off.dart';
@@ -16,6 +15,10 @@ import 'package:project_clone/page_menu/talenta/menu/my_files.dart';
 import 'package:project_clone/page_menu/talenta/menu/reviews_page.dart';
 import 'package:project_clone/page_menu/talenta/menu/assets_page.dart';
 import 'package:project_clone/page_menu/talenta/task_page.dart';
+import 'package:project_clone/page_menu/talenta/menu/employee_page.dart';
+import 'package:project_clone/page_menu/talenta/menu/request_menu.dart';
+import 'package:project_clone/page_menu/talenta/menu/inbox_page.dart';
+import 'package:project_clone/page_menu/talenta/menu/account_page.dart';
 
 class HrHomePage extends StatefulWidget {
   const HrHomePage({super.key});
@@ -231,31 +234,49 @@ class _HrHomePageState extends State<HrHomePage> {
     return Scaffold(
       backgroundColor: bg,
       body: SafeArea(
-        child: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 14),
-                _header(),
-                const SizedBox(height: 12),
-                _attendanceCard(),
-                const SizedBox(height: 14),
-                _menuGridCard(),
-                const SizedBox(height: 12),
-                _promoCarousel(),
-                const SizedBox(height: 12),
-                _sectionAnnouncement(),
-                const SizedBox(height: 12),
-                _sectionTask(),
-                const SizedBox(height: 12),
-                _sectionTimesheet(),
-                const SizedBox(height: 20),
-              ],
+        child: IndexedStack(
+          index: _bottomIndex,
+          children: [
+            // Index 0: Home Dashboard
+            SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 14),
+                    _header(),
+                    const SizedBox(height: 12),
+                    _attendanceCard(),
+                    const SizedBox(height: 14),
+                    _menuGridCard(),
+                    const SizedBox(height: 12),
+                    _promoCarousel(),
+                    const SizedBox(height: 12),
+                    _sectionAnnouncement(),
+                    const SizedBox(height: 12),
+                    _sectionTask(),
+                    const SizedBox(height: 12),
+                    _sectionTimesheet(),
+                    const SizedBox(height: 20),
+                  ],
+                ),
+              ),
             ),
-          ),
+
+            // Index 1: Employee Page
+            const EmployeePage(),
+
+            // Index 2: Request (Placeholder)
+            const Center(child: Text('Request Page')),
+
+            // Index 3: Inbox
+            const InboxPage(),
+
+            // Index 4: Account
+            const AccountPage(),
+          ],
         ),
       ),
       bottomNavigationBar: _bottomNav(),
@@ -791,10 +812,22 @@ class _HrHomePageState extends State<HrHomePage> {
   Widget _bottomNav() {
     return BottomNavigationBar(
       currentIndex: _bottomIndex,
-      onTap: (i) => setState(() => _bottomIndex = i),
+      onTap: (i) {
+        if (i == 2) {
+          showModalBottomSheet(
+            context: context,
+            backgroundColor: Colors.transparent,
+            isScrollControlled: true,
+            builder: (context) => const RequestMenu(),
+          );
+        } else {
+          setState(() => _bottomIndex = i);
+        }
+      },
+      backgroundColor: Colors.white,
       type: BottomNavigationBarType.fixed,
-      selectedItemColor: const Color(0xFF2F74FF),
-      unselectedItemColor: const Color(0xFF9AA0A6),
+      selectedItemColor: const Color(0xFF1565C0), // Blue 800
+      unselectedItemColor: const Color(0xFF757575), // Grey 600
       selectedLabelStyle: const TextStyle(
         fontWeight: FontWeight.w700,
         fontSize: 12,
@@ -810,7 +843,7 @@ class _HrHomePageState extends State<HrHomePage> {
           label: 'Employee',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.receipt_long_outlined),
+          icon: Icon(Icons.assignment_outlined),
           label: 'Request',
         ),
         BottomNavigationBarItem(
