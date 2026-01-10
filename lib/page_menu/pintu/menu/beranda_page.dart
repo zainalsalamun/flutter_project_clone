@@ -1,71 +1,528 @@
 import 'package:flutter/material.dart';
 
-class PintuHomePage extends StatelessWidget {
-  const PintuHomePage({super.key});
+class BerandaPage extends StatefulWidget {
+  const BerandaPage({super.key});
+
+  @override
+  State<BerandaPage> createState() => _BerandaPageState();
+}
+
+class _BerandaPageState extends State<BerandaPage> {
+  bool _isPro = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      bottomNavigationBar: _bottomNav(),
+      backgroundColor: _isPro ? Colors.black : Colors.white,
       body: SafeArea(
         child: Column(
           children: [
-            Padding(
+            Container(
+              color: _isPro ? Colors.black : Colors.white,
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Column(
                 children: [
                   const SizedBox(height: 12),
+                  const SizedBox(height: 12),
                   _topSection(),
-                  const SizedBox(height: 16),
+                  if (_isPro) ...[
+                    const SizedBox(height: 20),
+                    _buildProHeader(),
+                    const SizedBox(height: 24),
+                  ] else
+                    const SizedBox(height: 16),
                 ],
               ),
             ),
-
             Expanded(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _totalAsetSection(),
-                    const SizedBox(height: 20),
-                    _announcementCard(),
-                    const SizedBox(height: 20),
-                    _quickMenu(),
-                    const SizedBox(height: 24),
-                    _topMovers(),
-                    const SizedBox(height: 32),
-                    _watchlistHeader(),
-                    const SizedBox(height: 12),
-                    _watchlistList(),
-                    const SizedBox(height: 24),
-                    _sectionTitle("Info dan Promo Spesial"),
-                    const SizedBox(height: 12),
-                    _promoCarousel(),
-                    const SizedBox(height: 32),
-                    _sectionTitle("Academy Minggu Ini"),
-                    const SizedBox(height: 16),
-                    _academyCarousel(),
-                    const SizedBox(height: 32),
-                    _sectionTitle("Belajar Investasi Crypto"),
-                    const SizedBox(height: 16),
-                    _learnCryptoCarousel(),
-                    const SizedBox(height: 32),
-                    _sectionTitle("Pertanyaan Umum"),
-                    const SizedBox(height: 16),
-                    _faq(),
-                    const SizedBox(height: 32),
-                    _sectionTitle("Berita Terkini"),
-                    const SizedBox(height: 16),
-                    _newsList(),
-                    const SizedBox(height: 60),
-                  ],
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius:
+                      _isPro
+                          ? const BorderRadius.vertical(
+                            top: Radius.circular(24),
+                          )
+                          : null,
+                ),
+                child: ClipRRect(
+                  borderRadius:
+                      _isPro
+                          ? const BorderRadius.vertical(
+                            top: Radius.circular(24),
+                          )
+                          : BorderRadius.zero,
+                  child: SingleChildScrollView(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: _isPro ? _buildProBody() : _buildPintuBody(),
+                  ),
                 ),
               ),
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildPintuBody() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _totalAsetSection(),
+          const SizedBox(height: 20),
+          _announcementCard(),
+          const SizedBox(height: 20),
+          _quickMenu(),
+          const SizedBox(height: 24),
+          _topMovers(),
+          const SizedBox(height: 32),
+          _watchlistHeader(),
+          const SizedBox(height: 12),
+          _watchlistList(),
+          const SizedBox(height: 24),
+          _sectionTitle("Info dan Promo Spesial"),
+          const SizedBox(height: 12),
+          _promoCarousel(),
+          const SizedBox(height: 32),
+          _sectionTitle("Academy Minggu Ini"),
+          const SizedBox(height: 16),
+          _academyCarousel(),
+          const SizedBox(height: 32),
+          _sectionTitle("Belajar Investasi Crypto"),
+          const SizedBox(height: 16),
+          _learnCryptoCarousel(),
+          const SizedBox(height: 32),
+          _sectionTitle("Pertanyaan Umum"),
+          const SizedBox(height: 16),
+          _faq(),
+          const SizedBox(height: 32),
+          _sectionTitle("Berita Terkini"),
+          const SizedBox(height: 16),
+          _newsList(),
+          const SizedBox(height: 60),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildProBody() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SizedBox(height: 24),
+        // Delisting Info
+        Container(
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            color: const Color(0xFFFFF4E0),
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(color: Colors.orange.shade200),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  Container(
+                    width: 4,
+                    height: 16,
+                    decoration: BoxDecoration(
+                      color: Colors.orange,
+                      borderRadius: BorderRadius.circular(2),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  const Text(
+                    "Info Delisting Token",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 14,
+                      color: Colors.black87,
+                    ),
+                  ),
+                ],
+              ),
+              const Icon(Icons.keyboard_arrow_down, color: Colors.black54),
+            ],
+          ),
+        ),
+        const SizedBox(height: 24),
+
+        // New Year Bonus Banner
+        Container(
+          width: double.infinity,
+          height: 140,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16),
+            gradient: const LinearGradient(
+              colors: [Color(0xFF0D1B54), Color(0xFF1E3A8A)],
+              begin: Alignment.centerLeft,
+              end: Alignment.centerRight,
+            ),
+          ),
+          child: Stack(
+            children: [
+              Positioned(
+                right: 0,
+                bottom: 0,
+                top: 0,
+                child: ClipRRect(
+                  borderRadius: const BorderRadius.only(
+                    topRight: Radius.circular(16),
+                    bottomRight: Radius.circular(16),
+                  ),
+                  child: Image.network(
+                    "https://pintu.co.id/static/images/pro/hero.png", // Example image
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    Text(
+                      "New Year Bonus",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
+                    ),
+                    SizedBox(height: 4),
+                    Text(
+                      "s.d. Rp 2 jt",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 28,
+                      ),
+                    ),
+                    SizedBox(height: 4),
+                    Text(
+                      "Spesial Trader Futures",
+                      style: TextStyle(color: Colors.blueAccent, fontSize: 12),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 24),
+
+        // Categories Tabs
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            children: [
+              _proCategoryTab("Watchlist"),
+              _proCategoryTab("Pro Spot", isActive: true),
+              _proCategoryTab("Tokenized Stocks"),
+              _proCategoryTab("Futures"),
+            ],
+          ),
+        ),
+        const SizedBox(height: 16),
+
+        // Filter chips
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            children: [
+              _filterChip("Semua", isActive: true),
+              const SizedBox(width: 8),
+              _filterChip("🔥 Trending"),
+              const SizedBox(width: 8),
+              _filterChip("Gainers"),
+              const SizedBox(width: 8),
+              _filterChip("Losers"),
+              const SizedBox(width: 8),
+              _filterChip("Baru"),
+            ],
+          ),
+        ),
+        const SizedBox(height: 16),
+
+        // Table Header
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              children: const [
+                Text(
+                  "NAMA",
+                  style: TextStyle(color: Colors.grey, fontSize: 12),
+                ),
+                Icon(Icons.unfold_more, size: 14, color: Colors.grey),
+                SizedBox(width: 4),
+                Text(
+                  "/ VOL",
+                  style: TextStyle(color: Colors.grey, fontSize: 12),
+                ),
+                Icon(Icons.unfold_more, size: 14, color: Colors.grey),
+              ],
+            ),
+            Row(
+              children: [
+                const Text(
+                  "HARGA (IDR)",
+                  style: TextStyle(color: Colors.grey, fontSize: 12),
+                ),
+                const Icon(Icons.unfold_more, size: 14, color: Colors.grey),
+                const SizedBox(width: 16),
+                const Text(
+                  "24H CHANGE",
+                  style: TextStyle(color: Colors.grey, fontSize: 12),
+                ),
+                const Icon(Icons.unfold_more, size: 14, color: Colors.grey),
+              ],
+            ),
+          ],
+        ),
+        const SizedBox(height: 12),
+
+        // Market List
+        _proMarketItem("USDT", "37,25B", "16.891", "+0,23%", Colors.green),
+        _proMarketItem("SOL", "10,08B", "2.342.000", "+3,13%", Colors.green),
+        _proMarketItem("BTC", "8,43B", "1.525.445.000", "+0,38%", Colors.green),
+        _proMarketItem("ETH", "3,28B", "52.281.000", "-0,54%", Colors.red),
+        _proMarketItem("XRP", "2,04B", "35.485", "+0,11%", Colors.green),
+        _proMarketItem("PEPE", "694,18M", "0,10301", "-2,37%", Colors.red),
+        const SizedBox(height: 80),
+      ],
+    );
+  }
+
+  Widget _buildProHeader() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Total Asset Pro
+        Row(
+          children: [
+            Text(
+              "Total Nilai Aset",
+              style: TextStyle(color: Colors.grey.shade400, fontSize: 14),
+            ),
+            const SizedBox(width: 4),
+            Icon(Icons.chevron_right, size: 16, color: Colors.grey.shade400),
+          ],
+        ),
+        const SizedBox(height: 4),
+        Row(
+          children: [
+            const Text(
+              "Rp 184.321",
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
+            const SizedBox(width: 8),
+            Icon(
+              Icons.visibility_outlined,
+              size: 20,
+              color: Colors.grey.shade400,
+            ),
+          ],
+        ),
+        const SizedBox(height: 16),
+
+        // Action Buttons
+        Row(
+          children: [
+            Expanded(
+              child: ElevatedButton(
+                onPressed: () {},
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF0A55FF),
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                ),
+                child: const Text(
+                  "Deposit",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+              ),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: OutlinedButton(
+                onPressed: () {},
+                style: OutlinedButton.styleFrom(
+                  foregroundColor: Colors.white,
+                  side: BorderSide(color: Colors.grey.shade800),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                ),
+                child: const Text(
+                  "Tarik",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+              ),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: OutlinedButton(
+                onPressed: () {},
+                style: OutlinedButton.styleFrom(
+                  foregroundColor: Colors.white,
+                  side: BorderSide(color: Colors.grey.shade800),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                ),
+                child: const Text(
+                  "Transfer",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _proCategoryTab(String title, {bool isActive = false}) {
+    return Container(
+      margin: const EdgeInsets.only(right: 24),
+      padding: const EdgeInsets.only(bottom: 8),
+      decoration: BoxDecoration(
+        border:
+            isActive
+                ? const Border(
+                  bottom: BorderSide(color: Color(0xFF0A55FF), width: 2),
+                )
+                : null,
+      ),
+      child: Text(
+        title,
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+          color: isActive ? Colors.black : Colors.grey,
+          fontSize: 16,
+        ),
+      ),
+    );
+  }
+
+  Widget _filterChip(String label, {bool isActive = false}) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      decoration: BoxDecoration(
+        color: isActive ? const Color(0xFFE3F2FD) : Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(
+          color: isActive ? const Color(0xFF0A55FF) : Colors.grey.shade300,
+        ),
+      ),
+      child: Text(
+        label,
+        style: TextStyle(
+          fontWeight: FontWeight.w600,
+          color: isActive ? const Color(0xFF0A55FF) : Colors.black87,
+          fontSize: 13,
+        ),
+      ),
+    );
+  }
+
+  Widget _proMarketItem(
+    String symbol,
+    String vol,
+    String price,
+    String change,
+    Color color,
+  ) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 16),
+      decoration: BoxDecoration(
+        border: Border(bottom: BorderSide(color: Colors.grey.shade100)),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          // Coin Info
+          Row(
+            children: [
+              _coinIcon(
+                symbol == "USDT" ? "Bitcoin" : symbol,
+              ), // reusing Icon helper, simplified
+              const SizedBox(width: 12),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  RichText(
+                    text: TextSpan(
+                      text: symbol,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                        fontSize: 14,
+                      ),
+                      children: const [
+                        TextSpan(
+                          text: "/IDR",
+                          style: TextStyle(color: Colors.grey, fontSize: 12),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    "Vol $vol",
+                    style: const TextStyle(color: Colors.grey, fontSize: 12),
+                  ),
+                ],
+              ),
+            ],
+          ),
+
+          // Price Info
+          Row(
+            children: [
+              Text(
+                price,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14,
+                ),
+              ),
+              const SizedBox(width: 16),
+              Container(
+                width: 70,
+                padding: const EdgeInsets.symmetric(vertical: 6),
+                decoration: BoxDecoration(
+                  color: color,
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                alignment: Alignment.center,
+                child: Text(
+                  change,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 12,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }
@@ -85,7 +542,11 @@ class PintuHomePage extends StatelessWidget {
             Stack(
               clipBehavior: Clip.none,
               children: [
-                const Icon(Icons.mail_outline, size: 26),
+                Icon(
+                  Icons.mail_outline,
+                  size: 26,
+                  color: _isPro ? Colors.white : Colors.black,
+                ),
 
                 Positioned(
                   right: -2,
@@ -110,7 +571,11 @@ class PintuHomePage extends StatelessWidget {
             ),
 
             const SizedBox(width: 16),
-            const Icon(Icons.person_outline, size: 28),
+            Icon(
+              Icons.person_outline,
+              size: 28,
+              color: _isPro ? Colors.white : Colors.black,
+            ),
           ],
         ),
       ],
@@ -124,40 +589,67 @@ class PintuHomePage extends StatelessWidget {
       width: 200,
       padding: const EdgeInsets.all(2),
       decoration: BoxDecoration(
-        color: Colors.grey.shade200,
+        color: _isPro ? const Color(0xFF1E1E1E) : Colors.grey.shade200,
         borderRadius: BorderRadius.circular(20),
+        border: _isPro ? Border.all(color: Colors.grey.shade800) : null,
       ),
-      child: Row(children: [_tabItem(true, "Pintu"), _tabItem(false, "Pro")]),
+      child: Row(
+        children: [
+          _tabItem(
+            current: !_isPro,
+            text: "Pintu",
+            onTap: () => setState(() => _isPro = false),
+          ),
+          _tabItem(
+            current: _isPro,
+            text: "Pro",
+            onTap: () => setState(() => _isPro = true),
+          ),
+        ],
+      ),
     );
   }
 
-  Widget _tabItem(bool active, String text) {
+  Widget _tabItem({
+    required bool current,
+    required String text,
+    required VoidCallback onTap,
+  }) {
     return Expanded(
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
-        curve: Curves.easeOut,
-        height: 36,
-        decoration: BoxDecoration(
-          color: active ? Colors.white : Colors.transparent,
-          borderRadius: BorderRadius.circular(20),
-          boxShadow:
-              active
-                  ? [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.06),
-                      blurRadius: 6,
-                      offset: const Offset(0, 3),
-                    ),
-                  ]
-                  : [],
-        ),
-        alignment: Alignment.center,
-        child: Text(
-          text,
-          style: TextStyle(
-            fontWeight: FontWeight.w600,
-            fontSize: 14,
-            color: active ? Colors.black : Colors.grey.shade600,
+      child: GestureDetector(
+        onTap: onTap,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          curve: Curves.easeOut,
+          height: 36,
+          decoration: BoxDecoration(
+            color:
+                current
+                    ? (_isPro ? const Color(0xFF2C2C2C) : Colors.white)
+                    : Colors.transparent,
+            borderRadius: BorderRadius.circular(20),
+            boxShadow:
+                current
+                    ? [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.06),
+                        blurRadius: 6,
+                        offset: const Offset(0, 3),
+                      ),
+                    ]
+                    : [],
+          ),
+          alignment: Alignment.center,
+          child: Text(
+            text,
+            style: TextStyle(
+              fontWeight: FontWeight.w600,
+              fontSize: 14,
+              color:
+                  current
+                      ? (_isPro ? Colors.white : Colors.black)
+                      : Colors.grey.shade600,
+            ),
           ),
         ),
       ),
@@ -974,46 +1466,6 @@ class PintuHomePage extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
               style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
             ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  //bottom
-  Widget _bottomNav() {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.08),
-            blurRadius: 12,
-            offset: const Offset(0, -2),
-          ),
-        ],
-        border: Border(
-          top: BorderSide(color: Colors.grey.shade300, width: 0.8),
-        ),
-      ),
-      child: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        backgroundColor: Colors.white,
-        elevation: 0,
-        selectedItemColor: Colors.black,
-        unselectedItemColor: Colors.grey.shade500,
-        showUnselectedLabels: true,
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Beranda"),
-          BottomNavigationBarItem(icon: Icon(Icons.search), label: "Jelajah"),
-          BottomNavigationBarItem(icon: Icon(Icons.bar_chart), label: "Market"),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.trending_up),
-            label: "Futures",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.account_balance_wallet),
-            label: "Wallet",
           ),
         ],
       ),
