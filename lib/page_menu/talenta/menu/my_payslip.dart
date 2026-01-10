@@ -11,27 +11,197 @@ class _MyPayslipState extends State<MyPayslip> {
   String _selectedYear = '2025';
   final List<String> _years = ['2026', '2025', '2024', '2023'];
 
-  // Mock data generator for 12 months
-  final List<Map<String, String>> _monthsData = [
-    {'month': 'December', 'period': '01 Dec - 31 Dec'},
-    {'month': 'November', 'period': '01 Nov - 30 Nov'},
-    {'month': 'October', 'period': '01 Oct - 31 Oct'},
-    {'month': 'September', 'period': '01 Sep - 30 Sep'},
-    {'month': 'August', 'period': '01 Aug - 31 Aug'},
-    {'month': 'July', 'period': '01 Jul - 31 Jul'},
-    {'month': 'June', 'period': '01 Jun - 30 Jun'},
-    {'month': 'May', 'period': '01 May - 31 May'},
-    {'month': 'April', 'period': '01 Apr - 30 Apr'},
-    {'month': 'March', 'period': '01 Mar - 31 Mar'},
-    {
-      'month': 'February',
-      'period': '01 Feb - 29 Feb',
-    }, // Leap year check ignored for simplicity
-    {'month': 'January', 'period': '01 Jan - 31 Jan'},
-  ];
+  // Data per year
+  // Data per year
+  final Map<String, List<Map<String, String>>> _yearData = {
+    '2026': [
+      {
+        'month': 'January',
+        'period': '01 Jan - 31 Jan',
+        'status': 'Paid',
+        'amount': 'Rp 25.000.000',
+      },
+    ],
+    '2025': [
+      {
+        'month': 'December',
+        'period': '01 Dec - 31 Dec',
+        'status': 'Paid',
+        'amount': 'Rp 150.000.000',
+      },
+      {
+        'month': 'November',
+        'period': '01 Nov - 30 Nov',
+        'status': 'Paid',
+        'amount': 'Rp 25.000.000',
+      },
+      {
+        'month': 'October',
+        'period': '01 Oct - 31 Oct',
+        'status': 'Paid',
+        'amount': 'Rp 25.000.000',
+      },
+      {
+        'month': 'September',
+        'period': '01 Sep - 30 Sep',
+        'status': 'Paid',
+        'amount': 'Rp 25.000.000',
+      },
+      {
+        'month': 'August',
+        'period': '01 Aug - 31 Aug',
+        'status': 'Paid',
+        'amount': 'Rp 25.000.000',
+      },
+      {
+        'month': 'July',
+        'period': '01 Jul - 31 Jul',
+        'status': 'Paid',
+        'amount': 'Rp 25.000.000',
+      },
+      {
+        'month': 'June',
+        'period': '01 Jun - 30 Jun',
+        'status': 'Paid',
+        'amount': 'Rp 25.000.000',
+      },
+      {
+        'month': 'May',
+        'period': '01 May - 31 May',
+        'status': 'Paid',
+        'amount': 'Rp 25.000.000',
+      },
+      {
+        'month': 'April',
+        'period': '01 Apr - 30 Apr',
+        'status': 'Paid',
+        'amount': 'Rp 25.000.000',
+      },
+      {
+        'month': 'March',
+        'period': '01 Mar - 31 Mar',
+        'status': 'Paid',
+        'amount': 'Rp 25.000.000',
+      },
+      {
+        'month': 'February',
+        'period': '01 Feb - 28 Feb',
+        'status': 'Paid',
+        'amount': 'Rp 25.000.000',
+      },
+      {
+        'month': 'January',
+        'period': '01 Jan - 31 Jan',
+        'status': 'Paid',
+        'amount': 'Rp 25.000.000',
+      },
+    ],
+    '2024': [
+      {
+        'month': 'December',
+        'period': '01 Dec - 31 Dec',
+        'status': 'Paid',
+        'amount': 'Rp 150.000.000',
+      },
+      {
+        'month': 'November',
+        'period': '01 Nov - 30 Nov',
+        'status': 'Paid',
+        'amount': 'Rp 25.000.000',
+      },
+      {
+        'month': 'October',
+        'period': '01 Oct - 31 Oct',
+        'status': 'Paid',
+        'amount': 'Rp 25.000.000',
+      },
+      {
+        'month': 'September',
+        'period': '01 Sep - 30 Sep',
+        'status': 'Paid',
+        'amount': 'Rp 25.000.000',
+      },
+      {
+        'month': 'August',
+        'period': '01 Aug - 31 Aug',
+        'status': 'Paid',
+        'amount': 'Rp 25.000.000',
+      },
+      {
+        'month': 'July',
+        'period': '01 Jul - 31 Jul',
+        'status': 'Paid',
+        'amount': 'Rp 25.000.000',
+      },
+      {
+        'month': 'June',
+        'period': '01 Jun - 30 Jun',
+        'status': 'Paid',
+        'amount': 'Rp 25.000.000',
+      },
+      {
+        'month': 'May',
+        'period': '01 May - 31 May',
+        'status': 'Paid',
+        'amount': 'Rp 25.000.000',
+      },
+      {
+        'month': 'April',
+        'period': '01 Apr - 30 Apr',
+        'status': 'Paid',
+        'amount': 'Rp 25.000.000',
+      },
+      {
+        'month': 'March',
+        'period': '01 Mar - 31 Mar',
+        'status': 'Paid',
+        'amount': 'Rp 25.000.000',
+      },
+      {
+        'month': 'February',
+        'period': '01 Feb - 29 Feb',
+        'status': 'Paid',
+        'amount': 'Rp 25.000.000',
+      },
+      {
+        'month': 'January',
+        'period': '01 Jan - 31 Jan',
+        'status': 'Paid',
+        'amount': 'Rp 25.000.000',
+      },
+    ],
+    '2023': [
+      {
+        'month': 'December',
+        'period': '01 Dec - 31 Dec',
+        'status': 'Paid',
+        'amount': 'Rp 150.000.000',
+      },
+      {
+        'month': 'November',
+        'period': '01 Nov - 30 Nov',
+        'status': 'Paid',
+        'amount': 'Rp 25.000.000',
+      },
+      {
+        'month': 'October',
+        'period': '01 Oct - 31 Oct',
+        'status': 'Paid',
+        'amount': 'Rp 25.000.000',
+      },
+      {
+        'month': 'September',
+        'period': '01 Sep - 30 Sep',
+        'status': 'Paid',
+        'amount': 'Rp 25.000.000',
+      },
+    ],
+  };
 
   @override
   Widget build(BuildContext context) {
+    final currentData = _yearData[_selectedYear] ?? [];
+
     return Scaffold(
       backgroundColor: Colors.grey[50], // Light background
       appBar: AppBar(
@@ -117,19 +287,22 @@ class _MyPayslipState extends State<MyPayslip> {
 
           // Payslip List
           Expanded(
-            child: ListView.builder(
-              padding: const EdgeInsets.all(16),
-              itemCount: _monthsData.length,
-              itemBuilder: (context, index) {
-                final data = _monthsData[index];
-                return _buildPayslipCard(
-                  data['month']!,
-                  data['period']!,
-                  'Rp 25.000.000', // Consistent amount
-                  'Paid',
-                );
-              },
-            ),
+            child:
+                currentData.isEmpty
+                    ? Center(child: Text('No payslips for $_selectedYear'))
+                    : ListView.builder(
+                      padding: const EdgeInsets.all(16),
+                      itemCount: currentData.length,
+                      itemBuilder: (context, index) {
+                        final data = currentData[index];
+                        return _buildPayslipCard(
+                          data['month']!,
+                          data['period']!,
+                          data['amount']!,
+                          data['status']!,
+                        );
+                      },
+                    ),
           ),
         ],
       ),
