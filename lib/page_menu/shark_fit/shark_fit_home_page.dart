@@ -3,6 +3,8 @@ import 'dart:math' as math;
 import 'package:project_clone/page_menu/shark_fit/shark_fit_workout_page.dart';
 import 'package:project_clone/page_menu/shark_fit/shark_fit_device_page.dart';
 import 'package:project_clone/page_menu/shark_fit/shark_fit_profile_page.dart';
+import 'package:project_clone/page_menu/shark_fit/shark_fit_intake_page.dart';
+import 'package:project_clone/page_menu/shark_fit/shark_fit_edit_card_page.dart';
 
 class SharkFitHomePage extends StatefulWidget {
   const SharkFitHomePage({super.key});
@@ -210,56 +212,66 @@ class _DashboardPage extends StatelessWidget {
             const SizedBox(height: 24),
 
             // Intake Reminder Card
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(20),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.03),
-                    blurRadius: 10,
-                    offset: const Offset(0, 4),
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const SharkFitIntakePage(),
                   ),
-                ],
-              ),
-              child: Row(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(8),
-                    decoration: const BoxDecoration(
-                      color: Color(0xFF03A9F4), // Light Blue
-                      shape: BoxShape.circle,
+                );
+              },
+              child: Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.03),
+                      blurRadius: 10,
+                      offset: const Offset(0, 4),
                     ),
-                    child: const Icon(
-                      Icons.local_drink,
-                      color: Colors.white,
-                      size: 20,
+                  ],
+                ),
+                child: Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: const BoxDecoration(
+                        color: Color(0xFF03A9F4), // Light Blue
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Icon(
+                        Icons.local_drink,
+                        color: Colors.white,
+                        size: 20,
+                      ),
                     ),
-                  ),
-                  const SizedBox(width: 12),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
-                      Text(
-                        'Intake Reminder',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.black87,
+                    const SizedBox(width: 12),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: const [
+                        Text(
+                          'Intake Reminder',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black87,
+                          ),
                         ),
-                      ),
-                      SizedBox(height: 4),
-                      Text(
-                        'View drink records',
-                        style: TextStyle(fontSize: 12, color: Colors.grey),
-                      ),
-                    ],
-                  ),
-                  const Spacer(),
-                  const Icon(Icons.chevron_right, color: Colors.grey),
-                ],
+                        SizedBox(height: 4),
+                        Text(
+                          'View drink records',
+                          style: TextStyle(fontSize: 12, color: Colors.grey),
+                        ),
+                      ],
+                    ),
+                    const Spacer(),
+                    const Icon(Icons.chevron_right, color: Colors.grey),
+                  ],
+                ),
               ),
             ),
             const SizedBox(height: 24),
@@ -268,7 +280,14 @@ class _DashboardPage extends StatelessWidget {
             SizedBox(
               width: double.infinity,
               child: ElevatedButton.icon(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const SharkFitEditCardPage(),
+                    ),
+                  );
+                },
                 icon: const Icon(Icons.swap_vert, color: Colors.black87),
                 label: const Text(
                   'Edit Data Card',
