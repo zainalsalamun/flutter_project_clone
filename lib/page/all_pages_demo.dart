@@ -7,6 +7,7 @@ import 'package:project_clone/page_menu/ovo_home_page.dart';
 import 'package:project_clone/page_menu/pintu/pintu_home_page.dart';
 import 'package:project_clone/page_menu/shopeepay_page.dart';
 import 'package:project_clone/page_menu/traveloka_home_page.dart';
+import 'package:project_clone/page_menu/shark_fit/shark_fit_home_page.dart';
 
 class AllPagesDemo extends StatelessWidget {
   const AllPagesDemo({super.key});
@@ -82,6 +83,13 @@ class AllPagesDemo extends StatelessWidget {
             icon: Icons.groups_2_outlined,
             iconColor: Colors.red.shade700,
             page: const HrHomePage(),
+          ),
+          _menuCard(
+            context,
+            title: "Shark Fit Home Page",
+            icon: Icons.monitor_heart_outlined,
+            iconColor: Colors.blue.shade700,
+            page: const SharkFitHomePage(),
           ),
           const SizedBox(height: 16),
         ],
