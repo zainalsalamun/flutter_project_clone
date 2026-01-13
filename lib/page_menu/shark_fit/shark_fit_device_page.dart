@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:project_clone/page_menu/shark_fit/shark_fit_notifications_page.dart';
+import 'package:project_clone/page_menu/shark_fit/shark_fit_contact_page.dart';
 
 class SharkFitDevicePage extends StatelessWidget {
   const SharkFitDevicePage({super.key});
@@ -261,6 +263,14 @@ class SharkFitDevicePage extends StatelessWidget {
               Colors.blue,
               'Notifications',
               isLast: true,
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const SharkFitNotificationsPage(),
+                  ),
+                );
+              },
             ),
           ),
           const SizedBox(height: 16),
@@ -285,6 +295,14 @@ class SharkFitDevicePage extends StatelessWidget {
                   Icons.contacts,
                   const Color(0xFF00C853),
                   'Favorite Contacts',
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const SharkFitContactPage(),
+                      ),
+                    );
+                  },
                 ),
                 _buildDivider(),
                 _buildSettingsItem(Icons.alarm, Colors.orange, 'Alarms'),
@@ -432,29 +450,37 @@ class SharkFitDevicePage extends StatelessWidget {
     Color iconColor,
     String title, {
     bool isLast = false,
+    VoidCallback? onTap,
   }) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 12),
-      child: Row(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(color: iconColor, shape: BoxShape.circle),
-            child: Icon(icon, color: Colors.white, size: 20),
-          ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Text(
-              title,
-              style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w500,
-                color: Colors.black87,
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        color: Colors.transparent,
+        padding: const EdgeInsets.symmetric(vertical: 12),
+        child: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: iconColor,
+                shape: BoxShape.circle,
+              ),
+              child: Icon(icon, color: Colors.white, size: 20),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Text(
+                title,
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.black87,
+                ),
               ),
             ),
-          ),
-          Icon(Icons.chevron_right, color: Colors.grey.shade400, size: 20),
-        ],
+            Icon(Icons.chevron_right, color: Colors.grey.shade400, size: 20),
+          ],
+        ),
       ),
     );
   }
