@@ -7,7 +7,7 @@ import 'package:project_clone/page_menu/ovo_home_page.dart';
 import 'package:project_clone/page_menu/pintu/pintu_home_page.dart';
 import 'package:project_clone/page_menu/shopeepay_page.dart';
 import 'package:project_clone/page_menu/traveloka_home_page.dart';
-import 'package:project_clone/page_menu/shark_fit/shark_fit_home_page.dart';
+import 'package:project_clone/page_menu/shark_fit/menu/shark_fit_home_page.dart';
 
 class AllPagesDemo extends StatelessWidget {
   const AllPagesDemo({super.key});
