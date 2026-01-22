@@ -10,7 +10,6 @@ class SharkFitUpgradePage extends StatefulWidget {
 class _SharkFitUpgradePageState extends State<SharkFitUpgradePage> {
   bool _isChecking = false;
   String _statusMessage = 'Current Version: V1.0.0';
-  bool _upToDate = true;
 
   void _checkForUpdates() async {
     setState(() {
@@ -24,7 +23,7 @@ class _SharkFitUpgradePageState extends State<SharkFitUpgradePage> {
     if (mounted) {
       setState(() {
         _isChecking = false;
-        _upToDate = true; // Simulating no updates found for now
+        // Simulating no updates found for now
         _statusMessage =
             'Your software is up to date.\nCurrent Version: V1.0.0';
       });
