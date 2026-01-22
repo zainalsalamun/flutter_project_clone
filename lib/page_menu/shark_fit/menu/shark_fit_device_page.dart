@@ -3,6 +3,10 @@ import 'package:project_clone/page_menu/shark_fit/detail/shark_fit_notifications
 import 'package:project_clone/page_menu/shark_fit/detail/shark_fit_contact_page.dart';
 import 'package:project_clone/page_menu/shark_fit/detail/shark_fit_shutter_page.dart';
 import 'package:project_clone/page_menu/shark_fit/detail/shark_fit_alarm_page.dart';
+import 'package:project_clone/page_menu/shark_fit/detail/shark_fit_find_device_page.dart';
+import 'package:project_clone/page_menu/shark_fit/detail/shark_fit_others_page.dart';
+import 'package:project_clone/page_menu/shark_fit/detail/shark_fit_watch_faces_page.dart';
+import 'package:project_clone/page_menu/shark_fit/detail/shark_fit_upgrade_page.dart';
 
 class SharkFitDevicePage extends StatelessWidget {
   const SharkFitDevicePage({super.key});
@@ -139,13 +143,29 @@ class SharkFitDevicePage extends StatelessWidget {
           const SizedBox(height: 32),
 
           // Watch Faces Header
-          const Text(
-            'Watch Faces',
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.w600,
-              color: Colors.black87,
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                'Watch Faces',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.black87,
+                ),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const SharkFitWatchFacesPage(),
+                    ),
+                  );
+                },
+                child: const Text('More >'),
+              ),
+            ],
           ),
           const SizedBox(height: 16),
 
@@ -356,12 +376,32 @@ class SharkFitDevicePage extends StatelessWidget {
             ),
             child: Column(
               children: [
-                _buildSettingsItem(Icons.search, Colors.cyan, 'Find Device'),
+                _buildSettingsItem(
+                  Icons.search,
+                  Colors.cyan,
+                  'Find Device',
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const SharkFitFindDevicePage(),
+                      ),
+                    );
+                  },
+                ),
                 _buildDivider(),
                 _buildSettingsItem(
                   Icons.more_horiz,
                   Colors.blueAccent,
                   'Others',
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const SharkFitOthersPage(),
+                      ),
+                    );
+                  },
                 ),
                 _buildDivider(),
                 _buildSettingsItem(
@@ -369,6 +409,14 @@ class SharkFitDevicePage extends StatelessWidget {
                   Colors.orange,
                   'Upgrade',
                   isLast: true,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const SharkFitUpgradePage(),
+                      ),
+                    );
+                  },
                 ),
               ],
             ),
