@@ -8,6 +8,7 @@ import 'package:project_clone/page_menu/pintu/pintu_home_page.dart';
 import 'package:project_clone/page_menu/shopeepay_page.dart';
 import 'package:project_clone/page_menu/traveloka_home_page.dart';
 import 'package:project_clone/page_menu/shark_fit/menu/shark_fit_home_page.dart';
+import 'package:project_clone/page_menu/tix_id/menu/tix_id_menu_page.dart';
 
 class AllPagesDemo extends StatelessWidget {
   const AllPagesDemo({super.key});
@@ -90,6 +91,13 @@ class AllPagesDemo extends StatelessWidget {
             icon: Icons.monitor_heart_outlined,
             iconColor: Colors.blue.shade700,
             page: const SharkFitHomePage(),
+          ),
+          _menuCard(
+            context,
+            title: "Tix ID Home Page",
+            icon: Icons.movie_outlined,
+            iconColor: const Color(0xFF1A2C50),
+            page: const TixIdMenuPage(),
           ),
           const SizedBox(height: 16),
         ],
