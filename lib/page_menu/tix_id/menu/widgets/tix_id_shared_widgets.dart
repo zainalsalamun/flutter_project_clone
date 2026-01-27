@@ -37,33 +37,23 @@ class TixIdSectionHeader extends StatelessWidget {
               if (onAllPressed != null)
                 GestureDetector(
                   onTap: onAllPressed,
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 6,
-                    ),
-                    decoration: BoxDecoration(
-                      color: Colors.amber[200],
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: const Row(
-                      children: [
-                        Text(
-                          "Semua",
-                          style: TextStyle(
-                            color: Color(0xFF1A2C50),
-                            fontWeight: FontWeight.bold,
-                            fontSize: 12,
-                          ),
-                        ),
-                        SizedBox(width: 4),
-                        Icon(
-                          Icons.arrow_forward_ios,
-                          size: 10,
+                  child: const Row(
+                    children: [
+                      Text(
+                        "Semua",
+                        style: TextStyle(
                           color: Color(0xFF1A2C50),
+                          fontWeight: FontWeight.bold,
+                          fontSize: 12,
                         ),
-                      ],
-                    ),
+                      ),
+                      SizedBox(width: 4),
+                      Icon(
+                        Icons.arrow_forward_ios,
+                        size: 10,
+                        color: Color(0xFF1A2C50),
+                      ),
+                    ],
                   ),
                 ),
             ],
