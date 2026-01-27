@@ -4,8 +4,22 @@ import '../tix_id_movie_detail_page.dart';
 import '../tix_id_rent_list_page.dart';
 import '../tix_id_now_showing_list_page.dart';
 
-class TixIdNowShowingSection extends StatelessWidget {
+class TixIdNowShowingSection extends StatefulWidget {
   const TixIdNowShowingSection({super.key});
+
+  @override
+  State<TixIdNowShowingSection> createState() => _TixIdNowShowingSectionState();
+}
+
+class _TixIdNowShowingSectionState extends State<TixIdNowShowingSection> {
+  String selectedFilter = "Semua Film";
+  final List<String> filters = [
+    "Semua Film",
+    "XXI",
+    "CGV",
+    "Cinépolis",
+    "❤️ Watchlist Saya",
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -29,13 +43,18 @@ class TixIdNowShowingSection extends StatelessWidget {
           scrollDirection: Axis.horizontal,
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Row(
-            children: [
-              const TixIdFilterChip(label: "Semua Film", isSelected: true),
-              const TixIdFilterChip(label: "XXI"),
-              const TixIdFilterChip(label: "CGV"),
-              const TixIdFilterChip(label: "Cinépolis"),
-              const TixIdFilterChip(label: "❤️ Watchlist Saya"),
-            ],
+            children:
+                filters.map((filter) {
+                  return TixIdFilterChip(
+                    label: filter,
+                    isSelected: filter == selectedFilter,
+                    onTap: () {
+                      setState(() {
+                        selectedFilter = filter;
+                      });
+                    },
+                  );
+                }).toList(),
           ),
         ),
         const SizedBox(height: 16),
