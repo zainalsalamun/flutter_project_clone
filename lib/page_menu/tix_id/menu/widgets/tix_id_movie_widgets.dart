@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'tix_id_shared_widgets.dart';
+import '../tix_id_movie_detail_page.dart';
+import '../tix_id_rent_list_page.dart';
+import '../tix_id_now_showing_list_page.dart';
 
 class TixIdNowShowingSection extends StatelessWidget {
   const TixIdNowShowingSection({super.key});
@@ -11,7 +14,14 @@ class TixIdNowShowingSection extends StatelessWidget {
         TixIdSectionHeader(
           icon: Icons.movie,
           title: "Sedang Tayang",
-          onAllPressed: () {},
+          onAllPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const TixIdNowShowingListPage(),
+              ),
+            );
+          },
         ),
         const SizedBox(height: 16),
         // Filters
@@ -41,6 +51,30 @@ class TixIdNowShowingSection extends StatelessWidget {
             },
           ),
         ),
+        const SizedBox(height: 16),
+        Center(
+          child: ElevatedButton.icon(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const TixIdNowShowingListPage(),
+                ),
+              );
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.white,
+              foregroundColor: const Color(0xFF1A2C50),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+                side: const BorderSide(color: Color(0xFF1A2C50)),
+              ),
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+            ),
+            icon: const Icon(Icons.keyboard_arrow_down),
+            label: const Text("Semua"),
+          ),
+        ),
       ],
     );
   }
@@ -56,108 +90,135 @@ class TixIdNowShowingCard extends StatelessWidget {
     List<String> titles = ["DAYS", "MERCY", "TWILIGHT"];
     // Safety check for index
     String title = titles[index % titles.length];
+    String imageUrl = "https://picsum.photos/300/400?random=$index";
 
-    return Container(
-      width: 220,
-      margin: const EdgeInsets.only(right: 16),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        color: Colors.grey[200],
-        image: DecorationImage(
-          image: NetworkImage("https://picsum.photos/300/400?random=$index"),
-          fit: BoxFit.cover,
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder:
+                (context) =>
+                    TixIdMovieDetailPage(title: title, imageUrl: imageUrl),
+          ),
+        );
+      },
+      child: Container(
+        width: 220,
+        margin: const EdgeInsets.only(right: 16),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12),
+          color: Colors.grey[200],
+          image: DecorationImage(
+            image: NetworkImage(imageUrl),
+            fit: BoxFit.cover,
+          ),
         ),
-      ),
-      child: Stack(
-        children: [
-          // Gradient Overlay
-          Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12),
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [Colors.transparent, Colors.black.withOpacity(0.8)],
-              ),
-            ),
-          ),
-          // Top Left Badge
-          if (index == 0)
-            Positioned(
-              top: 12,
-              left: 12,
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                decoration: BoxDecoration(
-                  color: Colors.black54,
-                  borderRadius: BorderRadius.circular(4),
-                ),
-                child: const Text(
-                  "24",
-                  style: TextStyle(color: Colors.white, fontSize: 10),
+        child: Stack(
+          children: [
+            // Gradient Overlay
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [Colors.transparent, Colors.black.withOpacity(0.8)],
                 ),
               ),
             ),
-          // Number Badge
-          Positioned(
-            top: 12,
-            right: 12,
-            child: Container(
-              padding: const EdgeInsets.all(6),
-              decoration: const BoxDecoration(
-                color: Colors.grey,
-                shape: BoxShape.circle,
-              ),
-              child: Text(
-                "${index + 1}",
-                style: const TextStyle(color: Colors.white, fontSize: 10),
-              ),
-            ),
-          ),
-          // Content
-          Positioned(
-            bottom: 16,
-            left: 16,
-            right: 16,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                  title,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
+            // Top Left Badge
+            if (index == 0)
+              Positioned(
+                top: 12,
+                left: 12,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 4,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.black54,
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                  child: const Text(
+                    "24",
+                    style: TextStyle(color: Colors.white, fontSize: 10),
                   ),
                 ),
-                const SizedBox(height: 8),
-                // Buttons
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Expanded(
-                      child: ElevatedButton(
-                        onPressed: () {},
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF1A2C50),
-                          padding: const EdgeInsets.symmetric(vertical: 0),
-                          minimumSize: const Size(0, 32),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16),
+              ),
+            // Number Badge
+            Positioned(
+              top: 12,
+              right: 12,
+              child: Container(
+                padding: const EdgeInsets.all(6),
+                decoration: const BoxDecoration(
+                  color: Colors.grey,
+                  shape: BoxShape.circle,
+                ),
+                child: Text(
+                  "${index + 1}",
+                  style: const TextStyle(color: Colors.white, fontSize: 10),
+                ),
+              ),
+            ),
+            // Content
+            Positioned(
+              bottom: 16,
+              left: 16,
+              right: 16,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    title,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  // Buttons
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder:
+                                    (context) => TixIdMovieDetailPage(
+                                      title: title,
+                                      imageUrl: imageUrl,
+                                    ),
+                              ),
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFF1A2C50),
+                            padding: const EdgeInsets.symmetric(vertical: 0),
+                            minimumSize: const Size(0, 32),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                          ),
+                          child: const Text(
+                            "Beli Tiket",
+                            style: TextStyle(fontSize: 12, color: Colors.white),
                           ),
                         ),
-                        child: const Text(
-                          "Semua",
-                          style: TextStyle(fontSize: 12, color: Colors.white),
-                        ),
                       ),
-                    ),
-                  ],
-                ),
-              ],
+                    ],
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -192,41 +253,56 @@ class TixIdRentSection extends StatelessWidget {
               // Safety
               String title = titles[index % titles.length];
 
-              return Container(
-                width: 150,
-                margin: const EdgeInsets.only(right: 16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          color:
-                              index % 2 == 0
-                                  ? Colors.red[900]
-                                  : Colors.grey[800],
-                          image: DecorationImage(
-                            image: NetworkImage(
-                              "https://picsum.photos/300/450?random=${index + 10}",
+              return GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder:
+                          (context) => TixIdMovieDetailPage(
+                            title: title,
+                            imageUrl:
+                                "https://picsum.photos/300/450?random=${index + 10}",
+                          ),
+                    ),
+                  );
+                },
+                child: Container(
+                  width: 150,
+                  margin: const EdgeInsets.only(right: 16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            color:
+                                index % 2 == 0
+                                    ? Colors.red[900]
+                                    : Colors.grey[800],
+                            image: DecorationImage(
+                              image: NetworkImage(
+                                "https://picsum.photos/300/450?random=${index + 10}",
+                              ),
+                              fit: BoxFit.cover,
                             ),
-                            fit: BoxFit.cover,
                           ),
                         ),
                       ),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      title,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14,
-                        color: Color(0xFF1A2C50),
+                      const SizedBox(height: 8),
+                      Text(
+                        title,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14,
+                          color: Color(0xFF1A2C50),
+                        ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
                       ),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               );
             },
@@ -236,7 +312,14 @@ class TixIdRentSection extends StatelessWidget {
         // Floating 'Semua' Button - strictly speaking this was outside the list in original code
         Center(
           child: ElevatedButton.icon(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const TixIdRentListPage(),
+                ),
+              );
+            },
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.white,
               foregroundColor: const Color(0xFF1A2C50),
