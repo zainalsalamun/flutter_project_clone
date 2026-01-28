@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'tix_id_notification_detail_page.dart';
 
 class TixIdNotificationPage extends StatelessWidget {
   const TixIdNotificationPage({super.key});
@@ -81,7 +82,18 @@ class TixIdNotificationPage extends StatelessWidget {
               ],
             ),
             onTap: () {
-              // Handle individual notification tap if needed
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder:
+                      (context) => TixIdNotificationDetailPage(
+                        title: "Promo Spesial Hari Ini! ${index + 1}",
+                        content:
+                            "Dapatkan diskon hingga 50% untuk pembelian tiket bioskop favoritmu. Cek sekarang sebelum kehabisan! Kami telah menyiapkan berbagai penawaran menarik khusus untuk kamu pelanggan setia TIX ID. Jangan lewatkan kesempatan ini untuk menonton film-film blockbuster terbaru dengan harga yang lebih hemat. Promo ini berlaku di seluruh bioskop jaringan XXI, CGV, dan Cinepolis di Indonesia.",
+                        time: "2 Jam lalu",
+                      ),
+                ),
+              );
             },
           );
         },
