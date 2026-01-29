@@ -14,20 +14,28 @@ class TixIdMenuPage extends StatefulWidget {
 
 class _TixIdMenuPageState extends State<TixIdMenuPage> {
   int _selectedIndex = 0;
-
-  final List<Widget> _pages = [
-    const TixIdHomeContent(),
-    const TixIdCinemaPage(),
-    const TixIdFunPage(),
-    const TixIdTicketPage(),
-  ];
+  String _selectedCity = "YOGYAKARTA";
 
   @override
   Widget build(BuildContext context) {
+    final List<Widget> pages = [
+      const TixIdHomeContent(),
+      TixIdCinemaPage(cityName: _selectedCity),
+      const TixIdFunPage(),
+      const TixIdTicketPage(),
+    ];
+
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: const TixIdAppBar(),
-      body: IndexedStack(index: _selectedIndex, children: _pages),
+      appBar: TixIdAppBar(
+        selectedCity: _selectedCity,
+        onCityChanged: (value) {
+          setState(() {
+            _selectedCity = value;
+          });
+        },
+      ),
+      body: IndexedStack(index: _selectedIndex, children: pages),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
         onTap: (index) {
