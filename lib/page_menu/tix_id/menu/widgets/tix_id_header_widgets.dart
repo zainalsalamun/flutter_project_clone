@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../tix_id_notification_page.dart';
+import '../tix_id_city_selector_page.dart';
 
 class TixIdAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String selectedCity;
@@ -16,17 +17,6 @@ class TixIdAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<String> cities = [
-      "JAKARTA",
-      "YOGYAKARTA",
-      "BANDUNG",
-      "SURABAYA",
-      "MALANG",
-      "SEMARANG",
-      "BALI",
-      "MEDAN",
-      "MAKASSAR",
-    ];
     return Container(
       decoration: const BoxDecoration(
         color: Colors.white,
@@ -131,37 +121,38 @@ class TixIdAppBar extends StatelessWidget implements PreferredSizeWidget {
                 children: [
                   Icon(Icons.location_on, size: 20, color: Colors.grey[600]),
                   const SizedBox(width: 8),
-                  Expanded(
-                    child: DropdownButtonHideUnderline(
-                      child: DropdownButton<String>(
-                        value: selectedCity,
-                        icon: Icon(
+
+                  GestureDetector(
+                    onTap: () async {
+                      final result = await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder:
+                              (context) => TixIdCitySelectorPage(
+                                currentCity: selectedCity,
+                              ),
+                        ),
+                      );
+                      if (result != null && result is String) {
+                        onCityChanged(result);
+                      }
+                    },
+                    child: Row(
+                      children: [
+                        Text(
+                          selectedCity,
+                          style: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                            color: Color(0xFF1A2C50),
+                          ),
+                        ),
+                        const SizedBox(width: 4),
+                        Icon(
                           Icons.keyboard_arrow_down,
                           color: Colors.grey[600],
                         ),
-                        isExpanded: true,
-                        isDense:
-                            true, // Reduces the vertical size of the button
-                        style: const TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                          color: Color(0xFF1A2C50),
-                        ),
-                        onChanged: (String? newValue) {
-                          if (newValue != null) {
-                            onCityChanged(newValue);
-                          }
-                        },
-                        items:
-                            cities.map<DropdownMenuItem<String>>((
-                              String value,
-                            ) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(value),
-                              );
-                            }).toList(),
-                      ),
+                      ],
                     ),
                   ),
                 ],
