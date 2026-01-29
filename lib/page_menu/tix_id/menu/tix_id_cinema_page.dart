@@ -1,20 +1,82 @@
 import 'package:flutter/material.dart';
 
 class TixIdCinemaPage extends StatelessWidget {
-  const TixIdCinemaPage({super.key});
+  final String cityName;
+  const TixIdCinemaPage({super.key, required this.cityName});
 
   @override
   Widget build(BuildContext context) {
-    final List<String> cinemas = [
-      "AMBARRUKMO XXI",
-      "AMBARRUKMO PREMIERE",
-      "EMPIRE PREMIERE",
-      "EMPIRE XXI",
-      "JOGJA CITY PREMIERE",
-      "JOGJA CITY XXI",
-      "JWALK MALL CGV",
-      "LIPPO PLAZA JOGJA CINEPOLIS",
-    ];
+    final Map<String, List<String>> cityCinemas = {
+      "JAKARTA": [
+        "PLAZA SENAYAN XXI",
+        "GRAND INDONESIA CGV",
+        "PONDOK INDAH 1 XXI",
+        "GANDARIA CITY XXI",
+        "KELAPA GADING IMAX",
+        "KOTA KASABLANKA XXI",
+      ],
+      "YOGYAKARTA": [
+        "AMBARRUKMO XXI",
+        "AMBARRUKMO PREMIERE",
+        "EMPIRE PREMIERE",
+        "EMPIRE XXI",
+        "JOGJA CITY PREMIERE",
+        "JOGJA CITY XXI",
+        "JWALK MALL CGV",
+        "LIPPO PLAZA JOGJA CINEPOLIS",
+      ],
+      "BANDUNG": [
+        "CIWALK XXI",
+        "TSM XXI BANDUNG",
+        "BEC CGV",
+        "PARIS VAN JAVA CGV",
+        "EMPIRE XXI BANDUNG",
+      ],
+      "SURABAYA": [
+        "TUNJUNGAN 1 XXI",
+        "TUNJUNGAN 3 XXI",
+        "PAKUWON MALL CGV",
+        "GALAXY MALL XXI",
+        "CIPUTRA WORLD XXI",
+      ],
+      "MALANG": [
+        "MALANG TOWN SQUARE 21",
+        "MOG XXI",
+        "MOVIMAX DINODYO",
+        "CGV CYBER MALL",
+        "ARAYA XXI",
+      ],
+      "SEMARANG": [
+        "PARAGON XXI",
+        "CITRA XXI",
+        "DP MALL XXI",
+        "TENTREM MALL XXI",
+        "JAVA SUPERMALL CINEPOLIS",
+      ],
+      "BALI": [
+        "BEACHWALK XXI",
+        "GALERIA XXI",
+        "LEVEL 21 XXI",
+        "TRANS STUDIO BALI XXI",
+        "LIPPO MALL KUTA CINEPOLIS",
+      ],
+      "MEDAN": [
+        "CENTRE POINT XXI",
+        "SUN PLAZA XXI",
+        "DELIPARK XXI",
+        "RINGROAD CITY WALKS XXI",
+        "HERMES XXI",
+      ],
+      "MAKASSAR": [
+        "PANAKKUKANG XXI",
+        "TSM XXI MAKASSAR",
+        "M'TOS XXI",
+        "NIPAH PREMIERE",
+        "NIPAH XXI",
+      ],
+    };
+
+    final List<String> cinemas = cityCinemas[cityName] ?? [];
 
     return ListView(
       padding: EdgeInsets.zero,
