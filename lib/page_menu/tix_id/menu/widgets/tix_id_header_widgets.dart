@@ -1,32 +1,32 @@
 import 'package:flutter/material.dart';
 import '../tix_id_notification_page.dart';
 
-class TixIdAppBar extends StatefulWidget implements PreferredSizeWidget {
-  const TixIdAppBar({super.key});
+class TixIdAppBar extends StatelessWidget implements PreferredSizeWidget {
+  final String selectedCity;
+  final ValueChanged<String> onCityChanged;
 
-  @override
-  State<TixIdAppBar> createState() => _TixIdAppBarState();
+  const TixIdAppBar({
+    super.key,
+    required this.selectedCity,
+    required this.onCityChanged,
+  });
 
   @override
   Size get preferredSize => const Size.fromHeight(110);
-}
-
-class _TixIdAppBarState extends State<TixIdAppBar> {
-  String selectedCity = "YOGYAKARTA";
-  final List<String> cities = [
-    "JAKARTA",
-    "YOGYAKARTA",
-    "BANDUNG",
-    "SURABAYA",
-    "MALANG",
-    "SEMARANG",
-    "BALI",
-    "MEDAN",
-    "MAKASSAR",
-  ];
 
   @override
   Widget build(BuildContext context) {
+    final List<String> cities = [
+      "JAKARTA",
+      "YOGYAKARTA",
+      "BANDUNG",
+      "SURABAYA",
+      "MALANG",
+      "SEMARANG",
+      "BALI",
+      "MEDAN",
+      "MAKASSAR",
+    ];
     return Container(
       decoration: const BoxDecoration(
         color: Colors.white,
@@ -149,9 +149,7 @@ class _TixIdAppBarState extends State<TixIdAppBar> {
                         ),
                         onChanged: (String? newValue) {
                           if (newValue != null) {
-                            setState(() {
-                              selectedCity = newValue;
-                            });
+                            onCityChanged(newValue);
                           }
                         },
                         items:
