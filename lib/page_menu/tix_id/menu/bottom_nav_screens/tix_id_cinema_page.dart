@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../details/tix_id_cinema_detail_page.dart';
 
 class TixIdCinemaPage extends StatelessWidget {
   final String cityName;
@@ -410,7 +411,7 @@ class TixIdCinemaPage extends StatelessWidget {
           ),
         ),
         // Cinema List match exact style in image: star icon left, text bold, arrow right
-        ...cinemas.map((name) => _buildCinemaItem(name)),
+        ...cinemas.map((name) => _buildCinemaItem(context, name)),
         const SizedBox(height: 24),
       ],
     );
@@ -428,7 +429,7 @@ class TixIdCinemaPage extends StatelessWidget {
     );
   }
 
-  Widget _buildCinemaItem(String name) {
+  Widget _buildCinemaItem(BuildContext context, String name) {
     return Container(
       decoration: BoxDecoration(
         border: Border(bottom: BorderSide(color: Colors.grey[100]!)),
@@ -446,7 +447,14 @@ class TixIdCinemaPage extends StatelessWidget {
         trailing: Icon(Icons.chevron_right, color: Colors.grey[400], size: 20),
         contentPadding: const EdgeInsets.symmetric(horizontal: 16),
         dense: true,
-        onTap: () {},
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => TixIdCinemaDetailPage(cinemaName: name),
+            ),
+          );
+        },
       ),
     );
   }
