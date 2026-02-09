@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'widgets/tix_id_header_widgets.dart';
-import 'tix_id_home_content.dart';
-import 'tix_id_cinema_page.dart';
-import 'tix_id_fun_page.dart';
-import 'tix_id_ticket_page.dart';
+import 'bottom_nav_screens/tix_id_home_content.dart';
+import 'bottom_nav_screens/tix_id_cinema_page.dart';
+import 'bottom_nav_screens/tix_id_fun_page.dart';
+import 'bottom_nav_screens/tix_id_ticket_page.dart';
 
 class TixIdMenuPage extends StatefulWidget {
   const TixIdMenuPage({super.key});
