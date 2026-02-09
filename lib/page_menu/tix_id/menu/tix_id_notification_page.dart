@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'tix_id_notification_detail_page.dart';
+import '../details/tix_id_notification_detail_page.dart';
 
 class TixIdNotificationPage extends StatelessWidget {
   const TixIdNotificationPage({super.key});
