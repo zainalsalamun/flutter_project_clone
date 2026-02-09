@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'tix_id_movie_detail_page.dart';
+import '../details/tix_id_movie_detail_page.dart';
 
 class TixIdRentListPage extends StatelessWidget {
   const TixIdRentListPage({super.key});
