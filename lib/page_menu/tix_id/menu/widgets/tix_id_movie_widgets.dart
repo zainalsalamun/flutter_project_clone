@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'tix_id_shared_widgets.dart';
-import '../tix_id_movie_detail_page.dart';
+import '../../details/tix_id_movie_detail_page.dart';
 import '../tix_id_rent_list_page.dart';
 import '../tix_id_now_showing_list_page.dart';
 
