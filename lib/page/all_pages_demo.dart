@@ -9,6 +9,7 @@ import 'package:project_clone/page_menu/shopeepay_page.dart';
 import 'package:project_clone/page_menu/traveloka_home_page.dart';
 import 'package:project_clone/page_menu/shark_fit/menu/shark_fit_home_page.dart';
 import 'package:project_clone/page_menu/tix_id/menu/tix_id_menu_page.dart';
+import 'package:project_clone/page_menu/glossy_shop/glossy_shop_page.dart';
 
 class AllPagesDemo extends StatelessWidget {
   const AllPagesDemo({super.key});
@@ -98,6 +99,13 @@ class AllPagesDemo extends StatelessWidget {
             icon: Icons.movie_outlined,
             iconColor: const Color(0xFF1A2C50),
             page: const TixIdMenuPage(),
+          ),
+          _menuCard(
+            context,
+            title: "Glossy AI Shopping Page",
+            icon: Icons.blur_on_rounded,
+            iconColor: Colors.purpleAccent,
+            page: const GlossyShopPage(),
           ),
           const SizedBox(height: 16),
         ],
