@@ -1,9 +1,15 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'views/ai_dashboard_view.dart';
-import 'views/ai_chat_view.dart';
-import 'views/product_detail_view.dart';
-import 'widgets/glass_card.dart';
+import '../../../../core/widgets/glass_card.dart';
+import '../../../../core/theme/glossy_theme.dart';
+import '../../../shop/domain/entities/product_entity.dart';
+import '../../../shop/domain/repositories/shop_repository.dart';
+import '../../../shop/data/datasources/shop_mock_datasource.dart';
+import '../../../shop/data/repositories/shop_repository_impl.dart';
+import '../../../shop/presentation/state/shop_notifier.dart';
+import '../../../shop/presentation/views/ai_dashboard_view.dart';
+import '../../../shop/presentation/views/ai_chat_view.dart';
+import '../../../shop/presentation/views/product_detail_view.dart';
 
 class GlossyShopPage extends StatefulWidget {
   const GlossyShopPage({super.key});
@@ -14,9 +20,14 @@ class GlossyShopPage extends StatefulWidget {
 
 class _GlossyShopPageState extends State<GlossyShopPage> with TickerProviderStateMixin {
   int _currentTab = 0; // 0: Dashboard, 1: AI Chat
-  Map<String, dynamic>? _selectedProduct;
+  ProductEntity? _selectedProduct;
+
+  // Clean dependency injection instances
+  late final ShopMockDatasource _datasource;
+  late final ShopRepository _repository;
+  late final ShopNotifier _notifier;
   
-  // Animation controllers for the background glowing blobs
+  // Animation controllers for background glowing blobs
   late AnimationController _blob1Controller;
   late AnimationController _blob2Controller;
   late AnimationController _blob3Controller;
@@ -28,6 +39,14 @@ class _GlossyShopPageState extends State<GlossyShopPage> with TickerProviderStat
   @override
   void initState() {
     super.initState();
+
+    // Clean Architecture Injection
+    _datasource = ShopMockDatasource();
+    _repository = ShopRepositoryImpl(_datasource);
+    _notifier = ShopNotifier(_repository);
+    
+    // SAFE Pre-load trigger: Fetch data asynchronously outside build execution loops!
+    _notifier.loadShopData();
     
     // Setup background floating blobs animations
     _blob1Controller = AnimationController(
@@ -45,7 +64,7 @@ class _GlossyShopPageState extends State<GlossyShopPage> with TickerProviderStat
       duration: const Duration(seconds: 25),
     )..repeat(reverse: true);
 
-    // Floating paths (using different curves for organic motion)
+    // Floating paths
     _blob1Animation = Tween<Offset>(
       begin: const Offset(-0.3, -0.2),
       end: const Offset(0.4, 0.5),
@@ -67,50 +86,63 @@ class _GlossyShopPageState extends State<GlossyShopPage> with TickerProviderStat
     _blob1Controller.dispose();
     _blob2Controller.dispose();
     _blob3Controller.dispose();
+    _notifier.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFF0C0714), // Deep premium dark background
-      body: Stack(
-        children: [
-          // 1. Floating Glow Blobs Background
-          _buildBackgroundBlobs(),
-          
-          // 2. Heavy blur filter over blobs to turn them into glowing gas clouds
-          Positioned.fill(
-            child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 85.0, sigmaY: 85.0),
-              child: Container(color: Colors.transparent),
-            ),
+    return ListenableBuilder(
+      listenable: _notifier,
+      builder: (context, _) {
+        final isDark = _notifier.isDarkMode;
+        return Scaffold(
+          backgroundColor: GlossyTheme.getBackgroundColor(isDark),
+          body: Stack(
+            children: [
+              // 1. Floating Glow Blobs Background (Adjusted intensity for light vs dark mode)
+              _buildBackgroundBlobs(isDark),
+              
+              // 2. Heavy blur filter over blobs to turn them into glowing gas clouds
+              Positioned.fill(
+                child: BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 85.0, sigmaY: 85.0),
+                  child: Container(color: Colors.transparent),
+                ),
+              ),
+              
+              // 3. Screen Content
+              Positioned.fill(
+                child: AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 300),
+                  transitionBuilder: (child, animation) {
+                    return FadeTransition(opacity: animation, child: child);
+                  },
+                  child: _buildActiveScreen(isDark),
+                ),
+              ),
+              
+              // 4. Floating Premium Navigation Bar (only visible when not in details page)
+              if (_selectedProduct == null)
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: _buildFloatingNavbar(isDark),
+                ),
+            ],
           ),
-          
-          // 3. Screen Content
-          Positioned.fill(
-            child: AnimatedSwitcher(
-              duration: const Duration(milliseconds: 300),
-              transitionBuilder: (child, animation) {
-                return FadeTransition(opacity: animation, child: child);
-              },
-              child: _buildActiveScreen(),
-            ),
-          ),
-          
-          // 4. Floating Premium Navigation Bar (only visible when not in details page)
-          if (_selectedProduct == null)
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: _buildFloatingNavbar(),
-            ),
-        ],
-      ),
+        );
+      },
     );
   }
 
-  Widget _buildBackgroundBlobs() {
+  Widget _buildBackgroundBlobs(bool isDark) {
     final size = MediaQuery.of(context).size;
+    
+    // Light mode features softer pastel halos; dark mode features vibrant neon glowing blobs
+    final opacity1 = isDark ? 0.55 : 0.22;
+    final opacity2 = isDark ? 0.35 : 0.25;
+    final opacity3 = isDark ? 0.28 : 0.16;
+
     return Stack(
       children: [
         // Blob 1 - Purple/Pink
@@ -130,8 +162,8 @@ class _GlossyShopPageState extends State<GlossyShopPage> with TickerProviderStat
               shape: BoxShape.circle,
               gradient: RadialGradient(
                 colors: [
-                  const Color(0xFFE040FB).withOpacity(0.55),
-                  const Color(0xFFE040FB).withOpacity(0.0),
+                  GlossyTheme.neonMagenta.withOpacity(opacity1),
+                  GlossyTheme.neonMagenta.withOpacity(0.0),
                 ],
               ),
             ),
@@ -155,8 +187,8 @@ class _GlossyShopPageState extends State<GlossyShopPage> with TickerProviderStat
               shape: BoxShape.circle,
               gradient: RadialGradient(
                 colors: [
-                  const Color(0xFF00E5FF).withOpacity(0.35),
-                  const Color(0xFF00E5FF).withOpacity(0.0),
+                  GlossyTheme.accentCyan.withOpacity(opacity2),
+                  GlossyTheme.accentCyan.withOpacity(0.0),
                 ],
               ),
             ),
@@ -180,8 +212,8 @@ class _GlossyShopPageState extends State<GlossyShopPage> with TickerProviderStat
               shape: BoxShape.circle,
               gradient: RadialGradient(
                 colors: [
-                  const Color(0xFFFF5252).withOpacity(0.28),
-                  const Color(0xFFFF5252).withOpacity(0.0),
+                  GlossyTheme.accentRed.withOpacity(opacity3),
+                  GlossyTheme.accentRed.withOpacity(0.0),
                 ],
               ),
             ),
@@ -191,11 +223,12 @@ class _GlossyShopPageState extends State<GlossyShopPage> with TickerProviderStat
     );
   }
 
-  Widget _buildActiveScreen() {
+  Widget _buildActiveScreen(bool isDark) {
     if (_selectedProduct != null) {
       return ProductDetailView(
         key: const ValueKey("details_screen"),
         product: _selectedProduct!,
+        notifier: _notifier,
         onBack: () => setState(() => _selectedProduct = null),
       );
     }
@@ -203,12 +236,14 @@ class _GlossyShopPageState extends State<GlossyShopPage> with TickerProviderStat
     if (_currentTab == 1) {
       return AiChatView(
         key: const ValueKey("ai_chat_screen"),
+        isDarkMode: isDark,
         onStopListening: () => setState(() => _currentTab = 0),
       );
     }
     
     return AiDashboardView(
       key: const ValueKey("dashboard_screen"),
+      notifier: _notifier,
       onProductSelected: (product) {
         setState(() => _selectedProduct = product);
       },
@@ -218,22 +253,16 @@ class _GlossyShopPageState extends State<GlossyShopPage> with TickerProviderStat
     );
   }
 
-  Widget _buildFloatingNavbar() {
+  Widget _buildFloatingNavbar(bool isDark) {
     return Container(
       margin: const EdgeInsets.fromLTRB(24, 0, 24, 30),
       child: GlassCard(
         borderRadius: 30,
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-        opacity: 0.12,
-        border: Border.all(color: Colors.white.withOpacity(0.14), width: 1.2),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.4),
-            blurRadius: 25,
-            spreadRadius: 2,
-            offset: const Offset(0, 10),
-          ),
-        ],
+        opacity: isDark ? 0.12 : 0.65,
+        gradient: GlossyTheme.getCardGradient(isDark),
+        border: GlossyTheme.getCardBorder(isDark),
+        boxShadow: GlossyTheme.getCardShadow(isDark),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -242,16 +271,18 @@ class _GlossyShopPageState extends State<GlossyShopPage> with TickerProviderStat
               index: 0,
               icon: Icons.dashboard_rounded,
               label: "Explore",
+              isDark: isDark,
             ),
             
             // Center AI Spark Orb
             _buildCenterAiButton(),
             
-            // Favorites tab or direct view detail mock
+            // Cart shortcut tab
             _buildNavButton(
               index: 2,
               icon: Icons.shopping_bag_outlined,
               label: "Cart",
+              isDark: isDark,
             ),
           ],
         ),
@@ -259,28 +290,18 @@ class _GlossyShopPageState extends State<GlossyShopPage> with TickerProviderStat
     );
   }
 
-  Widget _buildNavButton({required int index, required IconData icon, required String label}) {
-    // Treat index 2 as setting a mock product directly for demo ease, or switching
+  Widget _buildNavButton({required int index, required IconData icon, required String label, required bool isDark}) {
     final isSelected = (index == 2 && _selectedProduct != null) || (index == _currentTab && _selectedProduct == null);
     
     return GestureDetector(
       onTap: () {
         if (index == 2) {
-          // Open product details directly for classic edge hoodie to showcase the third view!
-          setState(() {
-            _selectedProduct = {
-              "id": "1",
-              "name": "Edge runner-Black",
-              "category": "Premium Hoodie",
-              "price": 23.65,
-              "rating": 4.5,
-              "image": "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=500&auto=format&fit=crop&q=80",
-              "isNew": true,
-              "description": "Premium ultra-cotton heavyweight hoodie designed for modern street comfort. Features drop shoulder sleeves, high-density edge graphic embroidery, and double-lined cozy hood.",
-              "colors": [Colors.black, Colors.deepPurple, Colors.indigo],
-              "sizes": ["S", "M", "L", "XL"],
-            };
-          });
+          // Open product details directly to showcase the third view!
+          if (_notifier.products.isNotEmpty) {
+            setState(() {
+              _selectedProduct = _notifier.products[0];
+            });
+          }
         } else {
           setState(() {
             _selectedProduct = null;
@@ -292,21 +313,21 @@ class _GlossyShopPageState extends State<GlossyShopPage> with TickerProviderStat
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
-          color: isSelected ? Colors.white.withOpacity(0.08) : Colors.transparent,
+          color: isSelected ? (isDark ? Colors.white.withOpacity(0.08) : Colors.black.withOpacity(0.05)) : Colors.transparent,
         ),
         child: Row(
           children: [
             Icon(
               icon,
-              color: isSelected ? Colors.white : Colors.white.withOpacity(0.4),
+              color: isSelected ? GlossyTheme.getTextColor(isDark) : GlossyTheme.getTextColor(isDark).withOpacity(0.4),
               size: 20,
             ),
             if (isSelected) ...[
               const SizedBox(width: 8),
               Text(
                 label,
-                style: const TextStyle(
-                  color: Colors.white,
+                style: TextStyle(
+                  color: GlossyTheme.getTextColor(isDark),
                   fontSize: 12,
                   fontWeight: FontWeight.bold,
                   letterSpacing: 0.5,
@@ -332,19 +353,8 @@ class _GlossyShopPageState extends State<GlossyShopPage> with TickerProviderStat
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(22),
-          gradient: const LinearGradient(
-            colors: [Color(0xFFE040FB), Color(0xFF651FFF)],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-          boxShadow: [
-            BoxShadow(
-              color: const Color(0xFFE040FB).withOpacity(isAiActive ? 0.5 : 0.2),
-              blurRadius: isAiActive ? 14 : 8,
-              spreadRadius: isAiActive ? 2 : 0,
-              offset: const Offset(0, 2),
-            )
-          ],
+          gradient: GlossyTheme.purpleBlueGradient,
+          boxShadow: GlossyTheme.premiumGlowShadow(GlossyTheme.neonMagenta, radius: isAiActive ? 14 : 8),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
