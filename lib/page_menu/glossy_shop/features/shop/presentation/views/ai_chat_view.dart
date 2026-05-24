@@ -1,12 +1,16 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
-import '../widgets/glass_card.dart';
+import '../../../../core/widgets/glass_card.dart';
+import '../../../../core/theme/glossy_theme.dart';
+import '../widgets/hologram_orbit.dart';
 
 class AiChatView extends StatefulWidget {
+  final bool isDarkMode;
   final VoidCallback onStopListening;
 
   const AiChatView({
     super.key,
+    required this.isDarkMode,
     required this.onStopListening,
   });
 
@@ -62,6 +66,7 @@ class _AiChatViewState extends State<AiChatView> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = widget.isDarkMode;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24),
       child: Column(
@@ -70,7 +75,7 @@ class _AiChatViewState extends State<AiChatView> with TickerProviderStateMixin {
           const SizedBox(height: 70),
           
           // Request Bubble / Intent text
-          _buildRequestHeader(),
+          _buildRequestHeader(isDark),
           
           const Spacer(),
           
@@ -80,12 +85,12 @@ class _AiChatViewState extends State<AiChatView> with TickerProviderStateMixin {
           const Spacer(),
           
           // Pulse Text Status
-          _buildListeningIndicator(),
+          _buildListeningIndicator(isDark),
           
           const SizedBox(height: 40),
           
           // Action Controllers
-          _buildControlActions(),
+          _buildControlActions(isDark),
           
           const SizedBox(height: 110),
         ],
@@ -93,35 +98,35 @@ class _AiChatViewState extends State<AiChatView> with TickerProviderStateMixin {
     );
   }
 
-  Widget _buildRequestHeader() {
-    return const Column(
+  Widget _buildRequestHeader(bool isDark) {
+    return Column(
       children: [
         Text(
           "I'm looking for a",
           style: TextStyle(
-            color: Colors.white70,
+            color: GlossyTheme.getSubtextColor(isDark),
             fontSize: 16,
-            fontWeight: FontWeight.w400,
+            fontWeight: FontWeight.w500,
             letterSpacing: 0.5,
           ),
           textAlign: TextAlign.center,
         ),
-        SizedBox(height: 4),
+        const SizedBox(height: 4),
         Text(
           "minimalistic trending\ngraphic Hoodie.",
           style: TextStyle(
-            color: Colors.white,
+            color: GlossyTheme.getTextColor(isDark),
             fontSize: 26,
             fontWeight: FontWeight.w800,
             height: 1.25,
             letterSpacing: 0.5,
-            shadows: [
-              Shadow(
+            shadows: isDark ? [
+              const Shadow(
                 color: Colors.purpleAccent,
                 blurRadius: 15,
                 offset: Offset(0, 2),
               )
-            ],
+            ] : null,
           ),
           textAlign: TextAlign.center,
         ),
@@ -238,16 +243,16 @@ class _AiChatViewState extends State<AiChatView> with TickerProviderStateMixin {
     );
   }
 
-  Widget _buildListeningIndicator() {
+  Widget _buildListeningIndicator(bool isDark) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const Text(
+        Text(
           "Listening",
           style: TextStyle(
-            color: Colors.white70,
+            color: GlossyTheme.getSubtextColor(isDark),
             fontSize: 14,
-            fontWeight: FontWeight.w500,
+            fontWeight: FontWeight.w600,
             letterSpacing: 0.8,
           ),
         ),
@@ -260,8 +265,8 @@ class _AiChatViewState extends State<AiChatView> with TickerProviderStateMixin {
               width: 25,
               child: Text(
                 "." * dotCount,
-                style: const TextStyle(
-                  color: Colors.white70,
+                style: TextStyle(
+                  color: GlossyTheme.getSubtextColor(isDark),
                   fontSize: 14,
                   fontWeight: FontWeight.bold,
                 ),
@@ -273,7 +278,7 @@ class _AiChatViewState extends State<AiChatView> with TickerProviderStateMixin {
     );
   }
 
-  Widget _buildControlActions() {
+  Widget _buildControlActions(bool isDark) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -283,11 +288,11 @@ class _AiChatViewState extends State<AiChatView> with TickerProviderStateMixin {
           height: 50,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: Colors.white.withOpacity(0.06),
-            border: Border.all(color: Colors.white.withOpacity(0.12), width: 1),
+            color: Colors.white.withOpacity(isDark ? 0.06 : 0.4),
+            border: Border.all(color: Colors.white.withOpacity(isDark ? 0.12 : 0.6), width: 1),
           ),
           child: IconButton(
-            icon: const Icon(Icons.keyboard_outlined, color: Colors.white70, size: 20),
+            icon: Icon(Icons.keyboard_outlined, color: GlossyTheme.getTextColor(isDark).withOpacity(0.8), size: 20),
             onPressed: widget.onStopListening,
           ),
         ),
@@ -300,9 +305,10 @@ class _AiChatViewState extends State<AiChatView> with TickerProviderStateMixin {
           child: GlassCard(
             borderRadius: 30,
             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-            opacity: 0.15,
+            opacity: isDark ? 0.15 : 0.55,
+            gradient: GlossyTheme.getCardGradient(isDark),
             border: Border.all(
-              color: Colors.pinkAccent.withOpacity(0.35),
+              color: Colors.pinkAccent.withOpacity(isDark ? 0.35 : 0.6),
               width: 1.5,
             ),
             child: Row(
@@ -326,10 +332,10 @@ class _AiChatViewState extends State<AiChatView> with TickerProviderStateMixin {
                   ),
                 ),
                 const SizedBox(width: 10),
-                const Text(
+                Text(
                   "Ask AI Assistant",
                   style: TextStyle(
-                    color: Colors.white,
+                    color: GlossyTheme.getTextColor(isDark),
                     fontSize: 13,
                     fontWeight: FontWeight.bold,
                     letterSpacing: 0.5,
@@ -348,83 +354,15 @@ class _AiChatViewState extends State<AiChatView> with TickerProviderStateMixin {
           height: 50,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: Colors.white.withOpacity(0.06),
-            border: Border.all(color: Colors.white.withOpacity(0.12), width: 1),
+            color: Colors.white.withOpacity(isDark ? 0.06 : 0.4),
+            border: Border.all(color: Colors.white.withOpacity(isDark ? 0.12 : 0.6), width: 1),
           ),
           child: IconButton(
-            icon: const Icon(Icons.language_outlined, color: Colors.white70, size: 20),
+            icon: Icon(Icons.language_outlined, color: GlossyTheme.getTextColor(isDark).withOpacity(0.8), size: 20),
             onPressed: () {},
           ),
         ),
       ],
     );
-  }
-}
-
-class HologramOrbitPainter extends CustomPainter {
-  final double angle;
-  final double radius;
-
-  HologramOrbitPainter({required this.angle, required this.radius});
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final center = Offset(size.width / 2, size.height / 2);
-    
-    // Draw outer orbital circle 1 (tilted)
-    final orbit1Paint = Paint()
-      ..shader = LinearGradient(
-        colors: [Colors.white.withOpacity(0.0), Colors.purpleAccent.withOpacity(0.2), Colors.purpleAccent.withOpacity(0.05)],
-        stops: const [0.0, 0.5, 1.0],
-      ).createShader(Rect.fromCircle(center: center, radius: radius))
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 1.0;
-      
-    canvas.save();
-    canvas.translate(center.dx, center.dy);
-    canvas.rotate(angle * 0.4);
-    canvas.scale(1.0, 0.45);
-    canvas.drawCircle(Offset.zero, radius, orbit1Paint);
-    
-    // Draw orbital glowing dot
-    final dotPaint = Paint()
-      ..color = Colors.cyanAccent
-      ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 2);
-    canvas.drawCircle(Offset(radius * math.cos(angle), radius * math.sin(angle)), 3.5, dotPaint);
-    canvas.restore();
-
-    // Draw outer orbital circle 2 (opposite tilt)
-    final orbit2Paint = Paint()
-      ..shader = LinearGradient(
-        colors: [Colors.white.withOpacity(0.0), Colors.pinkAccent.withOpacity(0.2), Colors.pinkAccent.withOpacity(0.05)],
-        stops: const [0.0, 0.5, 1.0],
-      ).createShader(Rect.fromCircle(center: center, radius: radius + 20))
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 1.0;
-
-    canvas.save();
-    canvas.translate(center.dx, center.dy);
-    canvas.rotate(-angle * 0.3 - 1.0);
-    canvas.scale(0.9, 0.3);
-    canvas.drawCircle(Offset.zero, radius + 20, orbit2Paint);
-    
-    // Draw orbital glowing dot 2
-    final dot2Paint = Paint()
-      ..color = Colors.pinkAccent
-      ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 3);
-    canvas.drawCircle(Offset((radius + 20) * math.cos(-angle * 1.5), (radius + 20) * math.sin(-angle * 1.5)), 4, dot2Paint);
-    canvas.restore();
-    
-    // Draw glowing orbit circles 3 (center halo)
-    final haloPaint = Paint()
-      ..color = Colors.purpleAccent.withOpacity(0.06)
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 1.5;
-    canvas.drawCircle(center, 58, haloPaint);
-  }
-
-  @override
-  bool shouldRepaint(covariant HologramOrbitPainter oldDelegate) {
-    return oldDelegate.angle != angle || oldDelegate.radius != radius;
   }
 }
