@@ -10,6 +10,7 @@ import 'package:project_clone/page_menu/traveloka_home_page.dart';
 import 'package:project_clone/page_menu/shark_fit/menu/shark_fit_home_page.dart';
 import 'package:project_clone/page_menu/tix_id/menu/tix_id_menu_page.dart';
 import 'package:project_clone/page_menu/glossy_shop/features/main_wrapper/presentation/views/glossy_shop_page.dart';
+import 'package:project_clone/page_menu/glossy_music/features/main_wrapper/presentation/views/glossy_music_page.dart';
 
 class AllPagesDemo extends StatelessWidget {
   const AllPagesDemo({super.key});
@@ -102,10 +103,17 @@ class AllPagesDemo extends StatelessWidget {
           ),
           _menuCard(
             context,
-            title: "Glossy AI Shopping Page",
+            title: "Halaman Belanja Glossy AI",
             icon: Icons.blur_on_rounded,
             iconColor: Colors.purpleAccent,
             page: const GlossyShopPage(),
+          ),
+          _menuCard(
+            context,
+            title: "Halaman Musik Glossy AI",
+            icon: Icons.graphic_eq_rounded,
+            iconColor: Colors.cyan,
+            page: const GlossyMusicPage(),
           ),
           const SizedBox(height: 16),
         ],
