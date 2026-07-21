@@ -1,4 +1,3 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:project_clone/page_menu/glossy_shop/features/shop/domain/entities/product_entity.dart';
@@ -113,7 +112,7 @@ class _AiDashboardViewState extends State<AiDashboardView>
               Row(
                 children: [
                   Text(
-                    "Hi, Olivia",
+                    "Hai, Olivia",
                     style: TextStyle(
                       color: GlossyTheme.getTextColor(isDark),
                       fontSize: 18,
@@ -138,7 +137,7 @@ class _AiDashboardViewState extends State<AiDashboardView>
               ),
               const SizedBox(height: 4),
               Text(
-                "Welcome back",
+                "Selamat datang kembali",
                 style: TextStyle(
                   color: GlossyTheme.getSubtextColor(isDark),
                   fontSize: 12,
@@ -270,7 +269,7 @@ class _AiDashboardViewState extends State<AiDashboardView>
                   ],
                 ).createShader(bounds),
             child: Text(
-              "A new way of Shopping is here",
+              "Cara baru berbelanja ada di sini",
               style: TextStyle(
                 color: Colors.white.withOpacity(0.9),
                 fontSize: 13,
@@ -281,7 +280,7 @@ class _AiDashboardViewState extends State<AiDashboardView>
           ),
           const SizedBox(height: 6),
           Text(
-            "Explore with Ai",
+            "Jelajahi dengan AI",
             style: TextStyle(
               color: GlossyTheme.getTextColor(isDark),
               fontSize: 28,
@@ -330,7 +329,7 @@ class _AiDashboardViewState extends State<AiDashboardView>
                   const SizedBox(width: 12),
                   Expanded(
                     child: Text(
-                      "Search or ask AI...",
+                      "Cari atau tanyakan pada AI...",
                       style: TextStyle(
                         color: GlossyTheme.getSubtextColor(
                           isDark,
@@ -414,7 +413,7 @@ class _AiDashboardViewState extends State<AiDashboardView>
                   ),
                   const SizedBox(width: 6),
                   Text(
-                    "Recommended for you",
+                    "Rekomendasi untuk Anda",
                     style: TextStyle(
                       color: GlossyTheme.getTextColor(isDark),
                       fontSize: 17,
@@ -426,7 +425,7 @@ class _AiDashboardViewState extends State<AiDashboardView>
               GestureDetector(
                 onTap: () {},
                 child: Text(
-                  "See all",
+                  "Lihat semua",
                   style: TextStyle(
                     color: GlossyTheme.getSubtextColor(isDark),
                     fontSize: 12,
