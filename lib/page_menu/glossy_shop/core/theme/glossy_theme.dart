@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 class GlossyTheme {
   // Brand Colors
   static const Color darkCanvas = Color(0xFF0C0714);
-  static const Color lightCanvas = Color(0xFFF5F3F8); // Premium warm off-white/ivory
+  static const Color lightCanvas = Color(
+    0xFFF5F3F8,
+  ); // Premium warm off-white/ivory
   static const Color accentPink = Color(0xFFFF4081);
   static const Color accentPurple = Color(0xFF651FFF);
   static const Color accentCyan = Color(0xFF00E5FF);
@@ -12,13 +14,17 @@ class GlossyTheme {
   static const Color neonMagenta = Color(0xFFE040FB);
 
   // Theme Getters
-  static Color getBackgroundColor(bool isDark) => isDark ? darkCanvas : lightCanvas;
+  static Color getBackgroundColor(bool isDark) =>
+      isDark ? darkCanvas : lightCanvas;
 
-  static Color getTextColor(bool isDark) => isDark ? Colors.white : const Color(0xFF1B132B);
+  static Color getTextColor(bool isDark) =>
+      isDark ? Colors.white : const Color(0xFF1B132B);
 
-  static Color getSubtextColor(bool isDark) => isDark ? Colors.white.withOpacity(0.55) : const Color(0xFF6B5E80);
+  static Color getSubtextColor(bool isDark) =>
+      isDark ? Colors.white.withOpacity(0.55) : const Color(0xFF6B5E80);
 
-  static Color getCardColor(bool isDark) => isDark ? Colors.transparent : Colors.white.withOpacity(0.25);
+  static Color getCardColor(bool isDark) =>
+      isDark ? Colors.transparent : Colors.white.withOpacity(0.25);
 
   static Gradient getCardGradient(bool isDark) {
     if (isDark) {
@@ -44,15 +50,9 @@ class GlossyTheme {
 
   static Border getCardBorder(bool isDark) {
     if (isDark) {
-      return Border.all(
-        color: Colors.white.withOpacity(0.13),
-        width: 1.2,
-      );
+      return Border.all(color: Colors.white.withOpacity(0.13), width: 1.2);
     } else {
-      return Border.all(
-        color: Colors.white.withOpacity(0.45),
-        width: 1.2,
-      );
+      return Border.all(color: Colors.white.withOpacity(0.45), width: 1.2);
     }
   }
 
@@ -102,7 +102,10 @@ class GlossyTheme {
   );
 
   // Custom shadows
-  static List<BoxShadow> premiumGlowShadow(Color color, {double radius = 12.0}) {
+  static List<BoxShadow> premiumGlowShadow(
+    Color color, {
+    double radius = 12.0,
+  }) {
     return [
       BoxShadow(
         color: color.withOpacity(0.35),
@@ -110,5 +113,12 @@ class GlossyTheme {
         offset: const Offset(0, 4),
       ),
     ];
+  }
+
+  // Currency Formatter
+  static String formatRupiah(double price) {
+    final raw = price.toInt().toString();
+    final pattern = RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))');
+    return "Rp ${raw.replaceAllMapped(pattern, (Match m) => "${m[1]}.")}";
   }
 }
