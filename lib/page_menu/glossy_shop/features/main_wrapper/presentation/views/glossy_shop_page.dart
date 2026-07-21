@@ -270,7 +270,7 @@ class _GlossyShopPageState extends State<GlossyShopPage> with TickerProviderStat
             _buildNavButton(
               index: 0,
               icon: Icons.dashboard_rounded,
-              label: "Explore",
+              label: "Jelajahi",
               isDark: isDark,
             ),
             
@@ -281,7 +281,7 @@ class _GlossyShopPageState extends State<GlossyShopPage> with TickerProviderStat
             _buildNavButton(
               index: 2,
               icon: Icons.shopping_bag_outlined,
-              label: "Cart",
+              label: "Keranjang",
               isDark: isDark,
             ),
           ],
@@ -362,7 +362,7 @@ class _GlossyShopPageState extends State<GlossyShopPage> with TickerProviderStat
             const Icon(Icons.blur_on, color: Colors.white, size: 16),
             const SizedBox(width: 6),
             Text(
-              isAiActive ? "AI Active" : "+ AI",
+              isAiActive ? "AI Aktif" : "+ AI",
               style: const TextStyle(
                 color: Colors.white,
                 fontSize: 12,
