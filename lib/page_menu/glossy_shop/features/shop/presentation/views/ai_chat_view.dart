@@ -102,7 +102,7 @@ class _AiChatViewState extends State<AiChatView> with TickerProviderStateMixin {
     return Column(
       children: [
         Text(
-          "I'm looking for a",
+          "Saya sedang mencari",
           style: TextStyle(
             color: GlossyTheme.getSubtextColor(isDark),
             fontSize: 16,
@@ -113,7 +113,7 @@ class _AiChatViewState extends State<AiChatView> with TickerProviderStateMixin {
         ),
         const SizedBox(height: 4),
         Text(
-          "minimalistic trending\ngraphic Hoodie.",
+          "hoodie grafis\nminimalis yang sedang tren.",
           style: TextStyle(
             color: GlossyTheme.getTextColor(isDark),
             fontSize: 26,
@@ -248,7 +248,7 @@ class _AiChatViewState extends State<AiChatView> with TickerProviderStateMixin {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          "Listening",
+          "Mendengarkan",
           style: TextStyle(
             color: GlossyTheme.getSubtextColor(isDark),
             fontSize: 14,
@@ -333,7 +333,7 @@ class _AiChatViewState extends State<AiChatView> with TickerProviderStateMixin {
                 ),
                 const SizedBox(width: 10),
                 Text(
-                  "Ask AI Assistant",
+                  "Tanya Asisten AI",
                   style: TextStyle(
                     color: GlossyTheme.getTextColor(isDark),
                     fontSize: 13,
