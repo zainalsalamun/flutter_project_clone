@@ -11,6 +11,8 @@ import 'package:project_clone/page_menu/shark_fit/menu/shark_fit_home_page.dart'
 import 'package:project_clone/page_menu/tix_id/menu/tix_id_menu_page.dart';
 import 'package:project_clone/page_menu/glossy_shop/features/main_wrapper/presentation/views/glossy_shop_page.dart';
 import 'package:project_clone/page_menu/glossy_music/features/main_wrapper/presentation/views/glossy_music_page.dart';
+import 'package:project_clone/page_menu/notification_center/notification_menu_page.dart';
+import 'package:project_clone/page_menu/nova_ai/nova_ai_home_page.dart';
 
 class AllPagesDemo extends StatelessWidget {
   const AllPagesDemo({super.key});
@@ -114,6 +116,20 @@ class AllPagesDemo extends StatelessWidget {
             icon: Icons.graphic_eq_rounded,
             iconColor: Colors.cyan,
             page: const GlossyMusicPage(),
+          ),
+          _menuCard(
+            context,
+            title: "Notification Center",
+            icon: Icons.notifications_active,
+            iconColor: Colors.redAccent,
+            page: const NotificationMenuPage(),
+          ),
+          _menuCard(
+            context,
+            title: "Nova AI Dashboard",
+            icon: Icons.auto_awesome,
+            iconColor: const Color(0xFF6366F1), // Indigo
+            page: const NovaAiHomePage(),
           ),
           const SizedBox(height: 16),
         ],
