@@ -133,7 +133,7 @@ class _SharkFitAlarmPageState extends State<SharkFitAlarmPage> {
                         const Spacer(),
                         Switch(
                           value: alarm['enabled'],
-                          activeColor: const Color(0xFF00C853),
+                          activeThumbColor: const Color(0xFF00C853),
                           onChanged: (value) {
                             setState(() {
                               alarm['enabled'] = value;
