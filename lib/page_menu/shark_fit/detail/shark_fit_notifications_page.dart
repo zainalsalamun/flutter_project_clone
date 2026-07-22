@@ -65,7 +65,7 @@ class _SharkFitNotificationsPageState extends State<SharkFitNotificationsPage> {
                       ),
                       Switch(
                         value: _masterToggle,
-                        activeColor: const Color(0xFF00C853),
+                        activeThumbColor: const Color(0xFF00C853),
                         onChanged: (val) {
                           setState(() => _masterToggle = val);
                         },
@@ -174,7 +174,7 @@ class _SharkFitNotificationsPageState extends State<SharkFitNotificationsPage> {
           ),
           Switch(
             value: isEnabled && _masterToggle, // Disable if master is off
-            activeColor: const Color(0xFF00C853),
+            activeThumbColor: const Color(0xFF00C853),
             onChanged:
                 _masterToggle
                     ? (val) {
