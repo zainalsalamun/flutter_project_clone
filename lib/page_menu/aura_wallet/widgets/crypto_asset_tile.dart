@@ -4,7 +4,7 @@ import '../models/crypto_asset.dart';
 class CryptoAssetTile extends StatelessWidget {
   final CryptoAsset asset;
 
-  const CryptoAssetTile({Key? key, required this.asset}) : super(key: key);
+  const CryptoAssetTile({super.key, required this.asset});
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +30,7 @@ class CryptoAssetTile extends StatelessWidget {
             child: Icon(asset.icon, color: asset.themeColor, size: 24),
           ),
           const SizedBox(width: 16),
-          
+
           // Name & Symbol
           Expanded(
             child: Column(
@@ -55,7 +55,7 @@ class CryptoAssetTile extends StatelessWidget {
               ],
             ),
           ),
-          
+
           // Mini Chart Placeholder (A glowing line)
           Expanded(
             child: Center(
@@ -65,24 +65,28 @@ class CryptoAssetTile extends StatelessWidget {
                 decoration: BoxDecoration(
                   border: Border(
                     bottom: BorderSide(
-                      color: isPositive ? const Color(0xFF10B981) : const Color(0xFFEF4444),
+                      color:
+                          isPositive
+                              ? const Color(0xFF10B981)
+                              : const Color(0xFFEF4444),
                       width: 2,
                     ),
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color: isPositive
-                          ? const Color(0xFF10B981).withOpacity(0.3)
-                          : const Color(0xFFEF4444).withOpacity(0.3),
+                      color:
+                          isPositive
+                              ? const Color(0xFF10B981).withOpacity(0.3)
+                              : const Color(0xFFEF4444).withOpacity(0.3),
                       blurRadius: 10,
                       offset: const Offset(0, 5),
-                    )
+                    ),
                   ],
                 ),
               ),
             ),
           ),
-          
+
           // Price & Balance
           Column(
             crossAxisAlignment: CrossAxisAlignment.end,
@@ -100,13 +104,19 @@ class CryptoAssetTile extends StatelessWidget {
                 children: [
                   Icon(
                     isPositive ? Icons.arrow_upward : Icons.arrow_downward,
-                    color: isPositive ? const Color(0xFF10B981) : const Color(0xFFEF4444),
+                    color:
+                        isPositive
+                            ? const Color(0xFF10B981)
+                            : const Color(0xFFEF4444),
                     size: 12,
                   ),
                   Text(
                     '${asset.priceChangePercentage24h.abs().toStringAsFixed(2)}%',
                     style: TextStyle(
-                      color: isPositive ? const Color(0xFF10B981) : const Color(0xFFEF4444),
+                      color:
+                          isPositive
+                              ? const Color(0xFF10B981)
+                              : const Color(0xFFEF4444),
                       fontSize: 13,
                       fontWeight: FontWeight.w600,
                     ),
