@@ -13,6 +13,10 @@ import 'package:project_clone/page_menu/glossy_shop/features/main_wrapper/presen
 import 'package:project_clone/page_menu/glossy_music/features/main_wrapper/presentation/views/glossy_music_page.dart';
 import 'package:project_clone/page_menu/notification_center/notification_menu_page.dart';
 import 'package:project_clone/page_menu/nova_ai/nova_ai_home_page.dart';
+import 'package:project_clone/page_menu/lumina_home/lumina_home_page.dart';
+import 'package:project_clone/page_menu/aura_wallet/aura_wallet_page.dart';
+import 'package:project_clone/page_menu/zenith_task/zenith_task_page.dart';
+import 'package:project_clone/page_menu/brewez_coffee/brewez_coffee_page.dart';
 
 class AllPagesDemo extends StatelessWidget {
   const AllPagesDemo({super.key});
@@ -33,6 +37,13 @@ class AllPagesDemo extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
+          _menuCard(
+            context,
+            title: "Coffee Order App",
+            icon: Icons.coffee,
+            iconColor: const Color(0xFFC67C4E),
+            page: const BrewezCoffeePage(),
+          ),
           _menuCard(
             context,
             title: "Bibit Home Page",
@@ -130,6 +141,27 @@ class AllPagesDemo extends StatelessWidget {
             icon: Icons.auto_awesome,
             iconColor: const Color(0xFF6366F1), // Indigo
             page: const NovaAiHomePage(),
+          ),
+          _menuCard(
+            context,
+            title: "Lumina Smart Home",
+            icon: Icons.home_filled,
+            iconColor: const Color(0xFFF59E0B), // Amber
+            page: const LuminaHomePage(),
+          ),
+          _menuCard(
+            context,
+            title: "Aura Crypto Wallet (BLoC)",
+            icon: Icons.account_balance_wallet_rounded,
+            iconColor: const Color(0xFF6366F1), // Indigo
+            page: const AuraWalletPage(),
+          ),
+          _menuCard(
+            context,
+            title: "Zenith Task (Neo-Brutalism)",
+            icon: Icons.check_box,
+            iconColor: const Color(0xFFF472B6), // Pink
+            page: const ZenithTaskPage(),
           ),
           const SizedBox(height: 16),
         ],
