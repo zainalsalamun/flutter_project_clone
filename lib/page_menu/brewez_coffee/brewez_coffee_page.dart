@@ -34,7 +34,7 @@ class _BrewezCoffeePageState extends State<BrewezCoffeePage> {
       'price': 3.80,
       'rating': 4.9,
       'image':
-          'https://images.unsplash.com/photo-1574626002951-6f481a5a04ce?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+          'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
     },
     {
       'name': 'Classic Espresso',
