@@ -19,7 +19,7 @@ class AuraWalletPage extends StatelessWidget {
 }
 
 class _AuraWalletView extends StatelessWidget {
-  const _AuraWalletView({super.key});
+  const _AuraWalletView();
 
   @override
   Widget build(BuildContext context) {
