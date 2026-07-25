@@ -17,6 +17,9 @@ import 'package:project_clone/page_menu/lumina_home/lumina_home_page.dart';
 import 'package:project_clone/page_menu/aura_wallet/aura_wallet_page.dart';
 import 'package:project_clone/page_menu/zenith_task/zenith_task_page.dart';
 import 'package:project_clone/page_menu/brewez_coffee/brewez_coffee_page.dart';
+import 'package:project_clone/page_menu/task_manager/task_manager_page.dart';
+import 'package:project_clone/page_menu/habit_tracker/habit_tracker_page.dart';
+import 'package:project_clone/page_menu/inventory_app/inventory_home_page.dart';
 
 class AllPagesDemo extends StatelessWidget {
   const AllPagesDemo({super.key});
@@ -37,6 +40,13 @@ class AllPagesDemo extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
+          _menuCard(
+            context,
+            title: "Inventory App (Sederhana)",
+            icon: Icons.inventory_2_rounded,
+            iconColor: const Color(0xFF6366F1),
+            page: const InventoryHomePage(),
+          ),
           _menuCard(
             context,
             title: "Coffee Order App",
@@ -162,6 +172,20 @@ class AllPagesDemo extends StatelessWidget {
             icon: Icons.check_box,
             iconColor: const Color(0xFFF472B6), // Pink
             page: const ZenithTaskPage(),
+          ),
+          _menuCard(
+            context,
+            title: "Task Manager Pro (Local Storage)",
+            icon: Icons.task_alt,
+            iconColor: const Color(0xFF10B981), // Emerald
+            page: const TaskManagerPage(),
+          ),
+          _menuCard(
+            context,
+            title: "Habit Tracker (BLoC)",
+            icon: Icons.local_fire_department,
+            iconColor: const Color(0xFFF59E0B), // Amber
+            page: const HabitTrackerPage(),
           ),
           const SizedBox(height: 16),
         ],
