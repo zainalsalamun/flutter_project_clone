@@ -7,6 +7,22 @@ Project ini berisi beberapa halaman home seperti:
 - **Livin Mandiri Home Page**
 - **OVO Home Page**
 - **ShopeePay Page**
+- **Pintu Home Page**
+- **Traveloka Home Page**
+- **Aura Wallet**
+- **Brewez Coffee**
+- **Glossy Music**
+- **Glossy Shop**
+- **Habit Tracker**
+- **Inventory App**
+- **Lumina Home**
+- **Notification Center**
+- **Nova AI**
+- **Shark Fit**
+- **Talenta**
+- **Task Manager**
+- **Tix ID**
+- **Zenith Task**
 
 Semua halaman dapat diakses melalui 1 halaman utama:  
 `AllPagesDemo` — yang menampilkan daftar menu dari masing-masing UI clone.
@@ -34,16 +50,30 @@ Semua halaman dapat diakses melalui 1 halaman utama:
 | `lib/page_menu/shopeepay_page.dart` | UI clone ShopeePay |
 | `lib/page_menu/pintu_home_page.dart` | UI clone Pintu |
 | `lib/page_menu/traveloka_home_page.dart` | UI clone Traveloka |
+| `lib/page_menu/aura_wallet` | UI clone Aura Wallet |
+| `lib/page_menu/brewez_coffee` | UI clone Brewez Coffee |
+| `lib/page_menu/glossy_music` | UI clone Glossy Music |
+| `lib/page_menu/glossy_shop` | UI clone Glossy Shop |
+| `lib/page_menu/habit_tracker` | UI clone Habit Tracker |
+| `lib/page_menu/inventory_app` | UI clone Inventory App |
+| `lib/page_menu/lumina_home` | UI clone Lumina Home |
+| `lib/page_menu/notification_center` | UI clone Notification Center |
+| `lib/page_menu/nova_ai` | UI clone Nova AI |
+| `lib/page_menu/shark_fit` | UI clone Shark Fit |
+| `lib/page_menu/talenta` | UI clone Talenta |
+| `lib/page_menu/task_manager` | UI clone Task Manager |
+| `lib/page_menu/tix_id` | UI clone Tix ID |
+| `lib/page_menu/zenith_task` | UI clone Zenith Task |
 
 ---
 
 ### 📸 Screenshots
 <table>
   <tr>
-    <td><img src="assets/screenshot/all_demo.png" width="250"></td>
-    <td><img src="assets/screenshot/bibit_home.png" width="250"></td>
-    <td><img src="assets/screenshot/gojek_home.png" width="250"></td>
-    <td><img src="assets/screenshot/livin_home.png" width="250"></td>
+    <td><img src="assets/screenshot/all_demo.png" width="250" alt="All Pages Demo"></td>
+    <td><img src="assets/screenshot/bibit_home.png" width="250" alt="Bibit Home"></td>
+    <td><img src="assets/screenshot/gojek_home.png" width="250" alt="Gojek Home"></td>
+    <td><img src="assets/screenshot/livin_home.png" width="250" alt="Livin Home"></td>
   </tr>
   <tr>
     <th>All Pages Demo</th>
@@ -57,16 +87,84 @@ Semua halaman dapat diakses melalui 1 halaman utama:
 
 <table>
   <tr>
-    <td><img src="assets/screenshot/ovo_home.png" width="250"></td>
-    <td><img src="assets/screenshot/shoppe_home.png" width="250"></td>
-    <td><img src="assets/screenshot/pintu_home.png" width="250"></td>
-    <td><img src="assets/screenshot/traveloka_home.png" width="250"></td>
+    <td><img src="assets/screenshot/ovo_home.png" width="250" alt="OVO Home"></td>
+    <td><img src="assets/screenshot/shoppe_home.png" width="250" alt="ShopeePay Home"></td>
+    <td><img src="assets/screenshot/pintu_home.png" width="250" alt="Pintu Home"></td>
+    <td><img src="assets/screenshot/traveloka_home.png" width="250" alt="Traveloka Home"></td>
   </tr>
   <tr>
     <th>OVO Home</th>
     <th>ShopeePay Home</th>
     <th>Pintu Home</th>
-    <th>Traveloka Hone</th>
+    <th>Traveloka Home</th>
+  </tr>
+</table>
+
+<br>
+
+<table>
+  <tr>
+    <td><img src="assets/screenshot/aura_wallet.png" width="250" alt="Aura Wallet"></td>
+    <td><img src="assets/screenshot/brewez_coffee.png" width="250" alt="Brewez Coffee"></td>
+    <td><img src="assets/screenshot/glossy_music.png" width="250" alt="Glossy Music"></td>
+    <td><img src="assets/screenshot/glossy_shop.png" width="250" alt="Glossy Shop"></td>
+  </tr>
+  <tr>
+    <th>Aura Wallet</th>
+    <th>Brewez Coffee</th>
+    <th>Glossy Music</th>
+    <th>Glossy Shop</th>
+  </tr>
+</table>
+
+<br>
+
+<table>
+  <tr>
+    <td><img src="assets/screenshot/habit_tracker.png" width="250" alt="Habit Tracker"></td>
+    <td><img src="assets/screenshot/inventory_app.png" width="250" alt="Inventory App"></td>
+    <td><img src="assets/screenshot/lumina_home.png" width="250" alt="Lumina Home"></td>
+    <td><img src="assets/screenshot/notification_center.png" width="250" alt="Notification Center"></td>
+  </tr>
+  <tr>
+    <th>Habit Tracker</th>
+    <th>Inventory App</th>
+    <th>Lumina Home</th>
+    <th>Notification Center</th>
+  </tr>
+</table>
+
+<br>
+
+<table>
+  <tr>
+    <td><img src="assets/screenshot/nova_ai.png" width="250" alt="Nova AI"></td>
+    <td><img src="assets/screenshot/shark_fit.png" width="250" alt="Shark Fit"></td>
+    <td><img src="assets/screenshot/talenta.png" width="250" alt="Talenta"></td>
+    <td><img src="assets/screenshot/task_manager.png" width="250" alt="Task Manager"></td>
+  </tr>
+  <tr>
+    <th>Nova AI</th>
+    <th>Shark Fit</th>
+    <th>Talenta</th>
+    <th>Task Manager</th>
+  </tr>
+</table>
+
+<br>
+
+<table>
+  <tr>
+    <td><img src="assets/screenshot/tix_id.png" width="250" alt="Tix ID"></td>
+    <td><img src="assets/screenshot/zenith_task.png" width="250" alt="Zenith Task"></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <th>Tix ID</th>
+    <th>Zenith Task</th>
+    <th></th>
+    <th></th>
   </tr>
 </table>
 
