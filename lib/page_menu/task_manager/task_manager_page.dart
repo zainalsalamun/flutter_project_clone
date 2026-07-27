@@ -1,92 +1,43 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'bloc/task_manager_bloc.dart';
+import 'bloc/task_manager_event.dart';
+import 'bloc/task_manager_state.dart';
+import 'repositories/task_repository.dart';
 
-class TaskManagerPage extends StatefulWidget {
+class TaskManagerPage extends StatelessWidget {
   const TaskManagerPage({super.key});
 
   @override
-  State<TaskManagerPage> createState() => _TaskManagerPageState();
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => TaskManagerBloc(repository: TaskRepository())..add(LoadTasks()),
+      child: const TaskManagerView(),
+    );
+  }
 }
 
-class _TaskManagerPageState extends State<TaskManagerPage> {
-  List<Map<String, dynamic>> _tasks = [];
-  final TextEditingController _taskController = TextEditingController();
-  final String _storageKey = 'tasks_data';
-  String _currentFilter = 'all'; // all, pending, completed
+class TaskManagerView extends StatefulWidget {
+  const TaskManagerView({super.key});
 
   @override
-  void initState() {
-    super.initState();
-    _loadTasks();
-  }
+  State<TaskManagerView> createState() => _TaskManagerViewState();
+}
 
-  Future<void> _loadTasks() async {
-    final prefs = await SharedPreferences.getInstance();
-    final String? tasksString = prefs.getString(_storageKey);
-    if (tasksString != null) {
-      final List<dynamic> decodedTasks = jsonDecode(tasksString);
-      setState(() {
-        _tasks = List<Map<String, dynamic>>.from(decodedTasks);
-      });
-    }
-  }
-
-  Future<void> _saveTasks() async {
-    final prefs = await SharedPreferences.getInstance();
-    final String encodedTasks = jsonEncode(_tasks);
-    await prefs.setString(_storageKey, encodedTasks);
-  }
-
-  void _addTask() {
-    final text = _taskController.text.trim();
-    if (text.isEmpty) return;
-
-    setState(() {
-      _tasks.insert(0, {
-        'id': DateTime.now().millisecondsSinceEpoch.toString(),
-        'text': text,
-        'completed': false,
-      });
-    });
-    
-    _taskController.clear();
-    _saveTasks();
-  }
-
-  void _toggleTask(String id) {
-    setState(() {
-      final taskIndex = _tasks.indexWhere((task) => task['id'] == id);
-      if (taskIndex != -1) {
-        _tasks[taskIndex]['completed'] = !_tasks[taskIndex]['completed'];
-      }
-    });
-    _saveTasks();
-  }
-
-  void _deleteTask(String id) {
-    setState(() {
-      _tasks.removeWhere((task) => task['id'] == id);
-    });
-    _saveTasks();
-  }
-
-  int get _totalTasks => _tasks.length;
-  int get _completedTasks => _tasks.where((task) => task['completed'] == true).length;
-
-  List<Map<String, dynamic>> get _filteredTasks {
-    if (_currentFilter == 'pending') {
-      return _tasks.where((task) => task['completed'] == false).toList();
-    } else if (_currentFilter == 'completed') {
-      return _tasks.where((task) => task['completed'] == true).toList();
-    }
-    return _tasks;
-  }
+class _TaskManagerViewState extends State<TaskManagerView> {
+  final TextEditingController _taskController = TextEditingController();
 
   @override
   void dispose() {
     _taskController.dispose();
     super.dispose();
+  }
+
+  void _addTask(BuildContext context) {
+    final text = _taskController.text.trim();
+    if (text.isEmpty) return;
+    context.read<TaskManagerBloc>().add(AddTask(text));
+    _taskController.clear();
   }
 
   @override
@@ -106,13 +57,21 @@ class _TaskManagerPageState extends State<TaskManagerPage> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               _buildHeader(),
-              _buildInputArea(),
+              _buildInputArea(context),
               _buildStats(),
               _buildFilters(),
               Expanded(
-                child: _filteredTasks.isEmpty
-                    ? _buildEmptyState()
-                    : _buildTaskList(),
+                child: BlocBuilder<TaskManagerBloc, TaskManagerState>(
+                  builder: (context, state) {
+                    if (state.isLoading) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+                    if (state.filteredTasks.isEmpty) {
+                      return _buildEmptyState();
+                    }
+                    return _buildTaskList(state);
+                  },
+                ),
               ),
             ],
           ),
@@ -147,7 +106,7 @@ class _TaskManagerPageState extends State<TaskManagerPage> {
     );
   }
 
-  Widget _buildInputArea() {
+  Widget _buildInputArea(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 8.0),
       child: Row(
@@ -171,13 +130,13 @@ class _TaskManagerPageState extends State<TaskManagerPage> {
                     vertical: 16,
                   ),
                 ),
-                onSubmitted: (_) => _addTask(),
+                onSubmitted: (_) => _addTask(context),
               ),
             ),
           ),
           const SizedBox(width: 12),
           GestureDetector(
-            onTap: _addTask,
+            onTap: () => _addTask(context),
             child: Container(
               height: 52,
               width: 52,
@@ -201,27 +160,31 @@ class _TaskManagerPageState extends State<TaskManagerPage> {
   }
 
   Widget _buildStats() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
-      child: Row(
-        children: [
-          Expanded(
-            child: _buildStatCard(
-              title: "Total Tasks",
-              value: _totalTasks.toString(),
-              color: const Color(0xFF6366F1),
-            ),
+    return BlocBuilder<TaskManagerBloc, TaskManagerState>(
+      builder: (context, state) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
+          child: Row(
+            children: [
+              Expanded(
+                child: _buildStatCard(
+                  title: "Total Tasks",
+                  value: state.totalTasks.toString(),
+                  color: const Color(0xFF6366F1),
+                ),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: _buildStatCard(
+                  title: "Completed",
+                  value: state.completedTasks.toString(),
+                  color: const Color(0xFF10B981),
+                ),
+              ),
+            ],
           ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: _buildStatCard(
-              title: "Completed",
-              value: _completedTasks.toString(),
-              color: const Color(0xFF10B981),
-            ),
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 
@@ -258,27 +221,29 @@ class _TaskManagerPageState extends State<TaskManagerPage> {
   }
 
   Widget _buildFilters() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 8.0),
-      child: Row(
-        children: [
-          _buildFilterChip('All', 'all'),
-          const SizedBox(width: 8),
-          _buildFilterChip('Pending', 'pending'),
-          const SizedBox(width: 8),
-          _buildFilterChip('Completed', 'completed'),
-        ],
-      ),
+    return BlocBuilder<TaskManagerBloc, TaskManagerState>(
+      builder: (context, state) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 8.0),
+          child: Row(
+            children: [
+              _buildFilterChip(context, 'All', 'all', state.currentFilter),
+              const SizedBox(width: 8),
+              _buildFilterChip(context, 'Pending', 'pending', state.currentFilter),
+              const SizedBox(width: 8),
+              _buildFilterChip(context, 'Completed', 'completed', state.currentFilter),
+            ],
+          ),
+        );
+      },
     );
   }
 
-  Widget _buildFilterChip(String label, String filter) {
-    final isActive = _currentFilter == filter;
+  Widget _buildFilterChip(BuildContext context, String label, String filter, String currentFilter) {
+    final isActive = currentFilter == filter;
     return GestureDetector(
       onTap: () {
-        setState(() {
-          _currentFilter = filter;
-        });
+        context.read<TaskManagerBloc>().add(ChangeFilter(filter));
       },
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -301,13 +266,13 @@ class _TaskManagerPageState extends State<TaskManagerPage> {
     );
   }
 
-  Widget _buildTaskList() {
+  Widget _buildTaskList(TaskManagerState state) {
     return ListView.builder(
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-      itemCount: _filteredTasks.length,
+      itemCount: state.filteredTasks.length,
       itemBuilder: (context, index) {
-        final task = _filteredTasks[index];
-        final isCompleted = task['completed'] == true;
+        final task = state.filteredTasks[index];
+        final isCompleted = task.completed;
 
         return Container(
           margin: const EdgeInsets.only(bottom: 12),
@@ -319,7 +284,7 @@ class _TaskManagerPageState extends State<TaskManagerPage> {
           child: ListTile(
             contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
             leading: GestureDetector(
-              onTap: () => _toggleTask(task['id']),
+              onTap: () => context.read<TaskManagerBloc>().add(ToggleTaskStatus(task.id)),
               child: Container(
                 width: 24,
                 height: 24,
@@ -337,7 +302,7 @@ class _TaskManagerPageState extends State<TaskManagerPage> {
               ),
             ),
             title: Text(
-              task['text'],
+              task.text,
               style: TextStyle(
                 color: isCompleted ? Colors.white.withOpacity(0.3) : Colors.white,
                 decoration: isCompleted ? TextDecoration.lineThrough : null,
@@ -347,7 +312,7 @@ class _TaskManagerPageState extends State<TaskManagerPage> {
             ),
             trailing: IconButton(
               icon: const Icon(Icons.delete_outline, color: Colors.redAccent),
-              onPressed: () => _deleteTask(task['id']),
+              onPressed: () => context.read<TaskManagerBloc>().add(DeleteTask(task.id)),
             ),
           ),
         );
