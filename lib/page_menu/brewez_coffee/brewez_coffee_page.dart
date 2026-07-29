@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'brewez_coffee_detail_page.dart';
 
 class BrewezCoffeePage extends StatefulWidget {
   const BrewezCoffeePage({super.key});
@@ -227,8 +228,17 @@ class _BrewezCoffeePageState extends State<BrewezCoffeePage> {
         itemCount: _coffees.length,
         itemBuilder: (context, index) {
           final coffee = _coffees[index];
-          return Container(
-            width: 160,
+          return GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => BrewezCoffeeDetailPage(coffee: coffee),
+                ),
+              );
+            },
+            child: Container(
+              width: 160,
             margin: const EdgeInsets.only(right: 16, bottom: 8),
             decoration: BoxDecoration(
               color: Colors.white,
@@ -345,9 +355,10 @@ class _BrewezCoffeePageState extends State<BrewezCoffeePage> {
                 ),
               ],
             ),
-          );
-        },
-      ),
+          ),
+        );
+      },
+    ),
     );
   }
 
