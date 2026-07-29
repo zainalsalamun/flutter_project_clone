@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:project_clone/page_menu/recipe_app/pages/splash_page.dart';
 import 'package:project_clone/page_menu/bibit_home_page.dart';
 import 'package:project_clone/page_menu/gojek_home_page.dart';
 import 'package:project_clone/page_menu/talenta/hr_home_page.dart';
@@ -20,6 +21,12 @@ import 'package:project_clone/page_menu/brewez_coffee/brewez_coffee_page.dart';
 import 'package:project_clone/page_menu/task_manager/task_manager_page.dart';
 import 'package:project_clone/page_menu/habit_tracker/habit_tracker_page.dart';
 import 'package:project_clone/page_menu/inventory_app/inventory_home_page.dart';
+import 'package:project_clone/page_menu/weather_app/weather_home_page.dart';
+import 'package:project_clone/page_menu/movie_app/movie_app.dart';
+import 'package:project_clone/page_menu/e_commerce_app/e_commerce_app.dart';
+import 'package:project_clone/page_menu/food_delivery_app/food_delivery_app.dart';
+import 'package:project_clone/page_menu/pos_app/pos_app.dart';
+import 'package:project_clone/page_menu/hospital_reservation_app/hospital_app.dart';
 
 class AllPagesDemo extends StatelessWidget {
   const AllPagesDemo({super.key});
@@ -40,6 +47,20 @@ class AllPagesDemo extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
+          _menuCard(
+            context,
+            title: "Recipe App (Full App)",
+            icon: Icons.restaurant_menu,
+            iconColor: const Color(0xFFF96163),
+            page: const SplashPage(),
+          ),
+          _menuCard(
+            context,
+            title: "Weather App (Aesthetic UI)",
+            icon: Icons.cloud,
+            iconColor: Colors.lightBlueAccent,
+            page: const WeatherHomePage(),
+          ),
           _menuCard(
             context,
             title: "Inventory App (Sederhana)",
@@ -186,6 +207,41 @@ class AllPagesDemo extends StatelessWidget {
             icon: Icons.local_fire_department,
             iconColor: const Color(0xFFF59E0B), // Amber
             page: const HabitTrackerPage(),
+          ),
+          _menuCard(
+            context,
+            title: "Movie App (TMDB & BLoC)",
+            icon: Icons.movie_filter,
+            iconColor: Colors.red,
+            page: const MovieApp(),
+          ),
+          _menuCard(
+            context,
+            title: "E-Commerce App (Roadmap)",
+            icon: Icons.shopping_cart,
+            iconColor: Colors.blueAccent,
+            page: const ECommerceApp(),
+          ),
+          _menuCard(
+            context,
+            title: "Food Delivery (Roadmap)",
+            icon: Icons.fastfood,
+            iconColor: Colors.green,
+            page: const FoodDeliveryApp(),
+          ),
+          _menuCard(
+            context,
+            title: "POS App (Kasir Modern)",
+            icon: Icons.point_of_sale,
+            iconColor: Colors.deepPurple,
+            page: const PosApp(),
+          ),
+          _menuCard(
+            context,
+            title: "Hospital App (Enterprise)",
+            icon: Icons.local_hospital,
+            iconColor: Colors.teal,
+            page: const HospitalApp(),
           ),
           const SizedBox(height: 16),
         ],
