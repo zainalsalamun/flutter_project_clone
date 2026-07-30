@@ -45,7 +45,11 @@ class AllPagesDemo extends StatelessWidget {
         elevation: 0.5,
         centerTitle: true,
       ),
-      body: ListView(
+      body: GridView.count(
+        crossAxisCount: 2,
+        crossAxisSpacing: 16,
+        mainAxisSpacing: 16,
+        childAspectRatio: 0.95,
         padding: const EdgeInsets.all(16),
         children: [
           _menuCard(
@@ -251,7 +255,7 @@ class AllPagesDemo extends StatelessWidget {
             iconColor: Colors.green,
             page: const RsMedikaApp(),
           ),
-          const SizedBox(height: 16),
+
         ],
       ),
     );
@@ -269,8 +273,7 @@ class AllPagesDemo extends StatelessWidget {
         Navigator.push(context, MaterialPageRoute(builder: (_) => page));
       },
       child: Container(
-        margin: const EdgeInsets.only(bottom: 16),
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(16),
@@ -282,32 +285,33 @@ class AllPagesDemo extends StatelessWidget {
             ),
           ],
         ),
-        child: Row(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             // Icon
             Container(
-              height: 45,
-              width: 45,
+              height: 56,
+              width: 56,
               decoration: BoxDecoration(
                 color: iconColor.withOpacity(0.12),
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(16),
               ),
-              child: Icon(icon, size: 26, color: iconColor),
+              child: Icon(icon, size: 30, color: iconColor),
             ),
-            const SizedBox(width: 14),
+            const SizedBox(height: 16),
 
             // Title
-            Expanded(
-              child: Text(
-                title,
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                ),
+            Text(
+              title,
+              textAlign: TextAlign.center,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+                height: 1.2,
               ),
             ),
-
-            const Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey),
           ],
         ),
       ),
