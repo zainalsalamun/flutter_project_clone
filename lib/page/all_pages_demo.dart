@@ -27,6 +27,7 @@ import 'package:project_clone/page_menu/e_commerce_app/e_commerce_app.dart';
 import 'package:project_clone/page_menu/food_delivery_app/food_delivery_app.dart';
 import 'package:project_clone/page_menu/pos_app/pos_app.dart';
 import 'package:project_clone/page_menu/hospital_reservation_app/hospital_app.dart';
+import 'package:project_clone/page_menu/rs_medika_app/rs_medika_app.dart';
 
 class AllPagesDemo extends StatelessWidget {
   const AllPagesDemo({super.key});
@@ -242,6 +243,13 @@ class AllPagesDemo extends StatelessWidget {
             icon: Icons.local_hospital,
             iconColor: Colors.teal,
             page: const HospitalApp(),
+          ),
+          _menuCard(
+            context,
+            title: "RS Medika Utama (Reservasi)",
+            icon: Icons.health_and_safety,
+            iconColor: Colors.green,
+            page: const RsMedikaApp(),
           ),
           const SizedBox(height: 16),
         ],
