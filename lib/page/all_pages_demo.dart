@@ -28,7 +28,7 @@ import 'package:project_clone/page_menu/food_delivery_app/food_delivery_app.dart
 import 'package:project_clone/page_menu/pos_app/pos_app.dart';
 import 'package:project_clone/page_menu/hospital_reservation_app/hospital_app.dart';
 import 'package:project_clone/page_menu/rs_medika_app/rs_medika_app.dart';
-import 'package:project_clone/page_menu/bca_mobile_app/pages/m_bca_page.dart';
+import 'package:project_clone/page_menu/abc_mobile_app/pages/m_abc_page.dart';
 
 class AllPagesDemo extends StatelessWidget {
   const AllPagesDemo({super.key});
@@ -261,7 +261,7 @@ class AllPagesDemo extends StatelessWidget {
             title: "myABC Clone",
             icon: Icons.account_balance_wallet,
             iconColor: const Color(0xFF005AA9),
-            page: const MBcaPageWrapper(),
+            page: const MAbcPageWrapper(),
           ),
         ],
       ),
