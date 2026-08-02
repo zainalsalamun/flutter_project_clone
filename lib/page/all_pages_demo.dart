@@ -46,10 +46,10 @@ class AllPagesDemo extends StatelessWidget {
         centerTitle: true,
       ),
       body: GridView.count(
-        crossAxisCount: 2,
-        crossAxisSpacing: 16,
-        mainAxisSpacing: 16,
-        childAspectRatio: 0.95,
+        crossAxisCount: 3,
+        crossAxisSpacing: 12,
+        mainAxisSpacing: 12,
+        childAspectRatio: 0.85,
         padding: const EdgeInsets.all(16),
         children: [
           _menuCard(
@@ -273,7 +273,7 @@ class AllPagesDemo extends StatelessWidget {
         Navigator.push(context, MaterialPageRoute(builder: (_) => page));
       },
       child: Container(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(16),
@@ -290,15 +290,15 @@ class AllPagesDemo extends StatelessWidget {
           children: [
             // Icon
             Container(
-              height: 56,
-              width: 56,
+              height: 42,
+              width: 42,
               decoration: BoxDecoration(
                 color: iconColor.withOpacity(0.12),
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: BorderRadius.circular(12),
               ),
-              child: Icon(icon, size: 30, color: iconColor),
+              child: Icon(icon, size: 24, color: iconColor),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 12),
 
             // Title
             Text(
@@ -307,7 +307,7 @@ class AllPagesDemo extends StatelessWidget {
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
               style: const TextStyle(
-                fontSize: 14,
+                fontSize: 11,
                 fontWeight: FontWeight.w600,
                 height: 1.2,
               ),
