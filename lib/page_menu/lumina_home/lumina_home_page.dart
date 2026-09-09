@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
-import 'widgets/smart_device_card.dart';
+import 'models/room_model.dart';
+import 'models/smart_device_model.dart';
+import 'theme/lumina_theme.dart';
+import 'views/lumina_dashboard_view.dart';
+import 'views/lumina_stats_view.dart';
+import 'views/lumina_voice_view.dart';
+import 'views/lumina_profile_view.dart';
 
 class LuminaHomePage extends StatefulWidget {
   const LuminaHomePage({super.key});
@@ -9,200 +15,305 @@ class LuminaHomePage extends StatefulWidget {
 }
 
 class _LuminaHomePageState extends State<LuminaHomePage> {
-  // Global power state for the room
-  bool _isRoomPowered = true;
-  final double _temperature = 24.0;
+  int _currentTabIndex = 0;
+  bool _isDarkMode = true;
+  late List<RoomModel> _rooms;
+
+  @override
+  void initState() {
+    super.initState();
+    _initRoomData();
+  }
+
+  void _toggleTheme() {
+    setState(() {
+      _isDarkMode = !_isDarkMode;
+    });
+  }
+
+  void _initRoomData() {
+    _rooms = [
+      // 1. Living Room
+      RoomModel(
+        id: 'living_room',
+        name: 'Living Room',
+        icon: Icons.weekend_outlined,
+        temperature: 24.0,
+        humidity: 45,
+        powerUsageKwh: 1.8,
+        isMasterPowered: true,
+        devices: [
+          SmartDeviceModel(
+            id: 'lr_light',
+            title: 'Ambient Ceiling',
+            subtitle: 'Living Room',
+            icon: Icons.lightbulb_outline,
+            type: DeviceType.light,
+            activeColor: const Color(0xFFF59E0B),
+            lightColor: const Color(0xFFF59E0B),
+            brightness: 85,
+            isPoweredOn: true,
+          ),
+          SmartDeviceModel(
+            id: 'lr_ac',
+            title: 'Air Conditioner',
+            subtitle: '24°C Auto',
+            icon: Icons.ac_unit,
+            type: DeviceType.ac,
+            activeColor: const Color(0xFF3B82F6),
+            targetTemperature: 24.0,
+            acMode: 'Cool',
+            fanSpeed: 'Auto',
+            isPoweredOn: true,
+          ),
+          SmartDeviceModel(
+            id: 'lr_tv',
+            title: 'Smart TV 4K',
+            subtitle: 'Samsung QLED',
+            icon: Icons.tv,
+            type: DeviceType.tv,
+            activeColor: const Color(0xFF8B5CF6),
+            volume: 40,
+            activeSource: 'Netflix',
+            isPoweredOn: true,
+          ),
+          SmartDeviceModel(
+            id: 'lr_router',
+            title: 'Wi-Fi 6 Router',
+            subtitle: 'Online',
+            icon: Icons.router,
+            type: DeviceType.router,
+            activeColor: const Color(0xFF10B981),
+            connectedClients: 12,
+            downloadSpeed: 145.0,
+            uploadSpeed: 52.4,
+            isPoweredOn: true,
+          ),
+        ],
+      ),
+
+      // 2. Master Bedroom
+      RoomModel(
+        id: 'master_bedroom',
+        name: 'Bedroom',
+        icon: Icons.bed_outlined,
+        temperature: 22.0,
+        humidity: 50,
+        powerUsageKwh: 1.2,
+        isMasterPowered: true,
+        devices: [
+          SmartDeviceModel(
+            id: 'br_light',
+            title: 'Nightstand Lamp',
+            subtitle: 'Warm Sleep',
+            icon: Icons.lightbulb_outline,
+            type: DeviceType.light,
+            activeColor: const Color(0xFFFEF3C7),
+            lightColor: const Color(0xFFFEF3C7),
+            brightness: 30,
+            isPoweredOn: true,
+          ),
+          SmartDeviceModel(
+            id: 'br_ac',
+            title: 'Bedroom AC',
+            subtitle: '22°C Quiet',
+            icon: Icons.ac_unit,
+            type: DeviceType.ac,
+            activeColor: const Color(0xFF3B82F6),
+            targetTemperature: 22.0,
+            acMode: 'Eco',
+            fanSpeed: 'Quiet',
+            isPoweredOn: true,
+          ),
+          SmartDeviceModel(
+            id: 'br_air_purifier',
+            title: 'Air Purifier',
+            subtitle: 'Air Quality: Good',
+            icon: Icons.air,
+            type: DeviceType.generic,
+            activeColor: const Color(0xFF10B981),
+            isPoweredOn: true,
+          ),
+        ],
+      ),
+
+      // 3. Kitchen & Dining
+      RoomModel(
+        id: 'kitchen',
+        name: 'Kitchen',
+        icon: Icons.kitchen_outlined,
+        temperature: 26.5,
+        humidity: 58,
+        powerUsageKwh: 2.4,
+        isMasterPowered: false,
+        devices: [
+          SmartDeviceModel(
+            id: 'kit_light',
+            title: 'Island Spotlights',
+            subtitle: 'Cool White',
+            icon: Icons.lightbulb_outline,
+            type: DeviceType.light,
+            activeColor: const Color(0xFFE0F2FE),
+            lightColor: const Color(0xFFE0F2FE),
+            brightness: 100,
+            isPoweredOn: false,
+          ),
+          SmartDeviceModel(
+            id: 'kit_coffee',
+            title: 'Smart Espresso',
+            subtitle: 'Standby',
+            icon: Icons.coffee_maker_outlined,
+            type: DeviceType.generic,
+            activeColor: const Color(0xFFD97706),
+            isPoweredOn: false,
+          ),
+          SmartDeviceModel(
+            id: 'kit_fridge',
+            title: 'Smart Refrigerator',
+            subtitle: '4°C / -18°C',
+            icon: Icons.kitchen,
+            type: DeviceType.generic,
+            activeColor: const Color(0xFF0284C7),
+            isPoweredOn: true,
+          ),
+        ],
+      ),
+
+      // 4. Home Office / Studio
+      RoomModel(
+        id: 'office',
+        name: 'Office',
+        icon: Icons.desktop_windows_outlined,
+        temperature: 23.5,
+        humidity: 42,
+        powerUsageKwh: 0.9,
+        isMasterPowered: true,
+        devices: [
+          SmartDeviceModel(
+            id: 'off_strip',
+            title: 'Desk Neon Bar',
+            subtitle: 'Cyber Glow',
+            icon: Icons.lightbulb_outline,
+            type: DeviceType.light,
+            activeColor: const Color(0xFFA855F7),
+            lightColor: const Color(0xFFA855F7),
+            brightness: 75,
+            isPoweredOn: true,
+          ),
+          SmartDeviceModel(
+            id: 'off_monitor',
+            title: 'Studio Display',
+            subtitle: 'Dual Setup',
+            icon: Icons.desktop_mac_outlined,
+            type: DeviceType.generic,
+            activeColor: const Color(0xFF38BDF8),
+            isPoweredOn: true,
+          ),
+        ],
+      ),
+    ];
+  }
+
+  void _handleVoiceCommand(String command) {
+    final lower = command.toLowerCase();
+    setState(() {
+      if (lower.contains('turn off everything') || lower.contains('good night')) {
+        for (var room in _rooms) {
+          room.isMasterPowered = false;
+          for (var device in room.devices) {
+            device.isPoweredOn = false;
+          }
+        }
+      } else if (lower.contains('turn on') || lower.contains('lights')) {
+        for (var room in _rooms) {
+          for (var device in room.devices) {
+            if (device.type == DeviceType.light) {
+              device.isPoweredOn = true;
+            }
+          }
+        }
+      } else if (lower.contains('22')) {
+        for (var room in _rooms) {
+          for (var device in room.devices) {
+            if (device.type == DeviceType.ac) {
+              device.targetTemperature = 22.0;
+              device.isPoweredOn = true;
+            }
+          }
+        }
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFF1E1F28), // Deep slate background
-      body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Custom App Bar
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Welcome Home,',
-                        style: TextStyle(
-                          color: Colors.white.withOpacity(0.5),
-                          fontSize: 14,
-                        ),
-                      ),
-                      const Text(
-                        'Alex Morgan',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const CircleAvatar(
-                    radius: 22,
-                    backgroundImage: NetworkImage(
-                      'https://i.pravatar.cc/150?img=11',
-                    ),
-                    backgroundColor: Colors.grey,
-                  ),
-                ],
-              ),
-            ),
+    final themeColors = _isDarkMode ? LuminaThemeColors.dark : LuminaThemeColors.light;
 
-            // Environmental Control Section
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
-              child: Container(
-                padding: const EdgeInsets.all(24),
-                decoration: BoxDecoration(
-                  gradient: const LinearGradient(
-                    colors: [Color(0xFFF59E0B), Color(0xFFF97316)],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                  borderRadius: BorderRadius.circular(32),
-                  boxShadow: [
-                    BoxShadow(
-                      color: const Color(0xFFF59E0B).withOpacity(0.3),
-                      blurRadius: 20,
-                      offset: const Offset(0, 10),
-                    ),
-                  ],
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          'Living Room',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                          '$_temperature°C • 45% Humidity',
-                          style: TextStyle(
-                            color: Colors.white.withOpacity(0.9),
-                            fontSize: 14,
-                          ),
-                        ),
-                      ],
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          _isRoomPowered = !_isRoomPowered;
-                        });
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.2),
-                          shape: BoxShape.circle,
-                        ),
-                        child: Icon(
-                          Icons.power_settings_new_rounded,
-                          color: _isRoomPowered ? Colors.white : Colors.white54,
-                          size: 28,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-
-            const SizedBox(height: 16),
-
-            // Devices Grid
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
-              child: Text(
-                'Smart Devices',
-                style: TextStyle(
-                  color: Colors.white.withOpacity(0.8),
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            const SizedBox(height: 16),
-            Expanded(
-              child: GridView.count(
-                crossAxisCount: 2,
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                crossAxisSpacing: 16,
-                mainAxisSpacing: 16,
-                childAspectRatio: 1.1,
-                children: [
-                  const SmartDeviceCard(
-                    title: 'Smart Light',
-                    subtitle: 'Living Room',
-                    icon: Icons.lightbulb_outline,
-                    initialPowerState: true,
-                    activeColor: Color(0xFFF59E0B), // Amber
-                  ),
-                  const SmartDeviceCard(
-                    title: 'Air Conditioner',
-                    subtitle: '24°C Auto',
-                    icon: Icons.ac_unit,
-                    initialPowerState: false,
-                    activeColor: Color(0xFF3B82F6), // Blue
-                  ),
-                  const SmartDeviceCard(
-                    title: 'Smart TV',
-                    subtitle: 'Samsung QLED',
-                    icon: Icons.tv,
-                    initialPowerState: true,
-                    activeColor: Color(0xFF8B5CF6), // Purple
-                  ),
-                  const SmartDeviceCard(
-                    title: 'Router',
-                    subtitle: 'Online',
-                    icon: Icons.router,
-                    initialPowerState: true,
-                    activeColor: Color(0xFF10B981), // Emerald
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
+    final List<Widget> views = [
+      LuminaDashboardView(
+        rooms: _rooms,
+        onVoiceCommand: _handleVoiceCommand,
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: const Color(0xFF1E1F28),
-        selectedItemColor: const Color(0xFFF59E0B),
-        unselectedItemColor: Colors.white54,
-        showSelectedLabels: false,
-        showUnselectedLabels: false,
-        elevation: 0,
-        type: BottomNavigationBarType.fixed,
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home_filled), label: 'Home'),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.pie_chart_outline),
-            label: 'Stats',
+      const LuminaStatsView(),
+      LuminaVoiceView(
+        onExecuteCommand: _handleVoiceCommand,
+      ),
+      const LuminaProfileView(),
+    ];
+
+    return LuminaThemeScope(
+      colors: themeColors,
+      isDark: _isDarkMode,
+      onToggleTheme: _toggleTheme,
+      child: Scaffold(
+        backgroundColor: themeColors.background,
+        body: IndexedStack(
+          index: _currentTabIndex,
+          children: views,
+        ),
+        bottomNavigationBar: Container(
+          decoration: BoxDecoration(
+            color: themeColors.navBarBackground,
+            border: Border(
+              top: BorderSide(color: themeColors.navBarBorder, width: 1),
+            ),
           ),
-          BottomNavigationBarItem(icon: Icon(Icons.mic_none), label: 'Voice'),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person_outline),
-            label: 'Profile',
+          child: BottomNavigationBar(
+            backgroundColor: themeColors.navBarBackground,
+            selectedItemColor: const Color(0xFFF59E0B),
+            unselectedItemColor: themeColors.inactiveIcon,
+            currentIndex: _currentTabIndex,
+            onTap: (index) {
+              setState(() {
+                _currentTabIndex = index;
+              });
+            },
+            showSelectedLabels: true,
+            showUnselectedLabels: true,
+            selectedFontSize: 11,
+            unselectedFontSize: 11,
+            type: BottomNavigationBarType.fixed,
+            elevation: 0,
+            items: const [
+              BottomNavigationBarItem(
+                icon: Icon(Icons.home_filled),
+                label: 'Dashboard',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.bar_chart_rounded),
+                label: 'Analytics',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.mic_none_rounded),
+                label: 'Voice AI',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.settings_outlined),
+                label: 'Settings',
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
