@@ -80,7 +80,7 @@ class _LuminaProfileViewState extends State<LuminaProfileView> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Alex Morgan',
+                            'Zainal Salamun',
                             style: TextStyle(
                               color: theme.primaryText,
                               fontSize: 18,
