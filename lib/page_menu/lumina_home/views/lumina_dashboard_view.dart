@@ -63,7 +63,10 @@ class _LuminaDashboardViewState extends State<LuminaDashboardView> {
             // Header: User & Status & Quick Theme Toggle
             SliverToBoxAdapter(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 24,
+                  vertical: 16,
+                ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -79,7 +82,7 @@ class _LuminaDashboardViewState extends State<LuminaDashboardView> {
                         ),
                         const SizedBox(height: 2),
                         Text(
-                          'Alex Morgan',
+                          'Zainal Salamun',
                           style: TextStyle(
                             color: theme.primaryText,
                             fontSize: 24,
@@ -113,9 +116,10 @@ class _LuminaDashboardViewState extends State<LuminaDashboardView> {
                               themeScope.isDark
                                   ? Icons.wb_sunny_outlined
                                   : Icons.nightlight_outlined,
-                              color: themeScope.isDark
-                                  ? const Color(0xFFF59E0B)
-                                  : const Color(0xFF6366F1),
+                              color:
+                                  themeScope.isDark
+                                      ? const Color(0xFFF59E0B)
+                                      : const Color(0xFF6366F1),
                               size: 20,
                             ),
                           ),
@@ -182,7 +186,10 @@ class _LuminaDashboardViewState extends State<LuminaDashboardView> {
             // Thermostat & Master Control Card
             SliverToBoxAdapter(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 24,
+                  vertical: 12,
+                ),
                 child: RoomThermostatCard(
                   room: activeRoom,
                   onToggleMasterPower: () => _toggleMasterPower(activeRoom),
@@ -211,7 +218,11 @@ class _LuminaDashboardViewState extends State<LuminaDashboardView> {
                       onPressed: () {
                         _showAddDeviceDialog(context, activeRoom);
                       },
-                      icon: const Icon(Icons.add, size: 16, color: Color(0xFFF59E0B)),
+                      icon: const Icon(
+                        Icons.add,
+                        size: 16,
+                        color: Color(0xFFF59E0B),
+                      ),
                       label: const Text(
                         'Add Device',
                         style: TextStyle(
@@ -236,32 +247,27 @@ class _LuminaDashboardViewState extends State<LuminaDashboardView> {
                   mainAxisSpacing: 16,
                   childAspectRatio: 1.05,
                 ),
-                delegate: SliverChildBuilderDelegate(
-                  (context, index) {
-                    final device = activeRoom.devices[index];
-                    return SmartDeviceCard(
-                      device: device,
-                      onToggle: () {
-                        setState(() {
-                          device.isPoweredOn = !device.isPoweredOn;
-                          if (activeRoom.devices.any((d) => d.isPoweredOn)) {
-                            activeRoom.isMasterPowered = true;
-                          }
-                        });
-                      },
-                      onUpdate: () {
-                        setState(() {});
-                      },
-                    );
-                  },
-                  childCount: activeRoom.devices.length,
-                ),
+                delegate: SliverChildBuilderDelegate((context, index) {
+                  final device = activeRoom.devices[index];
+                  return SmartDeviceCard(
+                    device: device,
+                    onToggle: () {
+                      setState(() {
+                        device.isPoweredOn = !device.isPoweredOn;
+                        if (activeRoom.devices.any((d) => d.isPoweredOn)) {
+                          activeRoom.isMasterPowered = true;
+                        }
+                      });
+                    },
+                    onUpdate: () {
+                      setState(() {});
+                    },
+                  );
+                }, childCount: activeRoom.devices.length),
               ),
             ),
 
-            const SliverToBoxAdapter(
-              child: SizedBox(height: 32),
-            ),
+            const SliverToBoxAdapter(child: SizedBox(height: 32)),
           ],
         ),
       ),
@@ -308,14 +314,21 @@ class _LuminaDashboardViewState extends State<LuminaDashboardView> {
                   ),
                   child: const Icon(Icons.lightbulb, color: Color(0xFFF59E0B)),
                 ),
-                title: Text('Lumina RGB Smart Strip', style: TextStyle(color: theme.primaryText)),
-                subtitle: Text('Living Room • Ready to pair', style: TextStyle(color: theme.secondaryText, fontSize: 12)),
+                title: Text(
+                  'Lumina RGB Smart Strip',
+                  style: TextStyle(color: theme.primaryText),
+                ),
+                subtitle: Text(
+                  'Living Room • Ready to pair',
+                  style: TextStyle(color: theme.secondaryText, fontSize: 12),
+                ),
                 trailing: ElevatedButton(
                   onPressed: () {
                     setState(() {
                       room.devices.add(
                         SmartDeviceModel(
-                          id: 'rgb_strip_${DateTime.now().millisecondsSinceEpoch}',
+                          id:
+                              'rgb_strip_${DateTime.now().millisecondsSinceEpoch}',
                           title: 'RGB Light Strip',
                           subtitle: 'Cabinet Mood',
                           icon: Icons.lightbulb,
