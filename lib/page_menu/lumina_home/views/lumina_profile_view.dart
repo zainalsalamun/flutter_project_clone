@@ -90,13 +90,19 @@ class _LuminaProfileViewState extends State<LuminaProfileView> {
                           const SizedBox(height: 2),
                           Text(
                             'Home Owner • Lumina Prime Member',
-                            style: TextStyle(color: theme.secondaryText, fontSize: 12),
+                            style: TextStyle(
+                              color: theme.secondaryText,
+                              fontSize: 12,
+                            ),
                           ),
                         ],
                       ),
                     ),
                     IconButton(
-                      icon: Icon(Icons.edit_outlined, color: theme.secondaryText),
+                      icon: Icon(
+                        Icons.edit_outlined,
+                        color: theme.secondaryText,
+                      ),
                       onPressed: () {},
                     ),
                   ],
@@ -133,24 +139,38 @@ class _LuminaProfileViewState extends State<LuminaProfileView> {
                   secondary: Container(
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      color: (theme.isDark ? const Color(0xFFF59E0B) : const Color(0xFF6366F1)).withOpacity(0.18),
+                      color: (theme.isDark
+                              ? const Color(0xFFF59E0B)
+                              : const Color(0xFF6366F1))
+                          .withOpacity(0.18),
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: Icon(
-                      theme.isDark ? Icons.nightlight_outlined : Icons.wb_sunny_outlined,
-                      color: theme.isDark ? const Color(0xFFF59E0B) : const Color(0xFF6366F1),
+                      theme.isDark
+                          ? Icons.nightlight_outlined
+                          : Icons.wb_sunny_outlined,
+                      color:
+                          theme.isDark
+                              ? const Color(0xFFF59E0B)
+                              : const Color(0xFF6366F1),
                       size: 20,
                     ),
                   ),
                   title: Text(
                     theme.isDark ? 'Dark Mode (Active)' : 'Light Mode (Active)',
-                    style: TextStyle(color: theme.primaryText, fontSize: 14, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                      color: theme.primaryText,
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   subtitle: Text(
-                    theme.isDark ? 'Deep slate background' : 'Clean bright appearance',
+                    theme.isDark
+                        ? 'Deep slate background'
+                        : 'Clean bright appearance',
                     style: TextStyle(color: theme.secondaryText, fontSize: 12),
                   ),
-                  activeColor: const Color(0xFFF59E0B),
+                  activeThumbColor: const Color(0xFFF59E0B),
                   value: theme.isDark,
                   onChanged: (val) => themeScope.onToggleTheme(),
                 ),
@@ -219,9 +239,21 @@ class _LuminaProfileViewState extends State<LuminaProfileView> {
                 child: Column(
                   children: [
                     SwitchListTile(
-                      title: Text('Geo-fencing Auto Off', style: TextStyle(color: theme.primaryText, fontSize: 14)),
-                      subtitle: Text('Turn off devices when everyone leaves home', style: TextStyle(color: theme.secondaryText, fontSize: 12)),
-                      activeColor: const Color(0xFFF59E0B),
+                      title: Text(
+                        'Geo-fencing Auto Off',
+                        style: TextStyle(
+                          color: theme.primaryText,
+                          fontSize: 14,
+                        ),
+                      ),
+                      subtitle: Text(
+                        'Turn off devices when everyone leaves home',
+                        style: TextStyle(
+                          color: theme.secondaryText,
+                          fontSize: 12,
+                        ),
+                      ),
+                      activeThumbColor: const Color(0xFFF59E0B),
                       value: _geoFencing,
                       onChanged: (val) {
                         setState(() {
@@ -231,9 +263,21 @@ class _LuminaProfileViewState extends State<LuminaProfileView> {
                     ),
                     Divider(color: theme.cardBorder, height: 1),
                     SwitchListTile(
-                      title: Text('Circadian Sleep Lighting', style: TextStyle(color: theme.primaryText, fontSize: 14)),
-                      subtitle: Text('Warm color shift after 8:00 PM', style: TextStyle(color: theme.secondaryText, fontSize: 12)),
-                      activeColor: const Color(0xFFF59E0B),
+                      title: Text(
+                        'Circadian Sleep Lighting',
+                        style: TextStyle(
+                          color: theme.primaryText,
+                          fontSize: 14,
+                        ),
+                      ),
+                      subtitle: Text(
+                        'Warm color shift after 8:00 PM',
+                        style: TextStyle(
+                          color: theme.secondaryText,
+                          fontSize: 12,
+                        ),
+                      ),
+                      activeThumbColor: const Color(0xFFF59E0B),
                       value: _autoNightMode,
                       onChanged: (val) {
                         setState(() {
@@ -243,9 +287,21 @@ class _LuminaProfileViewState extends State<LuminaProfileView> {
                     ),
                     Divider(color: theme.cardBorder, height: 1),
                     SwitchListTile(
-                      title: Text('Push Notifications', style: TextStyle(color: theme.primaryText, fontSize: 14)),
-                      subtitle: Text('Device alerts & high power warnings', style: TextStyle(color: theme.secondaryText, fontSize: 12)),
-                      activeColor: const Color(0xFFF59E0B),
+                      title: Text(
+                        'Push Notifications',
+                        style: TextStyle(
+                          color: theme.primaryText,
+                          fontSize: 14,
+                        ),
+                      ),
+                      subtitle: Text(
+                        'Device alerts & high power warnings',
+                        style: TextStyle(
+                          color: theme.secondaryText,
+                          fontSize: 12,
+                        ),
+                      ),
+                      activeThumbColor: const Color(0xFFF59E0B),
                       value: _notifications,
                       onChanged: (val) {
                         setState(() {
@@ -280,24 +336,51 @@ class _LuminaProfileViewState extends State<LuminaProfileView> {
                   children: [
                     Row(
                       children: [
-                        const Icon(Icons.hub_outlined, color: Color(0xFF10B981), size: 24),
+                        const Icon(
+                          Icons.hub_outlined,
+                          color: Color(0xFF10B981),
+                          size: 24,
+                        ),
                         const SizedBox(width: 12),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('Lumina Bridge Hub v2.4', style: TextStyle(color: theme.primaryText, fontWeight: FontWeight.bold, fontSize: 14)),
-                            Text('Matter 1.3 • Zigbee 3.0 Online', style: TextStyle(color: theme.secondaryText, fontSize: 12)),
+                            Text(
+                              'Lumina Bridge Hub v2.4',
+                              style: TextStyle(
+                                color: theme.primaryText,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14,
+                              ),
+                            ),
+                            Text(
+                              'Matter 1.3 • Zigbee 3.0 Online',
+                              style: TextStyle(
+                                color: theme.secondaryText,
+                                fontSize: 12,
+                              ),
+                            ),
                           ],
                         ),
                       ],
                     ),
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 4,
+                      ),
                       decoration: BoxDecoration(
                         color: const Color(0xFF10B981).withOpacity(0.2),
                         borderRadius: BorderRadius.circular(12),
                       ),
-                      child: const Text('Connected', style: TextStyle(color: Color(0xFF10B981), fontSize: 12, fontWeight: FontWeight.bold)),
+                      child: const Text(
+                        'Connected',
+                        style: TextStyle(
+                          color: Color(0xFF10B981),
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -311,7 +394,13 @@ class _LuminaProfileViewState extends State<LuminaProfileView> {
     );
   }
 
-  Widget _buildRoutineCard(String title, String desc, IconData icon, Color color, LuminaThemeColors theme) {
+  Widget _buildRoutineCard(
+    String title,
+    String desc,
+    IconData icon,
+    Color color,
+    LuminaThemeColors theme,
+  ) {
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(16),
@@ -345,7 +434,11 @@ class _LuminaProfileViewState extends State<LuminaProfileView> {
               children: [
                 Text(
                   title,
-                  style: TextStyle(color: theme.primaryText, fontWeight: FontWeight.bold, fontSize: 14),
+                  style: TextStyle(
+                    color: theme.primaryText,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14,
+                  ),
                 ),
                 const SizedBox(height: 2),
                 Text(
@@ -356,7 +449,11 @@ class _LuminaProfileViewState extends State<LuminaProfileView> {
             ),
           ),
           IconButton(
-            icon: Icon(Icons.play_circle_fill, color: theme.secondaryText, size: 28),
+            icon: Icon(
+              Icons.play_circle_fill,
+              color: theme.secondaryText,
+              size: 28,
+            ),
             onPressed: () {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
