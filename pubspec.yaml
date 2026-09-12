@@ -51,6 +51,7 @@ dependencies:
   firebase_messaging: ^16.4.3
   firebase_crashlytics: ^5.2.6
   google_fonts: ^8.2.1
+  video_player: ^2.11.1
 
 
 dev_dependencies:
