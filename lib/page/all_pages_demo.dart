@@ -35,6 +35,7 @@ import 'package:project_clone/page_menu/infinite_scroll_image_app/infinite_scrol
 import 'package:project_clone/page_menu/iphone_duo_app/pages/iphone_duo_home_page.dart';
 import 'package:project_clone/page_menu/netflix_clone/pages/netflix_main_navigation_page.dart';
 import 'package:project_clone/page_menu/smart_cctv_app/pages/smart_home_main_wrapper.dart';
+import 'package:project_clone/page_menu/travel_booking_app/travel_booking_page.dart';
 
 class AllPagesDemo extends StatelessWidget {
   const AllPagesDemo({super.key});
@@ -59,6 +60,13 @@ class AllPagesDemo extends StatelessWidget {
         childAspectRatio: 0.85,
         padding: const EdgeInsets.all(16),
         children: [
+          _menuCard(
+            context,
+            title: "Wanderlust (Travel & Booking)",
+            icon: Icons.flight_takeoff_rounded,
+            iconColor: const Color(0xFF0F4C81),
+            page: const TravelBookingPage(),
+          ),
           _menuCard(
             context,
             title: "Rumah Pintar & CCTV",
