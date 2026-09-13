@@ -25,12 +25,16 @@ import 'package:project_clone/page_menu/weather_app/weather_home_page.dart';
 import 'package:project_clone/page_menu/movie_app/movie_app.dart';
 import 'package:project_clone/page_menu/e_commerce_app/e_commerce_app.dart';
 import 'package:project_clone/page_menu/food_delivery_app/food_delivery_app.dart';
+import 'package:project_clone/page_menu/food_delivery_promo/food_delivery_promo_page.dart';
 import 'package:project_clone/page_menu/pos_app/pos_app.dart';
 import 'package:project_clone/page_menu/hospital_reservation_app/hospital_app.dart';
 import 'package:project_clone/page_menu/rs_medika_app/rs_medika_app.dart';
 import 'package:project_clone/page_menu/abc_mobile_app/pages/m_abc_page.dart';
 import 'package:project_clone/page_menu/bank_jnal_app/bank_jnal_main.dart';
 import 'package:project_clone/page_menu/infinite_scroll_image_app/infinite_scroll_image_app.dart';
+import 'package:project_clone/page_menu/iphone_duo_app/pages/iphone_duo_home_page.dart';
+import 'package:project_clone/page_menu/netflix_clone/pages/netflix_main_navigation_page.dart';
+import 'package:project_clone/page_menu/smart_cctv_app/pages/smart_home_main_wrapper.dart';
 
 class AllPagesDemo extends StatelessWidget {
   const AllPagesDemo({super.key});
@@ -55,6 +59,27 @@ class AllPagesDemo extends StatelessWidget {
         childAspectRatio: 0.85,
         padding: const EdgeInsets.all(16),
         children: [
+          _menuCard(
+            context,
+            title: "Rumah Pintar & CCTV",
+            icon: Icons.home_rounded,
+            iconColor: const Color(0xFF0EA5E9),
+            page: const SmartHomeMainWrapper(),
+          ),
+          _menuCard(
+            context,
+            title: "Netflix Clone (Animated UI)",
+            icon: Icons.movie_filter_rounded,
+            iconColor: const Color(0xFFE50914),
+            page: const NetflixMainNavigationPage(),
+          ),
+          _menuCard(
+            context,
+            title: "iPhone Duo (Savings UI)",
+            icon: Icons.devices_fold_rounded,
+            iconColor: const Color(0xFF28A0F6),
+            page: const IPhoneDuoHomePage(),
+          ),
           _menuCard(
             context,
             title: "Recipe App (Full App)",
@@ -239,6 +264,13 @@ class AllPagesDemo extends StatelessWidget {
           ),
           _menuCard(
             context,
+            title: "Interactive Food Ordering",
+            icon: Icons.delivery_dining_rounded,
+            iconColor: const Color(0xFFFF7A1A),
+            page: const FoodDeliveryPromoPage(),
+          ),
+          _menuCard(
+            context,
             title: "POS App (Kasir Modern)",
             icon: Icons.point_of_sale,
             iconColor: Colors.deepPurple,
@@ -302,7 +334,7 @@ class AllPagesDemo extends StatelessWidget {
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.06),
+              color: Colors.black.withValues(alpha: 0.06),
               blurRadius: 8,
               offset: const Offset(0, 3),
             ),
@@ -316,7 +348,7 @@ class AllPagesDemo extends StatelessWidget {
               height: 42,
               width: 42,
               decoration: BoxDecoration(
-                color: iconColor.withOpacity(0.12),
+                color: iconColor.withValues(alpha: 0.12),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Icon(icon, size: 24, color: iconColor),
