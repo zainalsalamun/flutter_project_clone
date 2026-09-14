@@ -1,6 +1,6 @@
 {
-    "name": "shoppe_clone",
-    "short_name": "shoppe_clone",
+    "name": "Project Clone",
+    "short_name": "Project Clone",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
