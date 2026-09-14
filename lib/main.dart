@@ -14,6 +14,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      title: 'Project Clone',
       debugShowCheckedModeBanner: false,
       home: const AllPagesDemo(),
     );
