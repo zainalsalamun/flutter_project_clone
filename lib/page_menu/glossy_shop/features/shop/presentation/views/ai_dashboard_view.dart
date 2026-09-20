@@ -121,17 +121,9 @@ class _AiDashboardViewState extends State<AiDashboardView>
                     ),
                   ),
                   const SizedBox(width: 4),
-                  Text(
+                  const Text(
                     "👋",
-                    style: TextStyle(
-                      fontSize: 16,
-                      shadows: [
-                        Shadow(
-                          color: Colors.amber.withOpacity(0.5),
-                          blurRadius: 10,
-                        ),
-                      ],
-                    ),
+                    style: TextStyle(fontSize: 16),
                   ),
                 ],
               ),
@@ -286,16 +278,6 @@ class _AiDashboardViewState extends State<AiDashboardView>
               fontSize: 28,
               fontWeight: FontWeight.w800,
               letterSpacing: 0.8,
-              shadows:
-                  isDark
-                      ? [
-                        const Shadow(
-                          color: Colors.purpleAccent,
-                          blurRadius: 20,
-                          offset: Offset(0, 4),
-                        ),
-                      ]
-                      : null,
             ),
           ),
         ],
@@ -399,17 +381,9 @@ class _AiDashboardViewState extends State<AiDashboardView>
             children: [
               Row(
                 children: [
-                  Text(
+                  const Text(
                     "✨",
-                    style: TextStyle(
-                      fontSize: 16,
-                      shadows: [
-                        Shadow(
-                          color: Colors.orangeAccent.withOpacity(0.5),
-                          blurRadius: 10,
-                        ),
-                      ],
-                    ),
+                    style: TextStyle(fontSize: 16),
                   ),
                   const SizedBox(width: 6),
                   Text(
