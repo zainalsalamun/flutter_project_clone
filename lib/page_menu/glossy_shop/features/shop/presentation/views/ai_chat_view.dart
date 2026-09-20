@@ -120,13 +120,6 @@ class _AiChatViewState extends State<AiChatView> with TickerProviderStateMixin {
             fontWeight: FontWeight.w800,
             height: 1.25,
             letterSpacing: 0.5,
-            shadows: isDark ? [
-              const Shadow(
-                color: Colors.purpleAccent,
-                blurRadius: 15,
-                offset: Offset(0, 2),
-              )
-            ] : null,
           ),
           textAlign: TextAlign.center,
         ),
