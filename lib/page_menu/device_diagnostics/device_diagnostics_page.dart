@@ -4,11 +4,15 @@ import 'bloc/diagnostics_bloc.dart';
 import 'bloc/diagnostics_bloc_event.dart';
 import 'bloc/diagnostics_bloc_state.dart';
 import 'widgets/device_id_hero_card.dart';
+import 'widgets/display_specs_card.dart';
+import 'widgets/export_and_share_card.dart';
 import 'widgets/live_debug_log_console.dart';
 import 'widgets/metrics_overview_card.dart';
 import 'widgets/network_status_card.dart';
 import 'widgets/schema_mapping_view.dart';
+import 'widgets/sensors_catalog_card.dart';
 import 'widgets/system_specs_card.dart';
+import 'services/diagnostics_report_service.dart';
 
 class DeviceDiagnosticsPage extends StatelessWidget {
   const DeviceDiagnosticsPage({super.key});
@@ -59,6 +63,21 @@ class _DeviceDiagnosticsView extends StatelessWidget {
           onPressed: () => Navigator.maybePop(context),
         ),
         actions: [
+          IconButton(
+            tooltip: "Share & Export Report",
+            icon: const Icon(Icons.ios_share_rounded, color: Color(0xFF0284C7)),
+            onPressed: () {
+              final state = context.read<DiagnosticsBloc>().state;
+              final event = state.currentEvent;
+              if (event != null) {
+                DiagnosticsReportService.instance.previewOrPrintPdf(
+                  context: context,
+                  event: event,
+                  state: state,
+                );
+              }
+            },
+          ),
           IconButton(
             tooltip: "Rescan Live Device",
             icon: const Icon(Icons.refresh_rounded, color: Color(0xFF0284C7)),
@@ -244,10 +263,27 @@ class _DeviceDiagnosticsView extends StatelessWidget {
                   osBuild: state.osBuild,
                   isRooted: state.isRooted,
                   isDeveloperMode: state.isDeveloperMode,
+                  isMockLocation: state.isMockLocation,
+                  isEmulator: state.isEmulator,
+                  hasBiometricHardware: state.hasBiometricHardware,
+                  isBiometricEnrolled: state.isBiometricEnrolled,
+                  isVpnActive: state.isVpnActive,
                 ),
                 const SizedBox(height: 16),
 
-                // 5. LIVE IN-APP DEBUG LOG CONSOLE (Debug Log Requirement)
+                // 6. DISPLAY & SCREEN SPECIFICATIONS
+                DisplaySpecsCard(displaySpecs: state.displaySpecs),
+                const SizedBox(height: 16),
+
+                // 7. HARDWARE SENSORS CHECKLIST
+                SensorsCatalogCard(sensorsCatalog: state.sensorsCatalog),
+                const SizedBox(height: 16),
+
+                // 8. EXPORT REPORT & SHARE (PDF / JSON / SHARE)
+                ExportAndShareCard(event: event, state: state),
+                const SizedBox(height: 16),
+
+                // 9. LIVE IN-APP DEBUG LOG CONSOLE (Debug Log Requirement)
                 LiveDebugLogConsole(
                   onTriggerSync: () => context
                       .read<DiagnosticsBloc>()
