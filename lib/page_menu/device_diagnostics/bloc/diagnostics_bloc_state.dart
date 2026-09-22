@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import '../models/device_diagnostics_event.dart';
+import '../models/display_and_sensors_data.dart';
 import '../models/user_device_diagnostics_entity.dart';
 import '../services/network_connectivity_service.dart';
 
@@ -10,6 +11,8 @@ class DiagnosticsBlocState extends Equatable {
   final DeviceDiagnosticsEvent? currentEvent;
   final UserDeviceDiagnosticsEntity? dbEntity;
   final NetworkInfoData networkInfo;
+  final DisplaySpecsData displaySpecs;
+  final SensorsCatalogData sensorsCatalog;
   final bool isTestingPing;
   final bool isDeviceIdMasked;
   final String? errorMessage;
@@ -18,6 +21,11 @@ class DiagnosticsBlocState extends Equatable {
   final String osBuild;
   final bool isRooted;
   final bool isDeveloperMode;
+  final bool isMockLocation;
+  final bool isEmulator;
+  final bool hasBiometricHardware;
+  final bool isBiometricEnrolled;
+  final bool isVpnActive;
   final int captureCount;
 
   const DiagnosticsBlocState({
@@ -25,6 +33,8 @@ class DiagnosticsBlocState extends Equatable {
     this.currentEvent,
     this.dbEntity,
     required this.networkInfo,
+    required this.displaySpecs,
+    required this.sensorsCatalog,
     this.isTestingPing = false,
     this.isDeviceIdMasked = true,
     this.errorMessage,
@@ -33,6 +43,11 @@ class DiagnosticsBlocState extends Equatable {
     this.osBuild = "",
     this.isRooted = false,
     this.isDeveloperMode = false,
+    this.isMockLocation = false,
+    this.isEmulator = false,
+    this.hasBiometricHardware = true,
+    this.isBiometricEnrolled = true,
+    this.isVpnActive = false,
     this.captureCount = 0,
   });
 
@@ -42,6 +57,8 @@ class DiagnosticsBlocState extends Equatable {
       currentEvent: null,
       dbEntity: null,
       networkInfo: NetworkInfoData.initial(),
+      displaySpecs: DisplaySpecsData.initial(),
+      sensorsCatalog: SensorsCatalogData.initial(),
       isDeviceIdMasked: true,
     );
   }
@@ -51,6 +68,8 @@ class DiagnosticsBlocState extends Equatable {
     DeviceDiagnosticsEvent? currentEvent,
     UserDeviceDiagnosticsEntity? dbEntity,
     NetworkInfoData? networkInfo,
+    DisplaySpecsData? displaySpecs,
+    SensorsCatalogData? sensorsCatalog,
     bool? isTestingPing,
     bool? isDeviceIdMasked,
     String? errorMessage,
@@ -59,6 +78,11 @@ class DiagnosticsBlocState extends Equatable {
     String? osBuild,
     bool? isRooted,
     bool? isDeveloperMode,
+    bool? isMockLocation,
+    bool? isEmulator,
+    bool? hasBiometricHardware,
+    bool? isBiometricEnrolled,
+    bool? isVpnActive,
     int? captureCount,
   }) {
     return DiagnosticsBlocState(
@@ -66,6 +90,8 @@ class DiagnosticsBlocState extends Equatable {
       currentEvent: currentEvent ?? this.currentEvent,
       dbEntity: dbEntity ?? this.dbEntity,
       networkInfo: networkInfo ?? this.networkInfo,
+      displaySpecs: displaySpecs ?? this.displaySpecs,
+      sensorsCatalog: sensorsCatalog ?? this.sensorsCatalog,
       isTestingPing: isTestingPing ?? this.isTestingPing,
       isDeviceIdMasked: isDeviceIdMasked ?? this.isDeviceIdMasked,
       errorMessage: errorMessage,
@@ -74,6 +100,11 @@ class DiagnosticsBlocState extends Equatable {
       osBuild: osBuild ?? this.osBuild,
       isRooted: isRooted ?? this.isRooted,
       isDeveloperMode: isDeveloperMode ?? this.isDeveloperMode,
+      isMockLocation: isMockLocation ?? this.isMockLocation,
+      isEmulator: isEmulator ?? this.isEmulator,
+      hasBiometricHardware: hasBiometricHardware ?? this.hasBiometricHardware,
+      isBiometricEnrolled: isBiometricEnrolled ?? this.isBiometricEnrolled,
+      isVpnActive: isVpnActive ?? this.isVpnActive,
       captureCount: captureCount ?? this.captureCount,
     );
   }
@@ -84,6 +115,8 @@ class DiagnosticsBlocState extends Equatable {
         currentEvent,
         dbEntity,
         networkInfo,
+        displaySpecs,
+        sensorsCatalog,
         isTestingPing,
         isDeviceIdMasked,
         errorMessage,
@@ -92,6 +125,11 @@ class DiagnosticsBlocState extends Equatable {
         osBuild,
         isRooted,
         isDeveloperMode,
+        isMockLocation,
+        isEmulator,
+        hasBiometricHardware,
+        isBiometricEnrolled,
+        isVpnActive,
         captureCount,
       ];
 }
