@@ -134,10 +134,15 @@ class DiagnosticsLoggerService extends ChangeNotifier {
 
     debug(
       "HARDWARE_METRICS",
-      "Battery: ${event.batteryLevel}% (${event.batteryState}) | Sisa RAM: ${event.formattedAvailableRam} / ${event.formattedTotalRam} (${(event.ramFreeRatio * 100).toStringAsFixed(0)}% Sisa) | Sisa Storage: ${event.formattedAvailableStorage} / ${event.formattedTotalStorage} (${(event.storageFreeRatio * 100).toStringAsFixed(0)}% Sisa)",
+      "Battery: ${event.batteryLevel}% (${event.batteryState}) | Temp: ${event.formattedBatteryTemp} (${event.batteryTempStatus}) | Health: ${event.batteryHealthLabel} | PowerSave: ${event.isPowerSaveMode ? 'ON' : 'OFF'} | Sisa RAM: ${event.formattedAvailableRam} / ${event.formattedTotalRam} | Sisa Storage: ${event.formattedAvailableStorage} / ${event.formattedTotalStorage}",
       payload: {
         "batteryLevel": event.batteryLevel,
         "batteryState": event.batteryState,
+        "temperatureCelsius": event.temperatureCelsius,
+        "batteryHealth": event.batteryHealth,
+        "batteryTechnology": event.batteryTechnology,
+        "batteryVoltageMv": event.batteryVoltageMv,
+        "isPowerSaveMode": event.isPowerSaveMode,
         "storageAvailableBytes": event.storageAvailableBytes,
         "totalStorageBytes": event.totalStorageBytes,
         "storageFreeFormatted": event.formattedAvailableStorage,

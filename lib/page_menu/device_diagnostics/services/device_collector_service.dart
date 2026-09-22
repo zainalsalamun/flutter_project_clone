@@ -1,10 +1,12 @@
 import 'dart:io';
 import 'dart:math';
+import 'dart:ui';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/device_diagnostics_event.dart';
+import '../models/display_and_sensors_data.dart';
 import 'sha256_helper.dart';
 
 class DeviceCollectorService {
@@ -21,9 +23,24 @@ class DeviceCollectorService {
 
   String _detectedOsVersion = "";
   String _detectedOsBuild = "";
+  bool _detectedIsMockLocation = false;
+  bool _detectedIsEmulator = false;
+  bool _detectedHasBiometric = true;
+  bool _detectedIsBiometricEnrolled = true;
+  bool _detectedIsVpnActive = false;
+
+  DisplaySpecsData _displaySpecs = DisplaySpecsData.initial();
+  SensorsCatalogData _sensorsCatalog = SensorsCatalogData.initial();
 
   String get detectedOsVersion => _detectedOsVersion;
   String get detectedOsBuild => _detectedOsBuild;
+  bool get isMockLocation => _detectedIsMockLocation;
+  bool get isEmulator => _detectedIsEmulator;
+  bool get hasBiometricHardware => _detectedHasBiometric;
+  bool get isBiometricEnrolled => _detectedIsBiometricEnrolled;
+  bool get isVpnActive => _detectedIsVpnActive;
+  DisplaySpecsData get displaySpecs => _displaySpecs;
+  SensorsCatalogData get sensorsCatalog => _sensorsCatalog;
 
   /// Collects 100% real diagnostic, hardware, storage, and battery data directly from device APIs
   Future<DeviceDiagnosticsEvent> collectLiveDeviceData() async {
@@ -35,6 +52,46 @@ class DeviceCollectorService {
       nativeData = await _platformChannel.invokeMethod('getDeviceDiagnostics');
     } catch (_) {
       // Non-Android or platform channel not ready
+    }
+
+    if (nativeData != null) {
+      if (nativeData['isMockLocation'] != null) {
+        _detectedIsMockLocation = nativeData['isMockLocation'] as bool;
+      }
+      if (nativeData['isEmulator'] != null) {
+        _detectedIsEmulator = nativeData['isEmulator'] as bool;
+      }
+      if (nativeData['hasBiometricHardware'] != null) {
+        _detectedHasBiometric = nativeData['hasBiometricHardware'] as bool;
+      }
+      if (nativeData['isBiometricEnrolled'] != null) {
+        _detectedIsBiometricEnrolled = nativeData['isBiometricEnrolled'] as bool;
+      }
+      if (nativeData['isVpnActive'] != null) {
+        _detectedIsVpnActive = nativeData['isVpnActive'] as bool;
+      }
+      _displaySpecs = DisplaySpecsData.fromMap(nativeData);
+      _sensorsCatalog = SensorsCatalogData.fromMap(nativeData);
+    } else {
+      if (PlatformDispatcher.instance.views.isNotEmpty) {
+        final view = PlatformDispatcher.instance.views.first;
+        final physicalWidth = view.physicalSize.width.round();
+        final physicalHeight = view.physicalSize.height.round();
+        final pixelRatio = view.devicePixelRatio;
+        final dpi = (pixelRatio * 160).round();
+        final refreshRate = view.display.refreshRate > 0 ? view.display.refreshRate : 60.0;
+        _displaySpecs = DisplaySpecsData(
+          refreshRate: refreshRate,
+          supportedRefreshRates: [refreshRate.round()],
+          screenWidthPx: physicalWidth > 0 ? physicalWidth : 1080,
+          screenHeightPx: physicalHeight > 0 ? physicalHeight : 2400,
+          densityDpi: dpi > 0 ? dpi : 405,
+          xdpi: dpi > 0 ? dpi.toDouble() : 405.0,
+          ydpi: dpi > 0 ? dpi.toDouble() : 405.0,
+          densityScale: pixelRatio > 0 ? pixelRatio : 2.625,
+          isHdr: false,
+        );
+      }
     }
 
     // 2. Real Available & Total Internal Storage of the Device (in bytes)
@@ -75,9 +132,14 @@ class DeviceCollectorService {
       if (totalRamBytes <= 0) totalRamBytes = ramInfo.$2;
     }
 
-    // 4. Real Battery Level (0-100) & State (charging, discharging, full)
+    // 4. Real Battery Level (0-100) & State, Temperature, Health, Tech, Voltage, PowerSave
     int batteryLevel = -1;
     String batteryState = "discharging";
+    double temperatureCelsius = 32.0;
+    String batteryHealth = "good";
+    String batteryTechnology = "Li-ion";
+    int batteryVoltageMv = 4000;
+    bool isPowerSaveMode = false;
 
     if (nativeData != null) {
       if (nativeData['level'] != null) {
@@ -86,6 +148,23 @@ class DeviceCollectorService {
       }
       if (nativeData['state'] != null && nativeData['state'].toString().isNotEmpty) {
         batteryState = nativeData['state'].toString();
+      }
+      if (nativeData['temperatureCelsius'] != null) {
+        final temp = (nativeData['temperatureCelsius'] as num).toDouble();
+        if (temp > 0) temperatureCelsius = temp;
+      }
+      if (nativeData['batteryHealth'] != null && nativeData['batteryHealth'].toString().isNotEmpty) {
+        batteryHealth = nativeData['batteryHealth'].toString();
+      }
+      if (nativeData['batteryTechnology'] != null && nativeData['batteryTechnology'].toString().isNotEmpty) {
+        batteryTechnology = nativeData['batteryTechnology'].toString();
+      }
+      if (nativeData['batteryVoltageMv'] != null) {
+        final v = (nativeData['batteryVoltageMv'] as num).toInt();
+        if (v > 0) batteryVoltageMv = v;
+      }
+      if (nativeData['isPowerSaveMode'] != null) {
+        isPowerSaveMode = nativeData['isPowerSaveMode'] as bool;
       }
     }
 
@@ -170,6 +249,11 @@ class DeviceCollectorService {
       totalRamBytes: totalRamBytes,
       batteryLevel: batteryLevel >= 0 ? batteryLevel : 0,
       batteryState: batteryState,
+      temperatureCelsius: temperatureCelsius,
+      batteryHealth: batteryHealth,
+      batteryTechnology: batteryTechnology,
+      batteryVoltageMv: batteryVoltageMv,
+      isPowerSaveMode: isPowerSaveMode,
       timestamp: DateTime.now().toUtc(),
     );
   }

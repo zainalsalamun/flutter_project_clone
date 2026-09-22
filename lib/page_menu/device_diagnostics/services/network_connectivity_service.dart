@@ -50,6 +50,7 @@ class NetworkInfoData {
   bool get isWifi => networkType == 'wifi';
   bool get isCellular => networkType == 'cellular';
   bool get isDisconnected => networkType == 'offline';
+  String get connectionLabel => networkName;
 
   /// True if connection is poor, laggy (>= 150ms), or connected without real internet
   bool get isBadConnection =>
