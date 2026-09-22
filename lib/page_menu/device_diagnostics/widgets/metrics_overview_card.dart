@@ -42,7 +42,7 @@ class MetricsOverviewCard extends StatelessWidget {
                     : const Color(0xFFF59E0B),
                 title: "Battery Level",
                 value: "${event.batteryLevel}%",
-                subtitle: event.batteryState.toUpperCase(),
+                subtitle: "${event.batteryState.toUpperCase()} • ${event.formattedBatteryTemp}",
                 progress: (event.batteryLevel / 100.0).clamp(0.0, 1.0),
                 progressColor: event.batteryLevel > 20
                     ? const Color(0xFF10B981)
@@ -88,7 +88,11 @@ class MetricsOverviewCard extends StatelessWidget {
         ),
         const SizedBox(height: 12),
 
-        // Row 2: Comprehensive RAM & Storage Breakdown Detail Card
+        // Row 2: Comprehensive Thermal & Battery Health Diagnostics Card
+        _BatteryThermalHealthCard(event: event),
+        const SizedBox(height: 12),
+
+        // Row 3: Comprehensive RAM & Storage Breakdown Detail Card
         Container(
           padding: const EdgeInsets.all(14),
           decoration: BoxDecoration(
@@ -97,7 +101,7 @@ class MetricsOverviewCard extends StatelessWidget {
             border: Border.all(color: const Color(0xFFE2E8F0)),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.025),
+                color: Colors.black.withValues(alpha: 0.025),
                 blurRadius: 10,
                 offset: const Offset(0, 4),
               ),
@@ -195,7 +199,7 @@ class _MetricTile extends StatelessWidget {
         border: Border.all(color: const Color(0xFFE2E8F0)),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.03),
+            color: Colors.black.withValues(alpha: 0.03),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -210,7 +214,7 @@ class _MetricTile extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(5),
                 decoration: BoxDecoration(
-                  color: iconColor.withOpacity(0.12),
+                  color: iconColor.withValues(alpha: 0.12),
                   borderRadius: BorderRadius.circular(7),
                 ),
                 child: Icon(icon, size: 16, color: iconColor),
@@ -221,7 +225,7 @@ class _MetricTile extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(
                         horizontal: 4.5, vertical: 1.5),
                     decoration: BoxDecoration(
-                      color: iconColor.withOpacity(0.12),
+                      color: iconColor.withValues(alpha: 0.12),
                       borderRadius: BorderRadius.circular(4),
                     ),
                     child: Text(
@@ -466,6 +470,288 @@ class _MiniStat extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+class _BatteryThermalHealthCard extends StatelessWidget {
+  final DeviceDiagnosticsEvent event;
+
+  const _BatteryThermalHealthCard({required this.event});
+
+  @override
+  Widget build(BuildContext context) {
+    final temp = event.temperatureCelsius;
+    final Color thermalColor;
+    final String thermalBadge;
+    final IconData thermalIcon;
+
+    if (temp < 37.0) {
+      thermalColor = const Color(0xFF10B981); // Emerald Green
+      thermalBadge = "NORMAL";
+      thermalIcon = Icons.thermostat_rounded;
+    } else if (temp < 42.0) {
+      thermalColor = const Color(0xFFF59E0B); // Amber / Warm
+      thermalBadge = "HANGAT";
+      thermalIcon = Icons.thermostat_rounded;
+    } else {
+      thermalColor = const Color(0xFFEF4444); // Red / Overheat
+      thermalBadge = "OVERHEAT";
+      thermalIcon = Icons.local_fire_department_rounded;
+    }
+
+    final thermalProgress = ((temp - 20.0) / (55.0 - 20.0)).clamp(0.0, 1.0);
+
+    return Container(
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(
+          color: temp >= 42.0
+              ? const Color(0xFFEF4444).withValues(alpha: 0.3)
+              : const Color(0xFFE2E8F0),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: thermalColor.withValues(alpha: 0.03),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Header Row
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  Icon(thermalIcon, size: 16, color: thermalColor),
+                  const SizedBox(width: 6),
+                  const Text(
+                    "SUHU BATERAI & KESEHATAN DAYA",
+                    style: TextStyle(
+                      fontSize: 11,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF0F172A),
+                      letterSpacing: 0.5,
+                    ),
+                  ),
+                ],
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
+                decoration: BoxDecoration(
+                  color: thermalColor.withValues(alpha: 0.12),
+                  borderRadius: BorderRadius.circular(6),
+                  border: Border.all(
+                    color: thermalColor.withValues(alpha: 0.25),
+                    width: 0.8,
+                  ),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      width: 6,
+                      height: 6,
+                      decoration: BoxDecoration(
+                        color: thermalColor,
+                        shape: BoxShape.circle,
+                      ),
+                    ),
+                    const SizedBox(width: 4),
+                    Text(
+                      "$thermalBadge (${event.formattedBatteryTemp})",
+                      style: TextStyle(
+                        fontSize: 9.5,
+                        fontWeight: FontWeight.bold,
+                        color: thermalColor,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+
+          // 3-Column Diagnostic Stats
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // 1. Suhu Sensor
+              Expanded(
+                child: _ThermalInfoTile(
+                  icon: Icons.device_thermostat_rounded,
+                  iconColor: thermalColor,
+                  label: "Suhu Baterai",
+                  value: event.formattedBatteryTemp,
+                  subtitle: "Status: ${event.batteryTempStatus}",
+                  progress: thermalProgress,
+                  progressColor: thermalColor,
+                ),
+              ),
+              const SizedBox(width: 8),
+
+              // 2. Battery Health & Tech
+              Expanded(
+                child: _ThermalInfoTile(
+                  icon: Icons.health_and_safety_rounded,
+                  iconColor: const Color(0xFF0284C7),
+                  label: "Kesehatan Baterai",
+                  value: event.batteryHealth.toUpperCase(),
+                  subtitle: "${event.batteryTechnology} • ${event.formattedVoltage}",
+                  progress: 1.0,
+                  progressColor: const Color(0xFF0284C7),
+                ),
+              ),
+              const SizedBox(width: 8),
+
+              // 3. Power Save Mode
+              Expanded(
+                child: _ThermalInfoTile(
+                  icon: event.isPowerSaveMode
+                      ? Icons.eco_rounded
+                      : Icons.battery_charging_full_rounded,
+                  iconColor: event.isPowerSaveMode
+                      ? const Color(0xFF10B981)
+                      : const Color(0xFF64748B),
+                  label: "Mode Hemat Daya",
+                  value: event.isPowerSaveMode ? "Aktif" : "Nonaktif",
+                  subtitle: event.isPowerSaveMode ? "Power Saver ON" : "Normal Mode",
+                  progress: event.isPowerSaveMode ? 1.0 : 0.0,
+                  progressColor: const Color(0xFF10B981),
+                ),
+              ),
+            ],
+          ),
+
+          // Power Save Mode Warning Notice Banner if Active
+          if (event.isPowerSaveMode) ...[
+            const SizedBox(height: 10),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+              decoration: BoxDecoration(
+                color: const Color(0xFFECFDF5),
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(
+                  color: const Color(0xFF10B981).withValues(alpha: 0.3),
+                ),
+              ),
+              child: const Row(
+                children: [
+                  Icon(Icons.eco_rounded, size: 14, color: Color(0xFF059669)),
+                  SizedBox(width: 6),
+                  Expanded(
+                    child: Text(
+                      "Mode Hemat Daya Aktif: Sistem Android mungkin membatasi aktivitas latar belakang & sinkronisasi data.",
+                      style: TextStyle(
+                        fontSize: 9.5,
+                        color: Color(0xFF065F46),
+                        fontWeight: FontWeight.w500,
+                        height: 1.25,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+}
+
+class _ThermalInfoTile extends StatelessWidget {
+  final IconData icon;
+  final Color iconColor;
+  final String label;
+  final String value;
+  final String subtitle;
+  final double progress;
+  final Color progressColor;
+
+  const _ThermalInfoTile({
+    required this.icon,
+    required this.iconColor,
+    required this.label,
+    required this.value,
+    required this.subtitle,
+    required this.progress,
+    required this.progressColor,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 9),
+      decoration: BoxDecoration(
+        color: const Color(0xFFF8FAFC),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: const Color(0xFFF1F5F9)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(icon, size: 13, color: iconColor),
+              const SizedBox(width: 4),
+              Expanded(
+                child: Text(
+                  label,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    fontSize: 9.0,
+                    color: Color(0xFF64748B),
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 6),
+          FittedBox(
+            fit: BoxFit.scaleDown,
+            alignment: Alignment.centerLeft,
+            child: Text(
+              value,
+              style: const TextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.bold,
+                color: Color(0xFF0F172A),
+              ),
+            ),
+          ),
+          const SizedBox(height: 2),
+          Text(
+            subtitle,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(
+              fontSize: 8.5,
+              color: Color(0xFF94A3B8),
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          const SizedBox(height: 6),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(3),
+            child: LinearProgressIndicator(
+              value: progress.clamp(0.0, 1.0),
+              backgroundColor: const Color(0xFFE2E8F0),
+              valueColor: AlwaysStoppedAnimation<Color>(progressColor),
+              minHeight: 3.5,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
