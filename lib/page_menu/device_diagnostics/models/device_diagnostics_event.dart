@@ -17,6 +17,11 @@ class DeviceDiagnosticsEvent {
   final int totalRamBytes;
   final int batteryLevel;
   final String batteryState;
+  final double temperatureCelsius;
+  final String batteryHealth;
+  final String batteryTechnology;
+  final int batteryVoltageMv;
+  final bool isPowerSaveMode;
   final DateTime timestamp;
 
   const DeviceDiagnosticsEvent({
@@ -35,6 +40,11 @@ class DeviceDiagnosticsEvent {
     this.totalRamBytes = 0,
     required this.batteryLevel,
     required this.batteryState,
+    this.temperatureCelsius = 32.0,
+    this.batteryHealth = 'good',
+    this.batteryTechnology = 'Li-ion',
+    this.batteryVoltageMv = 4000,
+    this.isPowerSaveMode = false,
     required this.timestamp,
   });
 
@@ -55,6 +65,11 @@ class DeviceDiagnosticsEvent {
       totalRamBytes: (json['totalRamBytes'] as num?)?.toInt() ?? 0,
       batteryLevel: (json['batteryLevel'] as num?)?.toInt() ?? 0,
       batteryState: json['batteryState'] as String? ?? 'unknown',
+      temperatureCelsius: (json['temperatureCelsius'] as num?)?.toDouble() ?? 32.0,
+      batteryHealth: json['batteryHealth'] as String? ?? 'good',
+      batteryTechnology: json['batteryTechnology'] as String? ?? 'Li-ion',
+      batteryVoltageMv: (json['batteryVoltageMv'] as num?)?.toInt() ?? 4000,
+      isPowerSaveMode: json['isPowerSaveMode'] as bool? ?? false,
       timestamp: json['timestamp'] != null
           ? DateTime.tryParse(json['timestamp'].toString()) ?? DateTime.now().toUtc()
           : DateTime.now().toUtc(),
@@ -73,9 +88,16 @@ class DeviceDiagnosticsEvent {
       'manufacturer': manufacturer,
       'appVersion': appVersion,
       'storageAvailableBytes': storageAvailableBytes,
+      'totalStorageBytes': totalStorageBytes,
       'ramAvailableBytes': ramAvailableBytes,
+      'totalRamBytes': totalRamBytes,
       'batteryLevel': batteryLevel,
       'batteryState': batteryState,
+      'temperatureCelsius': temperatureCelsius,
+      'batteryHealth': batteryHealth,
+      'batteryTechnology': batteryTechnology,
+      'batteryVoltageMv': batteryVoltageMv,
+      'isPowerSaveMode': isPowerSaveMode,
       'timestamp': timestamp.toUtc().toIso8601String(),
     };
   }
@@ -115,6 +137,33 @@ class DeviceDiagnosticsEvent {
   }
 
   // --- Helper Getters for UI Presentation ---
+
+  String get formattedBatteryTemp => "${temperatureCelsius.toStringAsFixed(1)} °C";
+
+  String get batteryTempStatus {
+    if (temperatureCelsius < 37.0) return "Normal";
+    if (temperatureCelsius < 42.0) return "Hangat";
+    return "Overheat";
+  }
+
+  String get batteryHealthLabel {
+    final h = batteryHealth.toLowerCase();
+    if (h == "good") return "Good (Sehat)";
+    if (h == "overheat") return "Overheat (Panas)";
+    if (h == "dead") return "Dead (Rusak)";
+    if (h == "over_voltage") return "Over Voltage";
+    if (h == "cold") return "Cold (Dingin)";
+    return "Good (Normal)";
+  }
+
+  String get formattedVoltage {
+    if (batteryVoltageMv <= 0) return "N/A";
+    final v = batteryVoltageMv / 1000.0;
+    return "${v.toStringAsFixed(2)} V";
+  }
+
+  String get powerSaveModeLabel =>
+      isPowerSaveMode ? "AKTIF (Hemat Daya)" : "NONAKTIF (Normal)";
 
   String get formattedRam => formattedAvailableRam;
 
@@ -177,7 +226,7 @@ class DeviceDiagnosticsEvent {
     if (totalStorageBytes <= 0) return "N/A";
     if (totalStorageBytes >= 1000 * 1000 * 1000) {
       final gb = totalStorageBytes / (1000 * 1000 * 1000);
-      return "${gb.toStringAsFixed(0)} GB";
+      return "${gb.toStringAsFixed(2)} GB";
     } else {
       final mb = totalStorageBytes / (1000 * 1000);
       return "${mb.toStringAsFixed(0)} MB";
@@ -237,6 +286,11 @@ class DeviceDiagnosticsEvent {
     int? totalRamBytes,
     int? batteryLevel,
     String? batteryState,
+    double? temperatureCelsius,
+    String? batteryHealth,
+    String? batteryTechnology,
+    int? batteryVoltageMv,
+    bool? isPowerSaveMode,
     DateTime? timestamp,
   }) {
     return DeviceDiagnosticsEvent(
@@ -255,6 +309,11 @@ class DeviceDiagnosticsEvent {
       totalRamBytes: totalRamBytes ?? this.totalRamBytes,
       batteryLevel: batteryLevel ?? this.batteryLevel,
       batteryState: batteryState ?? this.batteryState,
+      temperatureCelsius: temperatureCelsius ?? this.temperatureCelsius,
+      batteryHealth: batteryHealth ?? this.batteryHealth,
+      batteryTechnology: batteryTechnology ?? this.batteryTechnology,
+      batteryVoltageMv: batteryVoltageMv ?? this.batteryVoltageMv,
+      isPowerSaveMode: isPowerSaveMode ?? this.isPowerSaveMode,
       timestamp: timestamp ?? this.timestamp,
     );
   }
