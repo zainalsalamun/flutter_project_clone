@@ -2,14 +2,21 @@ package com.naltech.project_clone
 
 import android.app.ActivityManager
 import android.app.AppOpsManager
+import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
+import android.database.sqlite.SQLiteDatabase
+import android.database.sqlite.SQLiteOpenHelper
 import android.hardware.Sensor
 import android.hardware.SensorManager
+import android.location.Geocoder
+import android.location.Location
+import android.location.LocationManager
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import android.net.Uri
 import android.os.BatteryManager
 import android.os.Build
 import android.os.Environment
@@ -17,15 +24,24 @@ import android.os.PowerManager
 import android.os.Process
 import android.os.StatFs
 import android.provider.Settings
+import android.telephony.TelephonyManager
 import android.util.DisplayMetrics
 import android.view.Display
 import android.view.WindowManager
 import androidx.annotation.NonNull
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
+import java.io.BufferedReader
 import java.io.File
+import java.io.FileOutputStream
+import java.io.InputStreamReader
 import java.net.NetworkInterface
+import java.util.Locale
 
 data class BatteryDiagnosticsData(
     val level: Int,
@@ -39,6 +55,104 @@ data class BatteryDiagnosticsData(
 
 class MainActivity : FlutterActivity() {
     private val CHANNEL = "com.naltech.project_clone/device_diagnostics"
+    private var pendingPermissionResult: MethodChannel.Result? = null
+    private val PERMISSION_REQUEST_CODE = 9911
+    private var latestLiveLocation: Location? = null
+
+    private val locationListener = object : android.location.LocationListener {
+        override fun onLocationChanged(loc: Location) {
+            if (latestLiveLocation == null || loc.accuracy <= (latestLiveLocation?.accuracy ?: Float.MAX_VALUE)) {
+                latestLiveLocation = loc
+            }
+        }
+        override fun onProviderEnabled(provider: String) {}
+        override fun onProviderDisabled(provider: String) {}
+        @Deprecated("Deprecated in Java")
+        override fun onStatusChanged(provider: String?, status: Int, extras: android.os.Bundle?) {}
+    }
+
+    private fun startLocationListening() {
+        try {
+            val hasFine = ContextCompat.checkSelfPermission(
+                this, android.Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+            val hasCoarse = ContextCompat.checkSelfPermission(
+                this, android.Manifest.permission.ACCESS_COARSE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+            if (hasFine || hasCoarse) {
+                val lm = getSystemService(Context.LOCATION_SERVICE) as? LocationManager ?: return
+                if (lm.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                    lm.requestLocationUpdates(
+                        LocationManager.GPS_PROVIDER,
+                        1000L,
+                        0.5f,
+                        locationListener,
+                        android.os.Looper.getMainLooper()
+                    )
+                }
+                if (lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+                    lm.requestLocationUpdates(
+                        LocationManager.NETWORK_PROVIDER,
+                        2000L,
+                        1.0f,
+                        locationListener,
+                        android.os.Looper.getMainLooper()
+                    )
+                }
+            }
+        } catch (_: Throwable) {}
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == PERMISSION_REQUEST_CODE) {
+            val fineGranted = ContextCompat.checkSelfPermission(
+                this, android.Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+            val coarseGranted = ContextCompat.checkSelfPermission(
+                this, android.Manifest.permission.ACCESS_COARSE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+            val cameraGranted = ContextCompat.checkSelfPermission(
+                this, android.Manifest.permission.CAMERA
+            ) == PackageManager.PERMISSION_GRANTED
+
+            val lm = getSystemService(Context.LOCATION_SERVICE) as? LocationManager
+            val isGpsEnabled = lm?.isProviderEnabled(LocationManager.GPS_PROVIDER) ?: false
+            val isNetworkLocEnabled = lm?.isProviderEnabled(LocationManager.NETWORK_PROVIDER) ?: false
+
+            if (fineGranted || coarseGranted) {
+                startLocationListening()
+            }
+
+            val response = mapOf(
+                "fineLocationGranted" to fineGranted,
+                "coarseLocationGranted" to coarseGranted,
+                "cameraGranted" to cameraGranted,
+                "isLocationGranted" to (fineGranted || coarseGranted),
+                "isGpsEnabled" to isGpsEnabled,
+                "isNetworkLocEnabled" to isNetworkLocEnabled
+            )
+            pendingPermissionResult?.success(response)
+            pendingPermissionResult = null
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        startLocationListening()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        try {
+            val lm = getSystemService(Context.LOCATION_SERVICE) as? LocationManager
+            lm?.removeUpdates(locationListener)
+        } catch (_: Throwable) {}
+    }
 
     override fun configureFlutterEngine(@NonNull flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
@@ -110,7 +224,10 @@ class MainActivity : FlutterActivity() {
                         // 7. Hardware Sensors Catalog Telemetry
                         val sensorsData = getSensorsCatalog(context)
 
-                        // 8. Real Firmware & Hardware Properties from Build
+                        // 8. Location, Geotagging & Cellular Carrier Telemetry
+                        val locationCarrierData = getLocationAndCarrierData(context)
+
+                        // 9. Real Firmware & Hardware Properties from Build
                         val data = mutableMapOf<String, Any>(
                             "level" to batteryData.level,
                             "state" to batteryData.state,
@@ -142,9 +259,391 @@ class MainActivity : FlutterActivity() {
                         )
                         data.putAll(displayData)
                         data.putAll(sensorsData)
+                        data.putAll(locationCarrierData)
                         result.success(data)
                     } catch (e: Exception) {
                         result.error("DIAGNOSTICS_ERROR", e.message, null)
+                    }
+                }
+                "insertGeotagPhoto" -> {
+                    try {
+                        val originalPath = call.argument<String>("originalPath") ?: ""
+                        val compressedPath = call.argument<String>("compressedPath") ?: ""
+                        val originalSize = (call.argument<Number>("originalSize") ?: 0L).toLong()
+                        val compressedSize = (call.argument<Number>("compressedSize") ?: 0L).toLong()
+                        val timestamp = (call.argument<Number>("timestamp") ?: System.currentTimeMillis()).toLong()
+                        val latitude = (call.argument<Number>("latitude") ?: 0.0).toDouble()
+                        val longitude = (call.argument<Number>("longitude") ?: 0.0).toDouble()
+                        val altitude = (call.argument<Number>("altitude") ?: 0.0).toDouble()
+                        val accuracy = (call.argument<Number>("accuracy") ?: 0.0).toDouble()
+                        val address = call.argument<String>("address") ?: ""
+                        val carrier = call.argument<String>("carrier") ?: ""
+
+                        val dbHelper = GeotagSqliteHelper.getInstance(applicationContext)
+                        val id = dbHelper.insertPhoto(
+                            originalPath, compressedPath, originalSize, compressedSize,
+                            timestamp, latitude, longitude, altitude, accuracy, address, carrier
+                        )
+                        result.success(id)
+                    } catch (e: Exception) {
+                        result.error("SQLITE_INSERT_ERROR", e.message, null)
+                    }
+                }
+                "getAllGeotagPhotos" -> {
+                    try {
+                        val dbHelper = GeotagSqliteHelper.getInstance(applicationContext)
+                        val list = dbHelper.getAllPhotos()
+                        result.success(list)
+                    } catch (e: Exception) {
+                        result.error("SQLITE_QUERY_ERROR", e.message, null)
+                    }
+                }
+                "deleteGeotagPhoto" -> {
+                    try {
+                        val id = (call.argument<Number>("id") ?: 0L).toLong()
+                        val dbHelper = GeotagSqliteHelper.getInstance(applicationContext)
+                        val rows = dbHelper.deletePhoto(id)
+                        result.success(rows > 0)
+                    } catch (e: Exception) {
+                        result.error("SQLITE_DELETE_ERROR", e.message, null)
+                    }
+                }
+                "getGeotagPhotoStats" -> {
+                    try {
+                        val dbHelper = GeotagSqliteHelper.getInstance(applicationContext)
+                        val stats = dbHelper.getStats()
+                        result.success(stats)
+                    } catch (e: Exception) {
+                        result.error("SQLITE_STATS_ERROR", e.message, null)
+                    }
+                }
+                "compressImage" -> {
+                    try {
+                        val inputPath = call.argument<String>("inputPath") ?: ""
+                        val outputPath = call.argument<String>("outputPath") ?: ""
+                        val targetWidth = call.argument<Int>("targetWidth") ?: 1280
+                        val quality = call.argument<Int>("quality") ?: 75
+
+                        val inputFile = File(inputPath)
+                        if (!inputFile.exists()) {
+                            result.error("FILE_NOT_FOUND", "Input file does not exist", null)
+                            return@setMethodCallHandler
+                        }
+
+                        val bitmap = BitmapFactory.decodeFile(inputPath)
+                        if (bitmap == null) {
+                            result.error("DECODE_ERROR", "Failed to decode image bitmap", null)
+                            return@setMethodCallHandler
+                        }
+
+                        val scaledBitmap = if (bitmap.width > targetWidth) {
+                            val targetHeight = (bitmap.height.toFloat() / bitmap.width.toFloat() * targetWidth).toInt()
+                            Bitmap.createScaledBitmap(bitmap, targetWidth, targetHeight, true)
+                        } else {
+                            bitmap
+                        }
+
+                        val outFile = if (outputPath.isNotEmpty()) File(outputPath) else {
+                            File(applicationContext.cacheDir, "geotag_compressed_${System.currentTimeMillis()}.jpg")
+                        }
+                        outFile.parentFile?.mkdirs()
+
+                        val fos = FileOutputStream(outFile)
+                        scaledBitmap.compress(Bitmap.CompressFormat.JPEG, quality, fos)
+                        fos.flush()
+                        fos.close()
+
+                        val origSize = inputFile.length()
+                        val compSize = outFile.length()
+
+                        val resultMap = HashMap<String, Any>()
+                        resultMap["path"] = outFile.absolutePath
+                        resultMap["originalSize"] = origSize
+                        resultMap["compressedSize"] = compSize
+                        val saved = if (origSize > compSize) origSize - compSize else 0L
+                        resultMap["savingsPercent"] = if (origSize > 0) (saved.toFloat() / origSize.toFloat() * 100f) else 0f
+
+                        result.success(resultMap)
+                    } catch (e: Exception) {
+                        result.error("COMPRESSION_ERROR", e.message, null)
+                    }
+                }
+                "saveImageToGallery" -> {
+                    try {
+                        val imagePath = call.argument<String>("imagePath") ?: ""
+                        val title = call.argument<String>("title") ?: "geotag_${System.currentTimeMillis()}"
+                        val description = call.argument<String>("description") ?: "Geotagged Photo"
+
+                        val srcFile = File(imagePath)
+                        if (!srcFile.exists()) {
+                            result.error("FILE_NOT_FOUND", "Source image file not found", null)
+                            return@setMethodCallHandler
+                        }
+
+                        val resolver = applicationContext.contentResolver
+                        val contentValues = ContentValues().apply {
+                            put(android.provider.MediaStore.Images.Media.DISPLAY_NAME, "${title}.jpg")
+                            put(android.provider.MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
+                            put(android.provider.MediaStore.Images.Media.DESCRIPTION, description)
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                                put(android.provider.MediaStore.Images.Media.RELATIVE_PATH, "Pictures/Geotagging")
+                                put(android.provider.MediaStore.Images.Media.IS_PENDING, 1)
+                            }
+                        }
+
+                        val uri = resolver.insert(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
+                        if (uri != null) {
+                            resolver.openOutputStream(uri)?.use { out ->
+                                srcFile.inputStream().use { input ->
+                                    input.copyTo(out)
+                                }
+                                out.flush()
+                            }
+
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                                contentValues.clear()
+                                contentValues.put(android.provider.MediaStore.Images.Media.IS_PENDING, 0)
+                                resolver.update(uri, contentValues, null, null)
+                            }
+
+                            // Trigger MediaScanner
+                            android.media.MediaScannerConnection.scanFile(
+                                applicationContext,
+                                arrayOf(srcFile.absolutePath),
+                                arrayOf("image/jpeg"),
+                                null
+                            )
+
+                            result.success(mapOf(
+                                "success" to true,
+                                "uri" to uri.toString(),
+                                "album" to "Pictures/Geotagging"
+                            ))
+                        } else {
+                            result.error("GALLERY_ERROR", "Failed to create MediaStore entry", null)
+                        }
+                    } catch (e: Exception) {
+                        result.error("GALLERY_SAVE_ERROR", e.message, null)
+                    }
+                }
+                "updateGeotagCloudSync" -> {
+                    try {
+                        val id = (call.argument<Number>("id") ?: 0L).toLong()
+                        val cloudUrl = call.argument<String>("cloudUrl") ?: ""
+                        val cloudProvider = call.argument<String>("cloudProvider") ?: "cloud"
+                        val dbHelper = GeotagSqliteHelper.getInstance(applicationContext)
+                        val ok = dbHelper.updateCloudSync(id, cloudUrl, cloudProvider)
+                        result.success(ok)
+                    } catch (e: Exception) {
+                        result.error("SQLITE_CLOUD_UPDATE_ERROR", e.message, null)
+                    }
+                }
+                "checkBiometrics" -> {
+                    val (hasBio, isEnrolled) = checkBiometricStatus(applicationContext)
+                    result.success(mapOf(
+                        "hasHardware" to hasBio,
+                        "isEnrolled" to isEnrolled,
+                        "hasBiometricHardware" to hasBio,
+                        "isBiometricEnrolled" to isEnrolled
+                    ))
+                }
+                "authenticateBiometric" -> {
+                    val title = call.argument<String>("title") ?: "Autentikasi Biometrik"
+                    val subtitle = call.argument<String>("subtitle") ?: "Verifikasi sidik jari atau wajah untuk melanjutkan"
+                    val description = call.argument<String>("description") ?: ""
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                        try {
+                            val executor = ContextCompat.getMainExecutor(this)
+                            val builder = android.hardware.biometrics.BiometricPrompt.Builder(this)
+                                .setTitle(title)
+
+                            if (subtitle.isNotEmpty()) {
+                                builder.setSubtitle(subtitle)
+                            }
+                            if (description.isNotEmpty()) {
+                                builder.setDescription(description)
+                            }
+                            builder.setNegativeButton("Batal", executor) { _, _ ->
+                                result.success(mapOf("authenticated" to false, "error" to "USER_CANCELLED"))
+                            }
+
+                            val prompt = builder.build()
+                            val cancellationSignal = android.os.CancellationSignal()
+
+                            prompt.authenticate(
+                                cancellationSignal,
+                                executor,
+                                object : android.hardware.biometrics.BiometricPrompt.AuthenticationCallback() {
+                                    override fun onAuthenticationSucceeded(authResult: android.hardware.biometrics.BiometricPrompt.AuthenticationResult?) {
+                                        super.onAuthenticationSucceeded(authResult)
+                                        result.success(mapOf("authenticated" to true, "error" to null))
+                                    }
+
+                                    override fun onAuthenticationFailed() {
+                                        super.onAuthenticationFailed()
+                                    }
+
+                                    override fun onAuthenticationError(errorCode: Int, errString: CharSequence?) {
+                                        super.onAuthenticationError(errorCode, errString)
+                                        result.success(mapOf(
+                                            "authenticated" to false,
+                                            "error" to (errString?.toString() ?: "AUTH_ERROR"),
+                                            "errorCode" to errorCode
+                                        ))
+                                    }
+                                }
+                            )
+                        } catch (e: Exception) {
+                            val (hasBio, isEnrolled) = checkBiometricStatus(applicationContext)
+                            result.success(mapOf(
+                                "authenticated" to false,
+                                "error" to (e.message ?: "BIOMETRIC_EXCEPTION"),
+                                "hasHardware" to hasBio,
+                                "isEnrolled" to isEnrolled
+                            ))
+                        }
+                    } else {
+                        val (hasBio, isEnrolled) = checkBiometricStatus(applicationContext)
+                        result.success(mapOf(
+                            "authenticated" to isEnrolled,
+                            "fallback" to true,
+                            "hasHardware" to hasBio,
+                            "isEnrolled" to isEnrolled
+                        ))
+                    }
+                }
+                "getDetailedWifiInfo" -> {
+                    val info = getDetailedWifiInfo(applicationContext)
+                    result.success(info)
+                }
+                "getNetworkTrafficStats" -> {
+                    val stats = getNetworkTrafficStats()
+                    result.success(stats)
+                }
+                "pingHostNative" -> {
+                    val host = call.argument<String>("host") ?: "1.1.1.1"
+                    val count = call.argument<Int>("count") ?: 3
+                    val timeout = call.argument<Int>("timeout") ?: 2
+                    val pingResult = pingHostNative(host, count, timeout)
+                    result.success(pingResult)
+                }
+                "requestLocationPermission" -> {
+                    val fineGranted = ContextCompat.checkSelfPermission(
+                        this, android.Manifest.permission.ACCESS_FINE_LOCATION
+                    ) == PackageManager.PERMISSION_GRANTED
+                    val coarseGranted = ContextCompat.checkSelfPermission(
+                        this, android.Manifest.permission.ACCESS_COARSE_LOCATION
+                    ) == PackageManager.PERMISSION_GRANTED
+                    val cameraGranted = ContextCompat.checkSelfPermission(
+                        this, android.Manifest.permission.CAMERA
+                    ) == PackageManager.PERMISSION_GRANTED
+
+                    val lm = getSystemService(Context.LOCATION_SERVICE) as? LocationManager
+                    val isGpsEnabled = lm?.isProviderEnabled(LocationManager.GPS_PROVIDER) ?: false
+                    val isNetworkLocEnabled = lm?.isProviderEnabled(LocationManager.NETWORK_PROVIDER) ?: false
+
+                    if (fineGranted && cameraGranted) {
+                        result.success(mapOf(
+                            "fineLocationGranted" to true,
+                            "coarseLocationGranted" to true,
+                            "cameraGranted" to true,
+                            "isLocationGranted" to true,
+                            "isGpsEnabled" to isGpsEnabled,
+                            "isNetworkLocEnabled" to isNetworkLocEnabled
+                        ))
+                    } else {
+                        pendingPermissionResult = result
+                        ActivityCompat.requestPermissions(
+                            this,
+                            arrayOf(
+                                android.Manifest.permission.ACCESS_FINE_LOCATION,
+                                android.Manifest.permission.ACCESS_COARSE_LOCATION,
+                                android.Manifest.permission.CAMERA
+                            ),
+                            PERMISSION_REQUEST_CODE
+                        )
+                    }
+                }
+                "checkLocationStatus" -> {
+                    val fineGranted = ContextCompat.checkSelfPermission(
+                        this, android.Manifest.permission.ACCESS_FINE_LOCATION
+                    ) == PackageManager.PERMISSION_GRANTED
+                    val coarseGranted = ContextCompat.checkSelfPermission(
+                        this, android.Manifest.permission.ACCESS_COARSE_LOCATION
+                    ) == PackageManager.PERMISSION_GRANTED
+                    val cameraGranted = ContextCompat.checkSelfPermission(
+                        this, android.Manifest.permission.CAMERA
+                    ) == PackageManager.PERMISSION_GRANTED
+
+                    val lm = getSystemService(Context.LOCATION_SERVICE) as? LocationManager
+                    val isGpsEnabled = lm?.isProviderEnabled(LocationManager.GPS_PROVIDER) ?: false
+                    val isNetworkLocEnabled = lm?.isProviderEnabled(LocationManager.NETWORK_PROVIDER) ?: false
+
+                    result.success(mapOf(
+                        "fineLocationGranted" to fineGranted,
+                        "coarseLocationGranted" to coarseGranted,
+                        "cameraGranted" to cameraGranted,
+                        "isLocationGranted" to (fineGranted || coarseGranted),
+                        "isGpsEnabled" to isGpsEnabled,
+                        "isNetworkLocEnabled" to isNetworkLocEnabled
+                    ))
+                }
+                "openLocationSettings" -> {
+                    try {
+                        val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        startActivity(intent)
+                        result.success(true)
+                    } catch (e: Exception) {
+                        result.error("INTENT_ERROR", e.message, null)
+                    }
+                }
+                "openAppSettings" -> {
+                    try {
+                        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                            data = Uri.fromParts("package", packageName, null)
+                            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        }
+                        startActivity(intent)
+                        result.success(true)
+                    } catch (e: Exception) {
+                        result.error("INTENT_ERROR", e.message, null)
+                    }
+                }
+                "reverseGeocodeNative" -> {
+                    val lat = (call.argument<Number>("latitude") ?: 0.0).toDouble()
+                    val lon = (call.argument<Number>("longitude") ?: 0.0).toDouble()
+                    try {
+                        if (Geocoder.isPresent()) {
+                            val geocoder = Geocoder(this, Locale("id", "ID"))
+                            @Suppress("DEPRECATION")
+                            val addresses = geocoder.getFromLocation(lat, lon, 1)
+                            if (!addresses.isNullOrEmpty()) {
+                                val addr = addresses[0]
+                                val fullAddress = addr.getAddressLine(0) ?: ""
+                                val thoroughfare = addr.thoroughfare ?: ""
+                                val subThoroughfare = addr.subThoroughfare ?: ""
+                                val locality = addr.locality ?: ""
+                                val subLocality = addr.subLocality ?: ""
+                                val adminArea = addr.adminArea ?: ""
+                                val postalCode = addr.postalCode ?: ""
+
+                                result.success(mapOf(
+                                    "fullAddress" to fullAddress,
+                                    "thoroughfare" to thoroughfare,
+                                    "subThoroughfare" to subThoroughfare,
+                                    "locality" to locality,
+                                    "subLocality" to subLocality,
+                                    "adminArea" to adminArea,
+                                    "postalCode" to postalCode
+                                ))
+                                return@setMethodCallHandler
+                            }
+                        }
+                        result.success(null)
+                    } catch (e: Exception) {
+                        result.success(null)
                     }
                 }
                 else -> result.notImplemented()
@@ -430,44 +929,68 @@ class MainActivity : FlutterActivity() {
     private fun checkBiometricStatus(ctx: Context): Pair<Boolean, Boolean> {
         var hasHardware = false
         var isEnrolled = false
+
+        // Tier 1: Modern BiometricManager for Android 11+ (API 30+)
         try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                 val bm = ctx.getSystemService(android.hardware.biometrics.BiometricManager::class.java)
                 if (bm != null) {
                     val canAuth = bm.canAuthenticate(
                         android.hardware.biometrics.BiometricManager.Authenticators.BIOMETRIC_STRONG or
                         android.hardware.biometrics.BiometricManager.Authenticators.BIOMETRIC_WEAK
                     )
-                    when (canAuth) {
-                        android.hardware.biometrics.BiometricManager.BIOMETRIC_SUCCESS -> {
-                            hasHardware = true
-                            isEnrolled = true
-                        }
-                        android.hardware.biometrics.BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED -> {
-                            hasHardware = true
-                            isEnrolled = false
-                        }
-                        android.hardware.biometrics.BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE -> {
-                            hasHardware = false
-                            isEnrolled = false
-                        }
-                        else -> {
-                            hasHardware = ctx.packageManager.hasSystemFeature(PackageManager.FEATURE_FINGERPRINT) ||
-                                          ctx.packageManager.hasSystemFeature(PackageManager.FEATURE_FACE)
-                        }
+                    if (canAuth == android.hardware.biometrics.BiometricManager.BIOMETRIC_SUCCESS) {
+                        hasHardware = true
+                        isEnrolled = true
+                    } else if (canAuth == android.hardware.biometrics.BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED) {
+                        hasHardware = true
+                        isEnrolled = false
+                    } else if (canAuth != android.hardware.biometrics.BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE) {
+                        hasHardware = true
                     }
                 }
-            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                // Tier 2: BiometricManager for Android 10 (API 29)
+                val bm = ctx.getSystemService(android.hardware.biometrics.BiometricManager::class.java)
+                if (bm != null) {
+                    val canAuth = bm.canAuthenticate()
+                    if (canAuth == android.hardware.biometrics.BiometricManager.BIOMETRIC_SUCCESS) {
+                        hasHardware = true
+                        isEnrolled = true
+                    } else if (canAuth == android.hardware.biometrics.BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED) {
+                        hasHardware = true
+                        isEnrolled = false
+                    } else if (canAuth != android.hardware.biometrics.BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE) {
+                        hasHardware = true
+                    }
+                }
+            }
+        } catch (_: Throwable) {}
+
+        // Tier 3: FingerprintManager for Android 6-9 (API 23-28) or secondary confirmation
+        if (!isEnrolled && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            try {
                 @Suppress("DEPRECATION")
                 val fm = ctx.getSystemService(Context.FINGERPRINT_SERVICE) as? android.hardware.fingerprint.FingerprintManager
                 if (fm != null) {
-                    hasHardware = fm.isHardwareDetected
-                    isEnrolled = fm.hasEnrolledFingerprints()
+                    if (fm.isHardwareDetected) {
+                        hasHardware = true
+                    }
+                    if (fm.hasEnrolledFingerprints()) {
+                        isEnrolled = true
+                    }
                 }
-            }
-        } catch (_: Throwable) {
-            hasHardware = ctx.packageManager.hasSystemFeature(PackageManager.FEATURE_FINGERPRINT)
+            } catch (_: Throwable) {}
         }
+
+        // Tier 4: PackageManager system feature fallback
+        if (!hasHardware) {
+            try {
+                hasHardware = ctx.packageManager.hasSystemFeature(PackageManager.FEATURE_FINGERPRINT) ||
+                              ctx.packageManager.hasSystemFeature(PackageManager.FEATURE_FACE)
+            } catch (_: Throwable) {}
+        }
+
         return Pair(hasHardware, isEnrolled)
     }
 
@@ -509,6 +1032,192 @@ class MainActivity : FlutterActivity() {
             }
         } catch (_: Throwable) {}
         return false
+    }
+
+    // 4.1. Detailed Wi-Fi Information (dBm, Frequency, Link Speed, Gateway, DNS)
+    private fun getDetailedWifiInfo(ctx: Context): Map<String, Any?> {
+        val res = mutableMapOf<String, Any?>()
+        try {
+            val wm = ctx.applicationContext.getSystemService(Context.WIFI_SERVICE) as? android.net.wifi.WifiManager
+            val cm = ctx.getSystemService(Context.CONNECTIVITY_SERVICE) as? ConnectivityManager
+            @Suppress("DEPRECATION")
+            val winfo = wm?.connectionInfo
+
+            val isWifiEnabled = wm?.isWifiEnabled ?: false
+            res["isWifiEnabled"] = isWifiEnabled
+
+            if (winfo != null && winfo.networkId != -1) {
+                var ssid = winfo.ssid ?: "Unknown"
+                if (ssid.startsWith("\"") && ssid.endsWith("\"") && ssid.length > 1) {
+                    ssid = ssid.substring(1, ssid.length - 1)
+                }
+                if (ssid == "<unknown ssid>") ssid = "Connected Wi-Fi"
+
+                val bssid = winfo.bssid ?: "00:00:00:00:00:00"
+                val rssi = winfo.rssi
+                val linkSpeed = winfo.linkSpeed // Mbps
+                val frequency = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) winfo.frequency else 2412 // MHz
+
+                var band = "2.4 GHz"
+                if (frequency in 4900..5900) {
+                    band = "5 GHz"
+                } else if (frequency > 5900) {
+                    band = "6 GHz (Wi-Fi 6E)"
+                }
+
+                @Suppress("DEPRECATION")
+                val signalLevel = android.net.wifi.WifiManager.calculateSignalLevel(rssi, 100) // 0 - 100%
+
+                res["isConnected"] = true
+                res["ssid"] = ssid
+                res["bssid"] = bssid
+                res["rssi"] = rssi
+                res["signalLevel"] = signalLevel
+                res["linkSpeedMbps"] = linkSpeed
+                res["frequencyMhz"] = frequency
+                res["band"] = band
+
+                val ipInt = winfo.ipAddress
+                val ipStr = String.format(
+                    Locale.US, "%d.%d.%d.%d",
+                    ipInt and 0xff, ipInt shr 8 and 0xff, ipInt shr 16 and 0xff, ipInt shr 24 and 0xff
+                )
+                res["localIp"] = ipStr
+
+                // Gateway & DNS from LinkProperties
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && cm != null) {
+                    val activeNet = cm.activeNetwork
+                    val lp = cm.getLinkProperties(activeNet)
+                    if (lp != null) {
+                        val routes = lp.routes
+                        for (r in routes) {
+                            if (r.isDefaultRoute && r.gateway != null) {
+                                res["gateway"] = r.gateway?.hostAddress
+                            }
+                        }
+                        val dnsList = lp.dnsServers.mapNotNull { it.hostAddress }
+                        if (dnsList.isNotEmpty()) {
+                            res["dns1"] = dnsList[0]
+                            if (dnsList.size > 1) res["dns2"] = dnsList[1]
+                        }
+                    }
+                }
+
+                @Suppress("DEPRECATION")
+                val dhcp = wm.dhcpInfo
+                if (dhcp != null) {
+                    if (res["gateway"] == null && dhcp.gateway != 0) {
+                        res["gateway"] = String.format(
+                            Locale.US, "%d.%d.%d.%d",
+                            dhcp.gateway and 0xff, dhcp.gateway shr 8 and 0xff, dhcp.gateway shr 16 and 0xff, dhcp.gateway shr 24 and 0xff
+                        )
+                    }
+                    if (res["dns1"] == null && dhcp.dns1 != 0) {
+                        res["dns1"] = String.format(
+                            Locale.US, "%d.%d.%d.%d",
+                            dhcp.dns1 and 0xff, dhcp.dns1 shr 8 and 0xff, dhcp.dns1 shr 16 and 0xff, dhcp.dns1 shr 24 and 0xff
+                        )
+                    }
+                    if (dhcp.netmask != 0) {
+                        res["netmask"] = String.format(
+                            Locale.US, "%d.%d.%d.%d",
+                            dhcp.netmask and 0xff, dhcp.netmask shr 8 and 0xff, dhcp.netmask shr 16 and 0xff, dhcp.netmask shr 24 and 0xff
+                        )
+                    }
+                }
+            } else {
+                res["isConnected"] = false
+                res["ssid"] = "Not Connected"
+            }
+        } catch (e: Exception) {
+            res["error"] = e.message
+            res["isConnected"] = false
+        }
+        return res
+    }
+
+    // 4.2. Network Traffic Statistics (Total Data Rx/Tx in Bytes & Packets)
+    private fun getNetworkTrafficStats(): Map<String, Any> {
+        val rxBytes = android.net.TrafficStats.getTotalRxBytes()
+        val txBytes = android.net.TrafficStats.getTotalTxBytes()
+        val rxPackets = android.net.TrafficStats.getTotalRxPackets()
+        val txPackets = android.net.TrafficStats.getTotalTxPackets()
+
+        val mobileRxBytes = android.net.TrafficStats.getMobileRxBytes()
+        val mobileTxBytes = android.net.TrafficStats.getMobileTxBytes()
+
+        return mapOf(
+            "totalRxBytes" to if (rxBytes >= 0) rxBytes else 0L,
+            "totalTxBytes" to if (txBytes >= 0) txBytes else 0L,
+            "totalRxPackets" to if (rxPackets >= 0) rxPackets else 0L,
+            "totalTxPackets" to if (txPackets >= 0) txPackets else 0L,
+            "mobileRxBytes" to if (mobileRxBytes >= 0) mobileRxBytes else 0L,
+            "mobileTxBytes" to if (mobileTxBytes >= 0) mobileTxBytes else 0L
+        )
+    }
+
+    // 4.3. Native ICMP Ping Command Runner
+    private fun pingHostNative(host: String, count: Int, timeoutSec: Int): Map<String, Any?> {
+        val result = mutableMapOf<String, Any?>()
+        try {
+            val process = Runtime.getRuntime().exec("ping -c $count -W $timeoutSec $host")
+            val reader = BufferedReader(InputStreamReader(process.inputStream))
+            val output = StringBuilder()
+            var line: String?
+            val latencies = mutableListOf<Double>()
+
+            while (reader.readLine().also { line = it } != null) {
+                output.append(line).append("\n")
+                val timeIndex = line?.indexOf("time=") ?: -1
+                if (timeIndex != -1) {
+                    val sub = line!!.substring(timeIndex + 5)
+                    val msIndex = sub.indexOf(" ms")
+                    val spaceIndex = sub.indexOf(" ")
+                    val endIdx = if (msIndex != -1) msIndex else (if (spaceIndex != -1) spaceIndex else sub.length)
+                    sub.substring(0, endIdx).toDoubleOrNull()?.let { latencies.add(it) }
+                }
+            }
+            reader.close()
+            process.waitFor()
+
+            result["host"] = host
+            result["success"] = latencies.isNotEmpty()
+            result["output"] = output.toString()
+
+            if (latencies.isNotEmpty()) {
+                val min = latencies.minOrNull() ?: 0.0
+                val max = latencies.maxOrNull() ?: 0.0
+                val avg = latencies.average()
+
+                var jitter = 0.0
+                if (latencies.size > 1) {
+                    var diffSum = 0.0
+                    for (i in 1 until latencies.size) {
+                        diffSum += Math.abs(latencies[i] - latencies[i - 1])
+                    }
+                    jitter = diffSum / (latencies.size - 1)
+                }
+
+                result["minMs"] = min
+                result["maxMs"] = max
+                result["avgMs"] = avg
+                result["jitterMs"] = jitter
+                result["packetCount"] = count
+                result["receivedCount"] = latencies.size
+                result["packetLossPercent"] = ((count - latencies.size).toDouble() / count.toDouble() * 100.0)
+            } else {
+                result["packetLossPercent"] = 100.0
+                result["avgMs"] = -1.0
+                result["jitterMs"] = 0.0
+            }
+        } catch (e: Exception) {
+            result["success"] = false
+            result["error"] = e.message
+            result["avgMs"] = -1.0
+            result["packetLossPercent"] = 100.0
+            result["jitterMs"] = 0.0
+        }
+        return result
     }
 
     // 5. Display & Screen Specifications
@@ -685,6 +1394,327 @@ class MainActivity : FlutterActivity() {
             "gravityName" to gravName,
             "hasStepCounter" to hasStepCounter,
             "stepCounterName" to stepName
+        )
+    }
+
+    // 7. Location, Geotagging & Cellular Carrier Telemetry
+    private fun getLocationAndCarrierData(ctx: Context): Map<String, Any> {
+        // 1. Cellular Network & SIM Info
+        var carrierName = "No SIM / WiFi Only"
+        var simState = "READY"
+        var countryIso = "id"
+
+        try {
+            val tm = ctx.getSystemService(Context.TELEPHONY_SERVICE) as? TelephonyManager
+            if (tm != null) {
+                val opName = tm.networkOperatorName
+                val simOpName = tm.simOperatorName
+                if (!opName.isNullOrBlank()) {
+                    carrierName = opName
+                } else if (!simOpName.isNullOrBlank()) {
+                    carrierName = simOpName
+                }
+
+                simState = when (tm.simState) {
+                    TelephonyManager.SIM_STATE_READY -> "READY"
+                    TelephonyManager.SIM_STATE_ABSENT -> "ABSENT"
+                    TelephonyManager.SIM_STATE_PIN_REQUIRED,
+                    TelephonyManager.SIM_STATE_PUK_REQUIRED,
+                    TelephonyManager.SIM_STATE_NETWORK_LOCKED -> "LOCKED"
+                    else -> "READY"
+                }
+
+                val iso = tm.networkCountryIso.ifEmpty { tm.simCountryIso }
+                if (!iso.isNullOrBlank()) {
+                    countryIso = iso.lowercase()
+                }
+            }
+        } catch (_: Throwable) {}
+
+        // 2. Location & GPS Telemetry
+        var isGpsEnabled = false
+        var isNetworkLocEnabled = false
+        var isPermissionGranted = false
+        var hasGpsHardware = false
+        var latitude = 0.0
+        var longitude = 0.0
+        var altitude = 0.0
+        var accuracy = 0.0
+        var speed = 0.0
+        var bearing = 0.0
+        var isLocationMock = false
+        var providerName = "none"
+
+        try {
+            hasGpsHardware = ctx.packageManager.hasSystemFeature(PackageManager.FEATURE_LOCATION_GPS)
+            val lm = ctx.getSystemService(Context.LOCATION_SERVICE) as? LocationManager
+            if (lm != null) {
+                isGpsEnabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER)
+                isNetworkLocEnabled = lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
+
+                val hasFine = ContextCompat.checkSelfPermission(
+                    ctx, android.Manifest.permission.ACCESS_FINE_LOCATION
+                ) == PackageManager.PERMISSION_GRANTED
+                val hasCoarse = ContextCompat.checkSelfPermission(
+                    ctx, android.Manifest.permission.ACCESS_COARSE_LOCATION
+                ) == PackageManager.PERMISSION_GRANTED
+
+                isPermissionGranted = hasFine || hasCoarse
+
+                if (isPermissionGranted) {
+                    var bestLocation: Location? = latestLiveLocation
+                    val providers = lm.getProviders(true)
+                    for (p in providers) {
+                        val l = lm.getLastKnownLocation(p) ?: continue
+                        if (bestLocation == null || l.accuracy < bestLocation.accuracy) {
+                            bestLocation = l
+                        }
+                    }
+
+                    if (bestLocation != null) {
+                        latitude = bestLocation.latitude
+                        longitude = bestLocation.longitude
+                        altitude = bestLocation.altitude
+                        accuracy = bestLocation.accuracy.toDouble()
+                        speed = (bestLocation.speed * 3.6) // m/s to km/h
+                        bearing = bestLocation.bearing.toDouble()
+                        providerName = bestLocation.provider ?: "gps"
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                            isLocationMock = bestLocation.isMock
+                        } else {
+                            @Suppress("DEPRECATION")
+                            isLocationMock = bestLocation.isFromMockProvider
+                        }
+                    }
+                }
+            }
+        } catch (_: Throwable) {}
+
+        return mapOf(
+            "carrierName" to carrierName,
+            "simState" to simState,
+            "countryIso" to countryIso,
+            "isGpsEnabled" to isGpsEnabled,
+            "isNetworkLocEnabled" to isNetworkLocEnabled,
+            "isLocationPermissionGranted" to isPermissionGranted,
+            "hasGpsHardware" to hasGpsHardware,
+            "latitude" to latitude,
+            "longitude" to longitude,
+            "altitudeMeters" to altitude,
+            "accuracyMeters" to accuracy,
+            "speedKmh" to speed,
+            "bearingDegrees" to bearing,
+            "isLocationMock" to isLocationMock,
+            "locationProvider" to providerName
+        )
+    }
+}
+
+class GeotagSqliteHelper private constructor(context: Context) :
+    SQLiteOpenHelper(context.applicationContext, DATABASE_NAME, null, DATABASE_VERSION) {
+
+    companion object {
+        const val DATABASE_NAME = "geotag_diagnostics.db"
+        const val DATABASE_VERSION = 1
+        const val TABLE_PHOTOS = "geotagged_photos"
+
+        const val COL_ID = "id"
+        const val COL_ORIGINAL_PATH = "original_path"
+        const val COL_COMPRESSED_PATH = "compressed_path"
+        const val COL_ORIGINAL_SIZE = "original_size_bytes"
+        const val COL_COMPRESSED_SIZE = "compressed_size_bytes"
+        const val COL_TIMESTAMP = "timestamp"
+        const val COL_LATITUDE = "latitude"
+        const val COL_LONGITUDE = "longitude"
+        const val COL_ALTITUDE = "altitude"
+        const val COL_ACCURACY = "accuracy"
+        const val COL_ADDRESS = "address"
+        const val COL_CARRIER = "carrier"
+        const val COL_IS_CLOUD_SYNCED = "is_cloud_synced"
+        const val COL_CLOUD_URL = "cloud_url"
+        const val COL_CLOUD_PROVIDER = "cloud_provider"
+        const val COL_CLOUD_SYNCED_AT = "cloud_synced_at"
+        const val COL_CREATED_AT = "created_at"
+
+        @Volatile
+        private var instance: GeotagSqliteHelper? = null
+
+        fun getInstance(context: Context): GeotagSqliteHelper {
+            return instance ?: synchronized(this) {
+                instance ?: GeotagSqliteHelper(context.applicationContext).also { instance = it }
+            }
+        }
+    }
+
+    override fun onCreate(db: SQLiteDatabase) {
+        val createSql = """
+            CREATE TABLE IF NOT EXISTS $TABLE_PHOTOS (
+                $COL_ID INTEGER PRIMARY KEY AUTOINCREMENT,
+                $COL_ORIGINAL_PATH TEXT NOT NULL,
+                $COL_COMPRESSED_PATH TEXT NOT NULL,
+                $COL_ORIGINAL_SIZE INTEGER NOT NULL,
+                $COL_COMPRESSED_SIZE INTEGER NOT NULL,
+                $COL_TIMESTAMP INTEGER NOT NULL,
+                $COL_LATITUDE REAL NOT NULL,
+                $COL_LONGITUDE REAL NOT NULL,
+                $COL_ALTITUDE REAL NOT NULL,
+                $COL_ACCURACY REAL NOT NULL,
+                $COL_ADDRESS TEXT NOT NULL,
+                $COL_CARRIER TEXT,
+                $COL_IS_CLOUD_SYNCED INTEGER DEFAULT 0,
+                $COL_CLOUD_URL TEXT,
+                $COL_CLOUD_PROVIDER TEXT,
+                $COL_CLOUD_SYNCED_AT INTEGER DEFAULT 0,
+                $COL_CREATED_AT INTEGER NOT NULL
+            )
+        """.trimIndent()
+        db.execSQL(createSql)
+    }
+
+    override fun onOpen(db: SQLiteDatabase) {
+        super.onOpen(db)
+        try {
+            db.execSQL("ALTER TABLE $TABLE_PHOTOS ADD COLUMN $COL_IS_CLOUD_SYNCED INTEGER DEFAULT 0")
+        } catch (_: Throwable) {}
+        try {
+            db.execSQL("ALTER TABLE $TABLE_PHOTOS ADD COLUMN $COL_CLOUD_URL TEXT")
+        } catch (_: Throwable) {}
+        try {
+            db.execSQL("ALTER TABLE $TABLE_PHOTOS ADD COLUMN $COL_CLOUD_PROVIDER TEXT")
+        } catch (_: Throwable) {}
+        try {
+            db.execSQL("ALTER TABLE $TABLE_PHOTOS ADD COLUMN $COL_CLOUD_SYNCED_AT INTEGER DEFAULT 0")
+        } catch (_: Throwable) {}
+    }
+
+    override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
+        db.execSQL("DROP TABLE IF EXISTS $TABLE_PHOTOS")
+        onCreate(db)
+    }
+
+    fun insertPhoto(
+        originalPath: String,
+        compressedPath: String,
+        originalSize: Long,
+        compressedSize: Long,
+        timestamp: Long,
+        latitude: Double,
+        longitude: Double,
+        altitude: Double,
+        accuracy: Double,
+        address: String,
+        carrier: String,
+        cloudUrl: String = "",
+        isCloudSynced: Boolean = false,
+        cloudProvider: String = ""
+    ): Long {
+        val db = writableDatabase
+        val values = ContentValues().apply {
+            put(COL_ORIGINAL_PATH, originalPath)
+            put(COL_COMPRESSED_PATH, compressedPath)
+            put(COL_ORIGINAL_SIZE, originalSize)
+            put(COL_COMPRESSED_SIZE, compressedSize)
+            put(COL_TIMESTAMP, timestamp)
+            put(COL_LATITUDE, latitude)
+            put(COL_LONGITUDE, longitude)
+            put(COL_ALTITUDE, altitude)
+            put(COL_ACCURACY, accuracy)
+            put(COL_ADDRESS, address)
+            put(COL_CARRIER, carrier)
+            put(COL_IS_CLOUD_SYNCED, if (isCloudSynced) 1 else 0)
+            put(COL_CLOUD_URL, cloudUrl)
+            put(COL_CLOUD_PROVIDER, cloudProvider)
+            put(COL_CLOUD_SYNCED_AT, if (isCloudSynced) System.currentTimeMillis() else 0L)
+            put(COL_CREATED_AT, System.currentTimeMillis())
+        }
+        return db.insert(TABLE_PHOTOS, null, values)
+    }
+
+    fun updateCloudSync(id: Long, cloudUrl: String, cloudProvider: String): Boolean {
+        val db = writableDatabase
+        val values = ContentValues().apply {
+            put(COL_IS_CLOUD_SYNCED, 1)
+            put(COL_CLOUD_URL, cloudUrl)
+            put(COL_CLOUD_PROVIDER, cloudProvider)
+            put(COL_CLOUD_SYNCED_AT, System.currentTimeMillis())
+        }
+        val rows = db.update(TABLE_PHOTOS, values, "$COL_ID = ?", arrayOf(id.toString()))
+        return rows > 0
+    }
+
+    fun getAllPhotos(): List<Map<String, Any>> {
+        val list = mutableListOf<Map<String, Any>>()
+        val db = readableDatabase
+        val cursor = db.rawQuery("SELECT * FROM $TABLE_PHOTOS ORDER BY $COL_ID DESC", null)
+        cursor.use {
+            while (it.moveToNext()) {
+                val map = mutableMapOf<String, Any>()
+                map["id"] = it.getLong(it.getColumnIndexOrThrow(COL_ID))
+                map["original_path"] = it.getString(it.getColumnIndexOrThrow(COL_ORIGINAL_PATH))
+                map["compressed_path"] = it.getString(it.getColumnIndexOrThrow(COL_COMPRESSED_PATH))
+                map["original_size_bytes"] = it.getLong(it.getColumnIndexOrThrow(COL_ORIGINAL_SIZE))
+                map["compressed_size_bytes"] = it.getLong(it.getColumnIndexOrThrow(COL_COMPRESSED_SIZE))
+                map["timestamp"] = it.getLong(it.getColumnIndexOrThrow(COL_TIMESTAMP))
+                map["latitude"] = it.getDouble(it.getColumnIndexOrThrow(COL_LATITUDE))
+                map["longitude"] = it.getDouble(it.getColumnIndexOrThrow(COL_LONGITUDE))
+                map["altitude"] = it.getDouble(it.getColumnIndexOrThrow(COL_ALTITUDE))
+                map["accuracy"] = it.getDouble(it.getColumnIndexOrThrow(COL_ACCURACY))
+                map["address"] = it.getString(it.getColumnIndexOrThrow(COL_ADDRESS))
+                map["carrier"] = it.getString(it.getColumnIndexOrThrow(COL_CARRIER)) ?: ""
+                
+                val cloudSyncIdx = it.getColumnIndex(COL_IS_CLOUD_SYNCED)
+                val cloudUrlIdx = it.getColumnIndex(COL_CLOUD_URL)
+                val cloudProvIdx = it.getColumnIndex(COL_CLOUD_PROVIDER)
+                val cloudTimeIdx = it.getColumnIndex(COL_CLOUD_SYNCED_AT)
+
+                map["is_cloud_synced"] = if (cloudSyncIdx != -1) it.getInt(cloudSyncIdx) == 1 else false
+                map["cloud_url"] = if (cloudUrlIdx != -1) (it.getString(cloudUrlIdx) ?: "") else ""
+                map["cloud_provider"] = if (cloudProvIdx != -1) (it.getString(cloudProvIdx) ?: "") else ""
+                map["cloud_synced_at"] = if (cloudTimeIdx != -1) it.getLong(cloudTimeIdx) else 0L
+
+                map["created_at"] = it.getLong(it.getColumnIndexOrThrow(COL_CREATED_AT))
+                list.add(map)
+            }
+        }
+        return list
+    }
+
+    fun deletePhoto(id: Long): Int {
+        val db = writableDatabase
+        return db.delete(TABLE_PHOTOS, "$COL_ID = ?", arrayOf(id.toString()))
+    }
+
+    fun getStats(): Map<String, Any> {
+        val db = readableDatabase
+        var count = 0L
+        var origBytes = 0L
+        var compBytes = 0L
+        val cursor = db.rawQuery(
+            "SELECT $COL_ORIGINAL_SIZE, $COL_COMPRESSED_SIZE FROM $TABLE_PHOTOS",
+            null
+        )
+        cursor.use {
+            while (it.moveToNext()) {
+                count++
+                var o = it.getLong(0)
+                var c = it.getLong(1)
+                if (o > 0 && c > 0 && o < c) {
+                    val temp = o
+                    o = c
+                    c = temp
+                }
+                origBytes += o
+                compBytes += c
+            }
+        }
+        val savedBytes = if (origBytes > compBytes) origBytes - compBytes else 0L
+        val ratio = if (origBytes > 0) (savedBytes.toDouble() / origBytes.toDouble() * 100) else 0.0
+        return mapOf(
+            "totalPhotos" to count,
+            "totalOriginalBytes" to origBytes,
+            "totalCompressedBytes" to compBytes,
+            "totalSavedBytes" to savedBytes,
+            "savingsPercent" to ratio
         )
     }
 }
