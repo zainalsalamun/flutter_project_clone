@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/display_and_sensors_data.dart';
+import '../theme/diagnostics_colors.dart';
 
 class SensorsCatalogCard extends StatelessWidget {
   final SensorsCatalogData sensorsCatalog;
@@ -17,9 +18,9 @@ class SensorsCatalogCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: DiagnosticsColors.cardBg,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: const Color(0xFFE2E8F0)),
+        border: Border.all(color: DiagnosticsColors.border),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.03),
@@ -39,7 +40,7 @@ class SensorsCatalogCard extends StatelessWidget {
                 child: Row(
                   children: [
                     Icon(Icons.sensors_rounded,
-                        size: 18, color: Color(0xFF0284C7)),
+                        size: 18, color: DiagnosticsColors.primary),
                     SizedBox(width: 6),
                     Expanded(
                       child: Text(
@@ -49,7 +50,7 @@ class SensorsCatalogCard extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.bold,
-                          color: Color(0xFF0F172A),
+                          color: DiagnosticsColors.textPrimary,
                           letterSpacing: 0.5,
                         ),
                       ),
@@ -57,20 +58,25 @@ class SensorsCatalogCard extends StatelessWidget {
                   ],
                 ),
               ),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
-                decoration: BoxDecoration(
-                  color: const Color(0xFF0284C7).withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(6),
-                ),
-                child: Text(
-                  sensorsCatalog.totalSensorsCount > 0
-                      ? "${sensorsCatalog.totalSensorsCount} Sensor"
-                      : "$availableCount/8 Terdeteksi",
-                  style: const TextStyle(
-                    fontSize: 10,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFF0284C7),
+              const SizedBox(width: 8),
+              Flexible(
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
+                  decoration: BoxDecoration(
+                    color: DiagnosticsColors.primary.withValues(alpha: 0.1),
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                  child: Text(
+                    sensorsCatalog.totalSensorsCount > 0
+                        ? "${sensorsCatalog.totalSensorsCount} Sensor"
+                        : "$availableCount/8 Terdeteksi",
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      fontSize: 10,
+                      fontWeight: FontWeight.bold,
+                      color: DiagnosticsColors.primary,
+                    ),
                   ),
                 ),
               ),
@@ -81,7 +87,7 @@ class SensorsCatalogCard extends StatelessWidget {
             "Pemeriksaan ketersediaan modul sensor fisik yang tertanam pada motherboard perangkat.",
             style: TextStyle(
               fontSize: 10.5,
-              color: Color(0xFF64748B),
+              color: DiagnosticsColors.textSubtle,
               height: 1.3,
             ),
           ),
@@ -141,11 +147,11 @@ class _SensorTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final isAvail = item.isAvailable;
     final primaryColor =
-        isAvail ? const Color(0xFF10B981) : const Color(0xFF94A3B8);
+        isAvail ? DiagnosticsColors.success : DiagnosticsColors.textMuted;
     final bgColor =
-        isAvail ? const Color(0xFFF0FDF4) : const Color(0xFFF8FAFC);
+        isAvail ? DiagnosticsColors.successBg : DiagnosticsColors.surfaceSubtle;
     final borderColor =
-        isAvail ? const Color(0xFF86EFAC) : const Color(0xFFE2E8F0);
+        isAvail ? DiagnosticsColors.successBorder : DiagnosticsColors.border;
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 8),
@@ -175,8 +181,8 @@ class _SensorTile extends StatelessWidget {
                     const EdgeInsets.symmetric(horizontal: 5, vertical: 1.5),
                 decoration: BoxDecoration(
                   color: isAvail
-                      ? const Color(0xFF10B981).withValues(alpha: 0.15)
-                      : const Color(0xFF94A3B8).withValues(alpha: 0.15),
+                      ? DiagnosticsColors.success.withValues(alpha: 0.15)
+                      : DiagnosticsColors.textMuted.withValues(alpha: 0.15),
                   borderRadius: BorderRadius.circular(4),
                 ),
                 child: Row(
@@ -188,8 +194,8 @@ class _SensorTile extends StatelessWidget {
                           : Icons.cancel_outlined,
                       size: 9,
                       color: isAvail
-                          ? const Color(0xFF16A34A)
-                          : const Color(0xFF64748B),
+                          ? DiagnosticsColors.successDark
+                          : DiagnosticsColors.textSubtle,
                     ),
                     const SizedBox(width: 3),
                     Text(
@@ -198,8 +204,8 @@ class _SensorTile extends StatelessWidget {
                         fontSize: 8.5,
                         fontWeight: FontWeight.bold,
                         color: isAvail
-                            ? const Color(0xFF16A34A)
-                            : const Color(0xFF64748B),
+                            ? DiagnosticsColors.successDark
+                            : DiagnosticsColors.textSubtle,
                       ),
                     ),
                   ],
@@ -215,7 +221,7 @@ class _SensorTile extends StatelessWidget {
                 style: const TextStyle(
                   fontSize: 10.5,
                   fontWeight: FontWeight.bold,
-                  color: Color(0xFF0F172A),
+                  color: DiagnosticsColors.textPrimary,
                 ),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
@@ -226,7 +232,7 @@ class _SensorTile extends StatelessWidget {
                     : item.typeDescription,
                 style: TextStyle(
                   fontSize: 8.0,
-                  color: const Color(0xFF64748B),
+                  color: DiagnosticsColors.textSubtle,
                   fontWeight: item.hardwareName.isNotEmpty
                       ? FontWeight.w500
                       : FontWeight.normal,

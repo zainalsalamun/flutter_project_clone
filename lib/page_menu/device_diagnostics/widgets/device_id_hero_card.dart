@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import '../models/device_diagnostics_event.dart';
+import '../theme/diagnostics_colors.dart';
 
 class DeviceIdHeroCard extends StatelessWidget {
   final DeviceDiagnosticsEvent event;
@@ -30,7 +31,7 @@ class DeviceIdHeroCard extends StatelessWidget {
             Expanded(child: Text("$label copied to clipboard!")),
           ],
         ),
-        backgroundColor: const Color(0xFF1E293B),
+        backgroundColor: DiagnosticsColors.darkCard,
         behavior: SnackBarBehavior.floating,
         duration: const Duration(seconds: 2),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -43,7 +44,7 @@ class DeviceIdHeroCard extends StatelessWidget {
       context: context,
       builder: (ctx) => Dialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
-        backgroundColor: const Color(0xFF0F172A),
+        backgroundColor: DiagnosticsColors.darkSurface,
         child: Padding(
           padding: const EdgeInsets.all(24),
           child: Column(
@@ -56,14 +57,14 @@ class DeviceIdHeroCard extends StatelessWidget {
                     child: Row(
                       children: [
                         Icon(Icons.qr_code_2_rounded,
-                            color: Color(0xFF38BDF8), size: 24),
+                            color: DiagnosticsColors.primaryLight, size: 24),
                         SizedBox(width: 8),
                         Expanded(
                           child: Text(
                             "Device ID QR Code",
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
-                              color: Colors.white,
+                              color: DiagnosticsColors.white,
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
                             ),
@@ -82,11 +83,11 @@ class DeviceIdHeroCard extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: DiagnosticsColors.white,
                   borderRadius: BorderRadius.circular(16),
                   boxShadow: [
                     BoxShadow(
-                      color: const Color(0xFF38BDF8).withOpacity(0.3),
+                      color: DiagnosticsColors.primaryLight.withValues(alpha: 0.3),
                       blurRadius: 16,
                       offset: const Offset(0, 4),
                     ),
@@ -96,7 +97,7 @@ class DeviceIdHeroCard extends StatelessWidget {
                   data: event.deviceIdHash,
                   version: QrVersions.auto,
                   size: 180,
-                  backgroundColor: Colors.white,
+                  backgroundColor: DiagnosticsColors.white,
                 ),
               ),
               const SizedBox(height: 16),
@@ -104,7 +105,7 @@ class DeviceIdHeroCard extends StatelessWidget {
                 event.model,
                 textAlign: TextAlign.center,
                 style: const TextStyle(
-                  color: Colors.white,
+                  color: DiagnosticsColors.white,
                   fontWeight: FontWeight.w600,
                   fontSize: 14,
                 ),
@@ -114,7 +115,7 @@ class DeviceIdHeroCard extends StatelessWidget {
                 "ID: ${event.maskedDeviceId}",
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  color: Colors.white.withOpacity(0.6),
+                  color: DiagnosticsColors.white.withValues(alpha: 0.6),
                   fontFamily: 'monospace',
                   fontSize: 12,
                 ),
@@ -130,8 +131,8 @@ class DeviceIdHeroCard extends StatelessWidget {
                   icon: const Icon(Icons.copy_rounded, size: 18),
                   label: const Text("Copy Full Device ID"),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF0284C7),
-                    foregroundColor: Colors.white,
+                    backgroundColor: DiagnosticsColors.primary,
+                    foregroundColor: DiagnosticsColors.white,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
@@ -153,21 +154,21 @@ class DeviceIdHeroCard extends StatelessWidget {
       decoration: BoxDecoration(
         gradient: const LinearGradient(
           colors: [
-            Color(0xFF0B1329), // Deep navy slate
-            Color(0xFF1E293B),
-            Color(0xFF0369A1), // Cyan/Blue gradient accent
+            DiagnosticsColors.deepNavy,
+            DiagnosticsColors.darkCard,
+            DiagnosticsColors.primaryDark,
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         borderRadius: BorderRadius.circular(24),
         border: Border.all(
-          color: const Color(0xFF38BDF8).withOpacity(0.35),
+          color: DiagnosticsColors.primaryLight.withValues(alpha: 0.35),
           width: 1.5,
         ),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFF0284C7).withOpacity(0.25),
+            color: DiagnosticsColors.primary.withValues(alpha: 0.25),
             blurRadius: 24,
             offset: const Offset(0, 10),
           ),
@@ -182,7 +183,7 @@ class DeviceIdHeroCard extends StatelessWidget {
             child: Icon(
               Icons.fingerprint_rounded,
               size: 180,
-              color: Colors.white.withOpacity(0.04),
+              color: DiagnosticsColors.white.withValues(alpha: 0.04),
             ),
           ),
 
@@ -200,10 +201,10 @@ class DeviceIdHeroCard extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 8, vertical: 4),
                         decoration: BoxDecoration(
-                          color: const Color(0xFF0284C7).withOpacity(0.25),
+                          color: DiagnosticsColors.primary.withValues(alpha: 0.25),
                           borderRadius: BorderRadius.circular(20),
                           border: Border.all(
-                            color: const Color(0xFF38BDF8).withOpacity(0.5),
+                            color: DiagnosticsColors.primaryLight.withValues(alpha: 0.5),
                           ),
                         ),
                         child: const Row(
@@ -212,7 +213,7 @@ class DeviceIdHeroCard extends StatelessWidget {
                             Icon(
                               Icons.shield_outlined,
                               size: 13,
-                              color: Color(0xFF38BDF8),
+                              color: DiagnosticsColors.primaryLight,
                             ),
                             SizedBox(width: 5),
                             Flexible(
@@ -221,7 +222,7 @@ class DeviceIdHeroCard extends StatelessWidget {
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
-                                  color: Color(0xFF38BDF8),
+                                  color: DiagnosticsColors.primaryLight,
                                   fontSize: 10,
                                   fontWeight: FontWeight.bold,
                                   letterSpacing: 0.6,
@@ -238,8 +239,8 @@ class DeviceIdHeroCard extends StatelessWidget {
                           horizontal: 8, vertical: 4),
                       decoration: BoxDecoration(
                         color: isLiveDevice
-                            ? const Color(0xFF10B981).withOpacity(0.2)
-                            : const Color(0xFFF59E0B).withOpacity(0.2),
+                            ? DiagnosticsColors.success.withValues(alpha: 0.2)
+                            : DiagnosticsColors.warning.withValues(alpha: 0.2),
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Row(
@@ -250,8 +251,8 @@ class DeviceIdHeroCard extends StatelessWidget {
                                 ? Icons.sensors_rounded
                                 : Icons.devices_other_rounded,
                             color: isLiveDevice
-                                ? const Color(0xFF10B981)
-                                : const Color(0xFFF59E0B),
+                                ? DiagnosticsColors.success
+                                : DiagnosticsColors.warning,
                             size: 12,
                           ),
                           const SizedBox(width: 4),
@@ -259,8 +260,8 @@ class DeviceIdHeroCard extends StatelessWidget {
                             isLiveDevice ? "REAL DEVICE" : "PRESET",
                             style: TextStyle(
                               color: isLiveDevice
-                                  ? const Color(0xFF10B981)
-                                  : const Color(0xFFF59E0B),
+                                  ? DiagnosticsColors.success
+                                  : DiagnosticsColors.warning,
                               fontSize: 10,
                               fontWeight: FontWeight.bold,
                             ),
@@ -277,10 +278,10 @@ class DeviceIdHeroCard extends StatelessWidget {
                   width: double.infinity,
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    color: Colors.black.withOpacity(0.45),
+                    color: Colors.black.withValues(alpha: 0.45),
                     borderRadius: BorderRadius.circular(14),
                     border: Border.all(
-                      color: Colors.white.withOpacity(0.12),
+                      color: DiagnosticsColors.white.withValues(alpha: 0.12),
                     ),
                   ),
                   child: Column(
@@ -295,7 +296,7 @@ class DeviceIdHeroCard extends StatelessWidget {
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
-                                color: Color(0xFF94A3B8),
+                                color: DiagnosticsColors.textMuted,
                                 fontSize: 9,
                                 fontWeight: FontWeight.w600,
                                 letterSpacing: 0.5,
@@ -306,7 +307,7 @@ class DeviceIdHeroCard extends StatelessWidget {
                           Text(
                             "${event.deviceIdHash.length} chars",
                             style: const TextStyle(
-                              color: Color(0xFF64748B),
+                              color: DiagnosticsColors.textSubtle,
                               fontSize: 9,
                             ),
                           ),
@@ -316,7 +317,7 @@ class DeviceIdHeroCard extends StatelessWidget {
                       SelectableText(
                         isMasked ? event.maskedDeviceId : event.deviceIdHash,
                         style: const TextStyle(
-                          color: Color(0xFFF8FAFC),
+                          color: DiagnosticsColors.pageBg,
                           fontFamily: 'monospace',
                           fontSize: 12,
                           fontWeight: FontWeight.w600,
@@ -349,13 +350,13 @@ class DeviceIdHeroCard extends StatelessWidget {
                       label: Text(
                         isMasked ? "Reveal" : "Mask",
                         style: const TextStyle(
-                          color: Colors.white,
+                          color: DiagnosticsColors.white,
                           fontSize: 11,
                         ),
                       ),
                       style: OutlinedButton.styleFrom(
                         side: BorderSide(
-                          color: Colors.white.withOpacity(0.25),
+                          color: DiagnosticsColors.white.withValues(alpha: 0.25),
                         ),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
@@ -376,8 +377,8 @@ class DeviceIdHeroCard extends StatelessWidget {
                         style: TextStyle(fontSize: 11),
                       ),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF0284C7),
-                        foregroundColor: Colors.white,
+                        backgroundColor: DiagnosticsColors.primary,
+                        foregroundColor: DiagnosticsColors.white,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
@@ -392,8 +393,8 @@ class DeviceIdHeroCard extends StatelessWidget {
                       onPressed: () => _showQrDialog(context),
                       icon: const Icon(Icons.qr_code_2_rounded, size: 18),
                       style: IconButton.styleFrom(
-                        backgroundColor: Colors.white.withOpacity(0.12),
-                        foregroundColor: const Color(0xFF38BDF8),
+                        backgroundColor: DiagnosticsColors.white.withValues(alpha: 0.12),
+                        foregroundColor: DiagnosticsColors.primaryLight,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
@@ -407,8 +408,8 @@ class DeviceIdHeroCard extends StatelessWidget {
                         onPressed: onRegenerateId,
                         icon: const Icon(Icons.refresh_rounded, size: 18),
                         style: IconButton.styleFrom(
-                          backgroundColor: Colors.white.withOpacity(0.12),
-                          foregroundColor: const Color(0xFF10B981),
+                          backgroundColor: DiagnosticsColors.white.withValues(alpha: 0.12),
+                          foregroundColor: DiagnosticsColors.success,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),
@@ -425,7 +426,7 @@ class DeviceIdHeroCard extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(
                       horizontal: 10, vertical: 8),
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.05),
+                    color: DiagnosticsColors.white.withValues(alpha: 0.05),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Row(
@@ -434,14 +435,15 @@ class DeviceIdHeroCard extends StatelessWidget {
                         child: Row(
                           children: [
                             Icon(Icons.person_outline_rounded,
-                                size: 13, color: Colors.white.withOpacity(0.6)),
+                                size: 13,
+                                color: DiagnosticsColors.white.withValues(alpha: 0.6)),
                             const SizedBox(width: 4),
                             Expanded(
                               child: Text(
                                 "User: ${event.userId}",
                                 overflow: TextOverflow.ellipsis,
                                 style: const TextStyle(
-                                  color: Colors.white,
+                                  color: DiagnosticsColors.white,
                                   fontSize: 10,
                                   fontWeight: FontWeight.w600,
                                 ),
@@ -455,14 +457,15 @@ class DeviceIdHeroCard extends StatelessWidget {
                         child: Row(
                           children: [
                             Icon(Icons.app_registration_rounded,
-                                size: 13, color: Colors.white.withOpacity(0.6)),
+                                size: 13,
+                                color: DiagnosticsColors.white.withValues(alpha: 0.6)),
                             const SizedBox(width: 4),
                             Expanded(
                               child: Text(
                                 "Install: ${event.maskedInstallationId}",
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
-                                  color: Colors.white.withOpacity(0.7),
+                                  color: DiagnosticsColors.white.withValues(alpha: 0.7),
                                   fontSize: 10,
                                   fontFamily: 'monospace',
                                 ),

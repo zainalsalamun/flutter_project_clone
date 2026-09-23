@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/display_and_sensors_data.dart';
+import '../theme/diagnostics_colors.dart';
 
 class DisplaySpecsCard extends StatelessWidget {
   final DisplaySpecsData displaySpecs;
@@ -16,9 +17,9 @@ class DisplaySpecsCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: DiagnosticsColors.cardBg,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: const Color(0xFFE2E8F0)),
+        border: Border.all(color: DiagnosticsColors.border),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.03),
@@ -38,7 +39,7 @@ class DisplaySpecsCard extends StatelessWidget {
                 child: Row(
                   children: [
                     Icon(Icons.screenshot_monitor_rounded,
-                        size: 18, color: Color(0xFF0284C7)),
+                        size: 18, color: DiagnosticsColors.primary),
                     SizedBox(width: 6),
                     Expanded(
                       child: Text(
@@ -48,7 +49,7 @@ class DisplaySpecsCard extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.bold,
-                          color: Color(0xFF0F172A),
+                          color: DiagnosticsColors.textPrimary,
                           letterSpacing: 0.5,
                         ),
                       ),
@@ -56,22 +57,27 @@ class DisplaySpecsCard extends StatelessWidget {
                   ],
                 ),
               ),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
-                decoration: BoxDecoration(
-                  color: isHighRefresh
-                      ? const Color(0xFF10B981).withValues(alpha: 0.12)
-                      : const Color(0xFF0284C7).withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(6),
-                ),
-                child: Text(
-                  displaySpecs.formattedRefreshRate,
-                  style: TextStyle(
-                    fontSize: 10.5,
-                    fontWeight: FontWeight.bold,
+              const SizedBox(width: 8),
+              Flexible(
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
+                  decoration: BoxDecoration(
                     color: isHighRefresh
-                        ? const Color(0xFF10B981)
-                        : const Color(0xFF0284C7),
+                        ? DiagnosticsColors.success.withValues(alpha: 0.12)
+                        : DiagnosticsColors.primary.withValues(alpha: 0.1),
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                  child: Text(
+                    displaySpecs.formattedRefreshRate,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontSize: 10.5,
+                      fontWeight: FontWeight.bold,
+                      color: isHighRefresh
+                          ? DiagnosticsColors.success
+                          : DiagnosticsColors.primary,
+                    ),
                   ),
                 ),
               ),
@@ -85,16 +91,16 @@ class DisplaySpecsCard extends StatelessWidget {
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: isHighRefresh
-                    ? [const Color(0xFFECFDF5), const Color(0xFFF0FDF4)]
-                    : [const Color(0xFFF0F9FF), const Color(0xFFF8FAFC)],
+                    ? [DiagnosticsColors.successBg, const Color(0xFFECFDF5)]
+                    : [DiagnosticsColors.primaryBg, DiagnosticsColors.surfaceSubtle],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
               borderRadius: BorderRadius.circular(14),
               border: Border.all(
                 color: isHighRefresh
-                    ? const Color(0xFFA7F3D0)
-                    : const Color(0xFFBAE6FD),
+                    ? DiagnosticsColors.successBorder
+                    : DiagnosticsColors.primaryBorder,
               ),
             ),
             child: Row(
@@ -103,12 +109,12 @@ class DisplaySpecsCard extends StatelessWidget {
                   padding: const EdgeInsets.all(9),
                   decoration: BoxDecoration(
                     color: isHighRefresh
-                        ? const Color(0xFF10B981)
-                        : const Color(0xFF0284C7),
+                        ? DiagnosticsColors.success
+                        : DiagnosticsColors.primary,
                     shape: BoxShape.circle,
                   ),
                   child: const Icon(Icons.speed_rounded,
-                      color: Colors.white, size: 18),
+                      color: DiagnosticsColors.white, size: 18),
                 ),
                 const SizedBox(width: 10),
                 Expanded(
@@ -123,8 +129,8 @@ class DisplaySpecsCard extends StatelessWidget {
                               fontSize: 12.5,
                               fontWeight: FontWeight.bold,
                               color: isHighRefresh
-                                  ? const Color(0xFF065F46)
-                                  : const Color(0xFF0369A1),
+                                  ? DiagnosticsColors.successDark
+                                  : DiagnosticsColors.primaryDark,
                             ),
                           ),
                           const SizedBox(width: 6),
@@ -133,13 +139,13 @@ class DisplaySpecsCard extends StatelessWidget {
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 5, vertical: 1.5),
                               decoration: BoxDecoration(
-                                color: const Color(0xFF10B981),
+                                color: DiagnosticsColors.success,
                                 borderRadius: BorderRadius.circular(4),
                               ),
                               child: const Text(
                                 "HIGH REFRESH",
                                 style: TextStyle(
-                                  color: Colors.white,
+                                  color: DiagnosticsColors.white,
                                   fontSize: 7.5,
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -153,8 +159,8 @@ class DisplaySpecsCard extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 10,
                           color: isHighRefresh
-                              ? const Color(0xFF047857).withValues(alpha: 0.9)
-                              : const Color(0xFF64748B),
+                              ? DiagnosticsColors.successDark.withValues(alpha: 0.9)
+                              : DiagnosticsColors.textSubtle,
                         ),
                       ),
                     ],
@@ -186,7 +192,7 @@ class DisplaySpecsCard extends StatelessWidget {
               ),
             ],
           ),
-          const Divider(height: 16, color: Color(0xFFF1F5F9)),
+          const Divider(height: 16, color: DiagnosticsColors.divider),
 
           // Row 2: Aspect Ratio & Diagonal Size
           Row(
@@ -208,7 +214,7 @@ class DisplaySpecsCard extends StatelessWidget {
               ),
             ],
           ),
-          const Divider(height: 16, color: Color(0xFFF1F5F9)),
+          const Divider(height: 16, color: DiagnosticsColors.divider),
 
           // Row 3: Pixel Scale & HDR Status
           Row(
@@ -254,7 +260,7 @@ class _DisplaySpecItem extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Icon(icon, size: 14, color: const Color(0xFF94A3B8)),
+        Icon(icon, size: 14, color: DiagnosticsColors.textMuted),
         const SizedBox(width: 6),
         Expanded(
           child: Column(
@@ -264,7 +270,7 @@ class _DisplaySpecItem extends StatelessWidget {
                 label,
                 style: const TextStyle(
                   fontSize: 9.5,
-                  color: Color(0xFF94A3B8),
+                  color: DiagnosticsColors.textMuted,
                   fontWeight: FontWeight.w500,
                 ),
               ),
@@ -274,7 +280,7 @@ class _DisplaySpecItem extends StatelessWidget {
                 style: const TextStyle(
                   fontSize: 11,
                   fontWeight: FontWeight.w600,
-                  color: Color(0xFF1E293B),
+                  color: DiagnosticsColors.textDark,
                 ),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,

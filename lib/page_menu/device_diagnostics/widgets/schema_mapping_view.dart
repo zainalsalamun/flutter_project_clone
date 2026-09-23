@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../models/device_diagnostics_event.dart';
 import '../models/user_device_diagnostics_entity.dart';
+import '../theme/diagnostics_colors.dart';
 
 class SchemaMappingView extends StatefulWidget {
   final DeviceDiagnosticsEvent event;
@@ -39,7 +40,7 @@ class _SchemaMappingViewState extends State<SchemaMappingView>
       SnackBar(
         content: Text("$label copied to clipboard!"),
         behavior: SnackBarBehavior.floating,
-        backgroundColor: const Color(0xFF1E293B),
+        backgroundColor: DiagnosticsColors.darkCard,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       ),
     );
@@ -49,12 +50,12 @@ class _SchemaMappingViewState extends State<SchemaMappingView>
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: DiagnosticsColors.cardBg,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: const Color(0xFFE2E8F0)),
+        border: Border.all(color: DiagnosticsColors.border),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.03),
+            color: Colors.black.withValues(alpha: 0.03),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -67,13 +68,13 @@ class _SchemaMappingViewState extends State<SchemaMappingView>
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
             decoration: const BoxDecoration(
-              border: Border(bottom: BorderSide(color: Color(0xFFF1F5F9))),
+              border: Border(bottom: BorderSide(color: DiagnosticsColors.divider)),
             ),
             child: TabBar(
               controller: _tabController,
-              labelColor: const Color(0xFF0284C7),
-              unselectedLabelColor: const Color(0xFF64748B),
-              indicatorColor: const Color(0xFF0284C7),
+              labelColor: DiagnosticsColors.primary,
+              unselectedLabelColor: DiagnosticsColors.textSubtle,
+              indicatorColor: DiagnosticsColors.primary,
               indicatorWeight: 2.5,
               labelStyle: const TextStyle(
                 fontSize: 12,
@@ -145,7 +146,7 @@ class _CodeViewer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: const Color(0xFF0F172A),
+      color: DiagnosticsColors.darkSurface,
       padding: const EdgeInsets.all(12),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -156,7 +157,7 @@ class _CodeViewer extends StatelessWidget {
               Text(
                 title,
                 style: const TextStyle(
-                  color: Color(0xFF38BDF8),
+                  color: DiagnosticsColors.primaryLight,
                   fontSize: 11,
                   fontWeight: FontWeight.bold,
                   fontFamily: 'monospace',
@@ -178,7 +179,7 @@ class _CodeViewer extends StatelessWidget {
               child: SelectableText(
                 code,
                 style: const TextStyle(
-                  color: Color(0xFFF1F5F9),
+                  color: DiagnosticsColors.surface,
                   fontFamily: 'monospace',
                   fontSize: 11,
                   height: 1.4,

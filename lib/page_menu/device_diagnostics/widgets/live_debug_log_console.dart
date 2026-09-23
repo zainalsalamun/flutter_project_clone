@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../services/diagnostics_logger_service.dart';
+import '../theme/diagnostics_colors.dart';
 
 class LiveDebugLogConsole extends StatefulWidget {
   final VoidCallback? onTriggerSync;
@@ -33,7 +34,7 @@ class _LiveDebugLogConsoleState extends State<LiveDebugLogConsole> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: const Text("All debug logs copied to clipboard!"),
-        backgroundColor: const Color(0xFF1E293B),
+        backgroundColor: DiagnosticsColors.darkCard,
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       ),
@@ -62,12 +63,12 @@ class _LiveDebugLogConsoleState extends State<LiveDebugLogConsole> {
 
         return Container(
           decoration: BoxDecoration(
-            color: const Color(0xFF0F172A), // Terminal dark background
+            color: DiagnosticsColors.darkSurface, // Terminal dark background
             borderRadius: BorderRadius.circular(20),
             border: Border.all(color: const Color(0xFF334155)),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.15),
+                color: Colors.black.withValues(alpha: 0.15),
                 blurRadius: 16,
                 offset: const Offset(0, 6),
               ),
@@ -80,7 +81,7 @@ class _LiveDebugLogConsoleState extends State<LiveDebugLogConsole> {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                 decoration: const BoxDecoration(
-                  color: Color(0xFF1E293B),
+                  color: DiagnosticsColors.darkCard,
                   borderRadius: BorderRadius.vertical(top: Radius.circular(19)),
                   border: Border(
                     bottom: BorderSide(color: Color(0xFF334155)),
@@ -89,7 +90,7 @@ class _LiveDebugLogConsoleState extends State<LiveDebugLogConsole> {
                 child: Row(
                   children: [
                     const Icon(Icons.terminal_rounded,
-                        size: 15, color: Color(0xFF38BDF8)),
+                        size: 15, color: DiagnosticsColors.primaryLight),
                     const SizedBox(width: 6),
                     const Expanded(
                       child: Text(
@@ -97,7 +98,7 @@ class _LiveDebugLogConsoleState extends State<LiveDebugLogConsole> {
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
-                          color: Colors.white,
+                          color: DiagnosticsColors.white,
                           fontSize: 11,
                           fontWeight: FontWeight.bold,
                           letterSpacing: 0.6,
@@ -108,13 +109,13 @@ class _LiveDebugLogConsoleState extends State<LiveDebugLogConsole> {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 6, vertical: 2),
                       decoration: BoxDecoration(
-                        color: const Color(0xFF0284C7).withOpacity(0.3),
+                        color: DiagnosticsColors.primary.withValues(alpha: 0.3),
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Text(
                         "${filteredLogs.length}",
                         style: const TextStyle(
-                          color: Color(0xFF38BDF8),
+                          color: DiagnosticsColors.primaryLight,
                           fontSize: 10,
                           fontWeight: FontWeight.w600,
                         ),
@@ -132,7 +133,7 @@ class _LiveDebugLogConsoleState extends State<LiveDebugLogConsole> {
                     const SizedBox(width: 4),
                     IconButton(
                       icon: const Icon(Icons.delete_sweep_rounded,
-                          size: 17, color: Colors.redAccent),
+                          size: 17, color: DiagnosticsColors.dangerLight),
                       padding: const EdgeInsets.all(4),
                       constraints: const BoxConstraints(),
                       tooltip: "Clear logs",
@@ -153,7 +154,7 @@ class _LiveDebugLogConsoleState extends State<LiveDebugLogConsole> {
                       label: "ALL",
                       isSelected: _selectedFilter == null,
                       onTap: () => setState(() => _selectedFilter = null),
-                      color: const Color(0xFF94A3B8),
+                      color: DiagnosticsColors.textMuted,
                     ),
                     const SizedBox(width: 5),
                     _FilterChip(
@@ -161,7 +162,7 @@ class _LiveDebugLogConsoleState extends State<LiveDebugLogConsole> {
                       isSelected: _selectedFilter == LogLevel.info,
                       onTap: () =>
                           setState(() => _selectedFilter = LogLevel.info),
-                      color: const Color(0xFF38BDF8),
+                      color: DiagnosticsColors.primaryLight,
                     ),
                     const SizedBox(width: 5),
                     _FilterChip(
@@ -169,7 +170,7 @@ class _LiveDebugLogConsoleState extends State<LiveDebugLogConsole> {
                       isSelected: _selectedFilter == LogLevel.debug,
                       onTap: () =>
                           setState(() => _selectedFilter = LogLevel.debug),
-                      color: const Color(0xFFA855F7),
+                      color: DiagnosticsColors.purpleLight,
                     ),
                     const SizedBox(width: 5),
                     _FilterChip(
@@ -177,7 +178,7 @@ class _LiveDebugLogConsoleState extends State<LiveDebugLogConsole> {
                       isSelected: _selectedFilter == LogLevel.success,
                       onTap: () =>
                           setState(() => _selectedFilter = LogLevel.success),
-                      color: const Color(0xFF10B981),
+                      color: DiagnosticsColors.success,
                     ),
                     const SizedBox(width: 5),
                     _FilterChip(
@@ -185,7 +186,7 @@ class _LiveDebugLogConsoleState extends State<LiveDebugLogConsole> {
                       isSelected: _selectedFilter == LogLevel.warn,
                       onTap: () =>
                           setState(() => _selectedFilter = LogLevel.warn),
-                      color: const Color(0xFFF59E0B),
+                      color: DiagnosticsColors.warning,
                     ),
                   ],
                 ),
@@ -196,12 +197,13 @@ class _LiveDebugLogConsoleState extends State<LiveDebugLogConsole> {
                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                 child: TextField(
                   controller: _searchController,
-                  style: const TextStyle(color: Colors.white, fontSize: 11),
+                  style: const TextStyle(color: DiagnosticsColors.white, fontSize: 11),
                   onChanged: (val) => setState(() => _searchQuery = val),
                   decoration: InputDecoration(
                     hintText: "Search in logs...",
-                    hintStyle:
-                        TextStyle(color: Colors.white.withOpacity(0.3), fontSize: 11),
+                    hintStyle: TextStyle(
+                        color: DiagnosticsColors.white.withValues(alpha: 0.3),
+                        fontSize: 11),
                     prefixIcon: const Icon(Icons.search_rounded,
                         size: 15, color: Colors.white54),
                     suffixIcon: _searchQuery.isNotEmpty
@@ -215,7 +217,7 @@ class _LiveDebugLogConsoleState extends State<LiveDebugLogConsole> {
                           )
                         : null,
                     filled: true,
-                    fillColor: const Color(0xFF1E293B),
+                    fillColor: DiagnosticsColors.darkCard,
                     isDense: true,
                     contentPadding: const EdgeInsets.symmetric(vertical: 6),
                     border: OutlineInputBorder(
@@ -236,12 +238,13 @@ class _LiveDebugLogConsoleState extends State<LiveDebugLogConsole> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Icon(Icons.code_off_rounded,
-                                size: 32, color: Colors.white.withOpacity(0.2)),
+                                size: 32,
+                                color: DiagnosticsColors.white.withValues(alpha: 0.2)),
                             const SizedBox(height: 6),
                             Text(
                               "No logs matched filter",
                               style: TextStyle(
-                                color: Colors.white.withOpacity(0.4),
+                                color: DiagnosticsColors.white.withValues(alpha: 0.4),
                                 fontSize: 11,
                               ),
                             ),
@@ -263,7 +266,7 @@ class _LiveDebugLogConsoleState extends State<LiveDebugLogConsole> {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                 decoration: const BoxDecoration(
-                  color: Color(0xFF1E293B),
+                  color: DiagnosticsColors.darkCard,
                   borderRadius:
                       BorderRadius.vertical(bottom: Radius.circular(19)),
                 ),
@@ -287,8 +290,8 @@ class _LiveDebugLogConsoleState extends State<LiveDebugLogConsole> {
                         label: const Text("Rescan",
                             style: TextStyle(fontSize: 10)),
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF0284C7),
-                          foregroundColor: Colors.white,
+                          backgroundColor: DiagnosticsColors.primary,
+                          foregroundColor: DiagnosticsColors.white,
                           padding: const EdgeInsets.symmetric(
                               horizontal: 10, vertical: 4),
                           visualDensity: VisualDensity.compact,
@@ -329,7 +332,7 @@ class _FilterChip extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
         decoration: BoxDecoration(
-          color: isSelected ? color.withOpacity(0.25) : Colors.transparent,
+          color: isSelected ? color.withValues(alpha: 0.25) : Colors.transparent,
           borderRadius: BorderRadius.circular(10),
           border: Border.all(
             color: isSelected ? color : Colors.white12,
@@ -362,11 +365,11 @@ class _LogEntryItemState extends State<_LogEntryItem> {
 
   Color get _levelColor {
     return switch (widget.entry.level) {
-      LogLevel.debug => const Color(0xFFA855F7),
-      LogLevel.info => const Color(0xFF38BDF8),
-      LogLevel.warn => const Color(0xFFF59E0B),
-      LogLevel.error => const Color(0xFFEF4444),
-      LogLevel.success => const Color(0xFF10B981),
+      LogLevel.debug => DiagnosticsColors.purpleLight,
+      LogLevel.info => DiagnosticsColors.primaryLight,
+      LogLevel.warn => DiagnosticsColors.warning,
+      LogLevel.error => DiagnosticsColors.danger,
+      LogLevel.success => DiagnosticsColors.success,
     };
   }
 
@@ -378,10 +381,10 @@ class _LogEntryItemState extends State<_LogEntryItem> {
     return Container(
       margin: const EdgeInsets.only(bottom: 5),
       decoration: BoxDecoration(
-        color: const Color(0xFF1E293B).withOpacity(0.6),
+        color: DiagnosticsColors.darkCard.withValues(alpha: 0.6),
         borderRadius: BorderRadius.circular(8),
         border: Border.all(
-          color: _levelColor.withOpacity(0.2),
+          color: _levelColor.withValues(alpha: 0.2),
           width: 0.8,
         ),
       ),
@@ -411,7 +414,7 @@ class _LogEntryItemState extends State<_LogEntryItem> {
                     padding:
                         const EdgeInsets.symmetric(horizontal: 4, vertical: 1),
                     decoration: BoxDecoration(
-                      color: _levelColor.withOpacity(0.2),
+                      color: _levelColor.withValues(alpha: 0.2),
                       borderRadius: BorderRadius.circular(4),
                     ),
                     child: Text(
@@ -429,7 +432,7 @@ class _LogEntryItemState extends State<_LogEntryItem> {
                       padding:
                           const EdgeInsets.symmetric(horizontal: 4, vertical: 1),
                       decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.08),
+                        color: DiagnosticsColors.white.withValues(alpha: 0.08),
                         borderRadius: BorderRadius.circular(4),
                       ),
                       child: Text(
@@ -461,7 +464,7 @@ class _LogEntryItemState extends State<_LogEntryItem> {
               Text(
                 entry.message,
                 style: const TextStyle(
-                  color: Color(0xFFE2E8F0),
+                  color: DiagnosticsColors.border,
                   fontSize: 10.5,
                   fontFamily: 'monospace',
                   height: 1.3,
@@ -475,7 +478,7 @@ class _LogEntryItemState extends State<_LogEntryItem> {
                   width: double.infinity,
                   padding: const EdgeInsets.all(7),
                   decoration: BoxDecoration(
-                    color: Colors.black.withOpacity(0.6),
+                    color: Colors.black.withValues(alpha: 0.6),
                     borderRadius: BorderRadius.circular(6),
                     border: Border.all(color: Colors.white12),
                   ),
@@ -488,7 +491,7 @@ class _LogEntryItemState extends State<_LogEntryItem> {
                           const Text(
                             "PAYLOAD / DATA",
                             style: TextStyle(
-                              color: Color(0xFF38BDF8),
+                              color: DiagnosticsColors.primaryLight,
                               fontSize: 8.5,
                               fontWeight: FontWeight.bold,
                             ),
@@ -525,7 +528,7 @@ class _LogEntryItemState extends State<_LogEntryItem> {
                       SelectableText(
                         entry.formattedPayload,
                         style: const TextStyle(
-                          color: Color(0xFF86EFAC),
+                          color: DiagnosticsColors.successBorder,
                           fontFamily: 'monospace',
                           fontSize: 9.5,
                           height: 1.3,

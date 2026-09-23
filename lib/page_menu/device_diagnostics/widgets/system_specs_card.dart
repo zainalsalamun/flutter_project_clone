@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/device_diagnostics_event.dart';
+import '../theme/diagnostics_colors.dart';
 
 class SystemSpecsCard extends StatelessWidget {
   final DeviceDiagnosticsEvent event;
@@ -34,12 +35,12 @@ class SystemSpecsCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: DiagnosticsColors.cardBg,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
           color: hasSecurityThreat
-              ? const Color(0xFFEF4444).withValues(alpha: 0.3)
-              : const Color(0xFFE2E8F0),
+              ? DiagnosticsColors.danger.withValues(alpha: 0.3)
+              : DiagnosticsColors.border,
         ),
         boxShadow: [
           BoxShadow(
@@ -60,7 +61,7 @@ class SystemSpecsCard extends StatelessWidget {
                 child: Row(
                   children: [
                     Icon(Icons.devices_other_rounded,
-                        size: 18, color: Color(0xFF0284C7)),
+                        size: 18, color: DiagnosticsColors.primary),
                     SizedBox(width: 6),
                     Expanded(
                       child: Text(
@@ -70,7 +71,7 @@ class SystemSpecsCard extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.bold,
-                          color: Color(0xFF0F172A),
+                          color: DiagnosticsColors.textPrimary,
                           letterSpacing: 0.5,
                         ),
                       ),
@@ -78,18 +79,23 @@ class SystemSpecsCard extends StatelessWidget {
                   ],
                 ),
               ),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
-                decoration: BoxDecoration(
-                  color: const Color(0xFF0284C7).withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(6),
-                ),
-                child: Text(
-                  "App v${event.appVersion}",
-                  style: const TextStyle(
-                    fontSize: 10,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFF0284C7),
+              const SizedBox(width: 8),
+              Flexible(
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
+                  decoration: BoxDecoration(
+                    color: DiagnosticsColors.primary.withValues(alpha: 0.1),
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                  child: Text(
+                    "App v${event.appVersion}",
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      fontSize: 10,
+                      fontWeight: FontWeight.bold,
+                      color: DiagnosticsColors.primary,
+                    ),
                   ),
                 ),
               ),
@@ -117,7 +123,7 @@ class SystemSpecsCard extends StatelessWidget {
               ),
             ],
           ),
-          const Divider(height: 16, color: Color(0xFFF1F5F9)),
+          const Divider(height: 16, color: DiagnosticsColors.divider),
           Row(
             children: [
               Expanded(
@@ -137,7 +143,7 @@ class SystemSpecsCard extends StatelessWidget {
               ),
             ],
           ),
-          const Divider(height: 16, color: Color(0xFFF1F5F9)),
+          const Divider(height: 16, color: DiagnosticsColors.divider),
           Row(
             children: [
               Expanded(
@@ -165,12 +171,12 @@ class SystemSpecsCard extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: const Color(0xFFF8FAFC),
+              color: DiagnosticsColors.surfaceSubtle,
               borderRadius: BorderRadius.circular(14),
               border: Border.all(
                 color: hasSecurityThreat
-                    ? const Color(0xFFFCA5A5)
-                    : const Color(0xFFE2E8F0),
+                    ? DiagnosticsColors.dangerBorder
+                    : DiagnosticsColors.border,
               ),
             ),
             child: Column(
@@ -182,14 +188,14 @@ class SystemSpecsCard extends StatelessWidget {
                     const Row(
                       children: [
                         Icon(Icons.shield_outlined,
-                            size: 15, color: Color(0xFF0284C7)),
+                            size: 15, color: DiagnosticsColors.primary),
                         SizedBox(width: 5),
                         Text(
                           "SECURITY & ANTI-FRAUD AUDIT",
                           style: TextStyle(
                             fontSize: 10,
                             fontWeight: FontWeight.bold,
-                            color: Color(0xFF0F172A),
+                            color: DiagnosticsColors.textPrimary,
                             letterSpacing: 0.5,
                           ),
                         ),
@@ -200,8 +206,8 @@ class SystemSpecsCard extends StatelessWidget {
                           horizontal: 6, vertical: 2),
                       decoration: BoxDecoration(
                         color: hasSecurityThreat
-                            ? const Color(0xFFEF4444).withValues(alpha: 0.12)
-                            : const Color(0xFF10B981).withValues(alpha: 0.12),
+                            ? DiagnosticsColors.danger.withValues(alpha: 0.12)
+                            : DiagnosticsColors.success.withValues(alpha: 0.12),
                         borderRadius: BorderRadius.circular(5),
                       ),
                       child: Text(
@@ -210,8 +216,8 @@ class SystemSpecsCard extends StatelessWidget {
                           fontSize: 8.5,
                           fontWeight: FontWeight.bold,
                           color: hasSecurityThreat
-                              ? const Color(0xFFEF4444)
-                              : const Color(0xFF10B981),
+                              ? DiagnosticsColors.danger
+                              : DiagnosticsColors.success,
                         ),
                       ),
                     ),
@@ -330,8 +336,7 @@ class SystemSpecsCard extends StatelessWidget {
                     title: "Peringatan Anti-Fraud Lokasi",
                     message:
                         "Aplikasi Fake GPS / Mock Location terdeteksi aktif. Sistem dapat menolak presensi atau transaksi lokasi.",
-                    color: const Color(0xFFEF4444),
-                    bgColor: const Color(0xFFFEF2F2),
+                    pair: DiagnosticsStatusPair.danger,
                   ),
                 ],
                 if (isEmulator) ...[
@@ -341,8 +346,7 @@ class SystemSpecsCard extends StatelessWidget {
                     title: "Lingkungan Virtual Terdeteksi",
                     message:
                         "Aplikasi berjalan di atas Emulator / VM. Beberapa fitur native hardware mungkin terbatas.",
-                    color: const Color(0xFFEF4444),
-                    bgColor: const Color(0xFFFEF2F2),
+                    pair: DiagnosticsStatusPair.danger,
                   ),
                 ],
                 if (isVpnActive) ...[
@@ -352,8 +356,7 @@ class SystemSpecsCard extends StatelessWidget {
                     title: "Koneksi VPN Aktif",
                     message:
                         "Lalu lintas jaringan diteruskan melalui tunnel VPN/Proxy eksternal.",
-                    color: const Color(0xFFD97706),
-                    bgColor: const Color(0xFFFFFBEB),
+                    pair: DiagnosticsStatusPair.warning,
                   ),
                 ],
               ],
@@ -368,20 +371,19 @@ class SystemSpecsCard extends StatelessWidget {
     required IconData icon,
     required String title,
     required String message,
-    required Color color,
-    required Color bgColor,
+    required DiagnosticsStatusPair pair,
   }) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 7),
       decoration: BoxDecoration(
-        color: bgColor,
+        color: pair.bgColor,
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: color.withValues(alpha: 0.3)),
+        border: Border.all(color: pair.color.withValues(alpha: 0.3)),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(icon, size: 14, color: color),
+          Icon(icon, size: 14, color: pair.color),
           const SizedBox(width: 6),
           Expanded(
             child: Column(
@@ -392,7 +394,7 @@ class SystemSpecsCard extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 9.5,
                     fontWeight: FontWeight.bold,
-                    color: color,
+                    color: pair.color,
                   ),
                 ),
                 const SizedBox(height: 1),
@@ -400,7 +402,7 @@ class SystemSpecsCard extends StatelessWidget {
                   message,
                   style: TextStyle(
                     fontSize: 8.5,
-                    color: color.withValues(alpha: 0.9),
+                    color: pair.color.withValues(alpha: 0.9),
                     height: 1.25,
                   ),
                 ),
@@ -430,34 +432,26 @@ class _SecurityPill extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Color bgColor;
-    final Color borderColor;
-    final Color textColor;
+    final DiagnosticsStatusPair pair;
 
     if (isDanger) {
-      bgColor = const Color(0xFFFEF2F2);
-      borderColor = const Color(0xFFFCA5A5);
-      textColor = const Color(0xFFDC2626);
+      pair = DiagnosticsStatusPair.danger;
     } else if (isWarning) {
-      bgColor = const Color(0xFFFFFBEB);
-      borderColor = const Color(0xFFFDE68A);
-      textColor = const Color(0xFFD97706);
+      pair = DiagnosticsStatusPair.warning;
     } else {
-      bgColor = const Color(0xFFF0FDF4);
-      borderColor = const Color(0xFF86EFAC);
-      textColor = const Color(0xFF16A34A);
+      pair = DiagnosticsStatusPair.success;
     }
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 6),
       decoration: BoxDecoration(
-        color: bgColor,
+        color: pair.bgColor,
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: borderColor),
+        border: Border.all(color: pair.borderColor),
       ),
       child: Row(
         children: [
-          Icon(icon, size: 13, color: textColor),
+          Icon(icon, size: 13, color: pair.textColor),
           const SizedBox(width: 5),
           Expanded(
             child: Column(
@@ -469,7 +463,7 @@ class _SecurityPill extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                     fontSize: 8.0,
-                    color: textColor.withValues(alpha: 0.8),
+                    color: pair.textColor.withValues(alpha: 0.8),
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -480,7 +474,7 @@ class _SecurityPill extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 10,
                     fontWeight: FontWeight.bold,
-                    color: textColor,
+                    color: pair.textColor,
                   ),
                 ),
               ],
@@ -508,7 +502,7 @@ class _SpecItem extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Icon(icon, size: 14, color: const Color(0xFF94A3B8)),
+        Icon(icon, size: 14, color: DiagnosticsColors.textMuted),
         const SizedBox(width: 6),
         Expanded(
           child: Column(
@@ -518,7 +512,7 @@ class _SpecItem extends StatelessWidget {
                 label,
                 style: const TextStyle(
                   fontSize: 9.5,
-                  color: Color(0xFF94A3B8),
+                  color: DiagnosticsColors.textMuted,
                   fontWeight: FontWeight.w500,
                 ),
               ),
@@ -528,7 +522,7 @@ class _SpecItem extends StatelessWidget {
                 style: const TextStyle(
                   fontSize: 11,
                   fontWeight: FontWeight.w600,
-                  color: Color(0xFF1E293B),
+                  color: DiagnosticsColors.textDark,
                 ),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,

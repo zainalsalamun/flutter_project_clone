@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../bloc/diagnostics_bloc_state.dart';
 import '../models/device_diagnostics_event.dart';
 import '../services/diagnostics_report_service.dart';
+import '../theme/diagnostics_colors.dart';
 
 class ExportAndShareCard extends StatelessWidget {
   final DeviceDiagnosticsEvent event;
@@ -20,9 +21,9 @@ class ExportAndShareCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: DiagnosticsColors.cardBg,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: const Color(0xFFE2E8F0)),
+        border: Border.all(color: DiagnosticsColors.border),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.03),
@@ -42,7 +43,7 @@ class ExportAndShareCard extends StatelessWidget {
                 child: Row(
                   children: [
                     Icon(Icons.ios_share_rounded,
-                        size: 18, color: Color(0xFF0284C7)),
+                        size: 18, color: DiagnosticsColors.primary),
                     SizedBox(width: 6),
                     Expanded(
                       child: Text(
@@ -52,7 +53,7 @@ class ExportAndShareCard extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.bold,
-                          color: Color(0xFF0F172A),
+                          color: DiagnosticsColors.textPrimary,
                           letterSpacing: 0.5,
                         ),
                       ),
@@ -63,7 +64,7 @@ class ExportAndShareCard extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
                 decoration: BoxDecoration(
-                  color: const Color(0xFF0284C7).withValues(alpha: 0.1),
+                  color: DiagnosticsColors.primary.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(6),
                 ),
                 child: const Text(
@@ -71,7 +72,7 @@ class ExportAndShareCard extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 9.5,
                     fontWeight: FontWeight.bold,
-                    color: Color(0xFF0284C7),
+                    color: DiagnosticsColors.primary,
                   ),
                 ),
               ),
@@ -79,16 +80,16 @@ class ExportAndShareCard extends StatelessWidget {
           ),
           const SizedBox(height: 6),
           const Text(
-            "Unduh dokumen laporan audit perangkat resmi atau bagikan ringkasan telemetri langsung ke tim QA & developer.",
+            "Cetak dan bagikan berkas bukti diagnostik audit sistem dalam format PDF, JSON murni, atau teks WhatsApp.",
             style: TextStyle(
               fontSize: 10.5,
-              color: Color(0xFF64748B),
+              color: DiagnosticsColors.textSubtle,
               height: 1.3,
             ),
           ),
           const SizedBox(height: 14),
 
-          // Primary Big Buttons: Export PDF & Export JSON
+          // Primary Row of Main Export Actions (PDF and JSON)
           Row(
             children: [
               // PDF Export Button
@@ -101,15 +102,14 @@ class ExportAndShareCard extends StatelessWidget {
                         horizontal: 10, vertical: 10),
                     decoration: BoxDecoration(
                       gradient: const LinearGradient(
-                        colors: [Color(0xFFDC2626), Color(0xFFB91C1C)],
+                        colors: [DiagnosticsColors.dangerDark, Color(0xFFB91C1C)],
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
                       ),
                       borderRadius: BorderRadius.circular(12),
                       boxShadow: [
                         BoxShadow(
-                          color:
-                              const Color(0xFFDC2626).withValues(alpha: 0.25),
+                          color: DiagnosticsColors.dangerDark.withValues(alpha: 0.25),
                           blurRadius: 8,
                           offset: const Offset(0, 3),
                         ),
@@ -119,12 +119,12 @@ class ExportAndShareCard extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(Icons.picture_as_pdf_rounded,
-                            color: Colors.white, size: 16),
+                            color: DiagnosticsColors.white, size: 16),
                         SizedBox(width: 6),
                         Text(
                           "Export PDF Report",
                           style: TextStyle(
-                            color: Colors.white,
+                            color: DiagnosticsColors.white,
                             fontSize: 11.5,
                             fontWeight: FontWeight.bold,
                           ),
@@ -145,12 +145,11 @@ class ExportAndShareCard extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(
                         horizontal: 10, vertical: 10),
                     decoration: BoxDecoration(
-                      color: const Color(0xFF0F172A),
+                      color: DiagnosticsColors.darkSurface,
                       borderRadius: BorderRadius.circular(12),
                       boxShadow: [
                         BoxShadow(
-                          color:
-                              const Color(0xFF0F172A).withValues(alpha: 0.2),
+                          color: DiagnosticsColors.darkSurface.withValues(alpha: 0.2),
                           blurRadius: 8,
                           offset: const Offset(0, 3),
                         ),
@@ -160,12 +159,12 @@ class ExportAndShareCard extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(Icons.code_rounded,
-                            color: Colors.white, size: 16),
+                            color: DiagnosticsColors.white, size: 16),
                         SizedBox(width: 6),
                         Text(
                           "Export Raw JSON",
                           style: TextStyle(
-                            color: Colors.white,
+                            color: DiagnosticsColors.white,
                             fontSize: 11.5,
                             fontWeight: FontWeight.bold,
                           ),
@@ -187,9 +186,7 @@ class ExportAndShareCard extends StatelessWidget {
                 child: _ShareActionButton(
                   icon: Icons.copy_all_rounded,
                   label: "Copy Summary",
-                  color: const Color(0xFF0284C7),
-                  bgColor: const Color(0xFFF0F9FF),
-                  borderColor: const Color(0xFFBAE6FD),
+                  pair: DiagnosticsStatusPair.primary,
                   onTap: () {
                     final text = reportService.generateMarkdownReport(
                         event: event, state: state);
@@ -205,9 +202,7 @@ class ExportAndShareCard extends StatelessWidget {
                 child: _ShareActionButton(
                   icon: Icons.chat_rounded,
                   label: "WhatsApp",
-                  color: const Color(0xFF16A34A),
-                  bgColor: const Color(0xFFF0FDF4),
-                  borderColor: const Color(0xFF86EFAC),
+                  pair: DiagnosticsStatusPair.success,
                   onTap: () => reportService.shareToWhatsApp(
                     context: context,
                     event: event,
@@ -222,9 +217,7 @@ class ExportAndShareCard extends StatelessWidget {
                 child: _ShareActionButton(
                   icon: Icons.mail_outline_rounded,
                   label: "Email Report",
-                  color: const Color(0xFF4F46E5),
-                  bgColor: const Color(0xFFEEF2FF),
-                  borderColor: const Color(0xFFC7D2FE),
+                  pair: DiagnosticsStatusPair.info,
                   onTap: () => reportService.shareToEmail(
                     context: context,
                     event: event,
@@ -243,7 +236,7 @@ class ExportAndShareCard extends StatelessWidget {
       BuildContext context, DiagnosticsReportService reportService) {
     showModalBottomSheet(
       context: context,
-      backgroundColor: Colors.white,
+      backgroundColor: DiagnosticsColors.cardBg,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
@@ -261,14 +254,14 @@ class ExportAndShareCard extends StatelessWidget {
                     const Row(
                       children: [
                         Icon(Icons.picture_as_pdf_rounded,
-                            color: Color(0xFFDC2626), size: 20),
+                            color: DiagnosticsColors.dangerDark, size: 20),
                         SizedBox(width: 8),
                         Text(
                           "Pilihan Laporan PDF",
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.bold,
-                            color: Color(0xFF0F172A),
+                            color: DiagnosticsColors.textPrimary,
                           ),
                         ),
                       ],
@@ -282,18 +275,18 @@ class ExportAndShareCard extends StatelessWidget {
                 const SizedBox(height: 8),
                 const Text(
                   "Dokumen PDF mencakup seluruh riwayat telemetri, identitas hardware, audit keamanan, dan log debug sistem.",
-                  style: TextStyle(fontSize: 11, color: Color(0xFF64748B)),
+                  style: TextStyle(fontSize: 11, color: DiagnosticsColors.textSubtle),
                 ),
                 const SizedBox(height: 16),
                 ListTile(
                   leading: Container(
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      color: const Color(0xFFDC2626).withValues(alpha: 0.1),
+                      color: DiagnosticsColors.dangerDark.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: const Icon(Icons.print_rounded,
-                        color: Color(0xFFDC2626), size: 20),
+                        color: DiagnosticsColors.dangerDark, size: 20),
                   ),
                   title: const Text("Print / Preview PDF",
                       style: TextStyle(
@@ -302,7 +295,7 @@ class ExportAndShareCard extends StatelessWidget {
                       "Buka halaman pratinjau dokumen dan cetak langsung",
                       style: TextStyle(fontSize: 10.5)),
                   trailing: const Icon(Icons.arrow_forward_ios_rounded,
-                      size: 14, color: Color(0xFF94A3B8)),
+                      size: 14, color: DiagnosticsColors.textMuted),
                   onTap: () {
                     Navigator.pop(ctx);
                     reportService.previewOrPrintPdf(
@@ -317,11 +310,11 @@ class ExportAndShareCard extends StatelessWidget {
                   leading: Container(
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      color: const Color(0xFF0284C7).withValues(alpha: 0.1),
+                      color: DiagnosticsColors.primary.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: const Icon(Icons.share_rounded,
-                        color: Color(0xFF0284C7), size: 20),
+                        color: DiagnosticsColors.primary, size: 20),
                   ),
                   title: const Text("Bagikan File PDF (Share Sheet)",
                       style: TextStyle(
@@ -330,7 +323,7 @@ class ExportAndShareCard extends StatelessWidget {
                       "Kirim file .pdf via AirDrop, Bluetooth, Telegram, Drive, dll",
                       style: TextStyle(fontSize: 10.5)),
                   trailing: const Icon(Icons.arrow_forward_ios_rounded,
-                      size: 14, color: Color(0xFF94A3B8)),
+                      size: 14, color: DiagnosticsColors.textMuted),
                   onTap: () {
                     Navigator.pop(ctx);
                     reportService.sharePdfReport(
@@ -357,7 +350,7 @@ class ExportAndShareCard extends StatelessWidget {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      backgroundColor: Colors.white,
+      backgroundColor: DiagnosticsColors.cardBg,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
@@ -372,21 +365,21 @@ class ExportAndShareCard extends StatelessWidget {
               children: [
                 Padding(
                   padding: const EdgeInsets.symmetric(
-                      horizontal: 16, vertical: 12),
+                       horizontal: 16, vertical: 12),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       const Row(
                         children: [
                           Icon(Icons.code_rounded,
-                              color: Color(0xFF0284C7), size: 20),
+                              color: DiagnosticsColors.primary, size: 20),
                           SizedBox(width: 8),
                           Text(
                             "Raw Telemetry JSON Payload",
                             style: TextStyle(
                               fontSize: 13.5,
                               fontWeight: FontWeight.bold,
-                              color: Color(0xFF0F172A),
+                              color: DiagnosticsColors.textPrimary,
                             ),
                           ),
                         ],
@@ -404,7 +397,7 @@ class ExportAndShareCard extends StatelessWidget {
                     margin: const EdgeInsets.all(12),
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
-                      color: const Color(0xFF0F172A),
+                      color: DiagnosticsColors.darkSurface,
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: SingleChildScrollView(
@@ -412,7 +405,7 @@ class ExportAndShareCard extends StatelessWidget {
                       child: SelectableText(
                         jsonStr,
                         style: const TextStyle(
-                          color: Color(0xFF38BDF8),
+                          color: DiagnosticsColors.primaryLight,
                           fontSize: 10,
                           fontFamily: 'monospace',
                           height: 1.4,
@@ -429,8 +422,8 @@ class ExportAndShareCard extends StatelessWidget {
                       width: double.infinity,
                       child: ElevatedButton.icon(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF0284C7),
-                          foregroundColor: Colors.white,
+                          backgroundColor: DiagnosticsColors.primary,
+                          foregroundColor: DiagnosticsColors.white,
                           padding: const EdgeInsets.symmetric(vertical: 12),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
@@ -459,17 +452,13 @@ class ExportAndShareCard extends StatelessWidget {
 class _ShareActionButton extends StatelessWidget {
   final IconData icon;
   final String label;
-  final Color color;
-  final Color bgColor;
-  final Color borderColor;
+  final DiagnosticsStatusPair pair;
   final VoidCallback onTap;
 
   const _ShareActionButton({
     required this.icon,
     required this.label,
-    required this.color,
-    required this.bgColor,
-    required this.borderColor,
+    required this.pair,
     required this.onTap,
   });
 
@@ -481,14 +470,14 @@ class _ShareActionButton extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 6),
         decoration: BoxDecoration(
-          color: bgColor,
+          color: pair.bgColor,
           borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: borderColor),
+          border: Border.all(color: pair.borderColor),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icon, size: 13, color: color),
+            Icon(icon, size: 13, color: pair.textColor),
             const SizedBox(width: 4),
             Flexible(
               child: Text(
@@ -496,7 +485,7 @@ class _ShareActionButton extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 10,
                   fontWeight: FontWeight.bold,
-                  color: color,
+                  color: pair.textColor,
                 ),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/device_diagnostics_event.dart';
+import '../theme/diagnostics_colors.dart';
 
 class MetricsOverviewCard extends StatelessWidget {
   final DeviceDiagnosticsEvent event;
@@ -19,7 +20,7 @@ class MetricsOverviewCard extends StatelessWidget {
           child: Text(
             "HARDWARE METRICS & TELEMETRY",
             style: TextStyle(
-              color: Color(0xFF64748B),
+              color: DiagnosticsColors.textSubtle,
               fontSize: 11,
               fontWeight: FontWeight.bold,
               letterSpacing: 0.8,
@@ -38,15 +39,15 @@ class MetricsOverviewCard extends StatelessWidget {
                     ? Icons.battery_charging_full_rounded
                     : Icons.battery_std_rounded,
                 iconColor: event.batteryState == 'charging'
-                    ? const Color(0xFF10B981)
-                    : const Color(0xFFF59E0B),
+                    ? DiagnosticsColors.success
+                    : DiagnosticsColors.warning,
                 title: "Battery Level",
                 value: "${event.batteryLevel}%",
                 subtitle: "${event.batteryState.toUpperCase()} • ${event.formattedBatteryTemp}",
                 progress: (event.batteryLevel / 100.0).clamp(0.0, 1.0),
                 progressColor: event.batteryLevel > 20
-                    ? const Color(0xFF10B981)
-                    : const Color(0xFFEF4444),
+                    ? DiagnosticsColors.success
+                    : DiagnosticsColors.danger,
                 badgeText: event.batteryState == 'charging' ? "CHG" : null,
               ),
             ),
@@ -56,14 +57,14 @@ class MetricsOverviewCard extends StatelessWidget {
             Expanded(
               child: _MetricTile(
                 icon: Icons.memory_rounded,
-                iconColor: const Color(0xFF6366F1),
+                iconColor: DiagnosticsColors.info,
                 title: "Sisa RAM",
                 value: event.formattedAvailableRam,
                 subtitle: event.totalRamBytes > 0
                     ? "dari ${event.formattedTotalRam}"
                     : "Sys Memory",
                 progress: event.ramFreeRatio,
-                progressColor: const Color(0xFF6366F1),
+                progressColor: DiagnosticsColors.info,
                 badgeText: event.totalRamBytes > 0 ? "$freeRamPct% Sisa" : null,
               ),
             ),
@@ -73,14 +74,14 @@ class MetricsOverviewCard extends StatelessWidget {
             Expanded(
               child: _MetricTile(
                 icon: Icons.storage_rounded,
-                iconColor: const Color(0xFFEC4899),
+                iconColor: DiagnosticsColors.pink,
                 title: "Sisa Storage",
                 value: event.formattedAvailableStorage,
                 subtitle: event.totalStorageBytes > 0
                     ? "dari ${event.formattedTotalStorage}"
                     : "Flash Memory",
                 progress: event.storageFreeRatio,
-                progressColor: const Color(0xFFEC4899),
+                progressColor: DiagnosticsColors.pink,
                 badgeText: event.totalStorageBytes > 0 ? "$freeStoragePct% Sisa" : null,
               ),
             ),
@@ -96,9 +97,9 @@ class MetricsOverviewCard extends StatelessWidget {
         Container(
           padding: const EdgeInsets.all(14),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: DiagnosticsColors.cardBg,
             borderRadius: BorderRadius.circular(18),
-            border: Border.all(color: const Color(0xFFE2E8F0)),
+            border: Border.all(color: DiagnosticsColors.border),
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withValues(alpha: 0.025),
@@ -114,15 +115,19 @@ class MetricsOverviewCard extends StatelessWidget {
               const Row(
                 children: [
                   Icon(Icons.pie_chart_outline_rounded,
-                      size: 16, color: Color(0xFF0284C7)),
+                      size: 16, color: DiagnosticsColors.primary),
                   SizedBox(width: 6),
-                  Text(
-                    "KAPASITAS MEMORI & PENYIMPANAN",
-                    style: TextStyle(
-                      fontSize: 11,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFF0F172A),
-                      letterSpacing: 0.5,
+                  Expanded(
+                    child: Text(
+                      "KAPASITAS MEMORI & PENYIMPANAN",
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontSize: 11,
+                        fontWeight: FontWeight.bold,
+                        color: DiagnosticsColors.textPrimary,
+                        letterSpacing: 0.5,
+                      ),
                     ),
                   ),
                 ],
@@ -133,7 +138,7 @@ class MetricsOverviewCard extends StatelessWidget {
               _CapacityBarSection(
                 title: "Internal Storage (Penyimpanan HP)",
                 icon: Icons.sd_storage_rounded,
-                iconColor: const Color(0xFFEC4899),
+                iconColor: DiagnosticsColors.pink,
                 freeLabel: "Sisa Ruang",
                 freeValue: event.formattedAvailableStorage,
                 usedLabel: "Terpakai",
@@ -141,16 +146,16 @@ class MetricsOverviewCard extends StatelessWidget {
                 totalLabel: "Total Kapasitas",
                 totalValue: event.formattedTotalStorage,
                 usageRatio: event.storageUsageRatio,
-                accentColor: const Color(0xFFEC4899),
+                accentColor: DiagnosticsColors.pink,
               ),
 
-              const Divider(height: 20, color: Color(0xFFF1F5F9)),
+              const Divider(height: 20, color: DiagnosticsColors.divider),
 
               // RAM Detail Section
               _CapacityBarSection(
                 title: "RAM (Random Access Memory)",
                 icon: Icons.developer_board_rounded,
-                iconColor: const Color(0xFF6366F1),
+                iconColor: DiagnosticsColors.info,
                 freeLabel: "Sisa RAM Bebas",
                 freeValue: event.formattedAvailableRam,
                 usedLabel: "RAM Terpakai",
@@ -158,7 +163,7 @@ class MetricsOverviewCard extends StatelessWidget {
                 totalLabel: "Total RAM",
                 totalValue: event.formattedTotalRam,
                 usageRatio: event.ramUsageRatio,
-                accentColor: const Color(0xFF6366F1),
+                accentColor: DiagnosticsColors.info,
               ),
             ],
           ),
@@ -194,9 +199,9 @@ class _MetricTile extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: DiagnosticsColors.cardBg,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: const Color(0xFFE2E8F0)),
+        border: Border.all(color: DiagnosticsColors.border),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.03),
@@ -251,7 +256,7 @@ class _MetricTile extends StatelessWidget {
               style: const TextStyle(
                 fontSize: 15,
                 fontWeight: FontWeight.bold,
-                color: Color(0xFF0F172A),
+                color: DiagnosticsColors.textPrimary,
               ),
             ),
           ),
@@ -262,7 +267,7 @@ class _MetricTile extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
             style: const TextStyle(
               fontSize: 10,
-              color: Color(0xFF64748B),
+              color: DiagnosticsColors.textSubtle,
               fontWeight: FontWeight.w500,
             ),
           ),
@@ -271,7 +276,7 @@ class _MetricTile extends StatelessWidget {
             borderRadius: BorderRadius.circular(4),
             child: LinearProgressIndicator(
               value: progress.clamp(0.0, 1.0),
-              backgroundColor: const Color(0xFFF1F5F9),
+              backgroundColor: DiagnosticsColors.surface,
               valueColor: AlwaysStoppedAnimation<Color>(progressColor),
               minHeight: 4,
             ),
@@ -283,7 +288,7 @@ class _MetricTile extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
             style: const TextStyle(
               fontSize: 8.5,
-              color: Color(0xFF94A3B8),
+              color: DiagnosticsColors.textMuted,
               fontWeight: FontWeight.w500,
             ),
           ),
@@ -331,26 +336,37 @@ class _CapacityBarSection extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Row(
-              children: [
-                Icon(icon, size: 14, color: iconColor),
-                const SizedBox(width: 5),
-                Text(
-                  title,
-                  style: const TextStyle(
-                    fontSize: 11.5,
-                    fontWeight: FontWeight.w600,
-                    color: Color(0xFF1E293B),
+            Expanded(
+              child: Row(
+                children: [
+                  Icon(icon, size: 14, color: iconColor),
+                  const SizedBox(width: 5),
+                  Expanded(
+                    child: Text(
+                      title,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        fontSize: 11.5,
+                        fontWeight: FontWeight.w600,
+                        color: DiagnosticsColors.textDark,
+                      ),
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-            Text(
-              "$usedPct% terpakai",
-              style: TextStyle(
-                fontSize: 10,
-                fontWeight: FontWeight.bold,
-                color: accentColor,
+            const SizedBox(width: 8),
+            Flexible(
+              child: Text(
+                "$usedPct% terpakai",
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  fontSize: 10,
+                  fontWeight: FontWeight.bold,
+                  color: accentColor,
+                ),
               ),
             ),
           ],
@@ -370,7 +386,7 @@ class _CapacityBarSection extends StatelessWidget {
                 ),
                 Expanded(
                   flex: (((1.0 - usageRatio) * 1000).toInt()).clamp(1, 1000),
-                  child: Container(color: const Color(0xFF10B981)),
+                  child: Container(color: DiagnosticsColors.success),
                 ),
               ],
             ),
@@ -384,7 +400,7 @@ class _CapacityBarSection extends StatelessWidget {
             // Sisa / Free
             Expanded(
               child: _MiniStat(
-                dotColor: const Color(0xFF10B981),
+                dotColor: DiagnosticsColors.success,
                 label: freeLabel,
                 value: freeValue,
                 subValue: "$freePct%",
@@ -402,7 +418,7 @@ class _CapacityBarSection extends StatelessWidget {
             // Total
             Expanded(
               child: _MiniStat(
-                dotColor: const Color(0xFF94A3B8),
+                dotColor: DiagnosticsColors.textMuted,
                 label: totalLabel,
                 value: totalValue,
                 subValue: "100%",
@@ -451,7 +467,7 @@ class _MiniStat extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
                 style: const TextStyle(
                   fontSize: 9.5,
-                  color: Color(0xFF64748B),
+                  color: DiagnosticsColors.textSubtle,
                   fontWeight: FontWeight.w500,
                 ),
               ),
@@ -466,7 +482,7 @@ class _MiniStat extends StatelessWidget {
           style: const TextStyle(
             fontSize: 11.5,
             fontWeight: FontWeight.bold,
-            color: Color(0xFF0F172A),
+            color: DiagnosticsColors.textPrimary,
           ),
         ),
       ],
@@ -487,15 +503,15 @@ class _BatteryThermalHealthCard extends StatelessWidget {
     final IconData thermalIcon;
 
     if (temp < 37.0) {
-      thermalColor = const Color(0xFF10B981); // Emerald Green
+      thermalColor = DiagnosticsColors.success;
       thermalBadge = "NORMAL";
       thermalIcon = Icons.thermostat_rounded;
     } else if (temp < 42.0) {
-      thermalColor = const Color(0xFFF59E0B); // Amber / Warm
+      thermalColor = DiagnosticsColors.warning;
       thermalBadge = "HANGAT";
       thermalIcon = Icons.thermostat_rounded;
     } else {
-      thermalColor = const Color(0xFFEF4444); // Red / Overheat
+      thermalColor = DiagnosticsColors.danger;
       thermalBadge = "OVERHEAT";
       thermalIcon = Icons.local_fire_department_rounded;
     }
@@ -505,12 +521,12 @@ class _BatteryThermalHealthCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: DiagnosticsColors.cardBg,
         borderRadius: BorderRadius.circular(18),
         border: Border.all(
           color: temp >= 42.0
-              ? const Color(0xFFEF4444).withValues(alpha: 0.3)
-              : const Color(0xFFE2E8F0),
+              ? DiagnosticsColors.danger.withValues(alpha: 0.3)
+              : DiagnosticsColors.border,
         ),
         boxShadow: [
           BoxShadow(
@@ -527,52 +543,65 @@ class _BatteryThermalHealthCard extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Row(
-                children: [
-                  Icon(thermalIcon, size: 16, color: thermalColor),
-                  const SizedBox(width: 6),
-                  const Text(
-                    "SUHU BATERAI & KESEHATAN DAYA",
-                    style: TextStyle(
-                      fontSize: 11,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFF0F172A),
-                      letterSpacing: 0.5,
-                    ),
-                  ),
-                ],
-              ),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
-                decoration: BoxDecoration(
-                  color: thermalColor.withValues(alpha: 0.12),
-                  borderRadius: BorderRadius.circular(6),
-                  border: Border.all(
-                    color: thermalColor.withValues(alpha: 0.25),
-                    width: 0.8,
-                  ),
-                ),
+              Expanded(
                 child: Row(
-                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    Container(
-                      width: 6,
-                      height: 6,
-                      decoration: BoxDecoration(
-                        color: thermalColor,
-                        shape: BoxShape.circle,
-                      ),
-                    ),
-                    const SizedBox(width: 4),
-                    Text(
-                      "$thermalBadge (${event.formattedBatteryTemp})",
-                      style: TextStyle(
-                        fontSize: 9.5,
-                        fontWeight: FontWeight.bold,
-                        color: thermalColor,
+                    Icon(thermalIcon, size: 16, color: thermalColor),
+                    const SizedBox(width: 6),
+                    const Expanded(
+                      child: Text(
+                        "SUHU BATERAI & KESEHATAN",
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontSize: 11,
+                          fontWeight: FontWeight.bold,
+                          color: DiagnosticsColors.textPrimary,
+                          letterSpacing: 0.5,
+                        ),
                       ),
                     ),
                   ],
+                ),
+              ),
+              const SizedBox(width: 8),
+              Flexible(
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
+                  decoration: BoxDecoration(
+                    color: thermalColor.withValues(alpha: 0.12),
+                    borderRadius: BorderRadius.circular(6),
+                    border: Border.all(
+                      color: thermalColor.withValues(alpha: 0.25),
+                      width: 0.8,
+                    ),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                        width: 6,
+                        height: 6,
+                        decoration: BoxDecoration(
+                          color: thermalColor,
+                          shape: BoxShape.circle,
+                        ),
+                      ),
+                      const SizedBox(width: 4),
+                      Flexible(
+                        child: Text(
+                          "$thermalBadge (${event.formattedBatteryTemp})",
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontSize: 9.5,
+                            fontWeight: FontWeight.bold,
+                            color: thermalColor,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],
@@ -601,12 +630,12 @@ class _BatteryThermalHealthCard extends StatelessWidget {
               Expanded(
                 child: _ThermalInfoTile(
                   icon: Icons.health_and_safety_rounded,
-                  iconColor: const Color(0xFF0284C7),
+                  iconColor: DiagnosticsColors.primary,
                   label: "Kesehatan Baterai",
                   value: event.batteryHealth.toUpperCase(),
                   subtitle: "${event.batteryTechnology} • ${event.formattedVoltage}",
                   progress: 1.0,
-                  progressColor: const Color(0xFF0284C7),
+                  progressColor: DiagnosticsColors.primary,
                 ),
               ),
               const SizedBox(width: 8),
@@ -618,13 +647,13 @@ class _BatteryThermalHealthCard extends StatelessWidget {
                       ? Icons.eco_rounded
                       : Icons.battery_charging_full_rounded,
                   iconColor: event.isPowerSaveMode
-                      ? const Color(0xFF10B981)
-                      : const Color(0xFF64748B),
+                      ? DiagnosticsColors.success
+                      : DiagnosticsColors.textSubtle,
                   label: "Mode Hemat Daya",
                   value: event.isPowerSaveMode ? "Aktif" : "Nonaktif",
                   subtitle: event.isPowerSaveMode ? "Power Saver ON" : "Normal Mode",
                   progress: event.isPowerSaveMode ? 1.0 : 0.0,
-                  progressColor: const Color(0xFF10B981),
+                  progressColor: DiagnosticsColors.success,
                 ),
               ),
             ],
@@ -636,15 +665,15 @@ class _BatteryThermalHealthCard extends StatelessWidget {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
               decoration: BoxDecoration(
-                color: const Color(0xFFECFDF5),
+                color: DiagnosticsColors.successBg,
                 borderRadius: BorderRadius.circular(8),
                 border: Border.all(
-                  color: const Color(0xFF10B981).withValues(alpha: 0.3),
+                  color: DiagnosticsColors.success.withValues(alpha: 0.3),
                 ),
               ),
               child: const Row(
                 children: [
-                  Icon(Icons.eco_rounded, size: 14, color: Color(0xFF059669)),
+                  Icon(Icons.eco_rounded, size: 14, color: DiagnosticsColors.successDark),
                   SizedBox(width: 6),
                   Expanded(
                     child: Text(
@@ -691,9 +720,9 @@ class _ThermalInfoTile extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 9),
       decoration: BoxDecoration(
-        color: const Color(0xFFF8FAFC),
+        color: DiagnosticsColors.surfaceSubtle,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: const Color(0xFFF1F5F9)),
+        border: Border.all(color: DiagnosticsColors.borderLight),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -709,7 +738,7 @@ class _ThermalInfoTile extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
                     fontSize: 9.0,
-                    color: Color(0xFF64748B),
+                    color: DiagnosticsColors.textSubtle,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -725,7 +754,7 @@ class _ThermalInfoTile extends StatelessWidget {
               style: const TextStyle(
                 fontSize: 13,
                 fontWeight: FontWeight.bold,
-                color: Color(0xFF0F172A),
+                color: DiagnosticsColors.textPrimary,
               ),
             ),
           ),
@@ -736,7 +765,7 @@ class _ThermalInfoTile extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
             style: const TextStyle(
               fontSize: 8.5,
-              color: Color(0xFF94A3B8),
+              color: DiagnosticsColors.textMuted,
               fontWeight: FontWeight.w500,
             ),
           ),
@@ -745,7 +774,7 @@ class _ThermalInfoTile extends StatelessWidget {
             borderRadius: BorderRadius.circular(3),
             child: LinearProgressIndicator(
               value: progress.clamp(0.0, 1.0),
-              backgroundColor: const Color(0xFFE2E8F0),
+              backgroundColor: DiagnosticsColors.border,
               valueColor: AlwaysStoppedAnimation<Color>(progressColor),
               minHeight: 3.5,
             ),

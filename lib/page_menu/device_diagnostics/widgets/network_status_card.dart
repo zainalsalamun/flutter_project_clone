@@ -1,6 +1,8 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import '../services/network_connectivity_service.dart';
+import '../theme/diagnostics_colors.dart';
+import '../pages/network_speed_diagnostics_page.dart';
 
 class NetworkStatusCard extends StatefulWidget {
   final NetworkInfoData networkInfo;
@@ -113,13 +115,13 @@ class _NetworkStatusCardState extends State<NetworkStatusCard>
     // Determine thematic color
     final Color themeColor;
     if (isOffline) {
-      themeColor = const Color(0xFFEF4444); // Red
+      themeColor = DiagnosticsColors.danger;
     } else if (isBad) {
-      themeColor = const Color(0xFFF59E0B); // Amber / Warning
+      themeColor = DiagnosticsColors.warning;
     } else if (isOnline) {
-      themeColor = const Color(0xFF10B981); // Emerald Green
+      themeColor = DiagnosticsColors.success;
     } else {
-      themeColor = const Color(0xFFF59E0B); // Amber
+      themeColor = DiagnosticsColors.warning;
     }
 
     final IconData iconData;
@@ -145,24 +147,24 @@ class _NetworkStatusCardState extends State<NetworkStatusCard>
         final glowOpacity = isBad ? (_pulseAnimation.value * 0.25) : 0.04;
         final borderColor = isBad
             ? Color.lerp(
-                const Color(0xFFF59E0B),
+                DiagnosticsColors.warning,
                 const Color(0xFFEA580C),
                 _pulseAnimation.value,
               )!
             : (isOnline
-                ? const Color(0xFF10B981).withValues(alpha: 0.3)
+                ? DiagnosticsColors.success.withValues(alpha: 0.3)
                 : (isOffline
-                    ? const Color(0xFFEF4444).withValues(alpha: 0.2)
-                    : const Color(0xFFE2E8F0)));
+                    ? DiagnosticsColors.danger.withValues(alpha: 0.2)
+                    : DiagnosticsColors.border));
 
         return Container(
           padding: const EdgeInsets.all(14),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: DiagnosticsColors.cardBg,
             borderRadius: BorderRadius.circular(20),
             border: Border.all(
               color: borderColor,
-              width: isBad ? 1.8 : 1.0,
+              width: isBad ? 1.5 : 1.0,
             ),
             boxShadow: [
               BoxShadow(
@@ -176,68 +178,81 @@ class _NetworkStatusCardState extends State<NetworkStatusCard>
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // 1. Header Row (Status dot + Title + Quality Badge)
+              // 1. Header Row
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Row(
-                    children: [
-                      // Animated Pulsing Indicator Dot
-                      Container(
-                        padding: const EdgeInsets.all(4),
-                        decoration: BoxDecoration(
-                          color: themeColor.withValues(alpha: _pulseAnimation.value * 0.35),
-                          shape: BoxShape.circle,
-                        ),
-                        child: Container(
-                          width: 8,
-                          height: 8,
+                  Expanded(
+                    child: Row(
+                      children: [
+                        // Pulsing Status Dot
+                        Container(
+                          padding: const EdgeInsets.all(4),
                           decoration: BoxDecoration(
-                            color: themeColor,
+                            color: themeColor.withValues(alpha: _pulseAnimation.value * 0.35),
                             shape: BoxShape.circle,
                           ),
+                          child: Container(
+                            width: 8,
+                            height: 8,
+                            decoration: BoxDecoration(
+                              color: themeColor,
+                              shape: BoxShape.circle,
+                            ),
+                          ),
                         ),
-                      ),
-                      const SizedBox(width: 8),
-                      const Text(
-                        "NETWORK & INTERNET CONNECTION",
-                        style: TextStyle(
-                          fontSize: 11,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xFF0F172A),
-                          letterSpacing: 0.5,
-                        ),
-                      ),
-                    ],
-                  ),
-
-                  // ON/OFF State Badge
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
-                    decoration: BoxDecoration(
-                      color: themeColor.withValues(alpha: 0.12),
-                      borderRadius: BorderRadius.circular(6),
-                      border: isBad
-                          ? Border.all(color: themeColor.withValues(alpha: 0.4), width: 0.8)
-                          : null,
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        if (isBad) ...[
-                          Icon(Icons.warning_amber_rounded,
-                              size: 11, color: themeColor),
-                          const SizedBox(width: 3),
-                        ],
-                        Text(
-                          headerBadge,
-                          style: TextStyle(
-                            fontSize: 9.5,
-                            fontWeight: FontWeight.bold,
-                            color: themeColor,
+                        const SizedBox(width: 8),
+                        const Expanded(
+                          child: Text(
+                            "NETWORK & INTERNET CONNECTION",
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              fontSize: 11,
+                              fontWeight: FontWeight.bold,
+                              color: DiagnosticsColors.textPrimary,
+                              letterSpacing: 0.5,
+                            ),
                           ),
                         ),
                       ],
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+
+                  // ON/OFF State Badge
+                  Flexible(
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
+                      decoration: BoxDecoration(
+                        color: themeColor.withValues(alpha: 0.12),
+                        borderRadius: BorderRadius.circular(6),
+                        border: isBad
+                            ? Border.all(color: themeColor.withValues(alpha: 0.4), width: 0.8)
+                            : null,
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          if (isBad) ...[
+                            Icon(Icons.warning_amber_rounded,
+                                size: 11, color: themeColor),
+                            const SizedBox(width: 3),
+                          ],
+                          Flexible(
+                            child: Text(
+                              headerBadge,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                fontSize: 9.5,
+                                fontWeight: FontWeight.bold,
+                                color: themeColor,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ],
@@ -249,13 +264,13 @@ class _NetworkStatusCardState extends State<NetworkStatusCard>
                 padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
                 decoration: BoxDecoration(
                   color: isBad
-                      ? const Color(0xFFFFFBEB) // Amber tint background
-                      : const Color(0xFFF8FAFC),
+                      ? DiagnosticsColors.warningBg
+                      : DiagnosticsColors.surfaceSubtle,
                   borderRadius: BorderRadius.circular(14),
                   border: Border.all(
                     color: isBad
-                        ? const Color(0xFFFDE68A)
-                        : const Color(0xFFF1F5F9),
+                        ? DiagnosticsColors.warningBorder
+                        : DiagnosticsColors.borderLight,
                   ),
                 ),
                 child: Row(
@@ -284,13 +299,13 @@ class _NetworkStatusCardState extends State<NetworkStatusCard>
                               child: Container(
                                 padding: const EdgeInsets.all(2),
                                 decoration: const BoxDecoration(
-                                  color: Color(0xFFEF4444),
+                                  color: DiagnosticsColors.danger,
                                   shape: BoxShape.circle,
                                 ),
                                 child: const Icon(
                                   Icons.priority_high_rounded,
                                   size: 10,
-                                  color: Colors.white,
+                                  color: DiagnosticsColors.white,
                                 ),
                               ),
                             ),
@@ -314,7 +329,7 @@ class _NetworkStatusCardState extends State<NetworkStatusCard>
                                   style: const TextStyle(
                                     fontSize: 13,
                                     fontWeight: FontWeight.bold,
-                                    color: Color(0xFF0F172A),
+                                    color: DiagnosticsColors.textPrimary,
                                   ),
                                 ),
                               ),
@@ -332,10 +347,10 @@ class _NetworkStatusCardState extends State<NetworkStatusCard>
                               fontSize: 11,
                               fontWeight: FontWeight.w500,
                               color: isBad
-                                  ? const Color(0xFFD97706)
+                                  ? DiagnosticsColors.warningDark
                                   : (isOnline
-                                      ? const Color(0xFF10B981)
-                                      : const Color(0xFF64748B)),
+                                      ? DiagnosticsColors.success
+                                      : DiagnosticsColors.textSubtle),
                             ),
                           ),
                         ],
@@ -355,10 +370,10 @@ class _NetworkStatusCardState extends State<NetworkStatusCard>
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 9, vertical: 6),
                             decoration: BoxDecoration(
-                              color: const Color(0xFF0284C7).withValues(alpha: 0.1),
+                              color: DiagnosticsColors.primary.withValues(alpha: 0.1),
                               borderRadius: BorderRadius.circular(8),
                               border: Border.all(
-                                color: const Color(0xFF0284C7).withValues(alpha: 0.2),
+                                color: DiagnosticsColors.primary.withValues(alpha: 0.2),
                               ),
                             ),
                             child: Row(
@@ -370,19 +385,19 @@ class _NetworkStatusCardState extends State<NetworkStatusCard>
                                     height: 11,
                                     child: CircularProgressIndicator(
                                       strokeWidth: 1.8,
-                                      color: Color(0xFF0284C7),
+                                      color: DiagnosticsColors.primary,
                                     ),
                                   )
                                 else
                                   const Icon(Icons.speed_rounded,
-                                      size: 13, color: Color(0xFF0284C7)),
+                                      size: 13, color: DiagnosticsColors.primary),
                                 const SizedBox(width: 4),
                                 Text(
                                   widget.isTestingPing ? "..." : "Ping",
                                   style: const TextStyle(
                                     fontSize: 10.5,
                                     fontWeight: FontWeight.bold,
-                                    color: Color(0xFF0284C7),
+                                    color: DiagnosticsColors.primary,
                                   ),
                                 ),
                               ],
@@ -401,13 +416,13 @@ class _NetworkStatusCardState extends State<NetworkStatusCard>
                                   horizontal: 7, vertical: 6),
                               decoration: BoxDecoration(
                                 color: isBad
-                                    ? const Color(0xFFEF4444).withValues(alpha: 0.12)
-                                    : const Color(0xFFF59E0B).withValues(alpha: 0.12),
+                                    ? DiagnosticsColors.danger.withValues(alpha: 0.12)
+                                    : DiagnosticsColors.warning.withValues(alpha: 0.12),
                                 borderRadius: BorderRadius.circular(8),
                                 border: Border.all(
                                   color: isBad
-                                      ? const Color(0xFFEF4444).withValues(alpha: 0.3)
-                                      : const Color(0xFFF59E0B).withValues(alpha: 0.3),
+                                      ? DiagnosticsColors.danger.withValues(alpha: 0.3)
+                                      : DiagnosticsColors.warning.withValues(alpha: 0.3),
                                 ),
                               ),
                               child: Tooltip(
@@ -423,8 +438,8 @@ class _NetworkStatusCardState extends State<NetworkStatusCard>
                                           : Icons.bolt_rounded,
                                       size: 13,
                                       color: isBad
-                                          ? const Color(0xFFEF4444)
-                                          : const Color(0xFFD97706),
+                                          ? DiagnosticsColors.danger
+                                          : DiagnosticsColors.warningDark,
                                     ),
                                     const SizedBox(width: 2),
                                     Text(
@@ -433,8 +448,8 @@ class _NetworkStatusCardState extends State<NetworkStatusCard>
                                         fontSize: 9.5,
                                         fontWeight: FontWeight.bold,
                                         color: isBad
-                                            ? const Color(0xFFEF4444)
-                                            : const Color(0xFFD97706),
+                                            ? DiagnosticsColors.danger
+                                            : DiagnosticsColors.warningDark,
                                       ),
                                     ),
                                   ],
@@ -458,10 +473,10 @@ class _NetworkStatusCardState extends State<NetworkStatusCard>
                     padding:
                         const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
                     decoration: BoxDecoration(
-                      color: const Color(0xFFFEF3C7),
+                      color: DiagnosticsColors.warningSubtle,
                       borderRadius: BorderRadius.circular(10),
                       border: Border.all(
-                        color: const Color(0xFFF59E0B).withValues(alpha: 0.4),
+                        color: DiagnosticsColors.warning.withValues(alpha: 0.4),
                       ),
                     ),
                     child: Row(
@@ -471,7 +486,7 @@ class _NetworkStatusCardState extends State<NetworkStatusCard>
                           child: const Icon(
                             Icons.signal_wifi_bad_rounded,
                             size: 18,
-                            color: Color(0xFFD97706),
+                            color: DiagnosticsColors.warningDark,
                           ),
                         ),
                         const SizedBox(width: 8),
@@ -520,8 +535,8 @@ class _NetworkStatusCardState extends State<NetworkStatusCard>
                       label: "Internet State",
                       value: isOnline ? "Online" : "Offline",
                       valueColor: isOnline
-                          ? const Color(0xFF10B981)
-                          : const Color(0xFFEF4444),
+                          ? DiagnosticsColors.success
+                          : DiagnosticsColors.danger,
                       icon: isOnline
                           ? Icons.check_circle_rounded
                           : Icons.cancel_rounded,
@@ -532,7 +547,7 @@ class _NetworkStatusCardState extends State<NetworkStatusCard>
                     child: _NetworkMetricTile(
                       label: "IP Address",
                       value: info.ipAddress,
-                      valueColor: const Color(0xFF0F172A),
+                      valueColor: DiagnosticsColors.textPrimary,
                       icon: Icons.language_rounded,
                     ),
                   ),
@@ -542,10 +557,10 @@ class _NetworkStatusCardState extends State<NetworkStatusCard>
                       label: "Ping Latency",
                       value: info.latencyMs >= 0 ? "${info.latencyMs} ms" : "N/A",
                       valueColor: info.latencyMs >= 0 && info.latencyMs < 100
-                          ? const Color(0xFF10B981)
+                          ? DiagnosticsColors.success
                           : (info.latencyMs < 200
-                              ? const Color(0xFFF59E0B)
-                              : const Color(0xFFEF4444)),
+                              ? DiagnosticsColors.warning
+                              : DiagnosticsColors.danger),
                       icon: Icons.timer_outlined,
                     ),
                   ),
@@ -555,14 +570,49 @@ class _NetworkStatusCardState extends State<NetworkStatusCard>
                       label: "Quality Tier",
                       value: info.qualityLabel,
                       valueColor: isBad
-                          ? const Color(0xFFD97706)
+                          ? DiagnosticsColors.warningDark
                           : (isOnline
-                              ? const Color(0xFF10B981)
-                              : const Color(0xFFEF4444)),
+                              ? DiagnosticsColors.success
+                              : DiagnosticsColors.danger),
                       icon: Icons.network_check_rounded,
                     ),
                   ),
                 ],
+              ),
+              const SizedBox(height: 12),
+
+              // Action button to open full Network & Speed Diagnostics Studio
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton.icon(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF0F172A),
+                    foregroundColor: const Color(0xFF38BDF8),
+                    padding: const EdgeInsets.symmetric(vertical: 9, horizontal: 12),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      side: const BorderSide(color: Color(0xFF0284C7), width: 1.2),
+                    ),
+                    elevation: 0,
+                  ),
+                  icon: const Icon(Icons.speed_rounded, size: 16, color: Color(0xFF38BDF8)),
+                  label: const Text(
+                    "Uji Kecepatan & Diagnostik Jaringan Lengkap",
+                    style: TextStyle(
+                      fontSize: 11.5,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF38BDF8),
+                    ),
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const NetworkSpeedDiagnosticsPage(),
+                      ),
+                    );
+                  },
+                ),
               ),
             ],
           ),
@@ -581,21 +631,21 @@ class _NetworkStatusCardState extends State<NetworkStatusCard>
         Color barColor;
 
         if (isOffline) {
-          barColor = const Color(0xFFCBD5E1);
+          barColor = DiagnosticsColors.borderDark;
         } else if (isBad) {
           if (index < 2) {
-            barColor = const Color(0xFFF59E0B);
+            barColor = DiagnosticsColors.warning;
           } else {
             // Flickering amber/red bars for bad connection
-            barColor = const Color(0xFFEF4444)
+            barColor = DiagnosticsColors.danger
                 .withValues(alpha: _blinkAnimation.value);
           }
         } else if (isOnline) {
-          barColor = const Color(0xFF10B981);
+          barColor = DiagnosticsColors.success;
         } else {
           barColor = index == 0
-              ? const Color(0xFFF59E0B)
-              : const Color(0xFFE2E8F0);
+              ? DiagnosticsColors.warning
+              : DiagnosticsColors.border;
         }
 
         return Container(
@@ -630,16 +680,16 @@ class _NetworkMetricTile extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
       decoration: BoxDecoration(
-        color: const Color(0xFFF8FAFC),
+        color: DiagnosticsColors.surfaceSubtle,
         borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: const Color(0xFFF1F5F9)),
+        border: Border.all(color: DiagnosticsColors.borderLight),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
-              Icon(icon, size: 12, color: const Color(0xFF94A3B8)),
+              Icon(icon, size: 12, color: DiagnosticsColors.textMuted),
               const SizedBox(width: 4),
               Expanded(
                 child: Text(
@@ -648,7 +698,7 @@ class _NetworkMetricTile extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
                     fontSize: 9.0,
-                    color: Color(0xFF94A3B8),
+                    color: DiagnosticsColors.textMuted,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
