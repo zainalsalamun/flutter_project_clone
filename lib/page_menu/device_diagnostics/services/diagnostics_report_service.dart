@@ -9,9 +9,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../bloc/diagnostics_bloc_state.dart';
 import '../models/device_diagnostics_event.dart';
-import '../models/display_and_sensors_data.dart';
 import 'diagnostics_logger_service.dart';
-import 'network_connectivity_service.dart';
 
 class DiagnosticsReportService {
   static final DiagnosticsReportService instance =
@@ -219,8 +217,41 @@ class DiagnosticsReportService {
           ),
           pw.SizedBox(height: 14),
 
-          // 4. Live Debug Audit Trail Logs
-          _buildPdfSectionTitle("4. AUDIT TRAIL & LOG DEBUG SISTEM TERAKHIR"),
+          // 4. GPS Satellite, Compass & Geotagging Evaluation
+          _buildPdfSectionTitle("4. GPS TELEMETRI, KOMPAS & EVALUASI GEOTAGGING"),
+          pw.SizedBox(height: 6),
+          pw.Table(
+            border: pw.TableBorder.all(
+              color: PdfColors.grey300,
+              width: 0.5,
+            ),
+            children: [
+              _buildTableRow(
+                  "Status Geotagging",
+                  state.locationCarrier.conditionTitle,
+                  "Radius Akurasi GPS",
+                  state.locationCarrier.formattedAccuracy),
+              _buildTableRow(
+                  "Koordinat Lat/Long",
+                  state.locationCarrier.formattedCoordinates,
+                  "Ketinggian (Altitude)",
+                  state.locationCarrier.formattedAltitude),
+              _buildTableRow(
+                  "Kompas Orientasi",
+                  "${state.compassHeading.round()}° (Heading Real-Time)",
+                  "Arah Gerak (Bearing)",
+                  state.locationCarrier.formattedBearing),
+              _buildTableRow(
+                  "Operator Seluler",
+                  "${state.locationCarrier.carrierName} (${state.locationCarrier.countryIso.toUpperCase()})",
+                  "Status SIM / Provider",
+                  "${state.locationCarrier.simStatusLabel} • ${state.locationCarrier.locationProvider}"),
+            ],
+          ),
+          pw.SizedBox(height: 14),
+
+          // 5. Live Debug Audit Trail Logs
+          _buildPdfSectionTitle("5. AUDIT TRAIL & LOG DEBUG SISTEM TERAKHIR"),
           pw.SizedBox(height: 6),
           if (logs.isEmpty)
             pw.Text("Tidak ada log tersimpan.",
@@ -492,6 +523,25 @@ class DiagnosticsReportService {
                 })
             .toList(),
       },
+      "locationAndGps": {
+        "geotaggingCondition": state.locationCarrier.condition.name,
+        "conditionTitle": state.locationCarrier.conditionTitle,
+        "latitude": state.locationCarrier.latitude,
+        "longitude": state.locationCarrier.longitude,
+        "altitudeMeters": state.locationCarrier.altitudeMeters,
+        "accuracyMeters": state.locationCarrier.accuracyMeters,
+        "speedKmh": state.locationCarrier.speedKmh,
+        "bearingDegrees": state.locationCarrier.bearingDegrees,
+        "compassHeadingDegrees": state.compassHeading,
+        "locationProvider": state.locationCarrier.locationProvider,
+        "isLocationMock": state.locationCarrier.isLocationMock,
+        "isGpsEnabled": state.locationCarrier.isGpsEnabled,
+      },
+      "carrierAndSim": {
+        "carrierName": state.locationCarrier.carrierName,
+        "simState": state.locationCarrier.simState,
+        "countryIso": state.locationCarrier.countryIso,
+      },
       "recentLogs": DiagnosticsLoggerService.instance.logs
           .take(20)
           .map((l) => {
@@ -528,6 +578,13 @@ class DiagnosticsReportService {
     buffer.writeln("• VPN / Proxy: ${state.isVpnActive ? '🟠 VPN Aktif' : '🟢 Direct Link'}");
     buffer.writeln("• Root Status: ${state.isRooted ? '🔴 Rooted' : '🟢 Not Rooted'}");
     buffer.writeln("• Developer Mode: ${state.isDeveloperMode ? '🟠 ON' : '🟢 OFF'}");
+    buffer.writeln("");
+    buffer.writeln("🛰️ *GPS, GEOTAGGING & OPERATOR SELULER*");
+    buffer.writeln("• Status Geotagging: ${state.locationCarrier.conditionTitle}");
+    buffer.writeln("• Koordinat: ${state.locationCarrier.formattedCoordinates}");
+    buffer.writeln("• Akurasi: ${state.locationCarrier.formattedAccuracy} • Altitude: ${state.locationCarrier.formattedAltitude}");
+    buffer.writeln("• Kompas: ${state.compassHeading.round()}° • Arah: ${state.locationCarrier.formattedBearing}");
+    buffer.writeln("• Provider & SIM: ${state.locationCarrier.carrierName} (${state.locationCarrier.countryIso.toUpperCase()}) • ${state.locationCarrier.simStatusLabel}");
     buffer.writeln("");
     buffer.writeln("🔋 *BATERAI & HARDWARE*");
     buffer.writeln("• Level: ${event.batteryLevel}% (${event.batteryState})");
