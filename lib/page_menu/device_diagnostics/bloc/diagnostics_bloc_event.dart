@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import '../models/location_and_carrier_data.dart';
 
 abstract class DiagnosticsBlocEvent extends Equatable {
   const DiagnosticsBlocEvent();
@@ -41,4 +42,24 @@ class ProbePingLatencyEvent extends DiagnosticsBlocEvent {
 
 class SimulateBadConnectionEvent extends DiagnosticsBlocEvent {
   const SimulateBadConnectionEvent();
+}
+
+class CompassHeadingChangedEvent extends DiagnosticsBlocEvent {
+  final double heading;
+  const CompassHeadingChangedEvent(this.heading);
+
+  @override
+  List<Object?> get props => [heading];
+}
+
+class SimulateGeotaggingConditionEvent extends DiagnosticsBlocEvent {
+  final GeotaggingCondition condition;
+  const SimulateGeotaggingConditionEvent(this.condition);
+
+  @override
+  List<Object?> get props => [condition];
+}
+
+class ResetGeotaggingSimulationEvent extends DiagnosticsBlocEvent {
+  const ResetGeotaggingSimulationEvent();
 }

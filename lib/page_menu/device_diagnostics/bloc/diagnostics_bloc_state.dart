@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import '../models/device_diagnostics_event.dart';
 import '../models/display_and_sensors_data.dart';
+import '../models/location_and_carrier_data.dart';
 import '../models/user_device_diagnostics_entity.dart';
 import '../services/network_connectivity_service.dart';
 
@@ -13,6 +14,8 @@ class DiagnosticsBlocState extends Equatable {
   final NetworkInfoData networkInfo;
   final DisplaySpecsData displaySpecs;
   final SensorsCatalogData sensorsCatalog;
+  final LocationAndCarrierData locationCarrier;
+  final double compassHeading;
   final bool isTestingPing;
   final bool isDeviceIdMasked;
   final String? errorMessage;
@@ -35,6 +38,8 @@ class DiagnosticsBlocState extends Equatable {
     required this.networkInfo,
     required this.displaySpecs,
     required this.sensorsCatalog,
+    required this.locationCarrier,
+    this.compassHeading = 45.0,
     this.isTestingPing = false,
     this.isDeviceIdMasked = true,
     this.errorMessage,
@@ -59,6 +64,8 @@ class DiagnosticsBlocState extends Equatable {
       networkInfo: NetworkInfoData.initial(),
       displaySpecs: DisplaySpecsData.initial(),
       sensorsCatalog: SensorsCatalogData.initial(),
+      locationCarrier: LocationAndCarrierData.initial(),
+      compassHeading: 45.0,
       isDeviceIdMasked: true,
     );
   }
@@ -70,6 +77,8 @@ class DiagnosticsBlocState extends Equatable {
     NetworkInfoData? networkInfo,
     DisplaySpecsData? displaySpecs,
     SensorsCatalogData? sensorsCatalog,
+    LocationAndCarrierData? locationCarrier,
+    double? compassHeading,
     bool? isTestingPing,
     bool? isDeviceIdMasked,
     String? errorMessage,
@@ -92,6 +101,8 @@ class DiagnosticsBlocState extends Equatable {
       networkInfo: networkInfo ?? this.networkInfo,
       displaySpecs: displaySpecs ?? this.displaySpecs,
       sensorsCatalog: sensorsCatalog ?? this.sensorsCatalog,
+      locationCarrier: locationCarrier ?? this.locationCarrier,
+      compassHeading: compassHeading ?? this.compassHeading,
       isTestingPing: isTestingPing ?? this.isTestingPing,
       isDeviceIdMasked: isDeviceIdMasked ?? this.isDeviceIdMasked,
       errorMessage: errorMessage,
@@ -117,6 +128,8 @@ class DiagnosticsBlocState extends Equatable {
         networkInfo,
         displaySpecs,
         sensorsCatalog,
+        locationCarrier,
+        compassHeading,
         isTestingPing,
         isDeviceIdMasked,
         errorMessage,
