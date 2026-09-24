@@ -317,6 +317,55 @@ class MainActivity : FlutterActivity() {
                         result.error("SQLITE_STATS_ERROR", e.message, null)
                     }
                 }
+                "insertScreenTimeSession" -> {
+                    try {
+                        val sessionId = call.argument<String>("sessionId") ?: ""
+                        val date = call.argument<String>("date") ?: ""
+                        val sessionStartMs = (call.argument<Number>("sessionStartMs") ?: System.currentTimeMillis()).toLong()
+                        val sessionEndMs = (call.argument<Number>("sessionEndMs") ?: System.currentTimeMillis()).toLong()
+                        val durationSeconds = (call.argument<Number>("durationSeconds") ?: 0).toInt()
+                        val pageBreakdownJson = call.argument<String>("pageBreakdownJson") ?: "{}"
+                        val batteryConsumed = (call.argument<Number>("batteryConsumed") ?: 0).toInt()
+                        val isSynced = call.argument<Boolean>("isSynced") ?: false
+
+                        val dbHelper = GeotagSqliteHelper.getInstance(applicationContext)
+                        val id = dbHelper.insertScreenTimeSession(
+                            sessionId, date, sessionStartMs, sessionEndMs, durationSeconds,
+                            pageBreakdownJson, batteryConsumed, isSynced
+                        )
+                        result.success(id)
+                    } catch (e: Exception) {
+                        result.error("SQLITE_SCREEN_TIME_INSERT_ERROR", e.message, null)
+                    }
+                }
+                "getAllScreenTimeSessions" -> {
+                    try {
+                        val dbHelper = GeotagSqliteHelper.getInstance(applicationContext)
+                        val list = dbHelper.getAllScreenTimeSessions()
+                        result.success(list)
+                    } catch (e: Exception) {
+                        result.error("SQLITE_SCREEN_TIME_QUERY_ERROR", e.message, null)
+                    }
+                }
+                "markScreenTimeSessionsSynced" -> {
+                    try {
+                        val sessionIds = call.argument<List<String>>("sessionIds") ?: emptyList()
+                        val dbHelper = GeotagSqliteHelper.getInstance(applicationContext)
+                        val updated = dbHelper.markScreenTimeSessionsSynced(sessionIds)
+                        result.success(updated)
+                    } catch (e: Exception) {
+                        result.error("SQLITE_SCREEN_TIME_SYNC_ERROR", e.message, null)
+                    }
+                }
+                "getScreenTimeDailyStats" -> {
+                    try {
+                        val dbHelper = GeotagSqliteHelper.getInstance(applicationContext)
+                        val stats = dbHelper.getScreenTimeDailyStats()
+                        result.success(stats)
+                    } catch (e: Exception) {
+                        result.error("SQLITE_SCREEN_TIME_STATS_ERROR", e.message, null)
+                    }
+                }
                 "compressImage" -> {
                     try {
                         val inputPath = call.argument<String>("inputPath") ?: ""
@@ -1536,6 +1585,20 @@ class GeotagSqliteHelper private constructor(context: Context) :
         const val COL_CLOUD_SYNCED_AT = "cloud_synced_at"
         const val COL_CREATED_AT = "created_at"
 
+        const val TABLE_SCREEN_TIME = "screen_time_sessions"
+
+        const val COL_ST_ID = "id"
+        const val COL_ST_SESSION_ID = "session_id"
+        const val COL_ST_DATE = "date"
+        const val COL_ST_START_MS = "session_start_ms"
+        const val COL_ST_END_MS = "session_end_ms"
+        const val COL_ST_DURATION_SEC = "duration_seconds"
+        const val COL_ST_PAGE_BREAKDOWN = "page_breakdown_json"
+        const val COL_ST_BATTERY_CONSUMED = "battery_consumed"
+        const val COL_ST_IS_SYNCED = "is_synced"
+        const val COL_ST_SYNCED_AT = "synced_at_ms"
+        const val COL_ST_CREATED_AT = "created_at_ms"
+
         @Volatile
         private var instance: GeotagSqliteHelper? = null
 
@@ -1569,6 +1632,23 @@ class GeotagSqliteHelper private constructor(context: Context) :
             )
         """.trimIndent()
         db.execSQL(createSql)
+
+        val createScreenTimeSql = """
+            CREATE TABLE IF NOT EXISTS $TABLE_SCREEN_TIME (
+                $COL_ST_ID INTEGER PRIMARY KEY AUTOINCREMENT,
+                $COL_ST_SESSION_ID TEXT NOT NULL,
+                $COL_ST_DATE TEXT NOT NULL,
+                $COL_ST_START_MS INTEGER NOT NULL,
+                $COL_ST_END_MS INTEGER NOT NULL,
+                $COL_ST_DURATION_SEC INTEGER NOT NULL,
+                $COL_ST_PAGE_BREAKDOWN TEXT,
+                $COL_ST_BATTERY_CONSUMED INTEGER DEFAULT 0,
+                $COL_ST_IS_SYNCED INTEGER DEFAULT 0,
+                $COL_ST_SYNCED_AT INTEGER DEFAULT 0,
+                $COL_ST_CREATED_AT INTEGER NOT NULL
+            )
+        """.trimIndent()
+        db.execSQL(createScreenTimeSql)
     }
 
     override fun onOpen(db: SQLiteDatabase) {
@@ -1585,11 +1665,125 @@ class GeotagSqliteHelper private constructor(context: Context) :
         try {
             db.execSQL("ALTER TABLE $TABLE_PHOTOS ADD COLUMN $COL_CLOUD_SYNCED_AT INTEGER DEFAULT 0")
         } catch (_: Throwable) {}
+        try {
+            val createScreenTimeSql = """
+                CREATE TABLE IF NOT EXISTS $TABLE_SCREEN_TIME (
+                    $COL_ST_ID INTEGER PRIMARY KEY AUTOINCREMENT,
+                    $COL_ST_SESSION_ID TEXT NOT NULL,
+                    $COL_ST_DATE TEXT NOT NULL,
+                    $COL_ST_START_MS INTEGER NOT NULL,
+                    $COL_ST_END_MS INTEGER NOT NULL,
+                    $COL_ST_DURATION_SEC INTEGER NOT NULL,
+                    $COL_ST_PAGE_BREAKDOWN TEXT,
+                    $COL_ST_BATTERY_CONSUMED INTEGER DEFAULT 0,
+                    $COL_ST_IS_SYNCED INTEGER DEFAULT 0,
+                    $COL_ST_SYNCED_AT INTEGER DEFAULT 0,
+                    $COL_ST_CREATED_AT INTEGER NOT NULL
+                )
+            """.trimIndent()
+            db.execSQL(createScreenTimeSql)
+        } catch (_: Throwable) {}
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
         db.execSQL("DROP TABLE IF EXISTS $TABLE_PHOTOS")
+        db.execSQL("DROP TABLE IF EXISTS $TABLE_SCREEN_TIME")
         onCreate(db)
+    }
+
+    fun insertScreenTimeSession(
+        sessionId: String,
+        date: String,
+        sessionStartMs: Long,
+        sessionEndMs: Long,
+        durationSeconds: Int,
+        pageBreakdownJson: String,
+        batteryConsumed: Int,
+        isSynced: Boolean
+    ): Long {
+        val db = writableDatabase
+        val values = ContentValues().apply {
+            put(COL_ST_SESSION_ID, sessionId)
+            put(COL_ST_DATE, date)
+            put(COL_ST_START_MS, sessionStartMs)
+            put(COL_ST_END_MS, sessionEndMs)
+            put(COL_ST_DURATION_SEC, durationSeconds)
+            put(COL_ST_PAGE_BREAKDOWN, pageBreakdownJson)
+            put(COL_ST_BATTERY_CONSUMED, batteryConsumed)
+            put(COL_ST_IS_SYNCED, if (isSynced) 1 else 0)
+            put(COL_ST_SYNCED_AT, if (isSynced) System.currentTimeMillis() else 0L)
+            put(COL_ST_CREATED_AT, System.currentTimeMillis())
+        }
+        return db.insertWithOnConflict(TABLE_SCREEN_TIME, null, values, SQLiteDatabase.CONFLICT_REPLACE)
+    }
+
+    fun getAllScreenTimeSessions(): List<Map<String, Any>> {
+        val list = mutableListOf<Map<String, Any>>()
+        val db = readableDatabase
+        val cursor = db.rawQuery("SELECT * FROM $TABLE_SCREEN_TIME ORDER BY $COL_ST_ID DESC", null)
+        cursor.use {
+            while (it.moveToNext()) {
+                val map = mutableMapOf<String, Any>()
+                map["id"] = it.getLong(it.getColumnIndexOrThrow(COL_ST_ID))
+                map["sessionId"] = it.getString(it.getColumnIndexOrThrow(COL_ST_SESSION_ID))
+                map["date"] = it.getString(it.getColumnIndexOrThrow(COL_ST_DATE))
+                map["sessionStartMs"] = it.getLong(it.getColumnIndexOrThrow(COL_ST_START_MS))
+                map["sessionEndMs"] = it.getLong(it.getColumnIndexOrThrow(COL_ST_END_MS))
+                map["durationSeconds"] = it.getInt(it.getColumnIndexOrThrow(COL_ST_DURATION_SEC))
+                map["pageBreakdownJson"] = it.getString(it.getColumnIndexOrThrow(COL_ST_PAGE_BREAKDOWN)) ?: "{}"
+                map["batteryConsumed"] = it.getInt(it.getColumnIndexOrThrow(COL_ST_BATTERY_CONSUMED))
+                map["isSynced"] = it.getInt(it.getColumnIndexOrThrow(COL_ST_IS_SYNCED)) == 1
+                map["syncedAtMs"] = it.getLong(it.getColumnIndexOrThrow(COL_ST_SYNCED_AT))
+                map["createdAtMs"] = it.getLong(it.getColumnIndexOrThrow(COL_ST_CREATED_AT))
+                list.add(map)
+            }
+        }
+        return list
+    }
+
+    fun markScreenTimeSessionsSynced(sessionIds: List<String>): Boolean {
+        if (sessionIds.isEmpty()) return true
+        val db = writableDatabase
+        val now = System.currentTimeMillis()
+        val values = ContentValues().apply {
+            put(COL_ST_IS_SYNCED, 1)
+            put(COL_ST_SYNCED_AT, now)
+        }
+        for (id in sessionIds) {
+            db.update(TABLE_SCREEN_TIME, values, "$COL_ST_SESSION_ID = ?", arrayOf(id))
+        }
+        return true
+    }
+
+    fun getScreenTimeDailyStats(): Map<String, Any> {
+        val db = readableDatabase
+        val dailyMap = mutableMapOf<String, Long>()
+        var totalLifetimeSeconds = 0L
+        var totalSessions = 0L
+        var pendingSyncCount = 0L
+
+        val cursor = db.rawQuery(
+            "SELECT $COL_ST_DATE, $COL_ST_DURATION_SEC, $COL_ST_IS_SYNCED FROM $TABLE_SCREEN_TIME",
+            null
+        )
+        cursor.use {
+            while (it.moveToNext()) {
+                totalSessions++
+                val d = it.getString(0) ?: ""
+                val sec = it.getLong(1)
+                val synced = it.getInt(2) == 1
+                if (!synced) pendingSyncCount++
+                totalLifetimeSeconds += sec
+                dailyMap[d] = (dailyMap[d] ?: 0L) + sec
+            }
+        }
+
+        return mapOf(
+            "totalLifetimeSeconds" to totalLifetimeSeconds,
+            "totalSessions" to totalSessions,
+            "pendingSyncCount" to pendingSyncCount,
+            "dailyBreakdown" to dailyMap
+        )
     }
 
     fun insertPhoto(
