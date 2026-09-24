@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import '../services/network_speed_test_service.dart';
-import '../services/network_connectivity_service.dart';
 import '../services/app_screen_time_service.dart';
 
 class NetworkSpeedDiagnosticsPage extends StatefulWidget {
@@ -17,7 +16,6 @@ class _NetworkSpeedDiagnosticsPageState
     extends State<NetworkSpeedDiagnosticsPage>
     with SingleTickerProviderStateMixin {
   final NetworkSpeedTestService _speedService = NetworkSpeedTestService.instance;
-  final NetworkConnectivityService _connService = NetworkConnectivityService.instance;
 
   late TabController _tabController;
 
