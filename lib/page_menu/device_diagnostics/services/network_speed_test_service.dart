@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:io';
 import 'dart:math' as math;
 import 'package:flutter/services.dart';
@@ -24,13 +23,13 @@ class PingJitterResult {
   });
 
   factory PingJitterResult.empty() => const PingJitterResult(
-        minMs: 0,
-        maxMs: 0,
-        avgMs: 0,
-        jitterMs: 0.0,
-        packetLossPercent: 0.0,
-        targetHost: '1.1.1.1',
-      );
+    minMs: 0,
+    maxMs: 0,
+    avgMs: 0,
+    jitterMs: 0.0,
+    packetLossPercent: 0.0,
+    targetHost: '1.1.1.1',
+  );
 }
 
 class SpeedTestSummary {
@@ -54,7 +53,8 @@ class SpeedTestSummary {
 
   String get gamingGrade {
     if (pingMs <= 0) return "-";
-    if (pingMs < 30 && jitterMs < 5 && packetLossPercent == 0) return "A+ (Ultra Low Latency)";
+    if (pingMs < 30 && jitterMs < 5 && packetLossPercent == 0)
+      return "A+ (Ultra Low Latency)";
     if (pingMs < 60 && jitterMs < 12) return "A (Competitive Ready)";
     if (pingMs < 110) return "B (Playable)";
     if (pingMs < 180) return "C (Noticeable Lag)";
@@ -72,7 +72,8 @@ class SpeedTestSummary {
 
   String get videoCallGrade {
     if (downloadMbps <= 0 || uploadMbps <= 0) return "-";
-    if (downloadMbps >= 10 && uploadMbps >= 5 && pingMs < 80) return "HD Group Conference (Excellent)";
+    if (downloadMbps >= 10 && uploadMbps >= 5 && pingMs < 80)
+      return "HD Group Conference (Excellent)";
     if (downloadMbps >= 4 && uploadMbps >= 2) return "1:1 HD Video Call (Good)";
     return "Audio Only / Low Quality";
   }
@@ -112,21 +113,21 @@ class WifiDetailedInfo {
   });
 
   factory WifiDetailedInfo.empty() => const WifiDetailedInfo(
-        isConnected: false,
-        isWifiEnabled: false,
-        ssid: 'Not Connected',
-        bssid: '00:00:00:00:00:00',
-        rssi: -100,
-        signalLevel: 0,
-        linkSpeedMbps: 0,
-        frequencyMhz: 0,
-        band: 'Unknown',
-        localIp: 'N/A',
-        gateway: 'N/A',
-        dns1: 'N/A',
-        dns2: 'N/A',
-        netmask: '255.255.255.0',
-      );
+    isConnected: false,
+    isWifiEnabled: false,
+    ssid: 'Not Connected',
+    bssid: '00:00:00:00:00:00',
+    rssi: -100,
+    signalLevel: 0,
+    linkSpeedMbps: 0,
+    frequencyMhz: 0,
+    band: 'Unknown',
+    localIp: 'N/A',
+    gateway: 'N/A',
+    dns1: 'N/A',
+    dns2: 'N/A',
+    netmask: '255.255.255.0',
+  );
 
   String get signalQualityText {
     if (!isConnected) return "Disconnected";
@@ -156,13 +157,13 @@ class NetworkTrafficData {
   });
 
   factory NetworkTrafficData.empty() => const NetworkTrafficData(
-        totalRxBytes: 0,
-        totalTxBytes: 0,
-        totalRxPackets: 0,
-        totalTxPackets: 0,
-        mobileRxBytes: 0,
-        mobileTxBytes: 0,
-      );
+    totalRxBytes: 0,
+    totalTxBytes: 0,
+    totalRxPackets: 0,
+    totalTxPackets: 0,
+    mobileRxBytes: 0,
+    mobileTxBytes: 0,
+  );
 
   String get formattedTotalRx => _formatBytes(totalRxBytes);
   String get formattedTotalTx => _formatBytes(totalTxBytes);
@@ -215,11 +216,13 @@ class WebServiceStatus {
 }
 
 class NetworkSpeedTestService {
-  static final NetworkSpeedTestService instance = NetworkSpeedTestService._internal();
+  static final NetworkSpeedTestService instance =
+      NetworkSpeedTestService._internal();
   NetworkSpeedTestService._internal();
 
-  static const MethodChannel _platformChannel =
-      MethodChannel('com.naltech.project_clone/device_diagnostics');
+  static const MethodChannel _platformChannel = MethodChannel(
+    'com.naltech.project_clone/device_diagnostics',
+  );
 
   // CDN download test URLs with fast global anycast edge
   static const List<String> _downloadTestUrls = [
@@ -228,14 +231,15 @@ class NetworkSpeedTestService {
   ];
 
   /// Measures multi-server Ping and Jitter
-  Future<PingJitterResult> measurePingAndJitter({String host = '1.1.1.1'}) async {
+  Future<PingJitterResult> measurePingAndJitter({
+    String host = '1.1.1.1',
+  }) async {
     try {
       // 1. Try Native ICMP ping
-      final dynamic res = await _platformChannel.invokeMethod('pingHostNative', {
-        'host': host,
-        'count': 4,
-        'timeout': 2,
-      });
+      final dynamic res = await _platformChannel.invokeMethod(
+        'pingHostNative',
+        {'host': host, 'count': 4, 'timeout': 2},
+      );
 
       if (res is Map && res['success'] == true) {
         final avg = (res['avgMs'] as num?)?.round() ?? 0;
@@ -260,7 +264,11 @@ class NetworkSpeedTestService {
     for (int i = 0; i < 4; i++) {
       final sw = Stopwatch()..start();
       try {
-        final socket = await Socket.connect(host, 53, timeout: const Duration(seconds: 2));
+        final socket = await Socket.connect(
+          host,
+          53,
+          timeout: const Duration(seconds: 2),
+        );
         sw.stop();
         latencies.add(sw.elapsedMilliseconds);
         socket.destroy();
@@ -328,10 +336,14 @@ class NetworkSpeedTestService {
 
           // Instantaneous Mbps = (Bytes * 8) / (Time * 1,000,000)
           final instantMbps = (deltaBytes * 8.0) / (deltaTimeSec * 1000000.0);
-          lastEmittedMbps = (lastEmittedMbps * 0.4) + (instantMbps * 0.6); // Smoothing
+          lastEmittedMbps =
+              (lastEmittedMbps * 0.4) + (instantMbps * 0.6); // Smoothing
           samples.add(lastEmittedMbps);
 
-          final progress = (currentMs / duration.inMilliseconds).clamp(0.0, 1.0);
+          final progress = (currentMs / duration.inMilliseconds).clamp(
+            0.0,
+            1.0,
+          );
           onProgress?.call(lastEmittedMbps, progress);
           yield lastEmittedMbps;
 
@@ -344,7 +356,10 @@ class NetworkSpeedTestService {
         }
       }
     } catch (e) {
-      DiagnosticsLoggerService.instance.warn("DOWNLOAD_TEST_WARN", "Download stream ended: $e");
+      DiagnosticsLoggerService.instance.warn(
+        "DOWNLOAD_TEST_WARN",
+        "Download stream ended: $e",
+      );
     } finally {
       client.close();
       stopwatch.stop();
@@ -352,10 +367,12 @@ class NetworkSpeedTestService {
 
     // Calculate final smoothed average Mbps
     if (samples.isNotEmpty) {
-      final validSamples = samples.skip(1).toList(); // Skip first ramp-up sample
-      final avg = validSamples.isNotEmpty
-          ? validSamples.reduce((a, b) => a + b) / validSamples.length
-          : samples.last;
+      final validSamples =
+          samples.skip(1).toList(); // Skip first ramp-up sample
+      final avg =
+          validSamples.isNotEmpty
+              ? validSamples.reduce((a, b) => a + b) / validSamples.length
+              : samples.last;
       yield avg;
     } else {
       yield 0.0;
@@ -376,7 +393,6 @@ class NetworkSpeedTestService {
       final chunkBytes = List<int>.filled(512 * 1024, 65);
       final uploadUrl = Uri.parse('https://speed.cloudflare.com/__up');
 
-      int chunksSent = 0;
       double lastEmittedMbps = 0.0;
 
       while (stopwatch.elapsed < duration) {
@@ -385,21 +401,26 @@ class NetworkSpeedTestService {
         final chunkEnd = stopwatch.elapsedMilliseconds;
 
         if (res.statusCode == 200) {
-          chunksSent++;
           final deltaMs = chunkEnd - chunkStart;
           if (deltaMs > 0) {
-            final instantMbps = (chunkBytes.length * 8.0) / ((deltaMs / 1000.0) * 1000000.0);
+            final instantMbps =
+                (chunkBytes.length * 8.0) / ((deltaMs / 1000.0) * 1000000.0);
             lastEmittedMbps = (lastEmittedMbps * 0.3) + (instantMbps * 0.7);
             samples.add(lastEmittedMbps);
 
-            final progress = (stopwatch.elapsedMilliseconds / duration.inMilliseconds).clamp(0.0, 1.0);
+            final progress = (stopwatch.elapsedMilliseconds /
+                    duration.inMilliseconds)
+                .clamp(0.0, 1.0);
             onProgress?.call(lastEmittedMbps, progress);
             yield lastEmittedMbps;
           }
         }
       }
     } catch (e) {
-      DiagnosticsLoggerService.instance.warn("UPLOAD_TEST_WARN", "Upload stream ended: $e");
+      DiagnosticsLoggerService.instance.warn(
+        "UPLOAD_TEST_WARN",
+        "Upload stream ended: $e",
+      );
     } finally {
       client.close();
       stopwatch.stop();
@@ -416,7 +437,9 @@ class NetworkSpeedTestService {
   /// Gets detailed Wi-Fi information from Android Native layer
   Future<WifiDetailedInfo> getWifiDetailedInfo() async {
     try {
-      final dynamic res = await _platformChannel.invokeMethod('getDetailedWifiInfo');
+      final dynamic res = await _platformChannel.invokeMethod(
+        'getDetailedWifiInfo',
+      );
       if (res is Map) {
         return WifiDetailedInfo(
           isConnected: res['isConnected'] == true,
@@ -436,7 +459,10 @@ class NetworkSpeedTestService {
         );
       }
     } catch (e) {
-      DiagnosticsLoggerService.instance.warn("WIFI_INFO_ERROR", "Gagal membaca detail Wi-Fi: $e");
+      DiagnosticsLoggerService.instance.warn(
+        "WIFI_INFO_ERROR",
+        "Gagal membaca detail Wi-Fi: $e",
+      );
     }
     return WifiDetailedInfo.empty();
   }
@@ -444,7 +470,9 @@ class NetworkSpeedTestService {
   /// Gets Network Traffic statistics (Rx / Tx in Bytes & Packets)
   Future<NetworkTrafficData> getNetworkTrafficStats() async {
     try {
-      final dynamic res = await _platformChannel.invokeMethod('getNetworkTrafficStats');
+      final dynamic res = await _platformChannel.invokeMethod(
+        'getNetworkTrafficStats',
+      );
       if (res is Map) {
         return NetworkTrafficData(
           totalRxBytes: (res['totalRxBytes'] as num?)?.toInt() ?? 0,
@@ -496,8 +524,11 @@ class NetworkSpeedTestService {
 
           for (final port in probePorts) {
             try {
-              final socket = await Socket.connect(targetIp, port,
-                  timeout: const Duration(milliseconds: 300));
+              final socket = await Socket.connect(
+                targetIp,
+                port,
+                timeout: const Duration(milliseconds: 300),
+              );
               responded = true;
               openPorts.add(port);
               socket.destroy();
@@ -517,7 +548,8 @@ class NetworkSpeedTestService {
 
             return LanDevice(
               ip: targetIp,
-              hostname: isGw ? "Default Gateway ($targetIp)" : "Host ($targetIp)",
+              hostname:
+                  isGw ? "Default Gateway ($targetIp)" : "Host ($targetIp)",
               responseTimeMs: sw.elapsedMilliseconds,
               openPorts: openPorts,
               deviceType: deviceType,
@@ -543,12 +575,32 @@ class NetworkSpeedTestService {
   /// Checks reachability and response latency to major Web & Cloud services
   Future<List<WebServiceStatus>> checkWebServices() async {
     final targets = [
-      {'name': 'Cloudinary CDN', 'url': 'https://api.cloudinary.com/ping', 'host': 'api.cloudinary.com'},
-      {'name': 'Google Services', 'url': 'https://www.google.com/generate_204', 'host': 'www.google.com'},
+      {
+        'name': 'Cloudinary CDN',
+        'url': 'https://api.cloudinary.com/ping',
+        'host': 'api.cloudinary.com',
+      },
+      {
+        'name': 'Google Services',
+        'url': 'https://www.google.com/generate_204',
+        'host': 'www.google.com',
+      },
       {'name': 'Cloudflare DNS', 'url': 'https://1.1.1.1', 'host': '1.1.1.1'},
-      {'name': 'Firebase Auth', 'url': 'https://identitytoolkit.googleapis.com', 'host': 'identitytoolkit.googleapis.com'},
-      {'name': 'WhatsApp Relay', 'url': 'https://web.whatsapp.com', 'host': 'web.whatsapp.com'},
-      {'name': 'GitHub API', 'url': 'https://api.github.com', 'host': 'api.github.com'},
+      {
+        'name': 'Firebase Auth',
+        'url': 'https://identitytoolkit.googleapis.com',
+        'host': 'identitytoolkit.googleapis.com',
+      },
+      {
+        'name': 'WhatsApp Relay',
+        'url': 'https://web.whatsapp.com',
+        'host': 'web.whatsapp.com',
+      },
+      {
+        'name': 'GitHub API',
+        'url': 'https://api.github.com',
+        'host': 'api.github.com',
+      },
     ];
 
     final client = http.Client();
@@ -562,24 +614,28 @@ class NetworkSpeedTestService {
             .timeout(const Duration(seconds: 4));
         sw.stop();
 
-        results.add(WebServiceStatus(
-          name: t['name']!,
-          url: t['url']!,
-          host: t['host']!,
-          isReachable: res.statusCode < 500,
-          latencyMs: sw.elapsedMilliseconds,
-          statusCode: res.statusCode,
-        ));
+        results.add(
+          WebServiceStatus(
+            name: t['name']!,
+            url: t['url']!,
+            host: t['host']!,
+            isReachable: res.statusCode < 500,
+            latencyMs: sw.elapsedMilliseconds,
+            statusCode: res.statusCode,
+          ),
+        );
       } catch (e) {
         sw.stop();
-        results.add(WebServiceStatus(
-          name: t['name']!,
-          url: t['url']!,
-          host: t['host']!,
-          isReachable: false,
-          latencyMs: sw.elapsedMilliseconds,
-          statusCode: 0,
-        ));
+        results.add(
+          WebServiceStatus(
+            name: t['name']!,
+            url: t['url']!,
+            host: t['host']!,
+            isReachable: false,
+            latencyMs: sw.elapsedMilliseconds,
+            statusCode: 0,
+          ),
+        );
       }
     }
 

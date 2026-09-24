@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:math' as math;
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/widgets.dart';
 
@@ -132,10 +131,14 @@ class FpsJankMonitorService {
 
     // 1. Calculate Instantaneous FPS based on frames in the last 1 second
     final oneSecAgo = now.subtract(const Duration(seconds: 1));
-    final framesInLastSec = _frameTimestamps.where((t) => t.isAfter(oneSecAgo)).length;
+    final framesInLastSec =
+        _frameTimestamps.where((t) => t.isAfter(oneSecAgo)).length;
 
     if (framesInLastSec > 0) {
-      _currentFps = framesInLastSec.toDouble().clamp(0.0, _targetRefreshRate + 5.0);
+      _currentFps = framesInLastSec.toDouble().clamp(
+        0.0,
+        _targetRefreshRate + 5.0,
+      );
     } else {
       // If no new frames were scheduled (idle screen), FPS is nominally at target rate
       _currentFps = _targetRefreshRate;
@@ -143,10 +146,13 @@ class FpsJankMonitorService {
 
     // 2. Compute Average FPS
     if (_totalRecordedFrames > 0 && _recentFrames.isNotEmpty) {
-      final recentJankRatio = _recentFrames.where((f) => f.isJank).length /
+      final recentJankRatio =
+          _recentFrames.where((f) => f.isJank).length /
           _recentFrames.length.toDouble();
-      _averageFps = (_targetRefreshRate * (1.0 - recentJankRatio * 0.5))
-          .clamp(15.0, _targetRefreshRate);
+      _averageFps = (_targetRefreshRate * (1.0 - recentJankRatio * 0.5)).clamp(
+        15.0,
+        _targetRefreshRate,
+      );
     } else {
       _averageFps = _targetRefreshRate;
     }

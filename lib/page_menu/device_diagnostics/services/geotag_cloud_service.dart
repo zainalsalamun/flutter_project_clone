@@ -322,7 +322,7 @@ class GeotagCloudService {
 
   /// Displays interactive Dialog for user to configure Cloud Name
   Future<String?> showCloudinaryConfigDialog(BuildContext context) async {
-    final currentCloudName = await getCloudName() ?? '';
+    final currentCloudName = await getCloudName();
     final controller = TextEditingController(text: currentCloudName);
 
     if (!context.mounted) return null;
