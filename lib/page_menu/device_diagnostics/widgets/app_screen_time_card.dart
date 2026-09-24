@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:intl/intl.dart';
 
 import '../models/app_screen_time_model.dart';
 import '../services/app_screen_time_service.dart';
@@ -107,9 +106,12 @@ class _AppScreenTimeCardState extends State<AppScreenTimeCard> {
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          backgroundColor: success ? const Color(0xFF10B981) : const Color(0xFFEF4444),
+          backgroundColor:
+              success ? const Color(0xFF10B981) : const Color(0xFFEF4444),
           behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
           content: Row(
             children: [
               Icon(
@@ -123,7 +125,10 @@ class _AppScreenTimeCardState extends State<AppScreenTimeCard> {
                   success
                       ? "Berhasil sinkronisasi $count sesi ke server API!"
                       : "Gagal sinkronisasi: ${result['message']}",
-                  style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 12.5),
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 12.5,
+                  ),
                 ),
               ),
             ],
@@ -135,7 +140,9 @@ class _AppScreenTimeCardState extends State<AppScreenTimeCard> {
   }
 
   void _showPayloadModal() async {
-    final payload = await _screenTimeService.buildServerPayload(onlyUnsynced: false);
+    final payload = await _screenTimeService.buildServerPayload(
+      onlyUnsynced: false,
+    );
     final jsonText = payload.toPrettyJson();
 
     if (!mounted) return;
@@ -167,7 +174,10 @@ class _AppScreenTimeCardState extends State<AppScreenTimeCard> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 8,
+                  ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -185,12 +195,18 @@ class _AppScreenTimeCardState extends State<AppScreenTimeCard> {
                           SizedBox(height: 2),
                           Text(
                             "Format data REST API siap kirim ke server backend",
-                            style: TextStyle(color: Color(0xFF94A3B8), fontSize: 11),
+                            style: TextStyle(
+                              color: Color(0xFF94A3B8),
+                              fontSize: 11,
+                            ),
                           ),
                         ],
                       ),
                       IconButton(
-                        icon: const Icon(Icons.close_rounded, color: Colors.white70),
+                        icon: const Icon(
+                          Icons.close_rounded,
+                          color: Colors.white70,
+                        ),
                         onPressed: () => Navigator.pop(ctx),
                       ),
                     ],
@@ -235,13 +251,18 @@ class _AppScreenTimeCardState extends State<AppScreenTimeCard> {
                             ),
                           ),
                           icon: const Icon(Icons.copy_rounded, size: 16),
-                          label: const Text("Salin JSON", style: TextStyle(fontWeight: FontWeight.bold)),
+                          label: const Text(
+                            "Salin JSON",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
                           onPressed: () {
                             Clipboard.setData(ClipboardData(text: jsonText));
                             Navigator.pop(ctx);
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
-                                content: Text("JSON Payload berhasil disalin ke clipboard!"),
+                                content: Text(
+                                  "JSON Payload berhasil disalin ke clipboard!",
+                                ),
                                 duration: Duration(seconds: 2),
                               ),
                             );
@@ -259,8 +280,14 @@ class _AppScreenTimeCardState extends State<AppScreenTimeCard> {
                               borderRadius: BorderRadius.circular(12),
                             ),
                           ),
-                          icon: const Icon(Icons.cloud_upload_rounded, size: 16),
-                          label: const Text("Sync Sekarang", style: TextStyle(fontWeight: FontWeight.bold)),
+                          icon: const Icon(
+                            Icons.cloud_upload_rounded,
+                            size: 16,
+                          ),
+                          label: const Text(
+                            "Sync Sekarang",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
                           onPressed: () {
                             Navigator.pop(ctx);
                             _handleSyncToServer();
@@ -359,11 +386,16 @@ class _AppScreenTimeCardState extends State<AppScreenTimeCard> {
                 const SizedBox(width: 8),
                 // Live Session Pill
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 4,
+                  ),
                   decoration: BoxDecoration(
                     color: const Color(0xFF10B981).withOpacity(0.12),
                     borderRadius: BorderRadius.circular(20),
-                    border: Border.all(color: const Color(0xFF10B981).withOpacity(0.3)),
+                    border: Border.all(
+                      color: const Color(0xFF10B981).withOpacity(0.3),
+                    ),
                   ),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
@@ -415,7 +447,10 @@ class _AppScreenTimeCardState extends State<AppScreenTimeCard> {
                       Expanded(
                         flex: 11,
                         child: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 10,
+                            vertical: 12,
+                          ),
                           decoration: BoxDecoration(
                             gradient: const LinearGradient(
                               colors: [Color(0xFF0F172A), Color(0xFF1E293B)],
@@ -428,7 +463,8 @@ class _AppScreenTimeCardState extends State<AppScreenTimeCard> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               const Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Expanded(
                                     child: Text(
@@ -444,7 +480,11 @@ class _AppScreenTimeCardState extends State<AppScreenTimeCard> {
                                     ),
                                   ),
                                   SizedBox(width: 4),
-                                  Icon(Icons.today_rounded, color: Color(0xFF38BDF8), size: 14),
+                                  Icon(
+                                    Icons.today_rounded,
+                                    color: Color(0xFF38BDF8),
+                                    size: 14,
+                                  ),
                                 ],
                               ),
                               const SizedBox(height: 8),
@@ -479,31 +519,38 @@ class _AppScreenTimeCardState extends State<AppScreenTimeCard> {
                       Expanded(
                         flex: 9,
                         child: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 10,
+                            vertical: 12,
+                          ),
                           decoration: BoxDecoration(
-                            color: _pendingSyncCount > 0
-                                ? const Color(0xFFFFFBEB)
-                                : const Color(0xFFF0FDF4),
+                            color:
+                                _pendingSyncCount > 0
+                                    ? const Color(0xFFFFFBEB)
+                                    : const Color(0xFFF0FDF4),
                             borderRadius: BorderRadius.circular(14),
                             border: Border.all(
-                              color: _pendingSyncCount > 0
-                                  ? const Color(0xFFFDE68A)
-                                  : const Color(0xFFBBF7D0),
+                              color:
+                                  _pendingSyncCount > 0
+                                      ? const Color(0xFFFDE68A)
+                                      : const Color(0xFFBBF7D0),
                             ),
                           ),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Expanded(
                                     child: Text(
                                       "SERVER",
                                       style: TextStyle(
-                                        color: _pendingSyncCount > 0
-                                            ? const Color(0xFFB45309)
-                                            : const Color(0xFF15803D),
+                                        color:
+                                            _pendingSyncCount > 0
+                                                ? const Color(0xFFB45309)
+                                                : const Color(0xFF15803D),
                                         fontSize: 9.5,
                                         fontWeight: FontWeight.bold,
                                       ),
@@ -516,9 +563,10 @@ class _AppScreenTimeCardState extends State<AppScreenTimeCard> {
                                     _pendingSyncCount > 0
                                         ? Icons.cloud_queue_rounded
                                         : Icons.cloud_done_rounded,
-                                    color: _pendingSyncCount > 0
-                                        ? const Color(0xFFD97706)
-                                        : const Color(0xFF16A34A),
+                                    color:
+                                        _pendingSyncCount > 0
+                                            ? const Color(0xFFD97706)
+                                            : const Color(0xFF16A34A),
                                     size: 14,
                                   ),
                                 ],
@@ -529,9 +577,10 @@ class _AppScreenTimeCardState extends State<AppScreenTimeCard> {
                                     ? "$_pendingSyncCount Sesi"
                                     : "Sinkron",
                                 style: TextStyle(
-                                  color: _pendingSyncCount > 0
-                                      ? const Color(0xFF92400E)
-                                      : const Color(0xFF166534),
+                                  color:
+                                      _pendingSyncCount > 0
+                                          ? const Color(0xFF92400E)
+                                          : const Color(0xFF166534),
                                   fontSize: 14,
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -540,11 +589,14 @@ class _AppScreenTimeCardState extends State<AppScreenTimeCard> {
                               ),
                               const SizedBox(height: 3),
                               Text(
-                                _pendingSyncCount > 0 ? "Antrean sync" : "Tersimpan",
+                                _pendingSyncCount > 0
+                                    ? "Antrean sync"
+                                    : "Tersimpan",
                                 style: TextStyle(
-                                  color: _pendingSyncCount > 0
-                                      ? const Color(0xFFB45309)
-                                      : const Color(0xFF15803D),
+                                  color:
+                                      _pendingSyncCount > 0
+                                          ? const Color(0xFFB45309)
+                                          : const Color(0xFF15803D),
                                   fontSize: 9.5,
                                 ),
                                 maxLines: 1,
@@ -606,7 +658,10 @@ class _AppScreenTimeCardState extends State<AppScreenTimeCard> {
                           icon: const Icon(Icons.code_rounded, size: 16),
                           label: const Text(
                             "Payload JSON",
-                            style: TextStyle(fontSize: 11.5, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                              fontSize: 11.5,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                           onPressed: _showPayloadModal,
                         ),
@@ -622,19 +677,26 @@ class _AppScreenTimeCardState extends State<AppScreenTimeCard> {
                               borderRadius: BorderRadius.circular(10),
                             ),
                           ),
-                          icon: _isSyncing
-                              ? const SizedBox(
-                                  width: 14,
-                                  height: 14,
-                                  child: CircularProgressIndicator(
-                                    strokeWidth: 2,
-                                    color: Colors.white,
+                          icon:
+                              _isSyncing
+                                  ? const SizedBox(
+                                    width: 14,
+                                    height: 14,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                      color: Colors.white,
+                                    ),
+                                  )
+                                  : const Icon(
+                                    Icons.cloud_upload_rounded,
+                                    size: 16,
                                   ),
-                                )
-                              : const Icon(Icons.cloud_upload_rounded, size: 16),
                           label: Text(
                             _isSyncing ? "Mengirim..." : "Kirim ke Server",
-                            style: const TextStyle(fontSize: 11.5, fontWeight: FontWeight.bold),
+                            style: const TextStyle(
+                              fontSize: 11.5,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                           onPressed: _isSyncing ? null : _handleSyncToServer,
                         ),
@@ -656,7 +718,9 @@ class _AppScreenTimeCardState extends State<AppScreenTimeCard> {
     }
 
     // Find maximum seconds for proportional scaling
-    int maxSec = _past7Days.map((d) => d.totalSeconds).fold(0, (a, b) => a > b ? a : b);
+    int maxSec = _past7Days
+        .map((d) => d.totalSeconds)
+        .fold(0, (a, b) => a > b ? a : b);
     if (maxSec <= 0) maxSec = 3600; // default 1 hour scale
 
     const weekdayLabels = ["Sen", "Sel", "Rab", "Kam", "Jum", "Sab", "Min"];
@@ -671,62 +735,78 @@ class _AppScreenTimeCardState extends State<AppScreenTimeCard> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         crossAxisAlignment: CrossAxisAlignment.end,
-        children: _past7Days.map((item) {
-          final isToday = item.date == _todaySummary.date;
-          final dt = DateTime.tryParse(item.date) ?? DateTime.now();
-          final dayLabel = weekdayLabels[(dt.weekday - 1) % 7];
+        children:
+            _past7Days.map((item) {
+              final isToday = item.date == _todaySummary.date;
+              final dt = DateTime.tryParse(item.date) ?? DateTime.now();
+              final dayLabel = weekdayLabels[(dt.weekday - 1) % 7];
 
-          final heightFraction = (item.totalSeconds / maxSec.toDouble()).clamp(0.08, 1.0);
-          final barHeight = heightFraction * 48.0;
+              final heightFraction = (item.totalSeconds / maxSec.toDouble())
+                  .clamp(0.08, 1.0);
+              final barHeight = heightFraction * 48.0;
 
-          return Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                item.formattedShortDuration,
-                style: TextStyle(
-                  fontSize: 8.5,
-                  fontWeight: isToday ? FontWeight.bold : FontWeight.normal,
-                  color: isToday ? const Color(0xFF0284C7) : const Color(0xFF94A3B8),
-                ),
-              ),
-              const SizedBox(height: 4),
-              Container(
-                width: 18,
-                height: barHeight,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: isToday
-                        ? [const Color(0xFF38BDF8), const Color(0xFF0284C7)]
-                        : [const Color(0xFFCBD5E1), const Color(0xFF94A3B8)],
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    item.formattedShortDuration,
+                    style: TextStyle(
+                      fontSize: 8.5,
+                      fontWeight: isToday ? FontWeight.bold : FontWeight.normal,
+                      color:
+                          isToday
+                              ? const Color(0xFF0284C7)
+                              : const Color(0xFF94A3B8),
+                    ),
                   ),
-                  borderRadius: BorderRadius.circular(4),
-                ),
-              ),
-              const SizedBox(height: 6),
-              Text(
-                dayLabel,
-                style: TextStyle(
-                  fontSize: 9.5,
-                  fontWeight: isToday ? FontWeight.bold : FontWeight.w600,
-                  color: isToday ? const Color(0xFF0284C7) : const Color(0xFF64748B),
-                ),
-              ),
-            ],
-          );
-        }).toList(),
+                  const SizedBox(height: 4),
+                  Container(
+                    width: 18,
+                    height: barHeight,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors:
+                            isToday
+                                ? [
+                                  const Color(0xFF38BDF8),
+                                  const Color(0xFF0284C7),
+                                ]
+                                : [
+                                  const Color(0xFFCBD5E1),
+                                  const Color(0xFF94A3B8),
+                                ],
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                      ),
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                  ),
+                  const SizedBox(height: 6),
+                  Text(
+                    dayLabel,
+                    style: TextStyle(
+                      fontSize: 9.5,
+                      fontWeight: isToday ? FontWeight.bold : FontWeight.w600,
+                      color:
+                          isToday
+                              ? const Color(0xFF0284C7)
+                              : const Color(0xFF64748B),
+                    ),
+                  ),
+                ],
+              );
+            }).toList(),
       ),
     );
   }
 
   List<Widget> _buildPageBreakdownWidgets() {
-    final totalSec = _todaySummary.totalSeconds > 0 ? _todaySummary.totalSeconds : 1;
+    final totalSec =
+        _todaySummary.totalSeconds > 0 ? _todaySummary.totalSeconds : 1;
     final pages = _todaySummary.aggregatedPages;
 
-    final sortedEntries = pages.entries.toList()
-      ..sort((a, b) => b.value.compareTo(a.value));
+    final sortedEntries =
+        pages.entries.toList()..sort((a, b) => b.value.compareTo(a.value));
 
     return sortedEntries.map((e) {
       final percentage = (e.value / totalSec.toDouble()).clamp(0.0, 1.0);
@@ -779,7 +859,9 @@ class _AppScreenTimeCardState extends State<AppScreenTimeCard> {
               child: LinearProgressIndicator(
                 value: percentage,
                 backgroundColor: const Color(0xFFF1F5F9),
-                valueColor: const AlwaysStoppedAnimation<Color>(Color(0xFF38BDF8)),
+                valueColor: const AlwaysStoppedAnimation<Color>(
+                  Color(0xFF38BDF8),
+                ),
                 minHeight: 5,
               ),
             ),
