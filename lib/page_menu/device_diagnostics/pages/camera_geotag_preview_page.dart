@@ -241,7 +241,7 @@ class _CameraGeotagPreviewPageState extends State<CameraGeotagPreviewPage> {
 
     // Check if Cloudinary Cloud Name is configured
     final existingCloud = await GeotagCloudService.instance.getCloudName();
-    if (existingCloud == null || existingCloud.isEmpty) {
+    if (existingCloud.isEmpty) {
       if (mounted) {
         await GeotagCloudService.instance.showCloudinaryConfigDialog(context);
       }
