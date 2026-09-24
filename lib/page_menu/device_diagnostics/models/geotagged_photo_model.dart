@@ -44,12 +44,21 @@ class GeotaggedPhotoModel {
 
   /// Formatted date and time matching the watermark design: e.g. 'Mon, 21 Sep 2026 13:37'
   String get formattedDateTime {
-    return DateFormat('E, d MMM yyyy HH:mm', 'en_US').format(timestamp);
+    try {
+      return DateFormat('E, d MMM yyyy HH:mm').format(timestamp);
+    } catch (_) {
+      return "${timestamp.year}-${timestamp.month.toString().padLeft(2, '0')}-${timestamp.day.toString().padLeft(2, '0')} ${timestamp.hour.toString().padLeft(2, '0')}:${timestamp.minute.toString().padLeft(2, '0')}";
+    }
   }
 
   /// Formatted Indonesian Date & Time alternative
   String get formattedDateTimeId {
-    return DateFormat('EEEE, d MMM yyyy HH:mm', 'id_ID').format(timestamp);
+    const days = ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Minggu"];
+    const months = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Ags", "Sep", "Okt", "Nov", "Des"];
+    final dayName = days[(timestamp.weekday - 1) % 7];
+    final monthName = months[(timestamp.month - 1) % 12];
+    final timeStr = "${timestamp.hour.toString().padLeft(2, '0')}:${timestamp.minute.toString().padLeft(2, '0')}";
+    return "$dayName, ${timestamp.day} $monthName ${timestamp.year} $timeStr";
   }
 
   /// Formatted coordinates matching watermark design: 'Latitude: -6.2267871, Longitude: 106.7968818'
