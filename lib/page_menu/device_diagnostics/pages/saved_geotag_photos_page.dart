@@ -5,6 +5,7 @@ import '../models/geotagged_photo_model.dart';
 import '../services/geotag_sqlite_service.dart';
 import '../services/geotag_cloud_service.dart';
 import '../services/biometric_auth_service.dart';
+import '../services/app_screen_time_service.dart';
 import 'camera_geotag_preview_page.dart';
 import 'interactive_geotag_map_page.dart';
 
@@ -35,7 +36,14 @@ class _SavedGeotagPhotosPageState extends State<SavedGeotagPhotosPage> {
   @override
   void initState() {
     super.initState();
+    AppScreenTimeService.instance.setCurrentPage("SavedGeotagPhotosPage");
     _checkBiometricsAndLoad();
+  }
+
+  @override
+  void dispose() {
+    AppScreenTimeService.instance.setCurrentPage("DeviceDiagnosticsPage");
+    super.dispose();
   }
 
   Future<void> _checkBiometricsAndLoad() async {

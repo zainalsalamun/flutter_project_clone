@@ -3,6 +3,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import '../services/network_speed_test_service.dart';
 import '../services/network_connectivity_service.dart';
+import '../services/app_screen_time_service.dart';
 
 class NetworkSpeedDiagnosticsPage extends StatefulWidget {
   const NetworkSpeedDiagnosticsPage({super.key});
@@ -51,6 +52,7 @@ class _NetworkSpeedDiagnosticsPageState
   @override
   void initState() {
     super.initState();
+    AppScreenTimeService.instance.setCurrentPage("NetworkSpeedDiagnosticsPage");
     _tabController = TabController(length: 4, vsync: this);
     _loadInitialData();
 
@@ -62,6 +64,7 @@ class _NetworkSpeedDiagnosticsPageState
 
   @override
   void dispose() {
+    AppScreenTimeService.instance.setCurrentPage("DeviceDiagnosticsPage");
     _tabController.dispose();
     _trafficRefreshTimer?.cancel();
     super.dispose();

@@ -9,6 +9,7 @@ import '../services/geotag_sqlite_service.dart';
 import '../services/geotagging_camera_service.dart';
 import '../services/geotag_cloud_service.dart';
 import '../services/biometric_auth_service.dart';
+import '../services/app_screen_time_service.dart';
 import 'interactive_geotag_map_page.dart';
 import 'saved_geotag_photos_page.dart';
 
@@ -46,10 +47,17 @@ class _CameraGeotagPreviewPageState extends State<CameraGeotagPreviewPage> {
   @override
   void initState() {
     super.initState();
+    AppScreenTimeService.instance.setCurrentPage("CameraGeotagPreviewPage");
     _currentPhoto = widget.initialPhoto;
     if (_currentPhoto == null) {
       _triggerCapture(ImageSource.camera);
     }
+  }
+
+  @override
+  void dispose() {
+    AppScreenTimeService.instance.setCurrentPage("DeviceDiagnosticsPage");
+    super.dispose();
   }
 
   Future<void> _triggerCapture(ImageSource source) async {
