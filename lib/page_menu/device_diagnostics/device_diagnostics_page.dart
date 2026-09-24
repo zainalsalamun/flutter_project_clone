@@ -13,9 +13,14 @@ import 'widgets/geotagging_and_gps_card.dart';
 import 'widgets/live_debug_log_console.dart';
 import 'widgets/metrics_overview_card.dart';
 import 'widgets/network_status_card.dart';
+import 'widgets/api_network_profiler_card.dart';
 import 'widgets/schema_mapping_view.dart';
 import 'widgets/sensors_catalog_card.dart';
 import 'widgets/system_specs_card.dart';
+import 'widgets/app_screen_time_card.dart';
+import 'widgets/app_storage_cleaner_card.dart';
+import 'widgets/fps_jank_monitor_card.dart';
+import 'services/app_screen_time_service.dart';
 import 'services/diagnostics_report_service.dart';
 import 'pages/network_speed_diagnostics_page.dart';
 
@@ -44,6 +49,8 @@ class _DeviceDiagnosticsViewState extends State<_DeviceDiagnosticsView>
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+    AppScreenTimeService.instance.initialize();
+    AppScreenTimeService.instance.setCurrentPage("DeviceDiagnosticsPage");
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _checkGpsAndPermissionsOnStartup();
     });
@@ -348,7 +355,11 @@ class _DeviceDiagnosticsViewState extends State<_DeviceDiagnosticsView>
                 ),
                 const SizedBox(height: 16),
 
-                // 5. GPS SATELLITE, LIVE COMPASS & GEOTAGGING CONDITION EVALUATION
+                // 5. API LATENCY, PAYLOAD & BANDWIDTH PROFILER
+                const ApiNetworkProfilerCard(),
+                const SizedBox(height: 16),
+
+                // 6. GPS SATELLITE, LIVE COMPASS & GEOTAGGING CONDITION EVALUATION
                 GeotaggingAndGpsCard(
                   locationCarrier: state.locationCarrier,
                   compassHeading: state.compassHeading,
@@ -380,7 +391,19 @@ class _DeviceDiagnosticsViewState extends State<_DeviceDiagnosticsView>
                 DisplaySpecsCard(displaySpecs: state.displaySpecs),
                 const SizedBox(height: 16),
 
-                // 7. HARDWARE SENSORS CHECKLIST
+                // 8. REAL-TIME FPS & UI RENDERING PROFILER
+                const FpsJankMonitorCard(),
+                const SizedBox(height: 16),
+
+                // 9. APP SCREEN TIME & SESSION ANALYTICS (Server Sync Engine)
+                const AppScreenTimeCard(),
+                const SizedBox(height: 16),
+
+                // 10. APP STORAGE & CACHE OPTIMIZER (1-Click Deep Junk Cleaner)
+                const AppStorageCleanerCard(),
+                const SizedBox(height: 16),
+
+                // 11. HARDWARE SENSORS CHECKLIST
                 SensorsCatalogCard(sensorsCatalog: state.sensorsCatalog),
                 const SizedBox(height: 16),
 
