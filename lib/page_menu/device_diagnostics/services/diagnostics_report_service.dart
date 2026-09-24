@@ -10,6 +10,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../bloc/diagnostics_bloc_state.dart';
 import '../models/device_diagnostics_event.dart';
 import 'diagnostics_logger_service.dart';
+import 'app_screen_time_service.dart';
 
 class DiagnosticsReportService {
   static final DiagnosticsReportService instance =
@@ -26,6 +27,8 @@ class DiagnosticsReportService {
     final nowFormatted =
         DateFormat('dd MMM yyyy, HH:mm:ss').format(event.timestamp.toLocal());
     final logs = DiagnosticsLoggerService.instance.logs.take(15).toList();
+    final screenTime = await AppScreenTimeService.instance.getTodaySummary();
+    final pendingSync = await AppScreenTimeService.instance.getPendingSyncCount();
 
     pdf.addPage(
       pw.MultiPage(
@@ -250,8 +253,33 @@ class DiagnosticsReportService {
           ),
           pw.SizedBox(height: 14),
 
-          // 5. Live Debug Audit Trail Logs
-          _buildPdfSectionTitle("5. AUDIT TRAIL & LOG DEBUG SISTEM TERAKHIR"),
+          // 5. App Screen Time & Telemetry
+          _buildPdfSectionTitle("5. APP SCREEN TIME & USAGE ANALYTICS (TELEMETRI SERVER)"),
+          pw.SizedBox(height: 6),
+          pw.Table(
+            border: pw.TableBorder.all(
+              color: PdfColors.grey300,
+              width: 0.5,
+            ),
+            children: [
+              _buildTableRow(
+                  "Screen Time Hari Ini",
+                  screenTime.formattedTotalDuration,
+                  "Total Sesi Hari Ini",
+                  "${screenTime.sessionCount} Sesi Tercatat"),
+              _buildTableRow(
+                  "Status Server Sync",
+                  pendingSync > 0
+                      ? "$pendingSync Sesi Menunggu Sync"
+                      : "Semua Sesi Terkirim ke Server (Tersinkron)",
+                  "Durasi Sesi Sekarang",
+                  "${AppScreenTimeService.instance.currentSessionSeconds ~/ 60}m ${AppScreenTimeService.instance.currentSessionSeconds % 60}s"),
+            ],
+          ),
+          pw.SizedBox(height: 14),
+
+          // 6. Live Debug Audit Trail Logs
+          _buildPdfSectionTitle("6. AUDIT TRAIL & LOG DEBUG SISTEM TERAKHIR"),
           pw.SizedBox(height: 6),
           if (logs.isEmpty)
             pw.Text("Tidak ada log tersimpan.",
