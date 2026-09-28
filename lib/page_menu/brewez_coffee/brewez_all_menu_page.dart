@@ -185,12 +185,14 @@ class _BrewezAllMenuPageState extends State<BrewezAllMenuPage> {
       coffee: coffee,
       onAddToCart: (customizedItem) {
         setState(() {
-          final existingIndex = widget.cartItems.indexWhere((item) =>
-              item['name'] == customizedItem['name'] &&
-              item['size'] == customizedItem['size'] &&
-              item['isHot'] == customizedItem['isHot'] &&
-              item['sweetness'] == customizedItem['sweetness'] &&
-              item['price'] == customizedItem['price']);
+          final existingIndex = widget.cartItems.indexWhere(
+            (item) =>
+                item['name'] == customizedItem['name'] &&
+                item['size'] == customizedItem['size'] &&
+                item['isHot'] == customizedItem['isHot'] &&
+                item['sweetness'] == customizedItem['sweetness'] &&
+                item['price'] == customizedItem['price'],
+          );
 
           if (existingIndex >= 0) {
             widget.cartItems[existingIndex]['quantity'] =
@@ -219,8 +221,9 @@ class _BrewezAllMenuPageState extends State<BrewezAllMenuPage> {
             backgroundColor: BrewezTheme.primary,
             behavior: SnackBarBehavior.floating,
             duration: const Duration(milliseconds: 1400),
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
           ),
         );
       },
@@ -250,20 +253,21 @@ class _BrewezAllMenuPageState extends State<BrewezAllMenuPage> {
       onCheckout: () {
         if (widget.cartItems.isEmpty) return;
 
-        final orderItems = widget.cartItems.map((item) {
-          final addons = item['selectedAddons'] as Set<AddonType>? ?? {};
-          return CoffeeOrderItem(
-            name: item['name'] as String,
-            subtitle: item['subtitle'] as String?,
-            image: item['image'] as String?,
-            size: item['size'] as String? ?? 'M',
-            isHot: item['isHot'] as bool? ?? true,
-            sweetness: item['sweetness'] as int? ?? 70,
-            selectedAddons: Set<AddonType>.from(addons),
-            unitPrice: (item['price'] as num).toDouble(),
-            quantity: item['quantity'] as int? ?? 1,
-          );
-        }).toList();
+        final orderItems =
+            widget.cartItems.map((item) {
+              final addons = item['selectedAddons'] as Set<AddonType>? ?? {};
+              return CoffeeOrderItem(
+                name: item['name'] as String,
+                subtitle: item['subtitle'] as String?,
+                image: item['image'] as String?,
+                size: item['size'] as String? ?? 'M',
+                isHot: item['isHot'] as bool? ?? true,
+                sweetness: item['sweetness'] as int? ?? 70,
+                selectedAddons: Set<AddonType>.from(addons),
+                unitPrice: (item['price'] as num).toDouble(),
+                quantity: item['quantity'] as int? ?? 1,
+              );
+            }).toList();
 
         PaymentModalSheet.show(
           context,
@@ -276,6 +280,7 @@ class _BrewezAllMenuPageState extends State<BrewezAllMenuPage> {
                 setState(() {
                   widget.cartItems.clear();
                 });
+                Navigator.pop(context);
               },
             );
           },
@@ -285,34 +290,42 @@ class _BrewezAllMenuPageState extends State<BrewezAllMenuPage> {
   }
 
   List<Map<String, dynamic>> get _filteredCoffees {
-    var list = _allCoffees.where((c) {
-      // 1. Category Filter
-      final matchesCategory = _selectedCategoryKey == 'all_coffee' ||
-          c['category'] ==
-              _categories.firstWhere(
-                  (cat) => cat['key'] == _selectedCategoryKey)['category'];
+    var list =
+        _allCoffees.where((c) {
+          // 1. Category Filter
+          final matchesCategory =
+              _selectedCategoryKey == 'all_coffee' ||
+              c['category'] ==
+                  _categories.firstWhere(
+                    (cat) => cat['key'] == _selectedCategoryKey,
+                  )['category'];
 
-      // 2. Search Query Filter
-      final q = _searchQuery.toLowerCase();
-      final name = (c['name'] as String).toLowerCase();
-      final sub = (c['subtitle'] as String).toLowerCase();
-      final cat = (c['category'] as String).toLowerCase();
-      final matchesSearch = _searchQuery.isEmpty ||
-          name.contains(q) ||
-          sub.contains(q) ||
-          cat.contains(q);
+          // 2. Search Query Filter
+          final q = _searchQuery.toLowerCase();
+          final name = (c['name'] as String).toLowerCase();
+          final sub = (c['subtitle'] as String).toLowerCase();
+          final cat = (c['category'] as String).toLowerCase();
+          final matchesSearch =
+              _searchQuery.isEmpty ||
+              name.contains(q) ||
+              sub.contains(q) ||
+              cat.contains(q);
 
-      // 3. Price Range Filter
-      final price = (c['price'] as num).toDouble();
-      final matchesPrice = price >= _filterOptions.priceRange.start &&
-          price <= _filterOptions.priceRange.end;
+          // 3. Price Range Filter
+          final price = (c['price'] as num).toDouble();
+          final matchesPrice =
+              price >= _filterOptions.priceRange.start &&
+              price <= _filterOptions.priceRange.end;
 
-      // 4. Minimum Rating Filter
-      final rating = (c['rating'] as num).toDouble();
-      final matchesRating = rating >= _filterOptions.minRating;
+          // 4. Minimum Rating Filter
+          final rating = (c['rating'] as num).toDouble();
+          final matchesRating = rating >= _filterOptions.minRating;
 
-      return matchesCategory && matchesSearch && matchesPrice && matchesRating;
-    }).toList();
+          return matchesCategory &&
+              matchesSearch &&
+              matchesPrice &&
+              matchesRating;
+        }).toList();
 
     // 5. Sorting
     switch (_filterOptions.sortBy) {
@@ -324,12 +337,12 @@ class _BrewezAllMenuPageState extends State<BrewezAllMenuPage> {
         break;
       case 'name':
         list.sort(
-            (a, b) => (a['name'] as String).compareTo(b['name'] as String));
+          (a, b) => (a['name'] as String).compareTo(b['name'] as String),
+        );
         break;
       case 'popular':
       default:
-        list.sort(
-            (a, b) => (b['rating'] as num).compareTo(a['rating'] as num));
+        list.sort((a, b) => (b['rating'] as num).compareTo(a['rating'] as num));
         break;
     }
 
@@ -350,8 +363,10 @@ class _BrewezAllMenuPageState extends State<BrewezAllMenuPage> {
             children: [
               // Search Bar & Filter Controls
               Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 12,
+                ),
                 child: _buildSearchBar(),
               ),
 
@@ -383,9 +398,10 @@ class _BrewezAllMenuPageState extends State<BrewezAllMenuPage> {
                           },
                           icon: Icon(
                             Icons.grid_view_rounded,
-                            color: _isGridView
-                                ? BrewezTheme.primary
-                                : Colors.grey.shade400,
+                            color:
+                                _isGridView
+                                    ? BrewezTheme.primary
+                                    : Colors.grey.shade400,
                             size: 20,
                           ),
                           tooltip: BrewezLocalization.tr('view_grid'),
@@ -398,9 +414,10 @@ class _BrewezAllMenuPageState extends State<BrewezAllMenuPage> {
                           },
                           icon: Icon(
                             Icons.view_agenda_rounded,
-                            color: !_isGridView
-                                ? BrewezTheme.primary
-                                : Colors.grey.shade400,
+                            color:
+                                !_isGridView
+                                    ? BrewezTheme.primary
+                                    : Colors.grey.shade400,
                             size: 20,
                           ),
                           tooltip: BrewezLocalization.tr('view_list'),
@@ -413,9 +430,10 @@ class _BrewezAllMenuPageState extends State<BrewezAllMenuPage> {
 
               // Menu List / Grid View
               Expanded(
-                child: filtered.isEmpty
-                    ? _buildEmptyState()
-                    : _isGridView
+                child:
+                    filtered.isEmpty
+                        ? _buildEmptyState()
+                        : _isGridView
                         ? _buildGridView(filtered)
                         : _buildListView(filtered),
               ),
@@ -549,16 +567,10 @@ class _BrewezAllMenuPageState extends State<BrewezAllMenuPage> {
             _searchQuery = val.trim();
           });
         },
-        style: const TextStyle(
-          color: BrewezTheme.textDark,
-          fontSize: 14,
-        ),
+        style: const TextStyle(color: BrewezTheme.textDark, fontSize: 14),
         decoration: InputDecoration(
           hintText: BrewezLocalization.tr('search_hint'),
-          hintStyle: TextStyle(
-            color: Colors.grey.shade400,
-            fontSize: 14,
-          ),
+          hintStyle: TextStyle(color: Colors.grey.shade400, fontSize: 14),
           prefixIcon: const Icon(
             Icons.search_rounded,
             color: BrewezTheme.primary,
@@ -587,9 +599,10 @@ class _BrewezAllMenuPageState extends State<BrewezAllMenuPage> {
                   IconButton(
                     icon: Icon(
                       Icons.tune_rounded,
-                      color: activeCount > 0
-                          ? BrewezTheme.primary
-                          : Colors.grey.shade600,
+                      color:
+                          activeCount > 0
+                              ? BrewezTheme.primary
+                              : Colors.grey.shade600,
                       size: 22,
                     ),
                     onPressed: _openFilterModal,
@@ -619,8 +632,10 @@ class _BrewezAllMenuPageState extends State<BrewezAllMenuPage> {
             ],
           ),
           border: InputBorder.none,
-          contentPadding:
-              const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 16,
+            vertical: 14,
+          ),
         ),
       ),
     );
@@ -654,15 +669,16 @@ class _BrewezAllMenuPageState extends State<BrewezAllMenuPage> {
                   color:
                       isSelected ? BrewezTheme.primary : Colors.grey.shade300,
                 ),
-                boxShadow: isSelected
-                    ? [
-                        BoxShadow(
-                          color: BrewezTheme.primary.withOpacity(0.25),
-                          blurRadius: 6,
-                          offset: const Offset(0, 2),
-                        ),
-                      ]
-                    : null,
+                boxShadow:
+                    isSelected
+                        ? [
+                          BoxShadow(
+                            color: BrewezTheme.primary.withOpacity(0.25),
+                            blurRadius: 6,
+                            offset: const Offset(0, 2),
+                          ),
+                        ]
+                        : null,
               ),
               child: Text(
                 BrewezLocalization.tr(cat['key']!),
@@ -730,8 +746,9 @@ class _BrewezAllMenuPageState extends State<BrewezAllMenuPage> {
                   Container(
                     width: double.infinity,
                     decoration: BoxDecoration(
-                      borderRadius:
-                          const BorderRadius.vertical(top: Radius.circular(20)),
+                      borderRadius: const BorderRadius.vertical(
+                        top: Radius.circular(20),
+                      ),
                       image: DecorationImage(
                         image: NetworkImage(coffee['image']),
                         fit: BoxFit.cover,
@@ -743,7 +760,9 @@ class _BrewezAllMenuPageState extends State<BrewezAllMenuPage> {
                     left: 8,
                     child: Container(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 8, vertical: 4),
+                        horizontal: 8,
+                        vertical: 4,
+                      ),
                       decoration: BoxDecoration(
                         color: Colors.black.withOpacity(0.65),
                         borderRadius: BorderRadius.circular(10),
@@ -927,7 +946,9 @@ class _BrewezAllMenuPageState extends State<BrewezAllMenuPage> {
                           const SizedBox(width: 10),
                           Container(
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 6, vertical: 2),
+                              horizontal: 6,
+                              vertical: 2,
+                            ),
                             decoration: BoxDecoration(
                               color: Colors.grey.shade100,
                               borderRadius: BorderRadius.circular(6),
@@ -964,7 +985,9 @@ class _BrewezAllMenuPageState extends State<BrewezAllMenuPage> {
                         backgroundColor: BrewezTheme.primary,
                         foregroundColor: Colors.white,
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 4),
+                          horizontal: 10,
+                          vertical: 4,
+                        ),
                         minimumSize: Size.zero,
                         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                         shape: RoundedRectangleBorder(
@@ -980,7 +1003,9 @@ class _BrewezAllMenuPageState extends State<BrewezAllMenuPage> {
                           Text(
                             '+',
                             style: TextStyle(
-                                fontSize: 11, fontWeight: FontWeight.bold),
+                              fontSize: 11,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ],
                       ),
@@ -1028,10 +1053,7 @@ class _BrewezAllMenuPageState extends State<BrewezAllMenuPage> {
             Text(
               BrewezLocalization.tr('search_no_results_sub'),
               textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 11,
-                color: Colors.grey.shade500,
-              ),
+              style: TextStyle(fontSize: 11, color: Colors.grey.shade500),
             ),
             const SizedBox(height: 14),
             ElevatedButton(
@@ -1049,8 +1071,10 @@ class _BrewezAllMenuPageState extends State<BrewezAllMenuPage> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 8,
+                ),
                 elevation: 0,
               ),
               child: Text(
@@ -1070,10 +1094,11 @@ class _BrewezAllMenuPageState extends State<BrewezAllMenuPage> {
   Widget? _buildBottomCartBar() {
     if (widget.cartItems.isEmpty) return null;
 
-    final subtotal = widget.cartItems.fold<int>(
+    final subtotal = widget.cartItems.fold<num>(
       0,
       (sum, item) =>
-          sum + ((item['price'] as int) * (item['quantity'] as int? ?? 1)),
+          sum +
+          (((item['price'] as num?) ?? 0) * (item['quantity'] as int? ?? 1)),
     );
 
     return Container(
@@ -1098,10 +1123,7 @@ class _BrewezAllMenuPageState extends State<BrewezAllMenuPage> {
               children: [
                 Text(
                   "$_totalCartCount ${BrewezLocalization.tr('items_count')}",
-                  style: TextStyle(
-                    fontSize: 11,
-                    color: Colors.grey.shade600,
-                  ),
+                  style: TextStyle(fontSize: 11, color: Colors.grey.shade600),
                 ),
                 Text(
                   BrewezCurrency.format(subtotal),
@@ -1121,8 +1143,10 @@ class _BrewezAllMenuPageState extends State<BrewezAllMenuPage> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(14),
                 ),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 10,
+                ),
               ),
               child: Row(
                 children: [
