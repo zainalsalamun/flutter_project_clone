@@ -58,7 +58,10 @@ class FpsPerformanceSnapshot {
   /// Percentage of frames that were dropped/janky (0.0 to 100.0%)
   double get jankPercentage {
     if (totalFramesRecorded <= 0) return 0.0;
-    return (jankFramesCount / totalFramesRecorded.toDouble() * 100.0).clamp(0.0, 100.0);
+    return (jankFramesCount / totalFramesRecorded.toDouble() * 100.0).clamp(
+      0.0,
+      100.0,
+    );
   }
 
   /// UI Smoothness score from 0.0% to 100.0%
@@ -95,5 +98,6 @@ class FpsPerformanceSnapshot {
 
   String get formattedCurrentFps => currentFps.toStringAsFixed(1);
   String get formattedAverageFps => averageFps.toStringAsFixed(1);
-  String get formattedMaxFrameTime => "${maxFrameDurationMs.toStringAsFixed(1)} ms";
+  String get formattedMaxFrameTime =>
+      "${maxFrameDurationMs.toStringAsFixed(1)} ms";
 }

@@ -33,8 +33,7 @@ class AppStorageMetrics {
   int get totalAppStorageBytes =>
       tempCacheBytes + documentsBytes + sqliteDatabaseBytes;
 
-  int get cleanableBytes =>
-      tempCacheBytes + ramImageCacheBytes;
+  int get cleanableBytes => tempCacheBytes + ramImageCacheBytes;
 
   String get formattedTempCache => _formatBytes(tempCacheBytes);
   String get formattedDocuments => _formatBytes(documentsBytes);

@@ -77,7 +77,9 @@ class LocationAndCarrierData {
     if (isLocationMock) {
       return GeotaggingCondition.mockLocation;
     }
-    if ((latitude == 0.0 && longitude == 0.0) || accuracyMeters <= 0 || accuracyMeters > 35.0) {
+    if ((latitude == 0.0 && longitude == 0.0) ||
+        accuracyMeters <= 0 ||
+        accuracyMeters > 35.0) {
       return GeotaggingCondition.weakSignal;
     }
     return GeotaggingCondition.optimal;
@@ -141,14 +143,11 @@ class LocationAndCarrierData {
   String get simCarrierName => carrierName;
   String get fullAddress => formattedCoordinates;
 
-  String get formattedAltitude =>
-      "${altitudeMeters.toStringAsFixed(1)} m dpl";
+  String get formattedAltitude => "${altitudeMeters.toStringAsFixed(1)} m dpl";
 
-  String get formattedAccuracy =>
-      "± ${accuracyMeters.toStringAsFixed(1)} m";
+  String get formattedAccuracy => "± ${accuracyMeters.toStringAsFixed(1)} m";
 
-  String get formattedSpeed =>
-      "${speedKmh.toStringAsFixed(1)} km/h";
+  String get formattedSpeed => "${speedKmh.toStringAsFixed(1)} km/h";
 
   String get cardinalDirection {
     final deg = (bearingDegrees % 360 + 360) % 360;

@@ -9,7 +9,8 @@ class AppScreenTimeSession {
   final DateTime sessionStartTime;
   final DateTime sessionEndTime;
   final int durationSeconds;
-  final Map<String, int> pageBreakdown; // e.g. {"DeviceDiagnostics": 120, "CameraGeotag": 300}
+  final Map<String, int>
+  pageBreakdown; // e.g. {"DeviceDiagnostics": 120, "CameraGeotag": 300}
   final int batteryConsumed; // % battery dropped during session
   final bool isSynced;
   final DateTime? syncedAt;
@@ -66,11 +67,14 @@ class AppScreenTimeSession {
 
   factory AppScreenTimeSession.fromMap(Map<dynamic, dynamic> map) {
     Map<String, int> pages = {};
-    if (map['pageBreakdownJson'] != null && map['pageBreakdownJson'].toString().isNotEmpty) {
+    if (map['pageBreakdownJson'] != null &&
+        map['pageBreakdownJson'].toString().isNotEmpty) {
       try {
         final decoded = jsonDecode(map['pageBreakdownJson'].toString());
         if (decoded is Map) {
-          pages = decoded.map((k, v) => MapEntry(k.toString(), (v as num).toInt()));
+          pages = decoded.map(
+            (k, v) => MapEntry(k.toString(), (v as num).toInt()),
+          );
         }
       } catch (_) {}
     }
@@ -83,15 +87,26 @@ class AppScreenTimeSession {
     return AppScreenTimeSession(
       id: (map['id'] as num?)?.toInt(),
       sessionId: map['sessionId']?.toString() ?? '',
-      date: map['date']?.toString() ?? DateFormat('yyyy-MM-dd').format(DateTime.now()),
-      sessionStartTime: DateTime.fromMillisecondsSinceEpoch(startMs > 0 ? startMs : DateTime.now().millisecondsSinceEpoch),
-      sessionEndTime: DateTime.fromMillisecondsSinceEpoch(endMs > 0 ? endMs : DateTime.now().millisecondsSinceEpoch),
+      date:
+          map['date']?.toString() ??
+          DateFormat('yyyy-MM-dd').format(DateTime.now()),
+      sessionStartTime: DateTime.fromMillisecondsSinceEpoch(
+        startMs > 0 ? startMs : DateTime.now().millisecondsSinceEpoch,
+      ),
+      sessionEndTime: DateTime.fromMillisecondsSinceEpoch(
+        endMs > 0 ? endMs : DateTime.now().millisecondsSinceEpoch,
+      ),
       durationSeconds: (map['durationSeconds'] as num?)?.toInt() ?? 0,
       pageBreakdown: pages,
       batteryConsumed: (map['batteryConsumed'] as num?)?.toInt() ?? 0,
       isSynced: map['isSynced'] == 1 || map['isSynced'] == true,
-      syncedAt: syncedAtMs > 0 ? DateTime.fromMillisecondsSinceEpoch(syncedAtMs) : null,
-      createdAt: DateTime.fromMillisecondsSinceEpoch(createdMs > 0 ? createdMs : DateTime.now().millisecondsSinceEpoch),
+      syncedAt:
+          syncedAtMs > 0
+              ? DateTime.fromMillisecondsSinceEpoch(syncedAtMs)
+              : null,
+      createdAt: DateTime.fromMillisecondsSinceEpoch(
+        createdMs > 0 ? createdMs : DateTime.now().millisecondsSinceEpoch,
+      ),
     );
   }
 
@@ -144,11 +159,11 @@ class DailyScreenTimeSummary {
     final seconds = totalSeconds % 60;
 
     if (hours > 0) {
-      return "${hours} Jam ${minutes.toString().padLeft(2, '0')} Menit";
+      return "$hours Jam ${minutes.toString().padLeft(2, '0')} Menit";
     } else if (minutes > 0) {
-      return "${minutes} Menit ${seconds.toString().padLeft(2, '0')} Detik";
+      return "$minutes Menit ${seconds.toString().padLeft(2, '0')} Detik";
     } else {
-      return "${seconds} Detik";
+      return "$seconds Detik";
     }
   }
 
@@ -206,18 +221,20 @@ class ScreenTimeSyncPayload {
         'total_duration_seconds': totalTrackedSeconds,
         'formatted_total_duration': _formatSeconds(totalTrackedSeconds),
       },
-      'sessions': sessions.map((s) {
-        return {
-          'session_id': s.sessionId,
-          'date': s.date,
-          'session_start_time': s.sessionStartTime.toUtc().toIso8601String(),
-          'session_end_time': s.sessionEndTime.toUtc().toIso8601String(),
-          'duration_seconds': s.durationSeconds,
-          'formatted_duration': s.formattedDuration,
-          'page_breakdown': s.pageBreakdown,
-          'battery_consumed_percent': s.batteryConsumed,
-        };
-      }).toList(),
+      'sessions':
+          sessions.map((s) {
+            return {
+              'session_id': s.sessionId,
+              'date': s.date,
+              'session_start_time':
+                  s.sessionStartTime.toUtc().toIso8601String(),
+              'session_end_time': s.sessionEndTime.toUtc().toIso8601String(),
+              'duration_seconds': s.durationSeconds,
+              'formatted_duration': s.formattedDuration,
+              'page_breakdown': s.pageBreakdown,
+              'battery_consumed_percent': s.batteryConsumed,
+            };
+          }).toList(),
     };
   }
 

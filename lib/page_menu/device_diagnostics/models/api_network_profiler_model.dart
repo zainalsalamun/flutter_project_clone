@@ -69,7 +69,8 @@ class SessionBandwidthSummary {
 
   String get formattedTotalRx => _formatBytes(totalRxBytes);
   String get formattedTotalTx => _formatBytes(totalTxBytes);
-  String get formattedTotalBandwidth => _formatBytes(totalRxBytes + totalTxBytes);
+  String get formattedTotalBandwidth =>
+      _formatBytes(totalRxBytes + totalTxBytes);
 
   static String _formatBytes(int bytes) {
     if (bytes <= 0) return "0 B";

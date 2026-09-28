@@ -50,7 +50,8 @@ class UserDeviceDiagnosticsEntity {
       brand: map['brand']?.toString() ?? '',
       manufacturer: map['manufacturer']?.toString() ?? '',
       appVersion: map['app_version']?.toString() ?? '',
-      storageAvailableBytes: (map['storage_available_bytes'] as num?)?.toInt() ?? 0,
+      storageAvailableBytes:
+          (map['storage_available_bytes'] as num?)?.toInt() ?? 0,
       ramAvailableBytes: (map['ram_available_bytes'] as num?)?.toInt() ?? 0,
       batteryLevel: (map['battery_level'] as num?)?.toInt() ?? 0,
       batteryState: map['battery_state']?.toString() ?? 'unknown',
@@ -59,9 +60,11 @@ class UserDeviceDiagnosticsEntity {
       isRooted: map['is_rooted'] == true || map['is_rooted'] == 1,
       isDeveloperMode:
           map['is_developer_mode'] == true || map['is_developer_mode'] == 1,
-      capturedAt: map['captured_at'] != null
-          ? DateTime.tryParse(map['captured_at'].toString()) ?? DateTime.now()
-          : DateTime.now(),
+      capturedAt:
+          map['captured_at'] != null
+              ? DateTime.tryParse(map['captured_at'].toString()) ??
+                  DateTime.now()
+              : DateTime.now(),
     );
   }
 

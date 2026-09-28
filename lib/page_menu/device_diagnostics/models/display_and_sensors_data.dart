@@ -34,7 +34,8 @@ class DisplaySpecsData {
     final rawSupported = map['supportedRefreshRates'];
     List<int> supported = [rr.toInt()];
     if (rawSupported is List) {
-      supported = rawSupported.map((e) => (e as num).toInt()).toSet().toList()..sort();
+      supported =
+          rawSupported.map((e) => (e as num).toInt()).toSet().toList()..sort();
     }
 
     return DisplaySpecsData(
@@ -194,63 +195,63 @@ class SensorsCatalogData {
   }
 
   List<SensorChecklistItem> get checklist => [
-        SensorChecklistItem(
-          keyName: "gyroscope",
-          label: "Gyroscope",
-          typeDescription: "Deteksi rotasi sumbu 3D & orientasi gaming",
-          isAvailable: hasGyroscope,
-          hardwareName: gyroscopeName,
-        ),
-        SensorChecklistItem(
-          keyName: "accelerometer",
-          label: "Accelerometer",
-          typeDescription: "Percepatan gerak linier & tilt gesture",
-          isAvailable: hasAccelerometer,
-          hardwareName: accelerometerName,
-        ),
-        SensorChecklistItem(
-          keyName: "magnetometer",
-          label: "Magnetometer / Kompas",
-          typeDescription: "Medan magnet bumi & navigasi peta arah",
-          isAvailable: hasMagnetometer,
-          hardwareName: magnetometerName,
-        ),
-        SensorChecklistItem(
-          keyName: "proximity",
-          label: "Proximity Sensor",
-          typeDescription: "Sensor jarak objek / telinga saat panggilan",
-          isAvailable: hasProximity,
-          hardwareName: proximityName,
-        ),
-        SensorChecklistItem(
-          keyName: "light",
-          label: "Ambient Light Sensor",
-          typeDescription: "Pengukur intensitas lux & auto-brightness",
-          isAvailable: hasLightSensor,
-          hardwareName: lightSensorName,
-        ),
-        SensorChecklistItem(
-          keyName: "barometer",
-          label: "Barometer / Altimeter",
-          typeDescription: "Tekanan atmosfer & estimasi ketinggian (altitude)",
-          isAvailable: hasBarometer,
-          hardwareName: barometerName,
-        ),
-        SensorChecklistItem(
-          keyName: "step_counter",
-          label: "Step Counter (Pedometer)",
-          typeDescription: "Penghitung langkah kaki real-time hardware",
-          isAvailable: hasStepCounter,
-          hardwareName: stepCounterName,
-        ),
-        SensorChecklistItem(
-          keyName: "gravity",
-          label: "Gravity Sensor",
-          typeDescription: "Vektor percepatan gravitasi bumi terpisah",
-          isAvailable: hasGravity,
-          hardwareName: gravityName,
-        ),
-      ];
+    SensorChecklistItem(
+      keyName: "gyroscope",
+      label: "Gyroscope",
+      typeDescription: "Deteksi rotasi sumbu 3D & orientasi gaming",
+      isAvailable: hasGyroscope,
+      hardwareName: gyroscopeName,
+    ),
+    SensorChecklistItem(
+      keyName: "accelerometer",
+      label: "Accelerometer",
+      typeDescription: "Percepatan gerak linier & tilt gesture",
+      isAvailable: hasAccelerometer,
+      hardwareName: accelerometerName,
+    ),
+    SensorChecklistItem(
+      keyName: "magnetometer",
+      label: "Magnetometer / Kompas",
+      typeDescription: "Medan magnet bumi & navigasi peta arah",
+      isAvailable: hasMagnetometer,
+      hardwareName: magnetometerName,
+    ),
+    SensorChecklistItem(
+      keyName: "proximity",
+      label: "Proximity Sensor",
+      typeDescription: "Sensor jarak objek / telinga saat panggilan",
+      isAvailable: hasProximity,
+      hardwareName: proximityName,
+    ),
+    SensorChecklistItem(
+      keyName: "light",
+      label: "Ambient Light Sensor",
+      typeDescription: "Pengukur intensitas lux & auto-brightness",
+      isAvailable: hasLightSensor,
+      hardwareName: lightSensorName,
+    ),
+    SensorChecklistItem(
+      keyName: "barometer",
+      label: "Barometer / Altimeter",
+      typeDescription: "Tekanan atmosfer & estimasi ketinggian (altitude)",
+      isAvailable: hasBarometer,
+      hardwareName: barometerName,
+    ),
+    SensorChecklistItem(
+      keyName: "step_counter",
+      label: "Step Counter (Pedometer)",
+      typeDescription: "Penghitung langkah kaki real-time hardware",
+      isAvailable: hasStepCounter,
+      hardwareName: stepCounterName,
+    ),
+    SensorChecklistItem(
+      keyName: "gravity",
+      label: "Gravity Sensor",
+      typeDescription: "Vektor percepatan gravitasi bumi terpisah",
+      isAvailable: hasGravity,
+      hardwareName: gravityName,
+    ),
+  ];
 
   int get availableSensorsCount =>
       checklist.where((item) => item.isAvailable).length;

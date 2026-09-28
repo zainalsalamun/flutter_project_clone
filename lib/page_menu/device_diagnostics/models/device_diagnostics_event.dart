@@ -59,20 +59,24 @@ class DeviceDiagnosticsEvent {
       brand: json['brand'] as String? ?? '',
       manufacturer: json['manufacturer'] as String? ?? '',
       appVersion: json['appVersion'] as String? ?? '',
-      storageAvailableBytes: (json['storageAvailableBytes'] as num?)?.toInt() ?? 0,
+      storageAvailableBytes:
+          (json['storageAvailableBytes'] as num?)?.toInt() ?? 0,
       totalStorageBytes: (json['totalStorageBytes'] as num?)?.toInt() ?? 0,
       ramAvailableBytes: (json['ramAvailableBytes'] as num?)?.toInt() ?? 0,
       totalRamBytes: (json['totalRamBytes'] as num?)?.toInt() ?? 0,
       batteryLevel: (json['batteryLevel'] as num?)?.toInt() ?? 0,
       batteryState: json['batteryState'] as String? ?? 'unknown',
-      temperatureCelsius: (json['temperatureCelsius'] as num?)?.toDouble() ?? 32.0,
+      temperatureCelsius:
+          (json['temperatureCelsius'] as num?)?.toDouble() ?? 32.0,
       batteryHealth: json['batteryHealth'] as String? ?? 'good',
       batteryTechnology: json['batteryTechnology'] as String? ?? 'Li-ion',
       batteryVoltageMv: (json['batteryVoltageMv'] as num?)?.toInt() ?? 4000,
       isPowerSaveMode: json['isPowerSaveMode'] as bool? ?? false,
-      timestamp: json['timestamp'] != null
-          ? DateTime.tryParse(json['timestamp'].toString()) ?? DateTime.now().toUtc()
-          : DateTime.now().toUtc(),
+      timestamp:
+          json['timestamp'] != null
+              ? DateTime.tryParse(json['timestamp'].toString()) ??
+                  DateTime.now().toUtc()
+              : DateTime.now().toUtc(),
     );
   }
 
@@ -138,7 +142,8 @@ class DeviceDiagnosticsEvent {
 
   // --- Helper Getters for UI Presentation ---
 
-  String get formattedBatteryTemp => "${temperatureCelsius.toStringAsFixed(1)} °C";
+  String get formattedBatteryTemp =>
+      "${temperatureCelsius.toStringAsFixed(1)} °C";
 
   String get batteryTempStatus {
     if (temperatureCelsius < 37.0) return "Normal";
@@ -235,7 +240,10 @@ class DeviceDiagnosticsEvent {
 
   String get formattedUsedStorage {
     if (totalStorageBytes <= 0 || storageAvailableBytes <= 0) return "N/A";
-    final used = (totalStorageBytes - storageAvailableBytes).clamp(0, totalStorageBytes);
+    final used = (totalStorageBytes - storageAvailableBytes).clamp(
+      0,
+      totalStorageBytes,
+    );
     if (used >= 1000 * 1000 * 1000) {
       final gb = used / (1000 * 1000 * 1000);
       return "${gb.toStringAsFixed(2)} GB";
@@ -247,7 +255,10 @@ class DeviceDiagnosticsEvent {
 
   double get storageUsageRatio {
     if (totalStorageBytes <= 0 || storageAvailableBytes <= 0) return 0.5;
-    final used = (totalStorageBytes - storageAvailableBytes).clamp(0, totalStorageBytes);
+    final used = (totalStorageBytes - storageAvailableBytes).clamp(
+      0,
+      totalStorageBytes,
+    );
     return (used / totalStorageBytes).clamp(0.0, 1.0);
   }
 
@@ -303,7 +314,8 @@ class DeviceDiagnosticsEvent {
       brand: brand ?? this.brand,
       manufacturer: manufacturer ?? this.manufacturer,
       appVersion: appVersion ?? this.appVersion,
-      storageAvailableBytes: storageAvailableBytes ?? this.storageAvailableBytes,
+      storageAvailableBytes:
+          storageAvailableBytes ?? this.storageAvailableBytes,
       totalStorageBytes: totalStorageBytes ?? this.totalStorageBytes,
       ramAvailableBytes: ramAvailableBytes ?? this.ramAvailableBytes,
       totalRamBytes: totalRamBytes ?? this.totalRamBytes,

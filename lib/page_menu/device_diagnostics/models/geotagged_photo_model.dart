@@ -53,11 +53,33 @@ class GeotaggedPhotoModel {
 
   /// Formatted Indonesian Date & Time alternative
   String get formattedDateTimeId {
-    const days = ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Minggu"];
-    const months = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Ags", "Sep", "Okt", "Nov", "Des"];
+    const days = [
+      "Senin",
+      "Selasa",
+      "Rabu",
+      "Kamis",
+      "Jumat",
+      "Sabtu",
+      "Minggu",
+    ];
+    const months = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "Mei",
+      "Jun",
+      "Jul",
+      "Ags",
+      "Sep",
+      "Okt",
+      "Nov",
+      "Des",
+    ];
     final dayName = days[(timestamp.weekday - 1) % 7];
     final monthName = months[(timestamp.month - 1) % 12];
-    final timeStr = "${timestamp.hour.toString().padLeft(2, '0')}:${timestamp.minute.toString().padLeft(2, '0')}";
+    final timeStr =
+        "${timestamp.hour.toString().padLeft(2, '0')}:${timestamp.minute.toString().padLeft(2, '0')}";
     return "$dayName, ${timestamp.day} $monthName ${timestamp.year} $timeStr";
   }
 
@@ -74,21 +96,24 @@ class GeotaggedPhotoModel {
   String get formattedAltitude => "${altitude.toStringAsFixed(1)} m dpl";
 
   /// Compression Byte Savings
-  int get savedBytes => (originalSizeBytes > compressedSizeBytes && compressedSizeBytes > 0)
-      ? (originalSizeBytes - compressedSizeBytes)
-      : 0;
+  int get savedBytes =>
+      (originalSizeBytes > compressedSizeBytes && compressedSizeBytes > 0)
+          ? (originalSizeBytes - compressedSizeBytes)
+          : 0;
 
   /// Compression Savings Percentage
-  double get savingsPercent => (originalSizeBytes > 0 && savedBytes > 0)
-      ? (savedBytes / originalSizeBytes * 100)
-      : 0.0;
+  double get savingsPercent =>
+      (originalSizeBytes > 0 && savedBytes > 0)
+          ? (savedBytes / originalSizeBytes * 100)
+          : 0.0;
 
   String get formattedSavings => "${savingsPercent.toStringAsFixed(0)}%";
 
   String get formattedOriginalSize => _formatBytes(originalSizeBytes);
 
-  String get formattedCompressedSize =>
-      _formatBytes(compressedSizeBytes > 0 ? compressedSizeBytes : originalSizeBytes);
+  String get formattedCompressedSize => _formatBytes(
+    compressedSizeBytes > 0 ? compressedSizeBytes : originalSizeBytes,
+  );
 
   String get formattedSavedSize => _formatBytes(savedBytes);
 
@@ -106,7 +131,8 @@ class GeotaggedPhotoModel {
     return {
       'id': id,
       'originalPath': originalFile.path,
-      'compressedPath': (compressedFile ?? watermarkedFile ?? originalFile).path,
+      'compressedPath':
+          (compressedFile ?? watermarkedFile ?? originalFile).path,
       'originalSize': originalSizeBytes,
       'compressedSize': compressedSizeBytes,
       'timestamp': timestamp.millisecondsSinceEpoch,
@@ -126,7 +152,9 @@ class GeotaggedPhotoModel {
   factory GeotaggedPhotoModel.fromMap(Map<dynamic, dynamic> map) {
     final origPath = map['original_path']?.toString() ?? '';
     final compPath = map['compressed_path']?.toString() ?? origPath;
-    final timeMs = (map['timestamp'] as num?)?.toInt() ?? DateTime.now().millisecondsSinceEpoch;
+    final timeMs =
+        (map['timestamp'] as num?)?.toInt() ??
+        DateTime.now().millisecondsSinceEpoch;
     final createdMs = (map['created_at'] as num?)?.toInt();
     final cloudTimeMs = (map['cloud_synced_at'] as num?)?.toInt();
 
@@ -140,7 +168,8 @@ class GeotaggedPhotoModel {
       compBytes = temp;
     }
 
-    final isCloud = map['is_cloud_synced'] == true || map['is_cloud_synced'] == 1;
+    final isCloud =
+        map['is_cloud_synced'] == true || map['is_cloud_synced'] == 1;
     final cUrl = map['cloud_url']?.toString() ?? '';
     final cProv = map['cloud_provider']?.toString() ?? '';
 
@@ -161,10 +190,14 @@ class GeotaggedPhotoModel {
       isCloudSynced: isCloud,
       cloudUrl: cUrl,
       cloudProvider: cProv,
-      cloudSyncedAt: cloudTimeMs != null && cloudTimeMs > 0
-          ? DateTime.fromMillisecondsSinceEpoch(cloudTimeMs)
-          : null,
-      createdAt: createdMs != null ? DateTime.fromMillisecondsSinceEpoch(createdMs) : null,
+      cloudSyncedAt:
+          cloudTimeMs != null && cloudTimeMs > 0
+              ? DateTime.fromMillisecondsSinceEpoch(cloudTimeMs)
+              : null,
+      createdAt:
+          createdMs != null
+              ? DateTime.fromMillisecondsSinceEpoch(createdMs)
+              : null,
     );
   }
 
