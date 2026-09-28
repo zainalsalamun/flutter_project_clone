@@ -10,7 +10,8 @@ class NetworkInfoData {
   final bool isOnline; // true if real internet packet reachability verified
   final String ipAddress; // e.g. '192.168.1.105'
   final int latencyMs; // e.g. 24 ms
-  final String statusMessage; // 'Internet Connected', 'WiFi ON (No Internet)', 'Disconnected'
+  final String
+  statusMessage; // 'Internet Connected', 'WiFi ON (No Internet)', 'Disconnected'
   final DateTime timestamp;
 
   const NetworkInfoData({
@@ -54,8 +55,7 @@ class NetworkInfoData {
 
   /// True if connection is poor, laggy (>= 150ms), or connected without real internet
   bool get isBadConnection =>
-      (!isOnline && networkType != 'offline') ||
-      (isOnline && latencyMs >= 150);
+      (!isOnline && networkType != 'offline') || (isOnline && latencyMs >= 150);
 
   String get qualityLabel {
     if (networkType == 'offline') return "OFFLINE";
@@ -114,8 +114,7 @@ class NetworkConnectivityService {
   final StreamController<NetworkInfoData> _networkStreamController =
       StreamController<NetworkInfoData>.broadcast();
 
-  Stream<NetworkInfoData> get networkStream =>
-      _networkStreamController.stream;
+  Stream<NetworkInfoData> get networkStream => _networkStreamController.stream;
 
   NetworkInfoData _currentInfo = NetworkInfoData.initial();
   NetworkInfoData get currentInfo => _currentInfo;
@@ -128,19 +127,19 @@ class NetworkConnectivityService {
     checkCurrentNetwork();
 
     // Listen to live stream
-    _connectivitySubscription = _connectivity.onConnectivityChanged.listen(
-      (List<ConnectivityResult> results) async {
-        final info = await _resolveNetworkInfo(results);
-        _currentInfo = info;
-        _networkStreamController.add(info);
+    _connectivitySubscription = _connectivity.onConnectivityChanged.listen((
+      List<ConnectivityResult> results,
+    ) async {
+      final info = await _resolveNetworkInfo(results);
+      _currentInfo = info;
+      _networkStreamController.add(info);
 
-        DiagnosticsLoggerService.instance.info(
-          "NETWORK_STATE_CHANGED",
-          "Network status changed to '${info.networkName}' [Online: ${info.isOnline}] (IP: ${info.ipAddress}, Ping: ${info.latencyMs >= 0 ? '${info.latencyMs}ms' : 'N/A'})",
-          payload: info.toJson(),
-        );
-      },
-    );
+      DiagnosticsLoggerService.instance.info(
+        "NETWORK_STATE_CHANGED",
+        "Network status changed to '${info.networkName}' [Online: ${info.isOnline}] (IP: ${info.ipAddress}, Ping: ${info.latencyMs >= 0 ? '${info.latencyMs}ms' : 'N/A'})",
+        payload: info.toJson(),
+      );
+    });
   }
 
   /// Manually checks and refreshes network status & ping latency
@@ -164,8 +163,9 @@ class NetworkConnectivityService {
     if (kIsWeb) return -1;
     try {
       final stopwatch = Stopwatch()..start();
-      final result = await InternetAddress.lookup('google.com')
-          .timeout(const Duration(seconds: 3));
+      final result = await InternetAddress.lookup(
+        'google.com',
+      ).timeout(const Duration(seconds: 3));
       stopwatch.stop();
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
         return stopwatch.elapsedMilliseconds;
@@ -176,7 +176,8 @@ class NetworkConnectivityService {
 
   /// Resolves detailed network state, IP address, and reachability
   Future<NetworkInfoData> _resolveNetworkInfo(
-      List<ConnectivityResult> results) async {
+    List<ConnectivityResult> results,
+  ) async {
     // 1. Determine hardware transport type
     String type = 'offline';
     String name = 'Disconnected / Offline';
@@ -225,8 +226,9 @@ class NetworkConnectivityService {
     if (!kIsWeb) {
       try {
         final stopwatch = Stopwatch()..start();
-        final lookup = await InternetAddress.lookup('google.com')
-            .timeout(const Duration(milliseconds: 2500));
+        final lookup = await InternetAddress.lookup(
+          'google.com',
+        ).timeout(const Duration(milliseconds: 2500));
         stopwatch.stop();
 
         if (lookup.isNotEmpty && lookup[0].rawAddress.isNotEmpty) {
@@ -267,8 +269,14 @@ class NetworkConnectivityService {
     }
 
     final simulated = NetworkInfoData(
-      networkType: _currentInfo.networkType == 'offline' ? 'wifi' : _currentInfo.networkType,
-      networkName: _currentInfo.networkType == 'offline' ? 'WiFi Network' : _currentInfo.networkName,
+      networkType:
+          _currentInfo.networkType == 'offline'
+              ? 'wifi'
+              : _currentInfo.networkType,
+      networkName:
+          _currentInfo.networkType == 'offline'
+              ? 'WiFi Network'
+              : _currentInfo.networkName,
       isOnline: true,
       ipAddress: _currentInfo.ipAddress,
       latencyMs: 385, // High latency / Lag

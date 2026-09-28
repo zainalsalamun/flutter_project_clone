@@ -15,8 +15,9 @@ class AppScreenTimeService with WidgetsBindingObserver {
 
   AppScreenTimeService._internal();
 
-  static const MethodChannel _platformChannel =
-      MethodChannel('com.naltech.project_clone/device_diagnostics');
+  static const MethodChannel _platformChannel = MethodChannel(
+    'com.naltech.project_clone/device_diagnostics',
+  );
 
   // Active Session State
   String _currentSessionId = "";
@@ -94,7 +95,8 @@ class AppScreenTimeService with WidgetsBindingObserver {
     _isSessionActive = true;
 
     try {
-      final diag = await DeviceCollectorService.instance.collectLiveDeviceData();
+      final diag =
+          await DeviceCollectorService.instance.collectLiveDeviceData();
       _batteryStartLevel = diag.batteryLevel;
     } catch (_) {
       _batteryStartLevel = 100;
@@ -157,7 +159,8 @@ class AppScreenTimeService with WidgetsBindingObserver {
 
     int batteryEnd = _batteryStartLevel;
     try {
-      final diag = await DeviceCollectorService.instance.collectLiveDeviceData();
+      final diag =
+          await DeviceCollectorService.instance.collectLiveDeviceData();
       batteryEnd = diag.batteryLevel;
     } catch (_) {}
     final batteryDrop = (_batteryStartLevel - batteryEnd).clamp(0, 100);
@@ -189,7 +192,9 @@ class AppScreenTimeService with WidgetsBindingObserver {
     } catch (_) {}
 
     // 2. Save to in-memory & SharedPreferences
-    final idx = _cachedSessions.indexWhere((s) => s.sessionId == session.sessionId);
+    final idx = _cachedSessions.indexWhere(
+      (s) => s.sessionId == session.sessionId,
+    );
     if (idx >= 0) {
       _cachedSessions[idx] = session;
     } else {
@@ -205,8 +210,9 @@ class AppScreenTimeService with WidgetsBindingObserver {
 
   Future<void> _loadStoredSessions() async {
     try {
-      final dynamic res =
-          await _platformChannel.invokeMethod('getAllScreenTimeSessions');
+      final dynamic res = await _platformChannel.invokeMethod(
+        'getAllScreenTimeSessions',
+      );
       if (res is List && res.isNotEmpty) {
         _cachedSessions.clear();
         for (final item in res) {
@@ -237,7 +243,8 @@ class AppScreenTimeService with WidgetsBindingObserver {
   Future<void> _saveSessionsToPrefs() async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      final stringList = _cachedSessions.take(50).map((s) => jsonEncode(s.toMap())).toList();
+      final stringList =
+          _cachedSessions.take(50).map((s) => jsonEncode(s.toMap())).toList();
       await prefs.setStringList('naltech_screen_time_sessions', stringList);
     } catch (_) {}
   }
@@ -265,17 +272,21 @@ class AppScreenTimeService with WidgetsBindingObserver {
         DateFormat('yyyy-MM-dd').format(_sessionStartTime!) == todayStr) {
       // Ensure we don't double count if already flushed
       final currentSessionSec = _activeSessionSeconds;
-      final savedCurrentSessionSec = todaySessions
-          .firstWhere((s) => s.sessionId == _currentSessionId,
-              orElse: () => AppScreenTimeSession(
-                    sessionId: '',
-                    date: '',
-                    sessionStartTime: DateTime.now(),
-                    sessionEndTime: DateTime.now(),
-                    durationSeconds: 0,
-                    createdAt: DateTime.now(),
-                  ))
-          .durationSeconds;
+      final savedCurrentSessionSec =
+          todaySessions
+              .firstWhere(
+                (s) => s.sessionId == _currentSessionId,
+                orElse:
+                    () => AppScreenTimeSession(
+                      sessionId: '',
+                      date: '',
+                      sessionStartTime: DateTime.now(),
+                      sessionEndTime: DateTime.now(),
+                      durationSeconds: 0,
+                      createdAt: DateTime.now(),
+                    ),
+              )
+              .durationSeconds;
 
       final diff = currentSessionSec - savedCurrentSessionSec;
       if (diff > 0) {
@@ -312,12 +323,14 @@ class AppScreenTimeService with WidgetsBindingObserver {
         });
       }
 
-      list.add(DailyScreenTimeSummary(
-        date: dStr,
-        totalSeconds: totalSec,
-        sessionCount: sessions.length,
-        aggregatedPages: pages,
-      ));
+      list.add(
+        DailyScreenTimeSummary(
+          date: dStr,
+          totalSeconds: totalSec,
+          sessionCount: sessions.length,
+          aggregatedPages: pages,
+        ),
+      );
     }
 
     return list;
@@ -336,11 +349,12 @@ class AppScreenTimeService with WidgetsBindingObserver {
   }
 
   /// Builds standardized JSON Payload ready for API Server
-  Future<ScreenTimeSyncPayload> buildServerPayload({bool onlyUnsynced = true}) async {
+  Future<ScreenTimeSyncPayload> buildServerPayload({
+    bool onlyUnsynced = true,
+  }) async {
     final all = await getAllSessions();
-    final targetSessions = onlyUnsynced
-        ? all.where((s) => !s.isSynced).toList()
-        : all.toList();
+    final targetSessions =
+        onlyUnsynced ? all.where((s) => !s.isSynced).toList() : all.toList();
 
     // Collect device metadata
     String deviceId = "naltech_device_unknown";
@@ -350,14 +364,16 @@ class AppScreenTimeService with WidgetsBindingObserver {
     String userId = "USER_NALTECH_DEV";
 
     try {
-      final diag = await DeviceCollectorService.instance.collectLiveDeviceData();
+      final diag =
+          await DeviceCollectorService.instance.collectLiveDeviceData();
       deviceId = diag.deviceIdHash.isNotEmpty ? diag.deviceIdHash : diag.device;
       model = "${diag.brand} ${diag.model}".trim();
       appVersion = diag.appVersion.isNotEmpty ? diag.appVersion : "1.0.4";
       userId = diag.userId.isNotEmpty ? diag.userId : "USER_NALTECH_DEV";
-      osVersion = DeviceCollectorService.instance.detectedOsVersion.isNotEmpty
-          ? DeviceCollectorService.instance.detectedOsVersion
-          : "Android";
+      osVersion =
+          DeviceCollectorService.instance.detectedOsVersion.isNotEmpty
+              ? DeviceCollectorService.instance.detectedOsVersion
+              : "Android";
     } catch (_) {}
 
     return ScreenTimeSyncPayload(
@@ -397,10 +413,7 @@ class AppScreenTimeService with WidgetsBindingObserver {
         final response = await http
             .post(
               Uri.parse(endpointUrl),
-              headers: {
-                'Content-Type': 'application/json',
-                ...?headers,
-              },
+              headers: {'Content-Type': 'application/json', ...?headers},
               body: jsonEncode(payload.toJson()),
             )
             .timeout(const Duration(seconds: 15));
@@ -416,14 +429,16 @@ class AppScreenTimeService with WidgetsBindingObserver {
             'success': true,
             'syncedCount': sessionIds.length,
             'statusCode': response.statusCode,
-            'message': 'Berhasil menyinkronkan ${sessionIds.length} sesi ke server API.',
+            'message':
+                'Berhasil menyinkronkan ${sessionIds.length} sesi ke server API.',
             'payload': payload.toJson(),
           };
         } else {
           return {
             'success': false,
             'statusCode': response.statusCode,
-            'message': 'Server merespons status ${response.statusCode}: ${response.body}',
+            'message':
+                'Server merespons status ${response.statusCode}: ${response.body}',
             'payload': payload.toJson(),
           };
         }
@@ -441,7 +456,9 @@ class AppScreenTimeService with WidgetsBindingObserver {
     }
 
     // 2. Default Simulator Engine (marks as synced and provides formatted payload)
-    await Future.delayed(const Duration(milliseconds: 900)); // Simulate network latency
+    await Future.delayed(
+      const Duration(milliseconds: 900),
+    ); // Simulate network latency
     await _markSessionsAsSynced(sessionIds);
 
     DiagnosticsLoggerService.instance.info(
@@ -454,7 +471,8 @@ class AppScreenTimeService with WidgetsBindingObserver {
       'success': true,
       'syncedCount': sessionIds.length,
       'statusCode': 200,
-      'message': 'Berhasil menyinkronkan ${sessionIds.length} sesi screen time ke server!',
+      'message':
+          'Berhasil menyinkronkan ${sessionIds.length} sesi screen time ke server!',
       'payload': payload.toJson(),
     };
   }
@@ -487,7 +505,11 @@ class AppScreenTimeService with WidgetsBindingObserver {
     final List<AppScreenTimeSession> samples = [];
 
     final dummyPages = [
-      {"DeviceDiagnosticsPage": 1800, "CameraGeotagPreviewPage": 2400, "NetworkSpeedDiagnosticsPage": 1200},
+      {
+        "DeviceDiagnosticsPage": 1800,
+        "CameraGeotagPreviewPage": 2400,
+        "NetworkSpeedDiagnosticsPage": 1200,
+      },
       {"DeviceDiagnosticsPage": 3600, "SavedGeotagPhotosPage": 1800},
       {"CameraGeotagPreviewPage": 4500, "DeviceDiagnosticsPage": 900},
       {"NetworkSpeedDiagnosticsPage": 2700, "DeviceDiagnosticsPage": 1800},

@@ -11,8 +11,9 @@ class GeotagSqliteService {
 
   GeotagSqliteService._internal();
 
-  static const MethodChannel _platformChannel =
-      MethodChannel('com.naltech.project_clone/device_diagnostics');
+  static const MethodChannel _platformChannel = MethodChannel(
+    'com.naltech.project_clone/device_diagnostics',
+  );
 
   final List<GeotaggedPhotoModel> _fallbackMemoryDb = [];
   final StreamController<List<GeotaggedPhotoModel>> _photosStreamController =
@@ -34,20 +35,26 @@ class GeotagSqliteService {
 
       // 1. Try Native Android JPEG Compression via MethodChannel
       try {
-        final dynamic res = await _platformChannel.invokeMethod('compressImage', {
-          'inputPath': sourceFile.path,
-          'outputPath': outPath,
-          'targetWidth': targetMaxWidth,
-          'quality': targetQuality,
-        });
+        final dynamic res = await _platformChannel
+            .invokeMethod('compressImage', {
+              'inputPath': sourceFile.path,
+              'outputPath': outPath,
+              'targetWidth': targetMaxWidth,
+              'quality': targetQuality,
+            });
 
         if (res is Map) {
           final savedPath = res['path']?.toString() ?? outPath;
           final outFile = File(savedPath);
           if (await outFile.exists()) {
-            final origSize = (res['originalSize'] as num?)?.toInt() ?? await sourceFile.length();
-            final compSize = (res['compressedSize'] as num?)?.toInt() ?? await outFile.length();
-            final savingsPercent = (res['savingsPercent'] as num?)?.toDouble() ?? 0.0;
+            final origSize =
+                (res['originalSize'] as num?)?.toInt() ??
+                await sourceFile.length();
+            final compSize =
+                (res['compressedSize'] as num?)?.toInt() ??
+                await outFile.length();
+            final savingsPercent =
+                (res['savingsPercent'] as num?)?.toDouble() ?? 0.0;
 
             DiagnosticsLoggerService.instance.info(
               "IMAGE_COMPRESSION_NATIVE",
@@ -93,8 +100,10 @@ class GeotagSqliteService {
 
       final originalSize = originalBytes.length;
       final compressedSize = compressedBytes.length;
-      final savedBytes = originalSize > compressedSize ? originalSize - compressedSize : 0;
-      final savingsPercent = originalSize > 0 ? (savedBytes / originalSize * 100) : 0.0;
+      final savedBytes =
+          originalSize > compressedSize ? originalSize - compressedSize : 0;
+      final savingsPercent =
+          originalSize > 0 ? (savedBytes / originalSize * 100) : 0.0;
 
       DiagnosticsLoggerService.instance.info(
         "IMAGE_COMPRESSION_DART",
@@ -122,36 +131,37 @@ class GeotagSqliteService {
     int generatedId = DateTime.now().millisecondsSinceEpoch;
 
     try {
-      final origSize = photo.originalSizeBytes > 0
-          ? photo.originalSizeBytes
-          : (await photo.originalFile.exists()
-              ? await photo.originalFile.length()
-              : 0);
+      final origSize =
+          photo.originalSizeBytes > 0
+              ? photo.originalSizeBytes
+              : (await photo.originalFile.exists()
+                  ? await photo.originalFile.length()
+                  : 0);
 
-      final compFile = photo.compressedFile ?? photo.watermarkedFile ?? photo.originalFile;
-      final compSize = photo.compressedSizeBytes > 0
-          ? photo.compressedSizeBytes
-          : (await compFile.exists() ? await compFile.length() : origSize);
+      final compFile =
+          photo.compressedFile ?? photo.watermarkedFile ?? photo.originalFile;
+      final compSize =
+          photo.compressedSizeBytes > 0
+              ? photo.compressedSizeBytes
+              : (await compFile.exists() ? await compFile.length() : origSize);
 
-      final dynamic res = await _platformChannel.invokeMethod(
-        'insertGeotagPhoto',
-        {
-          'originalPath': photo.originalFile.path,
-          'compressedPath': compFile.path,
-          'originalSize': origSize,
-          'compressedSize': compSize,
-          'timestamp': photo.timestamp.millisecondsSinceEpoch,
-          'latitude': photo.latitude,
-          'longitude': photo.longitude,
-          'altitude': photo.altitude,
-          'accuracy': photo.accuracy,
-          'address': photo.fullAddress,
-          'carrier': photo.carrierName,
-          'isCloudSynced': photo.isCloudSynced,
-          'cloudUrl': photo.cloudUrl,
-          'cloudProvider': photo.cloudProvider,
-        },
-      );
+      final dynamic res = await _platformChannel
+          .invokeMethod('insertGeotagPhoto', {
+            'originalPath': photo.originalFile.path,
+            'compressedPath': compFile.path,
+            'originalSize': origSize,
+            'compressedSize': compSize,
+            'timestamp': photo.timestamp.millisecondsSinceEpoch,
+            'latitude': photo.latitude,
+            'longitude': photo.longitude,
+            'altitude': photo.altitude,
+            'accuracy': photo.accuracy,
+            'address': photo.fullAddress,
+            'carrier': photo.carrierName,
+            'isCloudSynced': photo.isCloudSynced,
+            'cloudUrl': photo.cloudUrl,
+            'cloudProvider': photo.cloudProvider,
+          });
 
       if (res is num) {
         generatedId = res.toInt();
@@ -184,8 +194,9 @@ class GeotagSqliteService {
   /// Queries all geotagged photos from SQLite
   Future<List<GeotaggedPhotoModel>> getAllPhotos() async {
     try {
-      final dynamic res =
-          await _platformChannel.invokeMethod('getAllGeotagPhotos');
+      final dynamic res = await _platformChannel.invokeMethod(
+        'getAllGeotagPhotos',
+      );
       if (res is List) {
         final List<GeotaggedPhotoModel> photos = [];
         for (final item in res) {
@@ -232,8 +243,9 @@ class GeotagSqliteService {
   /// Queries database statistics (Total Photos, Original Bytes, Compressed Bytes, Total Saved Bytes)
   Future<Map<String, dynamic>> getStats() async {
     try {
-      final dynamic res =
-          await _platformChannel.invokeMethod('getGeotagPhotoStats');
+      final dynamic res = await _platformChannel.invokeMethod(
+        'getGeotagPhotoStats',
+      );
       if (res is Map) {
         return Map<String, dynamic>.from(res);
       }

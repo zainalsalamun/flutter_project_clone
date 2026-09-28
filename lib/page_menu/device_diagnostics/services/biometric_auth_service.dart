@@ -7,8 +7,9 @@ class BiometricAuthService {
   static final BiometricAuthService instance = BiometricAuthService._internal();
   BiometricAuthService._internal();
 
-  static const MethodChannel _channel =
-      MethodChannel('com.naltech.project_clone/device_diagnostics');
+  static const MethodChannel _channel = MethodChannel(
+    'com.naltech.project_clone/device_diagnostics',
+  );
 
   static const String _prefVaultEnabledKey = 'geotag_biometric_vault_enabled';
 
@@ -46,12 +47,11 @@ class BiometricAuthService {
     try {
       final dynamic res = await _channel.invokeMethod('checkBiometrics');
       if (res is Map) {
-        final hasHardware = res['hasHardware'] == true || res['hasBiometricHardware'] == true;
-        final isEnrolled = res['isEnrolled'] == true || res['isBiometricEnrolled'] == true;
-        return {
-          'hasHardware': hasHardware,
-          'isEnrolled': isEnrolled,
-        };
+        final hasHardware =
+            res['hasHardware'] == true || res['hasBiometricHardware'] == true;
+        final isEnrolled =
+            res['isEnrolled'] == true || res['isBiometricEnrolled'] == true;
+        return {'hasHardware': hasHardware, 'isEnrolled': isEnrolled};
       }
     } catch (_) {
       try {
@@ -59,10 +59,7 @@ class BiometricAuthService {
         if (res is Map) {
           final hasHardware = res['hasBiometricHardware'] == true;
           final isEnrolled = res['isBiometricEnrolled'] == true;
-          return {
-            'hasHardware': hasHardware,
-            'isEnrolled': isEnrolled,
-          };
+          return {'hasHardware': hasHardware, 'isEnrolled': isEnrolled};
         }
       } catch (e) {
         DiagnosticsLoggerService.instance.warn(
@@ -78,7 +75,8 @@ class BiometricAuthService {
   Future<bool> authenticate({
     String title = "Autentikasi Biometrik",
     String subtitle = "Verifikasi identitas untuk mengakses data geotagging",
-    String description = "Pindai sidik jari atau gunakan Face Unlock untuk membuka",
+    String description =
+        "Pindai sidik jari atau gunakan Face Unlock untuk membuka",
   }) async {
     try {
       final dynamic res = await _channel.invokeMethod('authenticateBiometric', {

@@ -90,25 +90,32 @@ class AppStorageCleanerService {
     try {
       final tempDir = await getTemporaryDirectory();
       if (await tempDir.exists()) {
-        await for (final entity in tempDir.list(recursive: true, followLinks: false)) {
+        await for (final entity in tempDir.list(
+          recursive: true,
+          followLinks: false,
+        )) {
           if (entity is File) {
             final len = await entity.length();
             final name = entity.path.split(Platform.pathSeparator).last;
             final lastMod = await entity.lastModified();
             String cat = "HTTP / Data Cache";
-            if (name.endsWith(".jpg") || name.endsWith(".jpeg") || name.endsWith(".png")) {
+            if (name.endsWith(".jpg") ||
+                name.endsWith(".jpeg") ||
+                name.endsWith(".png")) {
               cat = "Image Buffer";
             } else if (name.endsWith(".pdf")) {
               cat = "PDF Temporary";
             }
 
-            files.add(JunkFileDetail(
-              path: entity.path,
-              fileName: name,
-              sizeBytes: len,
-              category: cat,
-              lastModified: lastMod,
-            ));
+            files.add(
+              JunkFileDetail(
+                path: entity.path,
+                fileName: name,
+                sizeBytes: len,
+                category: cat,
+                lastModified: lastMod,
+              ),
+            );
           }
         }
       }
@@ -118,19 +125,24 @@ class AppStorageCleanerService {
     try {
       final docsDir = await getApplicationDocumentsDirectory();
       if (await docsDir.exists()) {
-        await for (final entity in docsDir.list(recursive: false, followLinks: false)) {
+        await for (final entity in docsDir.list(
+          recursive: false,
+          followLinks: false,
+        )) {
           if (entity is File && entity.path.endsWith(".pdf")) {
             final len = await entity.length();
             final name = entity.path.split(Platform.pathSeparator).last;
             final lastMod = await entity.lastModified();
 
-            files.add(JunkFileDetail(
-              path: entity.path,
-              fileName: name,
-              sizeBytes: len,
-              category: "PDF Export Cache",
-              lastModified: lastMod,
-            ));
+            files.add(
+              JunkFileDetail(
+                path: entity.path,
+                fileName: name,
+                sizeBytes: len,
+                category: "PDF Export Cache",
+                lastModified: lastMod,
+              ),
+            );
           }
         }
       }
@@ -158,7 +170,10 @@ class AppStorageCleanerService {
     try {
       final tempDir = await getTemporaryDirectory();
       if (await tempDir.exists()) {
-        await for (final entity in tempDir.list(recursive: true, followLinks: false)) {
+        await for (final entity in tempDir.list(
+          recursive: true,
+          followLinks: false,
+        )) {
           try {
             if (entity is File) {
               freedBytes += await entity.length();
@@ -179,7 +194,10 @@ class AppStorageCleanerService {
     try {
       final docsDir = await getApplicationDocumentsDirectory();
       if (await docsDir.exists()) {
-        await for (final entity in docsDir.list(recursive: false, followLinks: false)) {
+        await for (final entity in docsDir.list(
+          recursive: false,
+          followLinks: false,
+        )) {
           if (entity is File && entity.path.endsWith(".pdf")) {
             try {
               freedBytes += await entity.length();
@@ -229,7 +247,10 @@ class AppStorageCleanerService {
     int totalBytes = 0;
     int count = 0;
     try {
-      await for (final entity in dir.list(recursive: true, followLinks: false)) {
+      await for (final entity in dir.list(
+        recursive: true,
+        followLinks: false,
+      )) {
         if (entity is File) {
           totalBytes += await entity.length();
           count++;

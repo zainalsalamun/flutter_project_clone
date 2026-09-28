@@ -18,7 +18,8 @@ class ApiNetworkProfilerService {
   final StreamController<SessionBandwidthSummary> _summaryController =
       StreamController<SessionBandwidthSummary>.broadcast();
 
-  Stream<SessionBandwidthSummary> get summaryStream => _summaryController.stream;
+  Stream<SessionBandwidthSummary> get summaryStream =>
+      _summaryController.stream;
 
   final List<Map<String, String>> _defaultEndpoints = [
     {
@@ -96,7 +97,8 @@ class ApiNetworkProfilerService {
       isSuccess = statusCode >= 200 && statusCode < 400;
 
       final enc = response.headers['content-encoding'] ?? '';
-      isGzip = enc.contains('gzip') || enc.contains('br') || enc.contains('deflate');
+      isGzip =
+          enc.contains('gzip') || enc.contains('br') || enc.contains('deflate');
       respSize = response.bodyBytes.length;
 
       // Add to session bandwidth
@@ -142,14 +144,15 @@ class ApiNetworkProfilerService {
 
   /// Runs concurrent benchmarks against all default endpoints
   Future<List<ApiEndpointBenchmark>> benchmarkAllDefaultEndpoints() async {
-    final futures = _defaultEndpoints.map((ep) {
-      return benchmarkEndpoint(
-        id: ep['id']!,
-        name: ep['name']!,
-        url: ep['url']!,
-        method: ep['method'] ?? 'GET',
-      );
-    }).toList();
+    final futures =
+        _defaultEndpoints.map((ep) {
+          return benchmarkEndpoint(
+            id: ep['id']!,
+            name: ep['name']!,
+            url: ep['url']!,
+            method: ep['method'] ?? 'GET',
+          );
+        }).toList();
 
     final results = await Future.wait(futures);
     _lastBenchmarks.clear();
@@ -161,7 +164,8 @@ class ApiNetworkProfilerService {
   /// Tests a custom URL provided by the user
   Future<ApiEndpointBenchmark> testCustomUrl(String customUrl) async {
     String formattedUrl = customUrl.trim();
-    if (!formattedUrl.startsWith("http://") && !formattedUrl.startsWith("https://")) {
+    if (!formattedUrl.startsWith("http://") &&
+        !formattedUrl.startsWith("https://")) {
       formattedUrl = "https://$formattedUrl";
     }
 

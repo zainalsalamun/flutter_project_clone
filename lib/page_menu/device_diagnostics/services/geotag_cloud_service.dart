@@ -59,8 +59,9 @@ class GeotagCloudService {
   static final GeotagCloudService instance = GeotagCloudService._internal();
   GeotagCloudService._internal();
 
-  static const MethodChannel _platformChannel =
-      MethodChannel('com.naltech.project_clone/device_diagnostics');
+  static const MethodChannel _platformChannel = MethodChannel(
+    'com.naltech.project_clone/device_diagnostics',
+  );
 
   static const String _prefCloudNameKey = 'geotag_cloudinary_cloud_name';
 
@@ -96,7 +97,13 @@ class GeotagCloudService {
 
   /// Batch synchronizes all unsynced offline photos from SQLite to Cloud Storage
   Future<BatchSyncResult> syncAllUnsyncedPhotos({
-    void Function(int currentItem, int totalItems, double currentItemProgress, double totalProgress)? onProgress,
+    void Function(
+      int currentItem,
+      int totalItems,
+      double currentItemProgress,
+      double totalProgress,
+    )?
+    onProgress,
   }) async {
     final allPhotos = await GeotagSqliteService.instance.getAllPhotos();
     final unsynced = allPhotos.where((p) => !p.isCloudSynced).toList();
@@ -122,8 +129,14 @@ class GeotagCloudService {
         photo,
         onProgress: (itemProgress) {
           final double baseProgress = i / unsynced.length;
-          final double overallProgress = baseProgress + (itemProgress / unsynced.length);
-          onProgress?.call(itemIndex, unsynced.length, itemProgress, overallProgress.clamp(0.0, 1.0));
+          final double overallProgress =
+              baseProgress + (itemProgress / unsynced.length);
+          onProgress?.call(
+            itemIndex,
+            unsynced.length,
+            itemProgress,
+            overallProgress.clamp(0.0, 1.0),
+          );
         },
       );
 
@@ -160,11 +173,12 @@ class GeotagCloudService {
         );
       }
 
-      final dynamic res = await _platformChannel.invokeMethod('saveImageToGallery', {
-        'imagePath': imageFile.path,
-        'title': title ?? 'geotag_${DateTime.now().millisecondsSinceEpoch}',
-        'description': description ?? 'Foto Geotagging Naltech Diagnostics',
-      });
+      final dynamic res = await _platformChannel
+          .invokeMethod('saveImageToGallery', {
+            'imagePath': imageFile.path,
+            'title': title ?? 'geotag_${DateTime.now().millisecondsSinceEpoch}',
+            'description': description ?? 'Foto Geotagging Naltech Diagnostics',
+          });
 
       if (res is Map && res['success'] == true) {
         final uri = res['uri']?.toString() ?? '';
@@ -188,10 +202,7 @@ class GeotagCloudService {
         "GALLERY_SAVE_ERROR",
         "Gagal menyimpan ke galeri Android: $e",
       );
-      return GallerySaveResult(
-        success: false,
-        errorMessage: e.toString(),
-      );
+      return GallerySaveResult(success: false, errorMessage: e.toString());
     }
   }
 
@@ -212,7 +223,8 @@ class GeotagCloudService {
     }
 
     final key = apiKey ?? dotenv.env['CLOUDINARY_API_KEY'] ?? defaultApiKey;
-    final secret = apiSecret ?? dotenv.env['CLOUDINARY_API_SECRET'] ?? defaultApiSecret;
+    final secret =
+        apiSecret ?? dotenv.env['CLOUDINARY_API_SECRET'] ?? defaultApiSecret;
     final cloudName = customCloudName ?? await getCloudName();
 
     DiagnosticsLoggerService.instance.info(
@@ -229,7 +241,8 @@ class GeotagCloudService {
     if (cloudName.isEmpty || key.isEmpty || secret.isEmpty) {
       return const CloudUploadResult(
         success: false,
-        errorMessage: "Konfigurasi Cloudinary belum lengkap (Cloud Name / API Key / Secret kosong)",
+        errorMessage:
+            "Konfigurasi Cloudinary belum lengkap (Cloud Name / API Key / Secret kosong)",
       );
     }
 
@@ -261,11 +274,16 @@ class GeotagCloudService {
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body) as Map<String, dynamic>;
-        final secureUrl = data['secure_url']?.toString() ?? data['url']?.toString();
+        final secureUrl =
+            data['secure_url']?.toString() ?? data['url']?.toString();
 
         if (secureUrl != null && secureUrl.isNotEmpty) {
           if (photo.id != null) {
-            await updateSqliteCloudSync(photo.id!, secureUrl, "Cloudinary ($cloudName)");
+            await updateSqliteCloudSync(
+              photo.id!,
+              secureUrl,
+              "Cloudinary ($cloudName)",
+            );
           }
           onProgress?.call(1.0);
 
@@ -313,10 +331,7 @@ class GeotagCloudService {
         "CLOUD_UPLOAD_EXCEPTION",
         "Gagal mengunggah foto ke Cloud: $e",
       );
-      return CloudUploadResult(
-        success: false,
-        errorMessage: e.toString(),
-      );
+      return CloudUploadResult(success: false, errorMessage: e.toString());
     }
   }
 
@@ -329,85 +344,121 @@ class GeotagCloudService {
 
     final saved = await showDialog<String>(
       context: context,
-      builder: (ctx) => AlertDialog(
-        backgroundColor: const Color(0xFF1E293B),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
-        title: const Row(
-          children: [
-            Icon(Icons.cloud_queue_rounded, color: Color(0xFF38BDF8), size: 22),
-            SizedBox(width: 8),
-            Text(
-              "Konfigurasi Cloudinary",
-              style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+      builder:
+          (ctx) => AlertDialog(
+            backgroundColor: const Color(0xFF1E293B),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(18),
             ),
-          ],
-        ),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              "Masukkan Cloud Name akun Cloudinary Anda (tertera di Dashboard Cloudinary):",
-              style: TextStyle(color: Color(0xFF94A3B8), fontSize: 12, height: 1.4),
-            ),
-            const SizedBox(height: 12),
-            TextField(
-              controller: controller,
-              style: const TextStyle(color: Colors.white, fontSize: 13),
-              decoration: InputDecoration(
-                hintText: "Contoh: dxyz123 atau naltech",
-                hintStyle: const TextStyle(color: Color(0xFF64748B), fontSize: 12),
-                filled: true,
-                fillColor: const Color(0xFF0F172A),
-                contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: const BorderSide(color: Color(0xFF334155)),
+            title: const Row(
+              children: [
+                Icon(
+                  Icons.cloud_queue_rounded,
+                  color: Color(0xFF38BDF8),
+                  size: 22,
                 ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: const BorderSide(color: Color(0xFF38BDF8)),
+                SizedBox(width: 8),
+                Text(
+                  "Konfigurasi Cloudinary",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  "Masukkan Cloud Name akun Cloudinary Anda (tertera di Dashboard Cloudinary):",
+                  style: TextStyle(
+                    color: Color(0xFF94A3B8),
+                    fontSize: 12,
+                    height: 1.4,
+                  ),
+                ),
+                const SizedBox(height: 12),
+                TextField(
+                  controller: controller,
+                  style: const TextStyle(color: Colors.white, fontSize: 13),
+                  decoration: InputDecoration(
+                    hintText: "Contoh: dxyz123 atau naltech",
+                    hintStyle: const TextStyle(
+                      color: Color(0xFF64748B),
+                      fontSize: 12,
+                    ),
+                    filled: true,
+                    fillColor: const Color(0xFF0F172A),
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 10,
+                    ),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: const BorderSide(color: Color(0xFF334155)),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: const BorderSide(color: Color(0xFF38BDF8)),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 10),
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF0F172A),
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(color: const Color(0xFF334155)),
+                  ),
+                  child: const Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "API Key: 417969219389821 (Aktif)",
+                        style: TextStyle(
+                          color: Color(0xFF10B981),
+                          fontSize: 10,
+                          fontFamily: 'monospace',
+                        ),
+                      ),
+                      SizedBox(height: 2),
+                      Text(
+                        "API Secret: -mLQe1...KBrs (Aktif)",
+                        style: TextStyle(
+                          color: Color(0xFF10B981),
+                          fontSize: 10,
+                          fontFamily: 'monospace',
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(ctx, null),
+                child: const Text(
+                  "Batal",
+                  style: TextStyle(color: Color(0xFF94A3B8)),
                 ),
               ),
-            ),
-            const SizedBox(height: 10),
-            Container(
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                color: const Color(0xFF0F172A),
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: const Color(0xFF334155)),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF0284C7),
+                  foregroundColor: Colors.white,
+                ),
+                onPressed: () {
+                  Navigator.pop(ctx, controller.text.trim());
+                },
+                child: const Text("Simpan"),
               ),
-              child: const Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text("API Key: 417969219389821 (Aktif)",
-                      style: TextStyle(color: Color(0xFF10B981), fontSize: 10, fontFamily: 'monospace')),
-                  SizedBox(height: 2),
-                  Text("API Secret: -mLQe1...KBrs (Aktif)",
-                      style: TextStyle(color: Color(0xFF10B981), fontSize: 10, fontFamily: 'monospace')),
-                ],
-              ),
-            ),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(ctx, null),
-            child: const Text("Batal", style: TextStyle(color: Color(0xFF94A3B8))),
+            ],
           ),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF0284C7),
-              foregroundColor: Colors.white,
-            ),
-            onPressed: () {
-              Navigator.pop(ctx, controller.text.trim());
-            },
-            child: const Text("Simpan"),
-          ),
-        ],
-      ),
     );
 
     if (saved != null && saved.isNotEmpty) {
@@ -424,11 +475,10 @@ class GeotagCloudService {
     String provider,
   ) async {
     try {
-      final dynamic res = await _platformChannel.invokeMethod('updateGeotagCloudSync', {
-        'id': photoId,
-        'cloudUrl': cloudUrl,
-        'cloudProvider': provider,
-      });
+      final dynamic res = await _platformChannel.invokeMethod(
+        'updateGeotagCloudSync',
+        {'id': photoId, 'cloudUrl': cloudUrl, 'cloudProvider': provider},
+      );
 
       // Reload memory DB in SQLite Service
       await GeotagSqliteService.instance.getAllPhotos();

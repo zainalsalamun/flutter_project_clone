@@ -41,7 +41,8 @@ class GeotaggingCameraService {
       final now = DateTime.now();
 
       // Retrieve current GPS telemetries
-      final loc = locationData ?? LocationAndCarrierService.instance.currentData;
+      final loc =
+          locationData ?? LocationAndCarrierService.instance.currentData;
       final lat = loc.latitude;
       final lon = loc.longitude;
       final alt = loc.altitudeMeters;
@@ -99,8 +100,8 @@ class GeotaggingCameraService {
 
     // 1. Try Native Android Geocoder (Offline/Google Play Services)
     try {
-      final nativeAddress =
-          await LocationAndCarrierService.instance.reverseGeocodeNative(lat, lon);
+      final nativeAddress = await LocationAndCarrierService.instance
+          .reverseGeocodeNative(lat, lon);
       if (nativeAddress != null && nativeAddress.isNotEmpty) {
         return nativeAddress;
       }
@@ -113,9 +114,8 @@ class GeotaggingCameraService {
       );
 
       final response = await http
-          .get(uri, headers: {'User-Agent': 'ProjectCloneApp/1.0'}).timeout(
-        const Duration(seconds: 4),
-      );
+          .get(uri, headers: {'User-Agent': 'ProjectCloneApp/1.0'})
+          .timeout(const Duration(seconds: 4));
 
       if (response.statusCode == 200) {
         final Map<String, dynamic> data = jsonDecode(response.body);
@@ -124,9 +124,22 @@ class GeotaggingCameraService {
         if (addressObj != null) {
           final road = addressObj['road'] ?? addressObj['pedestrian'] ?? '';
           final houseNumber = addressObj['house_number'] ?? '';
-          final suburb = addressObj['suburb'] ?? addressObj['village'] ?? addressObj['neighbourhood'] ?? '';
-          final district = addressObj['city_district'] ?? addressObj['county'] ?? addressObj['subdistrict'] ?? '';
-          final city = addressObj['city'] ?? addressObj['town'] ?? addressObj['municipality'] ?? addressObj['state'] ?? '';
+          final suburb =
+              addressObj['suburb'] ??
+              addressObj['village'] ??
+              addressObj['neighbourhood'] ??
+              '';
+          final district =
+              addressObj['city_district'] ??
+              addressObj['county'] ??
+              addressObj['subdistrict'] ??
+              '';
+          final city =
+              addressObj['city'] ??
+              addressObj['town'] ??
+              addressObj['municipality'] ??
+              addressObj['state'] ??
+              '';
           final state = addressObj['state'] ?? '';
 
           final List<String> parts = [];
@@ -135,9 +148,11 @@ class GeotaggingCameraService {
           }
           if (suburb.isNotEmpty && suburb != road) parts.add(suburb);
           if (district.isNotEmpty && district != suburb) {
-            parts.add(district.toLowerCase().contains("kecamatan")
-                ? district
-                : "Kecamatan $district");
+            parts.add(
+              district.toLowerCase().contains("kecamatan")
+                  ? district
+                  : "Kecamatan $district",
+            );
           }
           if (state.isNotEmpty) {
             parts.add(state);
@@ -169,34 +184,44 @@ class GeotaggingCameraService {
     required GeotaggedPhotoModel photo,
   }) async {
     try {
-      final boundary = boundaryKey.currentContext?.findRenderObject()
-          as RenderRepaintBoundary?;
+      final boundary =
+          boundaryKey.currentContext?.findRenderObject()
+              as RenderRepaintBoundary?;
       if (boundary == null) return null;
 
       final ui.Image image = await boundary.toImage(pixelRatio: 2.2);
-      final byteData =
-          await image.toByteData(format: ui.ImageByteFormat.png);
+      final byteData = await image.toByteData(format: ui.ImageByteFormat.png);
       if (byteData == null) return null;
 
       final pngBytes = byteData.buffer.asUint8List();
       final appDir = await getApplicationDocumentsDirectory();
       final timeId = DateTime.now().millisecondsSinceEpoch;
-      final uncompressedWatermarkFile = File('${appDir.path}/geotag_raw_$timeId.png');
+      final uncompressedWatermarkFile = File(
+        '${appDir.path}/geotag_raw_$timeId.png',
+      );
 
       await uncompressedWatermarkFile.writeAsBytes(pngBytes);
 
       // Perform Image Compression Pipeline (JPEG downsample & optimize)
       final compressedFile = await GeotagSqliteService.instance
-          .compressWatermarkedImage(uncompressedWatermarkFile, targetMaxWidth: 1280, targetQuality: 75);
+          .compressWatermarkedImage(
+            uncompressedWatermarkFile,
+            targetMaxWidth: 1280,
+            targetQuality: 75,
+          );
       final compressedSizeBytes = await compressedFile.length();
-      
+
       final rawCanvasBytes = pngBytes.length;
-      final rawPickedBytes = photo.originalSizeBytes > 0
-          ? photo.originalSizeBytes
-          : (await photo.originalFile.exists() ? await photo.originalFile.length() : 0);
-      
+      final rawPickedBytes =
+          photo.originalSizeBytes > 0
+              ? photo.originalSizeBytes
+              : (await photo.originalFile.exists()
+                  ? await photo.originalFile.length()
+                  : 0);
+
       // Original size should accurately represent the full uncompressed canvas / raw photo
-      final originalSizeBytes = rawCanvasBytes > rawPickedBytes ? rawCanvasBytes : rawPickedBytes;
+      final originalSizeBytes =
+          rawCanvasBytes > rawPickedBytes ? rawCanvasBytes : rawPickedBytes;
 
       final updatedPhoto = photo.copyWith(
         watermarkedFile: uncompressedWatermarkFile,

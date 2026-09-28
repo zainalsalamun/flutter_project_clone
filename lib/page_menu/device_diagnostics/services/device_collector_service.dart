@@ -9,7 +9,8 @@ import '../models/display_and_sensors_data.dart';
 import 'sha256_helper.dart';
 
 class DeviceCollectorService {
-  static final DeviceCollectorService instance = DeviceCollectorService._internal();
+  static final DeviceCollectorService instance =
+      DeviceCollectorService._internal();
 
   DeviceCollectorService._internal();
 
@@ -17,8 +18,9 @@ class DeviceCollectorService {
   static const String _prefInstallId = "app_installation_id_hash";
   static const String _prefUserId = "app_active_user_id";
 
-  static const MethodChannel _platformChannel =
-      MethodChannel('com.naltech.project_clone/device_diagnostics');
+  static const MethodChannel _platformChannel = MethodChannel(
+    'com.naltech.project_clone/device_diagnostics',
+  );
 
   String _detectedOsVersion = "";
   String _detectedOsBuild = "";
@@ -64,7 +66,8 @@ class DeviceCollectorService {
         _detectedHasBiometric = nativeData['hasBiometricHardware'] as bool;
       }
       if (nativeData['isBiometricEnrolled'] != null) {
-        _detectedIsBiometricEnrolled = nativeData['isBiometricEnrolled'] as bool;
+        _detectedIsBiometricEnrolled =
+            nativeData['isBiometricEnrolled'] as bool;
       }
       if (nativeData['isVpnActive'] != null) {
         _detectedIsVpnActive = nativeData['isVpnActive'] as bool;
@@ -78,7 +81,8 @@ class DeviceCollectorService {
         final physicalHeight = view.physicalSize.height.round();
         final pixelRatio = view.devicePixelRatio;
         final dpi = (pixelRatio * 160).round();
-        final refreshRate = view.display.refreshRate > 0 ? view.display.refreshRate : 60.0;
+        final refreshRate =
+            view.display.refreshRate > 0 ? view.display.refreshRate : 60.0;
         _displaySpecs = DisplaySpecsData(
           refreshRate: refreshRate,
           supportedRefreshRates: [refreshRate.round()],
@@ -145,17 +149,20 @@ class DeviceCollectorService {
         final lvl = (nativeData['level'] as num).toInt();
         if (lvl >= 0 && lvl <= 100) batteryLevel = lvl;
       }
-      if (nativeData['state'] != null && nativeData['state'].toString().isNotEmpty) {
+      if (nativeData['state'] != null &&
+          nativeData['state'].toString().isNotEmpty) {
         batteryState = nativeData['state'].toString();
       }
       if (nativeData['temperatureCelsius'] != null) {
         final temp = (nativeData['temperatureCelsius'] as num).toDouble();
         if (temp > 0) temperatureCelsius = temp;
       }
-      if (nativeData['batteryHealth'] != null && nativeData['batteryHealth'].toString().isNotEmpty) {
+      if (nativeData['batteryHealth'] != null &&
+          nativeData['batteryHealth'].toString().isNotEmpty) {
         batteryHealth = nativeData['batteryHealth'].toString();
       }
-      if (nativeData['batteryTechnology'] != null && nativeData['batteryTechnology'].toString().isNotEmpty) {
+      if (nativeData['batteryTechnology'] != null &&
+          nativeData['batteryTechnology'].toString().isNotEmpty) {
         batteryTechnology = nativeData['batteryTechnology'].toString();
       }
       if (nativeData['batteryVoltageMv'] != null) {
@@ -187,13 +194,17 @@ class DeviceCollectorService {
     _detectedOsBuild = nativeData?['osBuild']?.toString() ?? '';
 
     // If native properties are empty, query host system properties directly via getprop / sysctl
-    if (model.isEmpty || brand.isEmpty || manufacturer.isEmpty || device.isEmpty) {
+    if (model.isEmpty ||
+        brand.isEmpty ||
+        manufacturer.isEmpty ||
+        device.isEmpty) {
       final hostHardware = await _queryHostSystemHardware();
       if (model.isEmpty) model = hostHardware.model;
       if (brand.isEmpty) brand = hostHardware.brand;
       if (manufacturer.isEmpty) manufacturer = hostHardware.manufacturer;
       if (device.isEmpty) device = hostHardware.device;
-      if (_detectedOsVersion.isEmpty) _detectedOsVersion = hostHardware.osVersion;
+      if (_detectedOsVersion.isEmpty)
+        _detectedOsVersion = hostHardware.osVersion;
       if (_detectedOsBuild.isEmpty) _detectedOsBuild = hostHardware.osBuild;
     }
 
@@ -204,7 +215,12 @@ class DeviceCollectorService {
     // 6. Unique Persistent Hardware Device ID Hash
     String? deviceIdHash = prefs.getString(_prefDeviceId);
     if (deviceIdHash == null || deviceIdHash.isEmpty) {
-      final rawHardwareSignature = _generateHardwareSignature(nativeData, model, brand, device);
+      final rawHardwareSignature = _generateHardwareSignature(
+        nativeData,
+        model,
+        brand,
+        device,
+      );
       deviceIdHash = Sha256Helper.hash(rawHardwareSignature);
       await prefs.setString(_prefDeviceId, deviceIdHash);
     }
@@ -221,13 +237,15 @@ class DeviceCollectorService {
     // 8. User ID
     String? userId = prefs.getString(_prefUserId);
     if (userId == null || userId.isEmpty) {
-      final envUser = Platform.environment['USER'] ??
+      final envUser =
+          Platform.environment['USER'] ??
           Platform.environment['USERNAME'] ??
           Platform.environment['LOGNAME'];
       if (envUser != null && envUser.isNotEmpty) {
         userId = "USR_${envUser.toUpperCase()}";
       } else {
-        userId = "USR_${Platform.localHostname.hashCode.abs().toString().padLeft(6, '0')}";
+        userId =
+            "USR_${Platform.localHostname.hashCode.abs().toString().padLeft(6, '0')}";
       }
       await prefs.setString(_prefUserId, userId);
     }
@@ -330,7 +348,9 @@ class DeviceCollectorService {
                 totalBytes = int.parse(match.group(1)!) * 1024;
               }
             } else if (line.startsWith('MemAvailable:')) {
-              final match = RegExp(r'MemAvailable:\s*(\d+)\s*kB').firstMatch(line);
+              final match = RegExp(
+                r'MemAvailable:\s*(\d+)\s*kB',
+              ).firstMatch(line);
               if (match != null) {
                 availBytes = int.parse(match.group(1)!) * 1024;
               }
@@ -412,9 +432,10 @@ class DeviceCollectorService {
           try {
             final shRes = await Process.run('sh', [
               '-c',
-              'cat /sys/class/power_supply/battery/capacity 2>/dev/null || cat /sys/class/power_supply/battery/batt_soc 2>/dev/null || cat /sys/class/power_supply/*/capacity 2>/dev/null'
+              'cat /sys/class/power_supply/battery/capacity 2>/dev/null || cat /sys/class/power_supply/battery/batt_soc 2>/dev/null || cat /sys/class/power_supply/*/capacity 2>/dev/null',
             ]);
-            if (shRes.exitCode == 0 && shRes.stdout.toString().trim().isNotEmpty) {
+            if (shRes.exitCode == 0 &&
+                shRes.stdout.toString().trim().isNotEmpty) {
               final lines = shRes.stdout.toString().trim().split('\n');
               for (final line in lines) {
                 final val = int.tryParse(line.trim());
@@ -456,11 +477,14 @@ class DeviceCollectorService {
           final match = RegExp(r'(\d+)%').firstMatch(output);
           if (match != null) {
             final level = int.parse(match.group(1)!);
-            final isCharging = output.toLowerCase().contains('charging') &&
+            final isCharging =
+                output.toLowerCase().contains('charging') &&
                 !output.toLowerCase().contains('discharging');
-            final isFull = output.toLowerCase().contains('charged') ||
+            final isFull =
+                output.toLowerCase().contains('charged') ||
                 output.toLowerCase().contains('finishing charge');
-            final state = isFull ? "full" : (isCharging ? "charging" : "discharging");
+            final state =
+                isFull ? "full" : (isCharging ? "charging" : "discharging");
             return (level, state);
           }
         }
@@ -471,8 +495,17 @@ class DeviceCollectorService {
   }
 
   /// Queries real host system hardware on Android (getprop) / macOS (sysctl) / Linux (DMI)
-  Future<({String model, String brand, String manufacturer, String device, String osVersion, String osBuild})>
-      _queryHostSystemHardware() async {
+  Future<
+    ({
+      String model,
+      String brand,
+      String manufacturer,
+      String device,
+      String osVersion,
+      String osBuild,
+    })
+  >
+  _queryHostSystemHardware() async {
     String model = "";
     String brand = "";
     String manufacturer = "";
@@ -484,52 +517,68 @@ class DeviceCollectorService {
       if (Platform.isAndroid) {
         // Query Android system properties directly via getprop
         final modelRes = await Process.run('getprop', ['ro.product.model']);
-        if (modelRes.exitCode == 0 && modelRes.stdout.toString().trim().isNotEmpty) {
+        if (modelRes.exitCode == 0 &&
+            modelRes.stdout.toString().trim().isNotEmpty) {
           model = modelRes.stdout.toString().trim();
         }
 
         final brandRes = await Process.run('getprop', ['ro.product.brand']);
-        if (brandRes.exitCode == 0 && brandRes.stdout.toString().trim().isNotEmpty) {
+        if (brandRes.exitCode == 0 &&
+            brandRes.stdout.toString().trim().isNotEmpty) {
           brand = brandRes.stdout.toString().trim();
         }
 
-        final manRes = await Process.run('getprop', ['ro.product.manufacturer']);
-        if (manRes.exitCode == 0 && manRes.stdout.toString().trim().isNotEmpty) {
+        final manRes = await Process.run('getprop', [
+          'ro.product.manufacturer',
+        ]);
+        if (manRes.exitCode == 0 &&
+            manRes.stdout.toString().trim().isNotEmpty) {
           manufacturer = manRes.stdout.toString().trim();
         }
 
         final devRes = await Process.run('getprop', ['ro.product.device']);
-        if (devRes.exitCode == 0 && devRes.stdout.toString().trim().isNotEmpty) {
+        if (devRes.exitCode == 0 &&
+            devRes.stdout.toString().trim().isNotEmpty) {
           device = devRes.stdout.toString().trim();
         }
 
-        final osRelRes = await Process.run('getprop', ['ro.build.version.release']);
+        final osRelRes = await Process.run('getprop', [
+          'ro.build.version.release',
+        ]);
         final sdkRes = await Process.run('getprop', ['ro.build.version.sdk']);
-        if (osRelRes.exitCode == 0 && osRelRes.stdout.toString().trim().isNotEmpty) {
+        if (osRelRes.exitCode == 0 &&
+            osRelRes.stdout.toString().trim().isNotEmpty) {
           final rel = osRelRes.stdout.toString().trim();
           final sdk = sdkRes.stdout.toString().trim();
           osVersion = "Android $rel (API $sdk)";
         }
 
         final dispRes = await Process.run('getprop', ['ro.build.display.id']);
-        if (dispRes.exitCode == 0 && dispRes.stdout.toString().trim().isNotEmpty) {
+        if (dispRes.exitCode == 0 &&
+            dispRes.stdout.toString().trim().isNotEmpty) {
           osBuild = dispRes.stdout.toString().trim();
         }
       } else if (Platform.isMacOS) {
         final hwModelRes = await Process.run('sysctl', ['-n', 'hw.model']);
-        if (hwModelRes.exitCode == 0 && hwModelRes.stdout.toString().trim().isNotEmpty) {
+        if (hwModelRes.exitCode == 0 &&
+            hwModelRes.stdout.toString().trim().isNotEmpty) {
           model = hwModelRes.stdout.toString().trim();
         }
 
-        final cpuRes = await Process.run('sysctl', ['-n', 'machdep.cpu.brand_string']);
-        if (cpuRes.exitCode == 0 && cpuRes.stdout.toString().trim().isNotEmpty) {
+        final cpuRes = await Process.run('sysctl', [
+          '-n',
+          'machdep.cpu.brand_string',
+        ]);
+        if (cpuRes.exitCode == 0 &&
+            cpuRes.stdout.toString().trim().isNotEmpty) {
           manufacturer = cpuRes.stdout.toString().trim();
         } else {
           manufacturer = "Apple";
         }
 
         final machineRes = await Process.run('sysctl', ['-n', 'hw.machine']);
-        if (machineRes.exitCode == 0 && machineRes.stdout.toString().trim().isNotEmpty) {
+        if (machineRes.exitCode == 0 &&
+            machineRes.stdout.toString().trim().isNotEmpty) {
           device = machineRes.stdout.toString().trim();
         }
 
@@ -548,7 +597,10 @@ class DeviceCollectorService {
         final osRelease = File('/etc/os-release');
         if (osRelease.existsSync()) {
           final text = osRelease.readAsStringSync();
-          final match = RegExp(r'^NAME="?([^"\n]+)"?', multiLine: true).firstMatch(text);
+          final match = RegExp(
+            r'^NAME="?([^"\n]+)"?',
+            multiLine: true,
+          ).firstMatch(text);
           if (match != null) brand = match.group(1)!;
         }
 
@@ -562,7 +614,8 @@ class DeviceCollectorService {
     return (
       model: model.isNotEmpty ? model : Platform.localHostname,
       brand: brand.isNotEmpty ? brand : Platform.operatingSystem,
-      manufacturer: manufacturer.isNotEmpty ? manufacturer : Platform.operatingSystem,
+      manufacturer:
+          manufacturer.isNotEmpty ? manufacturer : Platform.operatingSystem,
       device: device.isNotEmpty ? device : Platform.operatingSystem,
       osVersion: osVersion,
       osBuild: osBuild,
@@ -573,8 +626,10 @@ class DeviceCollectorService {
   Future<String> _resolveAppVersion() async {
     try {
       final pubspecStr = await rootBundle.loadString('pubspec.yaml');
-      final match = RegExp(r'^version:\s*([^\s\r\n]+)', multiLine: true)
-          .firstMatch(pubspecStr);
+      final match = RegExp(
+        r'^version:\s*([^\s\r\n]+)',
+        multiLine: true,
+      ).firstMatch(pubspecStr);
       if (match != null && match.group(1) != null) {
         return match.group(1)!;
       }

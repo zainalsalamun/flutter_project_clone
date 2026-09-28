@@ -11,8 +11,9 @@ class LocationAndCarrierService {
 
   LocationAndCarrierService._internal();
 
-  static const MethodChannel _platformChannel =
-      MethodChannel('com.naltech.project_clone/device_diagnostics');
+  static const MethodChannel _platformChannel = MethodChannel(
+    'com.naltech.project_clone/device_diagnostics',
+  );
 
   LocationAndCarrierData _currentData = LocationAndCarrierData.initial();
   LocationAndCarrierData get currentData => _currentData;
@@ -33,7 +34,8 @@ class LocationAndCarrierService {
     _compassTimer = Timer.periodic(const Duration(milliseconds: 100), (timer) {
       if (!_isSimulating) {
         // Natural gentle heading fluctuation
-        _currentHeading = (_currentHeading + (Random().nextDouble() * 2 - 1)) % 360;
+        _currentHeading =
+            (_currentHeading + (Random().nextDouble() * 2 - 1)) % 360;
         if (_currentHeading < 0) _currentHeading += 360;
       }
       _compassStreamController.add(_currentHeading);
@@ -157,7 +159,9 @@ class LocationAndCarrierService {
   Future<Map<String, dynamic>> requestLocationPermission() async {
     // 1. Try MethodChannel first
     try {
-      final res = await _platformChannel.invokeMethod('requestLocationPermission');
+      final res = await _platformChannel.invokeMethod(
+        'requestLocationPermission',
+      );
       if (res is Map) {
         return Map<String, dynamic>.from(res);
       }
@@ -165,10 +169,8 @@ class LocationAndCarrierService {
 
     // 2. Seamless fallback to permission_handler package
     try {
-      final statuses = await [
-        ph.Permission.location,
-        ph.Permission.camera,
-      ].request();
+      final statuses =
+          await [ph.Permission.location, ph.Permission.camera].request();
 
       final locGranted = statuses[ph.Permission.location]?.isGranted ?? false;
       final camGranted = statuses[ph.Permission.camera]?.isGranted ?? false;
@@ -264,7 +266,10 @@ class LocationAndCarrierService {
   }
 
   /// Native reverse geocoding via Android Geocoder
-  Future<String?> reverseGeocodeNative(double latitude, double longitude) async {
+  Future<String?> reverseGeocodeNative(
+    double latitude,
+    double longitude,
+  ) async {
     try {
       final res = await _platformChannel.invokeMethod('reverseGeocodeNative', {
         'latitude': latitude,
@@ -283,9 +288,14 @@ class LocationAndCarrierService {
         final adminArea = res['adminArea']?.toString() ?? '';
 
         if (thoroughfare.isNotEmpty) {
-          parts.add(subThoroughfare.isNotEmpty ? "$thoroughfare No $subThoroughfare" : thoroughfare);
+          parts.add(
+            subThoroughfare.isNotEmpty
+                ? "$thoroughfare No $subThoroughfare"
+                : thoroughfare,
+          );
         }
-        if (subLocality.isNotEmpty && subLocality != thoroughfare) parts.add(subLocality);
+        if (subLocality.isNotEmpty && subLocality != thoroughfare)
+          parts.add(subLocality);
         if (locality.isNotEmpty && locality != subLocality) parts.add(locality);
         if (adminArea.isNotEmpty && adminArea != locality) parts.add(adminArea);
 

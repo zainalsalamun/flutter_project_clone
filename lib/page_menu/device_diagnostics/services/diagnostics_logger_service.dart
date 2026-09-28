@@ -4,13 +4,7 @@ import 'package:flutter/foundation.dart';
 import '../models/device_diagnostics_event.dart';
 import '../models/user_device_diagnostics_entity.dart';
 
-enum LogLevel {
-  debug,
-  info,
-  warn,
-  error,
-  success,
-}
+enum LogLevel { debug, info, warn, error, success }
 
 class DiagnosticsLogEntry {
   final String id;
@@ -48,7 +42,8 @@ class DiagnosticsLogEntry {
 }
 
 class DiagnosticsLoggerService extends ChangeNotifier {
-  static final DiagnosticsLoggerService instance = DiagnosticsLoggerService._internal();
+  static final DiagnosticsLoggerService instance =
+      DiagnosticsLoggerService._internal();
 
   DiagnosticsLoggerService._internal();
 
@@ -171,10 +166,7 @@ class DiagnosticsLoggerService extends ChangeNotifier {
     success(
       "INGEST_SUCCESS",
       "Telemetry snapshot saved & synced. Device ID [${entity.deviceId.substring(0, 8)}...] registered.",
-      payload: {
-        "status": "INGESTED",
-        "sql": entity.toSqlInsertStatement(),
-      },
+      payload: {"status": "INGESTED", "sql": entity.toSqlInsertStatement()},
     );
 
     return entity;
@@ -230,7 +222,9 @@ class DiagnosticsLoggerService extends ChangeNotifier {
 
     for (final log in _logs.reversed) {
       final levelStr = log.level.name.toUpperCase().padRight(7);
-      buffer.writeln("[${log.formattedTime}] [$levelStr] [${log.tag}] ${log.message}");
+      buffer.writeln(
+        "[${log.formattedTime}] [$levelStr] [${log.tag}] ${log.message}",
+      );
       if (log.payload != null) {
         buffer.writeln("   Payload: ${log.formattedPayload}");
       }
