@@ -13,9 +13,10 @@ class BrewezLocalization {
   }
 
   static void toggleLanguage() {
-    currentLanguage.value = currentLanguage.value == BrewezLanguage.id
-        ? BrewezLanguage.en
-        : BrewezLanguage.id;
+    currentLanguage.value =
+        currentLanguage.value == BrewezLanguage.id
+            ? BrewezLanguage.en
+            : BrewezLanguage.id;
   }
 
   static String tr(String key) {
@@ -43,7 +44,8 @@ class BrewezLocalization {
       'reset_filter': 'Reset',
       'apply_filter': 'Apply Filters',
       'search_no_results': 'No coffee brews found',
-      'search_no_results_sub': 'Try searching with different keywords or reset your filters.',
+      'search_no_results_sub':
+          'Try searching with different keywords or reset your filters.',
       'popular_brews': 'Popular Brews',
       'see_all': 'See all',
       'all_menu_title': 'All Coffee Menu',
@@ -180,9 +182,14 @@ class BrewezLocalization {
       'order_time_label': 'Order Time',
       'payment_status_paid': 'LUNAS / PAID',
       'payment_via': 'Payment Via',
-      'pickup_barcode_hint': 'Show this barcode/ticket to barista when picking up',
+      'pickup_barcode_hint':
+          'Show this barcode/ticket to barista when picking up',
       'download_receipt_btn': 'Save Receipt',
       'receipt_saved_toast': 'Receipt saved to gallery',
+      'receipt_saved_dialog_title': 'Receipt Saved Successfully!',
+      'receipt_saved_dialog_desc':
+          'Your digital receipt and queue ticket have been saved. Show the queue number to the barista when picking up your coffee.',
+      'back_to_home_btn': 'Back to Home Menu',
       'order_more_btn': 'Order More Coffee',
       'view_receipt_btn': 'View Pickup Ticket & Receipt',
       'step_4_title': 'Quality Check & Garnish',
@@ -205,7 +212,8 @@ class BrewezLocalization {
       'reset_filter': 'Reset',
       'apply_filter': 'Terapkan Filter',
       'search_no_results': 'Tidak ada kopi yang cocok',
-      'search_no_results_sub': 'Coba gunakan kata kunci lain atau reset filter pilihanmu.',
+      'search_no_results_sub':
+          'Coba gunakan kata kunci lain atau reset filter pilihanmu.',
       'popular_brews': 'Kopi Populer',
       'see_all': 'Lihat semua',
       'all_menu_title': 'Semua Menu Kopi',
@@ -347,9 +355,14 @@ class BrewezLocalization {
       'order_time_label': 'Waktu Pesanan',
       'payment_status_paid': 'LUNAS / PAID',
       'payment_via': 'Metode Bayar',
-      'pickup_barcode_hint': 'Tunjukkan tiket/barcode ini ke barista saat mengambil kopi',
+      'pickup_barcode_hint':
+          'Tunjukkan tiket/barcode ini ke barista saat mengambil kopi',
       'download_receipt_btn': 'Simpan Struk',
       'receipt_saved_toast': 'Struk berhasil disimpan ke galeri',
+      'receipt_saved_dialog_title': 'Struk Berhasil Disimpan!',
+      'receipt_saved_dialog_desc':
+          'Struk transaksi dan tiket antrian Anda berhasil disimpan. Tunjukkan nomor antrian ke barista saat mengambil kopi.',
+      'back_to_home_btn': 'Kembali ke Menu Utama',
       'order_more_btn': 'Pesan Kopi Lagi',
       'view_receipt_btn': 'Lihat Tiket Pengambilan & Struk',
     },

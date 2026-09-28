@@ -26,10 +26,7 @@ class ReceiptModalSheet extends StatelessWidget {
       backgroundColor: Colors.transparent,
       isDismissible: false,
       enableDrag: false,
-      builder: (context) => ReceiptModalSheet(
-        order: order,
-        onDone: onDone,
-      ),
+      builder: (context) => ReceiptModalSheet(order: order, onDone: onDone),
     );
   }
 
@@ -102,7 +99,11 @@ class ReceiptModalSheet extends StatelessWidget {
                           ),
                         ],
                       ),
-                      child: const Icon(Icons.close, size: 20, color: Colors.grey),
+                      child: const Icon(
+                        Icons.close,
+                        size: 20,
+                        color: Colors.grey,
+                      ),
                     ),
                   ),
                 ],
@@ -112,7 +113,10 @@ class ReceiptModalSheet extends StatelessWidget {
             Expanded(
               child: SingleChildScrollView(
                 physics: const BouncingScrollPhysics(),
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 8,
+                ),
                 child: Column(
                   children: [
                     // Paper Receipt Card
@@ -146,8 +150,9 @@ class ReceiptModalSheet extends StatelessWidget {
                                           padding: const EdgeInsets.all(10),
                                           decoration: BoxDecoration(
                                             color: BrewezTheme.espresso,
-                                            borderRadius:
-                                                BorderRadius.circular(14),
+                                            borderRadius: BorderRadius.circular(
+                                              14,
+                                            ),
                                           ),
                                           child: const Icon(
                                             Icons.coffee_rounded,
@@ -186,11 +191,14 @@ class ReceiptModalSheet extends StatelessWidget {
                                       angle: -0.1,
                                       child: Container(
                                         padding: const EdgeInsets.symmetric(
-                                            horizontal: 10, vertical: 5),
+                                          horizontal: 10,
+                                          vertical: 5,
+                                        ),
                                         decoration: BoxDecoration(
                                           color: const Color(0xFFE8F5E9),
-                                          borderRadius:
-                                              BorderRadius.circular(8),
+                                          borderRadius: BorderRadius.circular(
+                                            8,
+                                          ),
                                           border: Border.all(
                                             color: const Color(0xFF2E7D32),
                                             width: 1.5,
@@ -198,7 +206,8 @@ class ReceiptModalSheet extends StatelessWidget {
                                         ),
                                         child: Text(
                                           BrewezLocalization.tr(
-                                              'payment_status_paid'),
+                                            'payment_status_paid',
+                                          ),
                                           style: const TextStyle(
                                             fontSize: 11,
                                             fontWeight: FontWeight.w900,
@@ -215,8 +224,9 @@ class ReceiptModalSheet extends StatelessWidget {
                                 // Big Queue Number Banner
                                 Container(
                                   width: double.infinity,
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 14),
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 14,
+                                  ),
                                   decoration: BoxDecoration(
                                     gradient: LinearGradient(
                                       colors: [
@@ -228,14 +238,17 @@ class ReceiptModalSheet extends StatelessWidget {
                                     ),
                                     borderRadius: BorderRadius.circular(16),
                                     border: Border.all(
-                                        color: BrewezTheme.primary
-                                            .withOpacity(0.3)),
+                                      color: BrewezTheme.primary.withOpacity(
+                                        0.3,
+                                      ),
+                                    ),
                                   ),
                                   child: Column(
                                     children: [
                                       Text(
                                         BrewezLocalization.tr(
-                                            'pickup_queue_label'),
+                                          'pickup_queue_label',
+                                        ),
                                         style: TextStyle(
                                           fontSize: 10,
                                           fontWeight: FontWeight.bold,
@@ -267,7 +280,9 @@ class ReceiptModalSheet extends StatelessWidget {
                           // Order Metadata
                           Padding(
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 14),
+                              horizontal: 20,
+                              vertical: 14,
+                            ),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -348,7 +363,8 @@ class ReceiptModalSheet extends StatelessWidget {
                                             ),
                                             Text(
                                               BrewezCurrency.format(
-                                                  item.totalPrice),
+                                                item.totalPrice,
+                                              ),
                                               style: const TextStyle(
                                                 fontSize: 14,
                                                 fontWeight: FontWeight.w700,
@@ -365,18 +381,24 @@ class ReceiptModalSheet extends StatelessWidget {
                                           runSpacing: 4,
                                           children: [
                                             _receiptTag("Size ${item.size}"),
-                                            _receiptTag(item.isHot
-                                                ? BrewezLocalization.tr(
-                                                    'hot_badge')
-                                                : BrewezLocalization.tr(
-                                                    'iced_badge')),
                                             _receiptTag(
-                                                "${item.sweetness}% ${BrewezLocalization.tr('sugar_label')}"),
+                                              item.isHot
+                                                  ? BrewezLocalization.tr(
+                                                    'hot_badge',
+                                                  )
+                                                  : BrewezLocalization.tr(
+                                                    'iced_badge',
+                                                  ),
+                                            ),
+                                            _receiptTag(
+                                              "${item.sweetness}% ${BrewezLocalization.tr('sugar_label')}",
+                                            ),
                                             ...item.selectedAddons.map((a) {
                                               final model = CoffeeAddonModel
                                                   .allAddons
                                                   .firstWhere(
-                                                      (m) => m.type == a);
+                                                    (m) => m.type == a,
+                                                  );
                                               return _receiptTag(
                                                 "+${BrewezLocalization.tr(model.translationKeyName)}",
                                                 isAddon: true,
@@ -456,15 +478,19 @@ class ReceiptModalSheet extends StatelessWidget {
                                     ),
                                     Container(
                                       padding: const EdgeInsets.symmetric(
-                                          horizontal: 8, vertical: 3),
+                                        horizontal: 8,
+                                        vertical: 3,
+                                      ),
                                       decoration: BoxDecoration(
-                                        color: BrewezTheme.primary
-                                            .withOpacity(0.08),
+                                        color: BrewezTheme.primary.withOpacity(
+                                          0.08,
+                                        ),
                                         borderRadius: BorderRadius.circular(6),
                                       ),
                                       child: Text(
                                         _formatPaymentMethodName(
-                                            order.paymentType),
+                                          order.paymentType,
+                                        ),
                                         style: const TextStyle(
                                           fontSize: 11,
                                           fontWeight: FontWeight.bold,
@@ -482,7 +508,9 @@ class ReceiptModalSheet extends StatelessWidget {
                           Container(
                             width: double.infinity,
                             padding: const EdgeInsets.symmetric(
-                                vertical: 16, horizontal: 20),
+                              vertical: 16,
+                              horizontal: 20,
+                            ),
                             decoration: BoxDecoration(
                               color: const Color(0xFFFBFBFC),
                               borderRadius: const BorderRadius.vertical(
@@ -494,14 +522,17 @@ class ReceiptModalSheet extends StatelessWidget {
                                 // Simulated Barcode Lines
                                 Container(
                                   height: 48,
-                                  padding:
-                                      const EdgeInsets.symmetric(horizontal: 10),
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 10,
+                                  ),
                                   child: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceEvenly,
                                     children: List.generate(36, (i) {
                                       final isThick =
-                                          i % 3 == 0 || i % 7 == 0 || i % 5 == 0;
+                                          i % 3 == 0 ||
+                                          i % 7 == 0 ||
+                                          i % 5 == 0;
                                       return Container(
                                         width: isThick ? 3.5 : 1.5,
                                         height: 40,
@@ -543,26 +574,7 @@ class ReceiptModalSheet extends StatelessWidget {
                       children: [
                         Expanded(
                           child: OutlinedButton.icon(
-                            onPressed: () {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Row(
-                                    children: [
-                                      const Icon(Icons.check_circle_rounded,
-                                          color: Colors.white),
-                                      const SizedBox(width: 8),
-                                      Text(BrewezLocalization.tr(
-                                          'receipt_saved_toast')),
-                                    ],
-                                  ),
-                                  backgroundColor: BrewezTheme.primary,
-                                  behavior: SnackBarBehavior.floating,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                ),
-                              );
-                            },
+                            onPressed: () => _showReceiptSavedDialog(context),
                             icon: const Icon(Icons.download_rounded, size: 18),
                             label: Text(
                               BrewezLocalization.tr('download_receipt_btn'),
@@ -665,9 +677,10 @@ class ReceiptModalSheet extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
       decoration: BoxDecoration(
-        color: isAddon
-            ? BrewezTheme.primary.withOpacity(0.08)
-            : Colors.grey.shade100,
+        color:
+            isAddon
+                ? BrewezTheme.primary.withOpacity(0.08)
+                : Colors.grey.shade100,
         borderRadius: BorderRadius.circular(6),
       ),
       child: Text(
@@ -702,6 +715,147 @@ class ReceiptModalSheet extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+
+  void _showReceiptSavedDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (dialogContext) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(24),
+          ),
+          elevation: 0,
+          backgroundColor: Colors.white,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 26),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // Success Badge with Pulse / Soft glow
+                Container(
+                  width: 70,
+                  height: 70,
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFE8F5E9),
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: const Color(0xFF81C784).withOpacity(0.5),
+                      width: 2,
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.green.withOpacity(0.18),
+                        blurRadius: 18,
+                        spreadRadius: 2,
+                      ),
+                    ],
+                  ),
+                  child: const Center(
+                    child: Icon(
+                      Icons.check_circle_rounded,
+                      color: Color(0xFF2E7D32),
+                      size: 42,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 18),
+
+                // Title
+                Text(
+                  BrewezLocalization.tr('receipt_saved_dialog_title'),
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: BrewezTheme.textDark,
+                  ),
+                ),
+                const SizedBox(height: 8),
+
+                // Description
+                Text(
+                  BrewezLocalization.tr('receipt_saved_dialog_desc'),
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 13,
+                    color: Colors.grey.shade600,
+                    height: 1.4,
+                  ),
+                ),
+                const SizedBox(height: 16),
+
+                // Order Ticket Summary Chip
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 10,
+                  ),
+                  decoration: BoxDecoration(
+                    color: BrewezTheme.primary.withOpacity(0.08),
+                    borderRadius: BorderRadius.circular(14),
+                    border: Border.all(
+                      color: BrewezTheme.primary.withOpacity(0.2),
+                    ),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Icon(
+                        Icons.confirmation_number_outlined,
+                        size: 16,
+                        color: BrewezTheme.primary,
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        "${BrewezLocalization.tr('pickup_queue_label')}: ${order.queueNumber}",
+                        style: const TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.bold,
+                          color: BrewezTheme.primary,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 22),
+
+                // Button Kembali ke Menu Utama
+                SizedBox(
+                  width: double.infinity,
+                  height: 48,
+                  child: ElevatedButton.icon(
+                    onPressed: () {
+                      Navigator.pop(dialogContext); // Close dialog
+                      Navigator.pop(context); // Close receipt modal sheet
+                      onDone();
+                    },
+                    icon: const Icon(Icons.home_rounded, size: 18),
+                    label: Text(
+                      BrewezLocalization.tr('back_to_home_btn'),
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: BrewezTheme.primary,
+                      foregroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(14),
+                      ),
+                      elevation: 2,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }
