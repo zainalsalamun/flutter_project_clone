@@ -511,14 +511,17 @@ class _PaymentModalSheetState extends State<PaymentModalSheet>
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
-                              BrewezLocalization.tr('total_payment'),
-                              style: const TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
-                                color: BrewezTheme.textDark,
+                            Expanded(
+                              child: Text(
+                                BrewezLocalization.tr('total_payment'),
+                                style: const TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                  color: BrewezTheme.textDark,
+                                ),
                               ),
                             ),
+                            const SizedBox(width: 8),
                             Text(
                               BrewezCurrency.format(_totalPayment),
                               style: const TextStyle(
@@ -612,22 +615,28 @@ class _PaymentModalSheetState extends State<PaymentModalSheet>
                           : Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Row(
-                                children: [
-                                  const Icon(
-                                    Icons.lock_outline_rounded,
-                                    size: 18,
-                                  ),
-                                  const SizedBox(width: 8),
-                                  Text(
-                                    BrewezLocalization.tr('pay_now_btn'),
-                                    style: const TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
+                              Expanded(
+                                child: Row(
+                                  children: [
+                                    const Icon(
+                                      Icons.lock_outline_rounded,
+                                      size: 18,
                                     ),
-                                  ),
-                                ],
+                                    const SizedBox(width: 8),
+                                    Expanded(
+                                      child: Text(
+                                        BrewezLocalization.tr('pay_now_btn'),
+                                        style: const TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
+                              const SizedBox(width: 8),
                               Text(
                                 BrewezCurrency.format(_totalPayment),
                                 style: const TextStyle(
@@ -771,14 +780,19 @@ class _PaymentModalSheetState extends State<PaymentModalSheet>
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    BrewezLocalization.tr('qris_merchant'),
-                    style: const TextStyle(
-                      fontSize: 11,
-                      fontWeight: FontWeight.bold,
-                      color: BrewezTheme.textDark,
+                  Expanded(
+                    child: Text(
+                      BrewezLocalization.tr('qris_merchant'),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        fontSize: 11,
+                        fontWeight: FontWeight.bold,
+                        color: BrewezTheme.textDark,
+                      ),
                     ),
                   ),
+                  const SizedBox(width: 8),
                   Container(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 8,
@@ -947,14 +961,18 @@ class _PaymentModalSheetState extends State<PaymentModalSheet>
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
-                    vaNumber,
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w900,
-                      letterSpacing: 1.0,
+                  const Expanded(
+                    child: Text(
+                      vaNumber,
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w900,
+                        letterSpacing: 1.0,
+                      ),
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
+                  const SizedBox(width: 8),
                   GestureDetector(
                     onTap: () {
                       Clipboard.setData(const ClipboardData(text: vaNumber));
@@ -1036,12 +1054,15 @@ class _PaymentModalSheetState extends State<PaymentModalSheet>
                     color: BrewezTheme.primary,
                   ),
                   const SizedBox(width: 8),
-                  Text(
-                    'Nomor Akun: 0812-****-8899',
-                    style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.grey.shade700,
+                  Expanded(
+                    child: Text(
+                      'Nomor Akun: 0812-****-8899',
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.grey.shade700,
+                      ),
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
                 ],
@@ -1112,14 +1133,17 @@ class _PaymentModalSheetState extends State<PaymentModalSheet>
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(
-          label,
-          style: TextStyle(
-            fontSize: 13,
-            color: isGreen ? Colors.green.shade700 : Colors.grey.shade600,
-            fontWeight: isGreen ? FontWeight.w600 : FontWeight.normal,
+        Expanded(
+          child: Text(
+            label,
+            style: TextStyle(
+              fontSize: 13,
+              color: isGreen ? Colors.green.shade700 : Colors.grey.shade600,
+              fontWeight: isGreen ? FontWeight.w600 : FontWeight.normal,
+            ),
           ),
         ),
+        const SizedBox(width: 8),
         Text(
           value,
           style: TextStyle(
