@@ -67,27 +67,29 @@ class DiagnosticsBloc extends Bloc<DiagnosticsBlocEvent, DiagnosticsBlocState> {
       isDeveloperMode: isDeveloperMode,
     );
 
-    emit(state.copyWith(
-      status: DiagnosticsStatus.success,
-      currentEvent: liveEvent,
-      dbEntity: entity,
-      networkInfo: netInfo,
-      displaySpecs: collector.displaySpecs,
-      sensorsCatalog: collector.sensorsCatalog,
-      locationCarrier: locData,
-      compassHeading: locationService.currentHeading,
-      osVersion: osVer,
-      osBuild: osBuild,
-      isRooted: isRooted,
-      isDeveloperMode: isDeveloperMode,
-      isMockLocation: collector.isMockLocation,
-      isEmulator: collector.isEmulator,
-      hasBiometricHardware: collector.hasBiometricHardware,
-      isBiometricEnrolled: collector.isBiometricEnrolled,
-      isVpnActive: collector.isVpnActive,
-      captureCount: 1,
-      successMessage: "Telemetry loaded directly from device hardware!",
-    ));
+    emit(
+      state.copyWith(
+        status: DiagnosticsStatus.success,
+        currentEvent: liveEvent,
+        dbEntity: entity,
+        networkInfo: netInfo,
+        displaySpecs: collector.displaySpecs,
+        sensorsCatalog: collector.sensorsCatalog,
+        locationCarrier: locData,
+        compassHeading: locationService.currentHeading,
+        osVersion: osVer,
+        osBuild: osBuild,
+        isRooted: isRooted,
+        isDeveloperMode: isDeveloperMode,
+        isMockLocation: collector.isMockLocation,
+        isEmulator: collector.isEmulator,
+        hasBiometricHardware: collector.hasBiometricHardware,
+        isBiometricEnrolled: collector.isBiometricEnrolled,
+        isVpnActive: collector.isVpnActive,
+        captureCount: 1,
+        successMessage: "Telemetry loaded directly from device hardware!",
+      ),
+    );
   }
 
   Future<void> _onScanLiveDeviceHardware(
@@ -112,27 +114,29 @@ class DiagnosticsBloc extends Bloc<DiagnosticsBlocEvent, DiagnosticsBlocState> {
       isDeveloperMode: isDeveloperMode,
     );
 
-    emit(state.copyWith(
-      status: DiagnosticsStatus.success,
-      currentEvent: liveEvent,
-      dbEntity: entity,
-      networkInfo: netInfo,
-      displaySpecs: collector.displaySpecs,
-      sensorsCatalog: collector.sensorsCatalog,
-      locationCarrier: locData,
-      compassHeading: locationService.currentHeading,
-      osVersion: osVer,
-      osBuild: osBuild,
-      isRooted: isRooted,
-      isDeveloperMode: isDeveloperMode,
-      isMockLocation: collector.isMockLocation,
-      isEmulator: collector.isEmulator,
-      hasBiometricHardware: collector.hasBiometricHardware,
-      isBiometricEnrolled: collector.isBiometricEnrolled,
-      isVpnActive: collector.isVpnActive,
-      captureCount: state.captureCount + 1,
-      successMessage: "Rescanned live device metrics, battery & network!",
-    ));
+    emit(
+      state.copyWith(
+        status: DiagnosticsStatus.success,
+        currentEvent: liveEvent,
+        dbEntity: entity,
+        networkInfo: netInfo,
+        displaySpecs: collector.displaySpecs,
+        sensorsCatalog: collector.sensorsCatalog,
+        locationCarrier: locData,
+        compassHeading: locationService.currentHeading,
+        osVersion: osVer,
+        osBuild: osBuild,
+        isRooted: isRooted,
+        isDeveloperMode: isDeveloperMode,
+        isMockLocation: collector.isMockLocation,
+        isEmulator: collector.isEmulator,
+        hasBiometricHardware: collector.hasBiometricHardware,
+        isBiometricEnrolled: collector.isBiometricEnrolled,
+        isVpnActive: collector.isVpnActive,
+        captureCount: state.captureCount + 1,
+        successMessage: "Rescanned live device metrics, battery & network!",
+      ),
+    );
   }
 
   Future<void> _onRegenerateDeviceId(
@@ -154,12 +158,14 @@ class DiagnosticsBloc extends Bloc<DiagnosticsBlocEvent, DiagnosticsBlocState> {
       isDeveloperMode: isDeveloperMode,
     );
 
-    emit(state.copyWith(
-      status: DiagnosticsStatus.success,
-      currentEvent: freshEvent,
-      dbEntity: entity,
-      successMessage: "Hardware SHA-256 Device ID recalculated!",
-    ));
+    emit(
+      state.copyWith(
+        status: DiagnosticsStatus.success,
+        currentEvent: freshEvent,
+        dbEntity: entity,
+        successMessage: "Hardware SHA-256 Device ID recalculated!",
+      ),
+    );
   }
 
   void _onToggleDeviceIdMask(
@@ -169,10 +175,7 @@ class DiagnosticsBloc extends Bloc<DiagnosticsBlocEvent, DiagnosticsBlocState> {
     emit(state.copyWith(isDeviceIdMasked: !state.isDeviceIdMasked));
   }
 
-  void _onClearLogs(
-    ClearLogsEvent event,
-    Emitter<DiagnosticsBlocState> emit,
-  ) {
+  void _onClearLogs(ClearLogsEvent event, Emitter<DiagnosticsBlocState> emit) {
     logger.clear();
     logger.info("SYSTEM", "Debug logs cleared by user");
   }
@@ -192,13 +195,16 @@ class DiagnosticsBloc extends Bloc<DiagnosticsBlocEvent, DiagnosticsBlocState> {
   ) async {
     emit(state.copyWith(isTestingPing: true));
     final updatedInfo = await networkService.checkCurrentNetwork();
-    emit(state.copyWith(
-      isTestingPing: false,
-      networkInfo: updatedInfo,
-      successMessage: updatedInfo.isOnline
-          ? "Ping Latency: ${updatedInfo.latencyMs} ms"
-          : "Network is Offline / No Internet",
-    ));
+    emit(
+      state.copyWith(
+        isTestingPing: false,
+        networkInfo: updatedInfo,
+        successMessage:
+            updatedInfo.isOnline
+                ? "Ping Latency: ${updatedInfo.latencyMs} ms"
+                : "Network is Offline / No Internet",
+      ),
+    );
   }
 
   void _onSimulateBadConnection(
@@ -207,12 +213,15 @@ class DiagnosticsBloc extends Bloc<DiagnosticsBlocEvent, DiagnosticsBlocState> {
   ) {
     networkService.simulateBadConnection();
     final updatedInfo = networkService.currentInfo;
-    emit(state.copyWith(
-      networkInfo: updatedInfo,
-      successMessage: updatedInfo.isBadConnection
-          ? "⚠️ Mode Simulasi: Koneksi Jelek / High Ping Diaktifkan!"
-          : "✅ Koneksi dinormalkan kembali ke status asli!",
-    ));
+    emit(
+      state.copyWith(
+        networkInfo: updatedInfo,
+        successMessage:
+            updatedInfo.isBadConnection
+                ? "⚠️ Mode Simulasi: Koneksi Jelek / High Ping Diaktifkan!"
+                : "✅ Koneksi dinormalkan kembali ke status asli!",
+      ),
+    );
   }
 
   void _onCompassHeadingChanged(
@@ -240,10 +249,12 @@ class DiagnosticsBloc extends Bloc<DiagnosticsBlocEvent, DiagnosticsBlocState> {
         break;
     }
     final loc = locationService.currentData;
-    emit(state.copyWith(
-      locationCarrier: loc,
-      successMessage: "Simulasi Geotagging: ${loc.conditionTitle}",
-    ));
+    emit(
+      state.copyWith(
+        locationCarrier: loc,
+        successMessage: "Simulasi Geotagging: ${loc.conditionTitle}",
+      ),
+    );
   }
 
   Future<void> _onResetGeotaggingSimulation(
@@ -251,10 +262,13 @@ class DiagnosticsBloc extends Bloc<DiagnosticsBlocEvent, DiagnosticsBlocState> {
     Emitter<DiagnosticsBlocState> emit,
   ) async {
     final loc = await locationService.resetSimulation();
-    emit(state.copyWith(
-      locationCarrier: loc,
-      successMessage: "✅ Status Geotagging GPS & Jaringan Seluler dinormalkan!",
-    ));
+    emit(
+      state.copyWith(
+        locationCarrier: loc,
+        successMessage:
+            "✅ Status Geotagging GPS & Jaringan Seluler dinormalkan!",
+      ),
+    );
   }
 
   @override
