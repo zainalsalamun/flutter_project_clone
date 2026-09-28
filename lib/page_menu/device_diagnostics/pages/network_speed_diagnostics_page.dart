@@ -15,13 +15,15 @@ class NetworkSpeedDiagnosticsPage extends StatefulWidget {
 class _NetworkSpeedDiagnosticsPageState
     extends State<NetworkSpeedDiagnosticsPage>
     with SingleTickerProviderStateMixin {
-  final NetworkSpeedTestService _speedService = NetworkSpeedTestService.instance;
+  final NetworkSpeedTestService _speedService =
+      NetworkSpeedTestService.instance;
 
   late TabController _tabController;
 
   // Speedtest State
   bool _isTestingSpeed = false;
-  String _speedTestStage = "Siap untuk menguji"; // "Ping", "Download", "Upload", "Done"
+  String _speedTestStage =
+      "Siap untuk menguji"; // "Ping", "Download", "Upload", "Done"
   double _currentGaugeMbps = 0.0;
   double _downloadMbps = 0.0;
   double _uploadMbps = 0.0;
@@ -195,39 +197,39 @@ class _NetworkSpeedDiagnosticsPageState
 
     _speedService
         .scanLocalSubnet(
-      localIp: _wifiInfo.localIp,
-      gatewayIp: _wifiInfo.gateway,
-      onProgress: (scanned, total) {
-        if (mounted) {
-          setState(() {
-            _lanScannedCount = scanned;
-            _lanScanProgress = scanned / total.toDouble();
-          });
-        }
-      },
-    )
+          localIp: _wifiInfo.localIp,
+          gatewayIp: _wifiInfo.gateway,
+          onProgress: (scanned, total) {
+            if (mounted) {
+              setState(() {
+                _lanScannedCount = scanned;
+                _lanScanProgress = scanned / total.toDouble();
+              });
+            }
+          },
+        )
         .listen(
-      (device) {
-        if (mounted) {
-          setState(() {
-            _discoveredLanDevices.add(device);
-          });
-        }
-      },
-      onDone: () {
-        if (mounted) {
-          setState(() {
-            _isScanningLan = false;
-            _lanScanProgress = 1.0;
-          });
-        }
-      },
-      onError: (_) {
-        if (mounted) {
-          setState(() => _isScanningLan = false);
-        }
-      },
-    );
+          (device) {
+            if (mounted) {
+              setState(() {
+                _discoveredLanDevices.add(device);
+              });
+            }
+          },
+          onDone: () {
+            if (mounted) {
+              setState(() {
+                _isScanningLan = false;
+                _lanScanProgress = 1.0;
+              });
+            }
+          },
+          onError: (_) {
+            if (mounted) {
+              setState(() => _isScanningLan = false);
+            }
+          },
+        );
   }
 
   @override
@@ -238,7 +240,11 @@ class _NetworkSpeedDiagnosticsPageState
         backgroundColor: const Color(0xFF0F172A),
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white, size: 18),
+          icon: const Icon(
+            Icons.arrow_back_ios_new_rounded,
+            color: Colors.white,
+            size: 18,
+          ),
           onPressed: () => Navigator.pop(context),
         ),
         title: Column(
@@ -246,7 +252,11 @@ class _NetworkSpeedDiagnosticsPageState
           children: [
             const Text(
               "Network & Speed Diagnostics",
-              style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.white),
+              style: TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
             ),
             Text(
               _wifiInfo.isConnected
@@ -273,10 +283,16 @@ class _NetworkSpeedDiagnosticsPageState
           indicatorWeight: 3,
           labelColor: const Color(0xFF38BDF8),
           unselectedLabelColor: const Color(0xFF94A3B8),
-          labelStyle: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold),
+          labelStyle: const TextStyle(
+            fontSize: 11,
+            fontWeight: FontWeight.bold,
+          ),
           tabs: const [
             Tab(icon: Icon(Icons.speed_rounded, size: 18), text: "Speedtest"),
-            Tab(icon: Icon(Icons.wifi_rounded, size: 18), text: "Wi-Fi Analyzer"),
+            Tab(
+              icon: Icon(Icons.wifi_rounded, size: 18),
+              text: "Wi-Fi Analyzer",
+            ),
             Tab(icon: Icon(Icons.lan_rounded, size: 18), text: "LAN Scanner"),
             Tab(icon: Icon(Icons.public_rounded, size: 18), text: "Web Health"),
           ],
@@ -324,16 +340,21 @@ class _NetworkSpeedDiagnosticsPageState
             children: [
               // Stage Pill
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 4,
+                ),
                 decoration: BoxDecoration(
-                  color: _isTestingSpeed
-                      ? const Color(0xFF38BDF8).withOpacity(0.2)
-                      : const Color(0xFF334155),
+                  color:
+                      _isTestingSpeed
+                          ? const Color(0xFF38BDF8).withOpacity(0.2)
+                          : const Color(0xFF334155),
                   borderRadius: BorderRadius.circular(20),
                   border: Border.all(
-                    color: _isTestingSpeed
-                        ? const Color(0xFF38BDF8)
-                        : const Color(0xFF64748B),
+                    color:
+                        _isTestingSpeed
+                            ? const Color(0xFF38BDF8)
+                            : const Color(0xFF64748B),
                   ),
                 ),
                 child: Row(
@@ -343,7 +364,10 @@ class _NetworkSpeedDiagnosticsPageState
                       const SizedBox(
                         width: 10,
                         height: 10,
-                        child: CircularProgressIndicator(strokeWidth: 2, color: Color(0xFF38BDF8)),
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          color: Color(0xFF38BDF8),
+                        ),
                       ),
                       const SizedBox(width: 6),
                     ],
@@ -352,7 +376,10 @@ class _NetworkSpeedDiagnosticsPageState
                       style: TextStyle(
                         fontSize: 11,
                         fontWeight: FontWeight.bold,
-                        color: _isTestingSpeed ? const Color(0xFF38BDF8) : const Color(0xFF94A3B8),
+                        color:
+                            _isTestingSpeed
+                                ? const Color(0xFF38BDF8)
+                                : const Color(0xFF94A3B8),
                       ),
                     ),
                   ],
@@ -404,19 +431,23 @@ class _NetworkSpeedDiagnosticsPageState
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.end,
-                    children: _liveSpeedHistory.map((val) {
-                      final maxVal = _liveSpeedHistory.reduce(math.max);
-                      final h = maxVal > 0 ? (val / maxVal * 32.0).clamp(4.0, 32.0) : 4.0;
-                      return Container(
-                        width: 4,
-                        height: h,
-                        margin: const EdgeInsets.symmetric(horizontal: 1.5),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFF38BDF8),
-                          borderRadius: BorderRadius.circular(2),
-                        ),
-                      );
-                    }).toList(),
+                    children:
+                        _liveSpeedHistory.map((val) {
+                          final maxVal = _liveSpeedHistory.reduce(math.max);
+                          final h =
+                              maxVal > 0
+                                  ? (val / maxVal * 32.0).clamp(4.0, 32.0)
+                                  : 4.0;
+                          return Container(
+                            width: 4,
+                            height: h,
+                            margin: const EdgeInsets.symmetric(horizontal: 1.5),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFF38BDF8),
+                              borderRadius: BorderRadius.circular(2),
+                            ),
+                          );
+                        }).toList(),
                   ),
                 ),
 
@@ -430,19 +461,30 @@ class _NetworkSpeedDiagnosticsPageState
                     backgroundColor: const Color(0xFF0284C7),
                     foregroundColor: Colors.white,
                     padding: const EdgeInsets.symmetric(vertical: 13),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                     elevation: 4,
                   ),
-                  icon: _isTestingSpeed
-                      ? const SizedBox(
-                          width: 16,
-                          height: 16,
-                          child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
-                        )
-                      : const Icon(Icons.play_arrow_rounded, size: 20),
+                  icon:
+                      _isTestingSpeed
+                          ? const SizedBox(
+                            width: 16,
+                            height: 16,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              color: Colors.white,
+                            ),
+                          )
+                          : const Icon(Icons.play_arrow_rounded, size: 20),
                   label: Text(
-                    _isTestingSpeed ? "Sedang Menguji Kecepatan..." : "Mulai Uji Kecepatan",
-                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
+                    _isTestingSpeed
+                        ? "Sedang Menguji Kecepatan..."
+                        : "Mulai Uji Kecepatan",
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 13,
+                    ),
                   ),
                   onPressed: _isTestingSpeed ? null : _startFullSpeedTest,
                 ),
@@ -505,7 +547,10 @@ class _NetworkSpeedDiagnosticsPageState
             Expanded(
               child: _buildMetricTile(
                 icon: Icons.layers_clear_rounded,
-                color: _packetLoss > 0 ? const Color(0xFFEF4444) : const Color(0xFF06B6D4),
+                color:
+                    _packetLoss > 0
+                        ? const Color(0xFFEF4444)
+                        : const Color(0xFF06B6D4),
                 label: "LOSS",
                 value: "${_packetLoss.toStringAsFixed(0)}%",
                 sub: "Packet Drop",
@@ -530,7 +575,11 @@ class _NetworkSpeedDiagnosticsPageState
               children: [
                 const Row(
                   children: [
-                    Icon(Icons.stars_rounded, color: Color(0xFFF59E0B), size: 18),
+                    Icon(
+                      Icons.stars_rounded,
+                      color: Color(0xFFF59E0B),
+                      size: 18,
+                    ),
                     SizedBox(width: 6),
                     Text(
                       "PENILAIAN KELAYAKAN KONEKSI",
@@ -596,7 +645,11 @@ class _NetworkSpeedDiagnosticsPageState
               Expanded(
                 child: Text(
                   label,
-                  style: TextStyle(fontSize: 9.5, color: color, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                    fontSize: 9.5,
+                    color: color,
+                    fontWeight: FontWeight.bold,
+                  ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -606,7 +659,11 @@ class _NetworkSpeedDiagnosticsPageState
           const SizedBox(height: 6),
           Text(
             value,
-            style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.white),
+            style: const TextStyle(
+              fontSize: 13,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
@@ -645,12 +702,19 @@ class _NetworkSpeedDiagnosticsPageState
             children: [
               Text(
                 title,
-                style: const TextStyle(color: Color(0xFF94A3B8), fontSize: 10.5),
+                style: const TextStyle(
+                  color: Color(0xFF94A3B8),
+                  fontSize: 10.5,
+                ),
               ),
               const SizedBox(height: 1),
               Text(
                 rating,
-                style: TextStyle(color: color, fontSize: 11.5, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  color: color,
+                  fontSize: 11.5,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ],
           ),
@@ -664,7 +728,9 @@ class _NetworkSpeedDiagnosticsPageState
   // ==========================================
   Widget _buildWifiAnalyzerTab() {
     if (_isLoadingWifi) {
-      return const Center(child: CircularProgressIndicator(color: Color(0xFF38BDF8)));
+      return const Center(
+        child: CircularProgressIndicator(color: Color(0xFF38BDF8)),
+      );
     }
 
     final rssi = _wifiInfo.rssi;
@@ -694,7 +760,11 @@ class _NetworkSpeedDiagnosticsPageState
                   Expanded(
                     child: Row(
                       children: [
-                        const Icon(Icons.wifi_rounded, color: Color(0xFF38BDF8), size: 20),
+                        const Icon(
+                          Icons.wifi_rounded,
+                          color: Color(0xFF38BDF8),
+                          size: 20,
+                        ),
                         const SizedBox(width: 8),
                         Expanded(
                           child: Text(
@@ -713,11 +783,16 @@ class _NetworkSpeedDiagnosticsPageState
                   ),
                   const SizedBox(width: 8),
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 3,
+                    ),
                     decoration: BoxDecoration(
                       color: const Color(0xFF38BDF8).withOpacity(0.15),
                       borderRadius: BorderRadius.circular(6),
-                      border: Border.all(color: const Color(0xFF38BDF8).withOpacity(0.4)),
+                      border: Border.all(
+                        color: const Color(0xFF38BDF8).withOpacity(0.4),
+                      ),
                     ),
                     child: Text(
                       _wifiInfo.band,
@@ -744,7 +819,10 @@ class _NetworkSpeedDiagnosticsPageState
                           children: [
                             Text(
                               "Kekuatan Sinyal: $rssi dBm ($level%)",
-                              style: const TextStyle(color: Color(0xFF94A3B8), fontSize: 11),
+                              style: const TextStyle(
+                                color: Color(0xFF94A3B8),
+                                fontSize: 11,
+                              ),
                             ),
                             Text(
                               _wifiInfo.signalQualityText,
@@ -765,7 +843,9 @@ class _NetworkSpeedDiagnosticsPageState
                             valueColor: AlwaysStoppedAnimation<Color>(
                               rssi >= -65
                                   ? const Color(0xFF10B981)
-                                  : (rssi >= -75 ? const Color(0xFFF59E0B) : const Color(0xFFEF4444)),
+                                  : (rssi >= -75
+                                      ? const Color(0xFFF59E0B)
+                                      : const Color(0xFFEF4444)),
                             ),
                             minHeight: 8,
                           ),
@@ -802,11 +882,23 @@ class _NetworkSpeedDiagnosticsPageState
                 ),
               ),
               const SizedBox(height: 12),
-              _buildNetworkDetailRow("Link Speed (Max Throughput)", "${_wifiInfo.linkSpeedMbps} Mbps"),
-              _buildNetworkDetailRow("Frekuensi Radio", "${_wifiInfo.frequencyMhz} MHz (${_wifiInfo.band})"),
+              _buildNetworkDetailRow(
+                "Link Speed (Max Throughput)",
+                "${_wifiInfo.linkSpeedMbps} Mbps",
+              ),
+              _buildNetworkDetailRow(
+                "Frekuensi Radio",
+                "${_wifiInfo.frequencyMhz} MHz (${_wifiInfo.band})",
+              ),
               _buildNetworkDetailRow("BSSID (Router MAC)", _wifiInfo.bssid),
-              _buildNetworkDetailRow("Alamat IP Lokal (IPv4)", _wifiInfo.localIp),
-              _buildNetworkDetailRow("Default Gateway / Router IP", _wifiInfo.gateway),
+              _buildNetworkDetailRow(
+                "Alamat IP Lokal (IPv4)",
+                _wifiInfo.localIp,
+              ),
+              _buildNetworkDetailRow(
+                "Default Gateway / Router IP",
+                _wifiInfo.gateway,
+              ),
               _buildNetworkDetailRow("Primary DNS (DNS 1)", _wifiInfo.dns1),
               _buildNetworkDetailRow("Secondary DNS (DNS 2)", _wifiInfo.dns2),
               _buildNetworkDetailRow("Subnet Mask", _wifiInfo.netmask),
@@ -839,7 +931,11 @@ class _NetworkSpeedDiagnosticsPageState
                       letterSpacing: 0.6,
                     ),
                   ),
-                  Icon(Icons.data_usage_rounded, color: Color(0xFF10B981), size: 16),
+                  Icon(
+                    Icons.data_usage_rounded,
+                    color: Color(0xFF10B981),
+                    size: 16,
+                  ),
                 ],
               ),
               const SizedBox(height: 12),
@@ -957,12 +1053,19 @@ class _NetworkSpeedDiagnosticsPageState
                       children: [
                         Text(
                           "LAN Subnet Scanner",
-                          style: TextStyle(color: Colors.white, fontSize: 13.5, fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 13.5,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                         SizedBox(height: 2),
                         Text(
                           "Pindai perangkat aktif & open port di Wi-Fi lokal",
-                          style: TextStyle(color: Color(0xFF94A3B8), fontSize: 10.5),
+                          style: TextStyle(
+                            color: Color(0xFF94A3B8),
+                            fontSize: 10.5,
+                          ),
                         ),
                       ],
                     ),
@@ -972,19 +1075,31 @@ class _NetworkSpeedDiagnosticsPageState
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFF0284C7),
                       foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 8,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
                     ),
-                    icon: _isScanningLan
-                        ? const SizedBox(
-                            width: 12,
-                            height: 12,
-                            child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
-                          )
-                        : const Icon(Icons.radar_rounded, size: 15),
+                    icon:
+                        _isScanningLan
+                            ? const SizedBox(
+                              width: 12,
+                              height: 12,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                                color: Colors.white,
+                              ),
+                            )
+                            : const Icon(Icons.radar_rounded, size: 15),
                     label: Text(
                       _isScanningLan ? "Scanning..." : "Pindai LAN",
-                      style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold),
+                      style: const TextStyle(
+                        fontSize: 11,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     onPressed: _isScanningLan ? null : _startLanScan,
                   ),
@@ -997,11 +1112,18 @@ class _NetworkSpeedDiagnosticsPageState
                   children: [
                     Text(
                       "Scanning IP $_lanScannedCount / 254...",
-                      style: const TextStyle(color: Color(0xFF38BDF8), fontSize: 10.5),
+                      style: const TextStyle(
+                        color: Color(0xFF38BDF8),
+                        fontSize: 10.5,
+                      ),
                     ),
                     Text(
                       "${(_lanScanProgress * 100).toInt()}%",
-                      style: const TextStyle(color: Color(0xFF38BDF8), fontSize: 10.5, fontWeight: FontWeight.bold),
+                      style: const TextStyle(
+                        color: Color(0xFF38BDF8),
+                        fontSize: 10.5,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ],
                 ),
@@ -1011,7 +1133,9 @@ class _NetworkSpeedDiagnosticsPageState
                   child: LinearProgressIndicator(
                     value: _lanScanProgress,
                     backgroundColor: const Color(0xFF0F172A),
-                    valueColor: const AlwaysStoppedAnimation<Color>(Color(0xFF38BDF8)),
+                    valueColor: const AlwaysStoppedAnimation<Color>(
+                      Color(0xFF38BDF8),
+                    ),
                     minHeight: 6,
                   ),
                 ),
@@ -1061,11 +1185,19 @@ class _NetworkSpeedDiagnosticsPageState
             ),
             child: Column(
               children: [
-                const Icon(Icons.lan_outlined, size: 36, color: Color(0xFF64748B)),
+                const Icon(
+                  Icons.lan_outlined,
+                  size: 36,
+                  color: Color(0xFF64748B),
+                ),
                 const SizedBox(height: 8),
                 const Text(
                   "Belum Ada Perangkat Dipindai",
-                  style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 13),
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 13,
+                  ),
                 ),
                 const SizedBox(height: 4),
                 const Text(
@@ -1090,7 +1222,8 @@ class _NetworkSpeedDiagnosticsPageState
         color: const Color(0xFF0F172A),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: dev.isGateway ? const Color(0xFF38BDF8) : const Color(0xFF334155),
+          color:
+              dev.isGateway ? const Color(0xFF38BDF8) : const Color(0xFF334155),
         ),
       ),
       child: Row(
@@ -1098,15 +1231,18 @@ class _NetworkSpeedDiagnosticsPageState
           Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: dev.isGateway
-                  ? const Color(0xFF38BDF8).withOpacity(0.2)
-                  : const Color(0xFF334155),
+              color:
+                  dev.isGateway
+                      ? const Color(0xFF38BDF8).withOpacity(0.2)
+                      : const Color(0xFF334155),
               shape: BoxShape.circle,
             ),
             child: Icon(
               dev.isGateway
                   ? Icons.router_rounded
-                  : (dev.openPorts.contains(80) ? Icons.dns_rounded : Icons.computer_rounded),
+                  : (dev.openPorts.contains(80)
+                      ? Icons.dns_rounded
+                      : Icons.computer_rounded),
               color: dev.isGateway ? const Color(0xFF38BDF8) : Colors.white70,
               size: 18,
             ),
@@ -1130,14 +1266,21 @@ class _NetworkSpeedDiagnosticsPageState
                     if (dev.isGateway) ...[
                       const SizedBox(width: 6),
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1.5),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 5,
+                          vertical: 1.5,
+                        ),
                         decoration: BoxDecoration(
                           color: const Color(0xFF38BDF8),
                           borderRadius: BorderRadius.circular(4),
                         ),
                         child: const Text(
                           "GATEWAY",
-                          style: TextStyle(fontSize: 8.5, fontWeight: FontWeight.bold, color: Colors.black),
+                          style: TextStyle(
+                            fontSize: 8.5,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
                         ),
                       ),
                     ],
@@ -1146,7 +1289,10 @@ class _NetworkSpeedDiagnosticsPageState
                 const SizedBox(height: 2),
                 Text(
                   "${dev.deviceType} • Latency ${dev.responseTimeMs} ms",
-                  style: const TextStyle(color: Color(0xFF94A3B8), fontSize: 10),
+                  style: const TextStyle(
+                    color: Color(0xFF94A3B8),
+                    fontSize: 10,
+                  ),
                 ),
               ],
             ),
@@ -1154,24 +1300,30 @@ class _NetworkSpeedDiagnosticsPageState
           if (dev.openPorts.isNotEmpty)
             Wrap(
               spacing: 3,
-              children: dev.openPorts
-                  .map((p) => Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFF10B981).withOpacity(0.2),
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                        child: Text(
-                          ":$p",
-                          style: const TextStyle(
-                            fontSize: 9,
-                            color: Color(0xFF10B981),
-                            fontWeight: FontWeight.bold,
-                            fontFamily: 'monospace',
+              children:
+                  dev.openPorts
+                      .map(
+                        (p) => Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 5,
+                            vertical: 2,
+                          ),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFF10B981).withOpacity(0.2),
+                            borderRadius: BorderRadius.circular(4),
+                          ),
+                          child: Text(
+                            ":$p",
+                            style: const TextStyle(
+                              fontSize: 9,
+                              color: Color(0xFF10B981),
+                              fontWeight: FontWeight.bold,
+                              fontFamily: 'monospace',
+                            ),
                           ),
                         ),
-                      ))
-                  .toList(),
+                      )
+                      .toList(),
             ),
         ],
       ),
@@ -1202,25 +1354,39 @@ class _NetworkSpeedDiagnosticsPageState
                   children: [
                     Text(
                       "Cloud & Web Services Health",
-                      style: TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 13,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     SizedBox(height: 2),
                     Text(
                       "Pemeriksaan responsivitas & HTTP latency CDN/Cloud",
-                      style: TextStyle(color: Color(0xFF94A3B8), fontSize: 10.5),
+                      style: TextStyle(
+                        color: Color(0xFF94A3B8),
+                        fontSize: 10.5,
+                      ),
                     ),
                   ],
                 ),
               ),
               const SizedBox(width: 8),
               IconButton(
-                icon: _isLoadingWebServices
-                    ? const SizedBox(
-                        width: 16,
-                        height: 16,
-                        child: CircularProgressIndicator(strokeWidth: 2, color: Color(0xFF38BDF8)),
-                      )
-                    : const Icon(Icons.refresh_rounded, color: Color(0xFF38BDF8)),
+                icon:
+                    _isLoadingWebServices
+                        ? const SizedBox(
+                          width: 16,
+                          height: 16,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: Color(0xFF38BDF8),
+                          ),
+                        )
+                        : const Icon(
+                          Icons.refresh_rounded,
+                          color: Color(0xFF38BDF8),
+                        ),
                 onPressed: _isLoadingWebServices ? null : _checkWebServices,
               ),
             ],
@@ -1230,10 +1396,12 @@ class _NetworkSpeedDiagnosticsPageState
         const SizedBox(height: 14),
 
         if (_webServices.isEmpty && _isLoadingWebServices)
-          const Center(child: Padding(
-            padding: EdgeInsets.all(32),
-            child: CircularProgressIndicator(color: Color(0xFF38BDF8)),
-          ))
+          const Center(
+            child: Padding(
+              padding: EdgeInsets.all(32),
+              child: CircularProgressIndicator(color: Color(0xFF38BDF8)),
+            ),
+          )
         else
           ..._webServices.map((ws) => _buildWebServiceCard(ws)),
       ],
@@ -1248,9 +1416,10 @@ class _NetworkSpeedDiagnosticsPageState
         color: const Color(0xFF0F172A),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: ws.isReachable
-              ? const Color(0xFF10B981).withOpacity(0.4)
-              : const Color(0xFFEF4444).withOpacity(0.4),
+          color:
+              ws.isReachable
+                  ? const Color(0xFF10B981).withOpacity(0.4)
+                  : const Color(0xFFEF4444).withOpacity(0.4),
         ),
       ),
       child: Row(
@@ -1258,14 +1427,18 @@ class _NetworkSpeedDiagnosticsPageState
           Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: ws.isReachable
-                  ? const Color(0xFF10B981).withOpacity(0.15)
-                  : const Color(0xFFEF4444).withOpacity(0.15),
+              color:
+                  ws.isReachable
+                      ? const Color(0xFF10B981).withOpacity(0.15)
+                      : const Color(0xFFEF4444).withOpacity(0.15),
               shape: BoxShape.circle,
             ),
             child: Icon(
               ws.isReachable ? Icons.check_circle_rounded : Icons.error_rounded,
-              color: ws.isReachable ? const Color(0xFF10B981) : const Color(0xFFEF4444),
+              color:
+                  ws.isReachable
+                      ? const Color(0xFF10B981)
+                      : const Color(0xFFEF4444),
               size: 18,
             ),
           ),
@@ -1276,12 +1449,20 @@ class _NetworkSpeedDiagnosticsPageState
               children: [
                 Text(
                   ws.name,
-                  style: const TextStyle(color: Colors.white, fontSize: 12.5, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 12.5,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 const SizedBox(height: 2),
                 Text(
                   ws.host,
-                  style: const TextStyle(color: Color(0xFF94A3B8), fontSize: 10, fontFamily: 'monospace'),
+                  style: const TextStyle(
+                    color: Color(0xFF94A3B8),
+                    fontSize: 10,
+                    fontFamily: 'monospace',
+                  ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -1294,7 +1475,10 @@ class _NetworkSpeedDiagnosticsPageState
               Text(
                 "${ws.latencyMs} ms",
                 style: TextStyle(
-                  color: ws.isReachable ? const Color(0xFF10B981) : const Color(0xFFEF4444),
+                  color:
+                      ws.isReachable
+                          ? const Color(0xFF10B981)
+                          : const Color(0xFFEF4444),
                   fontSize: 12,
                   fontWeight: FontWeight.bold,
                   fontFamily: 'monospace',
@@ -1324,11 +1508,12 @@ class _SpeedGaugePainter extends CustomPainter {
     final radius = size.width / 2.3;
 
     // Track arc
-    final trackPaint = Paint()
-      ..color = const Color(0xFF1E293B)
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 14
-      ..strokeCap = StrokeCap.round;
+    final trackPaint =
+        Paint()
+          ..color = const Color(0xFF1E293B)
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = 14
+          ..strokeCap = StrokeCap.round;
 
     canvas.drawArc(
       Rect.fromCircle(center: center, radius: radius),
@@ -1343,13 +1528,14 @@ class _SpeedGaugePainter extends CustomPainter {
     final sweepAngle = math.pi * progress;
 
     if (sweepAngle > 0) {
-      final activePaint = Paint()
-        ..shader = const LinearGradient(
-          colors: [Color(0xFF0284C7), Color(0xFF38BDF8), Color(0xFF10B981)],
-        ).createShader(Rect.fromCircle(center: center, radius: radius))
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = 14
-        ..strokeCap = StrokeCap.round;
+      final activePaint =
+          Paint()
+            ..shader = const LinearGradient(
+              colors: [Color(0xFF0284C7), Color(0xFF38BDF8), Color(0xFF10B981)],
+            ).createShader(Rect.fromCircle(center: center, radius: radius))
+            ..style = PaintingStyle.stroke
+            ..strokeWidth = 14
+            ..strokeCap = StrokeCap.round;
 
       canvas.drawArc(
         Rect.fromCircle(center: center, radius: radius),

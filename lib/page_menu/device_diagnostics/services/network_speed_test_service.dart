@@ -53,8 +53,9 @@ class SpeedTestSummary {
 
   String get gamingGrade {
     if (pingMs <= 0) return "-";
-    if (pingMs < 30 && jitterMs < 5 && packetLossPercent == 0)
+    if (pingMs < 30 && jitterMs < 5 && packetLossPercent == 0) {
       return "A+ (Ultra Low Latency)";
+    }
     if (pingMs < 60 && jitterMs < 12) return "A (Competitive Ready)";
     if (pingMs < 110) return "B (Playable)";
     if (pingMs < 180) return "C (Noticeable Lag)";
@@ -72,8 +73,9 @@ class SpeedTestSummary {
 
   String get videoCallGrade {
     if (downloadMbps <= 0 || uploadMbps <= 0) return "-";
-    if (downloadMbps >= 10 && uploadMbps >= 5 && pingMs < 80)
+    if (downloadMbps >= 10 && uploadMbps >= 5 && pingMs < 80) {
       return "HD Group Conference (Excellent)";
+    }
     if (downloadMbps >= 4 && uploadMbps >= 2) return "1:1 HD Video Call (Good)";
     return "Audio Only / Low Quality";
   }
