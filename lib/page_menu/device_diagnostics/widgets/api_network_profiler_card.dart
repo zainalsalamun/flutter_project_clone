@@ -166,11 +166,16 @@ class _ApiNetworkProfilerCardState extends State<ApiNetworkProfilerCard> {
                 const SizedBox(width: 8),
                 // Total Bandwidth Pill
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 4),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 9,
+                    vertical: 4,
+                  ),
                   decoration: BoxDecoration(
                     color: const Color(0xFF0284C7).withOpacity(0.12),
                     borderRadius: BorderRadius.circular(20),
-                    border: Border.all(color: const Color(0xFF0284C7).withOpacity(0.3)),
+                    border: Border.all(
+                      color: const Color(0xFF0284C7).withOpacity(0.3),
+                    ),
                   ),
                   child: Text(
                     "Data: ${_summary.formattedTotalBandwidth}",
@@ -206,7 +211,11 @@ class _ApiNetworkProfilerCardState extends State<ApiNetworkProfilerCard> {
                         ),
                         child: Row(
                           children: [
-                            const Icon(Icons.download_rounded, color: Color(0xFF16A34A), size: 18),
+                            const Icon(
+                              Icons.download_rounded,
+                              color: Color(0xFF16A34A),
+                              size: 18,
+                            ),
                             const SizedBox(width: 8),
                             Expanded(
                               child: Column(
@@ -250,7 +259,11 @@ class _ApiNetworkProfilerCardState extends State<ApiNetworkProfilerCard> {
                         ),
                         child: Row(
                           children: [
-                            const Icon(Icons.upload_rounded, color: Color(0xFF0284C7), size: 18),
+                            const Icon(
+                              Icons.upload_rounded,
+                              color: Color(0xFF0284C7),
+                              size: 18,
+                            ),
                             const SizedBox(width: 8),
                             Expanded(
                               child: Column(
@@ -305,7 +318,10 @@ class _ApiNetworkProfilerCardState extends State<ApiNetworkProfilerCard> {
                       onTap: _isBenchmarking ? null : _runAllBenchmarks,
                       borderRadius: BorderRadius.circular(6),
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 6,
+                          vertical: 2,
+                        ),
                         child: Row(
                           children: [
                             if (_isBenchmarking)
@@ -318,7 +334,11 @@ class _ApiNetworkProfilerCardState extends State<ApiNetworkProfilerCard> {
                                 ),
                               )
                             else
-                              const Icon(Icons.refresh_rounded, size: 14, color: Color(0xFF0284C7)),
+                              const Icon(
+                                Icons.refresh_rounded,
+                                size: 14,
+                                color: Color(0xFF0284C7),
+                              ),
                             const SizedBox(width: 4),
                             const Text(
                               "Uji Ulang",
@@ -342,7 +362,9 @@ class _ApiNetworkProfilerCardState extends State<ApiNetworkProfilerCard> {
                   const Center(
                     child: Padding(
                       padding: EdgeInsets.all(16),
-                      child: CircularProgressIndicator(color: Color(0xFF0284C7)),
+                      child: CircularProgressIndicator(
+                        color: Color(0xFF0284C7),
+                      ),
                     ),
                   )
                 else
@@ -378,20 +400,33 @@ class _ApiNetworkProfilerCardState extends State<ApiNetworkProfilerCard> {
                               height: 38,
                               child: TextField(
                                 controller: _customUrlController,
-                                style: const TextStyle(fontSize: 11.5, fontFamily: 'monospace'),
+                                style: const TextStyle(
+                                  fontSize: 11.5,
+                                  fontFamily: 'monospace',
+                                ),
                                 decoration: InputDecoration(
                                   hintText: "https://api.domain-anda.com/ping",
-                                  hintStyle: const TextStyle(fontSize: 11, color: Color(0xFF94A3B8)),
-                                  contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                                  hintStyle: const TextStyle(
+                                    fontSize: 11,
+                                    color: Color(0xFF94A3B8),
+                                  ),
+                                  contentPadding: const EdgeInsets.symmetric(
+                                    horizontal: 10,
+                                    vertical: 8,
+                                  ),
                                   filled: true,
                                   fillColor: Colors.white,
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(8),
-                                    borderSide: const BorderSide(color: Color(0xFFCBD5E1)),
+                                    borderSide: const BorderSide(
+                                      color: Color(0xFFCBD5E1),
+                                    ),
                                   ),
                                   enabledBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(8),
-                                    borderSide: const BorderSide(color: Color(0xFFCBD5E1)),
+                                    borderSide: const BorderSide(
+                                      color: Color(0xFFCBD5E1),
+                                    ),
                                   ),
                                 ),
                               ),
@@ -404,25 +439,32 @@ class _ApiNetworkProfilerCardState extends State<ApiNetworkProfilerCard> {
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: const Color(0xFF0284C7),
                                 foregroundColor: Colors.white,
-                                padding: const EdgeInsets.symmetric(horizontal: 14),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 14,
+                                ),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(8),
                                 ),
                               ),
-                              onPressed: _isCustomTesting ? null : _testCustomUrl,
-                              child: _isCustomTesting
-                                  ? const SizedBox(
-                                      width: 14,
-                                      height: 14,
-                                      child: CircularProgressIndicator(
-                                        strokeWidth: 2,
-                                        color: Colors.white,
+                              onPressed:
+                                  _isCustomTesting ? null : _testCustomUrl,
+                              child:
+                                  _isCustomTesting
+                                      ? const SizedBox(
+                                        width: 14,
+                                        height: 14,
+                                        child: CircularProgressIndicator(
+                                          strokeWidth: 2,
+                                          color: Colors.white,
+                                        ),
+                                      )
+                                      : const Text(
+                                        "Test",
+                                        style: TextStyle(
+                                          fontSize: 11.5,
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                       ),
-                                    )
-                                  : const Text(
-                                      "Test",
-                                      style: TextStyle(fontSize: 11.5, fontWeight: FontWeight.bold),
-                                    ),
                             ),
                           ),
                         ],
@@ -454,10 +496,7 @@ class _ApiNetworkProfilerCardState extends State<ApiNetworkProfilerCard> {
           Container(
             width: 8,
             height: 8,
-            decoration: BoxDecoration(
-              color: latColor,
-              shape: BoxShape.circle,
-            ),
+            decoration: BoxDecoration(color: latColor, shape: BoxShape.circle),
           ),
           const SizedBox(width: 8),
           Expanded(
@@ -507,14 +546,21 @@ class _ApiNetworkProfilerCardState extends State<ApiNetworkProfilerCard> {
                 children: [
                   if (ep.isGzipCompressed) ...[
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 1),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 4,
+                        vertical: 1,
+                      ),
                       decoration: BoxDecoration(
                         color: const Color(0xFF0284C7).withOpacity(0.12),
                         borderRadius: BorderRadius.circular(3),
                       ),
                       child: const Text(
                         "GZIP",
-                        style: TextStyle(fontSize: 7.5, fontWeight: FontWeight.bold, color: Color(0xFF0284C7)),
+                        style: TextStyle(
+                          fontSize: 7.5,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF0284C7),
+                        ),
                       ),
                     ),
                     const SizedBox(width: 4),
@@ -524,7 +570,10 @@ class _ApiNetworkProfilerCardState extends State<ApiNetworkProfilerCard> {
                     style: TextStyle(
                       fontSize: 9,
                       fontWeight: FontWeight.w600,
-                      color: ep.isSuccess ? const Color(0xFF64748B) : const Color(0xFFEF4444),
+                      color:
+                          ep.isSuccess
+                              ? const Color(0xFF64748B)
+                              : const Color(0xFFEF4444),
                     ),
                   ),
                 ],

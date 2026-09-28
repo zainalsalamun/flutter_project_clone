@@ -130,7 +130,10 @@ class _FpsJankMonitorCardState extends State<FpsJankMonitorCard> {
                 const SizedBox(width: 8),
                 // Live Pulse Pill
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 4,
+                  ),
                   decoration: BoxDecoration(
                     color: fpsColor.withOpacity(0.12),
                     borderRadius: BorderRadius.circular(20),
@@ -227,9 +230,14 @@ class _FpsJankMonitorCardState extends State<FpsJankMonitorCard> {
                           const SizedBox(width: 8),
                           Flexible(
                             child: Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8,
+                                vertical: 4,
+                              ),
                               decoration: BoxDecoration(
-                                color: const Color(0xFF38BDF8).withOpacity(0.15),
+                                color: const Color(
+                                  0xFF38BDF8,
+                                ).withOpacity(0.15),
                                 borderRadius: BorderRadius.circular(6),
                               ),
                               child: Text(
@@ -282,9 +290,10 @@ class _FpsJankMonitorCardState extends State<FpsJankMonitorCard> {
                     Expanded(
                       child: _buildMetricTile(
                         icon: Icons.layers_clear_rounded,
-                        color: _snapshot.jankFramesCount > 0
-                            ? const Color(0xFFF59E0B)
-                            : const Color(0xFF10B981),
+                        color:
+                            _snapshot.jankFramesCount > 0
+                                ? const Color(0xFFF59E0B)
+                                : const Color(0xFF10B981),
                         title: "Frame Drops",
                         value: "${_snapshot.jankFramesCount} Frame",
                         subtitle: "Drop (> 16ms)",
@@ -328,13 +337,20 @@ class _FpsJankMonitorCardState extends State<FpsJankMonitorCard> {
                               letterSpacing: 0.6,
                             ),
                           ),
-                          Icon(Icons.swipe_rounded, color: Color(0xFF0284C7), size: 14),
+                          Icon(
+                            Icons.swipe_rounded,
+                            color: Color(0xFF0284C7),
+                            size: 14,
+                          ),
                         ],
                       ),
                       const SizedBox(height: 4),
                       const Text(
                         "Usap daftar di bawah ini secara cepat untuk menguji respons FPS rendering layar:",
-                        style: TextStyle(fontSize: 10, color: Color(0xFF64748B)),
+                        style: TextStyle(
+                          fontSize: 10,
+                          color: Color(0xFF64748B),
+                        ),
                       ),
                       const SizedBox(height: 8),
                       SizedBox(
@@ -347,11 +363,19 @@ class _FpsJankMonitorCardState extends State<FpsJankMonitorCard> {
                             return Container(
                               width: 110,
                               margin: const EdgeInsets.only(right: 8),
-                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 10,
+                                vertical: 8,
+                              ),
                               decoration: BoxDecoration(
                                 gradient: LinearGradient(
                                   colors: [
-                                    Color((0xFF0284C7 + (idx * 0x000508)).clamp(0, 0xFFFFFFFF)),
+                                    Color(
+                                      (0xFF0284C7 + (idx * 0x000508)).clamp(
+                                        0,
+                                        0xFFFFFFFF,
+                                      ),
+                                    ),
                                     const Color(0xFF0F172A),
                                   ],
                                   begin: Alignment.topLeft,
@@ -403,12 +427,18 @@ class _FpsJankMonitorCardState extends State<FpsJankMonitorCard> {
                     TextButton.icon(
                       style: TextButton.styleFrom(
                         foregroundColor: const Color(0xFF64748B),
-                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 6,
+                        ),
                       ),
                       icon: const Icon(Icons.refresh_rounded, size: 15),
                       label: const Text(
                         "Reset Statistik",
-                        style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                          fontSize: 11,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                       onPressed: () {
                         _fpsService.resetStats();
@@ -450,21 +480,25 @@ class _FpsJankMonitorCardState extends State<FpsJankMonitorCard> {
       padding: const EdgeInsets.symmetric(horizontal: 4),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.end,
-        children: frames.take(40).map((f) {
-          final barColor = _getFrameTimingBarColor(f);
-          final h = (f.totalDurationMs / maxScaleMs * 34.0).clamp(4.0, 34.0);
+        children:
+            frames.take(40).map((f) {
+              final barColor = _getFrameTimingBarColor(f);
+              final h = (f.totalDurationMs / maxScaleMs * 34.0).clamp(
+                4.0,
+                34.0,
+              );
 
-          return Expanded(
-            child: Container(
-              height: h,
-              margin: const EdgeInsets.symmetric(horizontal: 1),
-              decoration: BoxDecoration(
-                color: barColor,
-                borderRadius: BorderRadius.circular(2),
-              ),
-            ),
-          );
-        }).toList(),
+              return Expanded(
+                child: Container(
+                  height: h,
+                  margin: const EdgeInsets.symmetric(horizontal: 1),
+                  decoration: BoxDecoration(
+                    color: barColor,
+                    borderRadius: BorderRadius.circular(2),
+                  ),
+                ),
+              );
+            }).toList(),
       ),
     );
   }

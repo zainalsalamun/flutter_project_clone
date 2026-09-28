@@ -68,7 +68,9 @@ class _SchemaMappingViewState extends State<SchemaMappingView>
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
             decoration: const BoxDecoration(
-              border: Border(bottom: BorderSide(color: DiagnosticsColors.divider)),
+              border: Border(
+                bottom: BorderSide(color: DiagnosticsColors.divider),
+              ),
             ),
             child: TabBar(
               controller: _tabController,
@@ -100,8 +102,12 @@ class _SchemaMappingViewState extends State<SchemaMappingView>
                   code: widget.event.toPrettyJson(),
                   language: "json",
                   title: "device_diagnostics (Event Payload)",
-                  onCopy: () => _copy(
-                      context, widget.event.toPrettyJson(), "Event JSON"),
+                  onCopy:
+                      () => _copy(
+                        context,
+                        widget.event.toPrettyJson(),
+                        "Event JSON",
+                      ),
                 ),
 
                 // Tab 2: Database Table Schema & Entity
@@ -109,8 +115,12 @@ class _SchemaMappingViewState extends State<SchemaMappingView>
                   code: widget.entity.toPrettyJson(),
                   language: "json",
                   title: "user_device_diagnostics (Table Row Map)",
-                  onCopy: () => _copy(
-                      context, widget.entity.toPrettyJson(), "DB Entity JSON"),
+                  onCopy:
+                      () => _copy(
+                        context,
+                        widget.entity.toPrettyJson(),
+                        "DB Entity JSON",
+                      ),
                 ),
 
                 // Tab 3: SQL Statement
@@ -118,8 +128,12 @@ class _SchemaMappingViewState extends State<SchemaMappingView>
                   code: widget.entity.toSqlInsertStatement(),
                   language: "sql",
                   title: "INSERT INTO user_device_diagnostics",
-                  onCopy: () => _copy(
-                      context, widget.entity.toSqlInsertStatement(), "SQL Insert"),
+                  onCopy:
+                      () => _copy(
+                        context,
+                        widget.entity.toSqlInsertStatement(),
+                        "SQL Insert",
+                      ),
                 ),
               ],
             ),
@@ -164,8 +178,11 @@ class _CodeViewer extends StatelessWidget {
                 ),
               ),
               IconButton(
-                icon: const Icon(Icons.copy_rounded,
-                    size: 16, color: Colors.white70),
+                icon: const Icon(
+                  Icons.copy_rounded,
+                  size: 16,
+                  color: Colors.white70,
+                ),
                 onPressed: onCopy,
                 padding: EdgeInsets.zero,
                 constraints: const BoxConstraints(),

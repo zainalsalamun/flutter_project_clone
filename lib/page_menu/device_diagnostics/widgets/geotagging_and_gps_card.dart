@@ -53,10 +53,16 @@ class _GeotaggingAndGpsCardState extends State<GeotaggingAndGpsCard> {
     }
   }
 
-  Future<void> _openCameraCapture(BuildContext context, ImageSource source) async {
+  Future<void> _openCameraCapture(
+    BuildContext context,
+    ImageSource source,
+  ) async {
     // 1. Verify Permission Status (ACCESS_FINE_LOCATION & CAMERA)
-    final status = await LocationAndCarrierService.instance.checkLocationStatus();
-    final bool isLocGranted = status['isLocationGranted'] == true || widget.locationCarrier.isLocationPermissionGranted;
+    final status =
+        await LocationAndCarrierService.instance.checkLocationStatus();
+    final bool isLocGranted =
+        status['isLocationGranted'] == true ||
+        widget.locationCarrier.isLocationPermissionGranted;
     if (!isLocGranted) {
       if (context.mounted) {
         await GeotagPermissionDialogs.showPermissionRequiredDialog(
@@ -70,7 +76,8 @@ class _GeotaggingAndGpsCardState extends State<GeotaggingAndGpsCard> {
     }
 
     // 2. Verify GPS Hardware Status (Must be active/ON)
-    final bool isGpsOn = status['isGpsEnabled'] == true || widget.locationCarrier.isGpsEnabled;
+    final bool isGpsOn =
+        status['isGpsEnabled'] == true || widget.locationCarrier.isGpsEnabled;
     if (!isGpsOn) {
       if (context.mounted) {
         await GeotagPermissionDialogs.showGpsRequiredDialog(
@@ -99,10 +106,11 @@ class _GeotaggingAndGpsCardState extends State<GeotaggingAndGpsCard> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => CameraGeotagPreviewPage(
-            initialPhoto: photo,
-            locationData: widget.locationCarrier,
-          ),
+          builder:
+              (context) => CameraGeotagPreviewPage(
+                initialPhoto: photo,
+                locationData: widget.locationCarrier,
+              ),
         ),
       ).then((_) {
         setState(() {
@@ -118,10 +126,11 @@ class _GeotaggingAndGpsCardState extends State<GeotaggingAndGpsCard> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => CameraGeotagPreviewPage(
-          initialPhoto: _recentPhoto,
-          locationData: widget.locationCarrier,
-        ),
+        builder:
+            (context) => CameraGeotagPreviewPage(
+              initialPhoto: _recentPhoto,
+              locationData: widget.locationCarrier,
+            ),
       ),
     ).then((_) {
       setState(() {
@@ -134,9 +143,7 @@ class _GeotaggingAndGpsCardState extends State<GeotaggingAndGpsCard> {
   void _openSqliteGallery(BuildContext context) {
     Navigator.push(
       context,
-      MaterialPageRoute(
-        builder: (context) => const SavedGeotagPhotosPage(),
-      ),
+      MaterialPageRoute(builder: (context) => const SavedGeotagPhotosPage()),
     ).then((_) => _refreshSqliteCount());
   }
 
@@ -173,16 +180,18 @@ class _GeotaggingAndGpsCardState extends State<GeotaggingAndGpsCard> {
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
-          color: isOptimal
-              ? const Color(0xFFE2E8F0)
-              : conditionColor.withOpacity(0.4),
+          color:
+              isOptimal
+                  ? const Color(0xFFE2E8F0)
+                  : conditionColor.withOpacity(0.4),
           width: isOptimal ? 1.0 : 1.5,
         ),
         boxShadow: [
           BoxShadow(
-            color: isOptimal
-                ? const Color(0xFF0F172A).withOpacity(0.04)
-                : conditionColor.withOpacity(0.08),
+            color:
+                isOptimal
+                    ? const Color(0xFF0F172A).withOpacity(0.04)
+                    : conditionColor.withOpacity(0.08),
             blurRadius: 18,
             offset: const Offset(0, 6),
           ),
@@ -237,13 +246,17 @@ class _GeotaggingAndGpsCardState extends State<GeotaggingAndGpsCard> {
                   ),
                 ),
                 Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 5,
+                  ),
                   decoration: BoxDecoration(
                     color: conditionColor.withOpacity(0.12),
                     borderRadius: BorderRadius.circular(20),
                     border: Border.all(
-                        color: conditionColor.withOpacity(0.3), width: 1),
+                      color: conditionColor.withOpacity(0.3),
+                      width: 1,
+                    ),
                   ),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
@@ -251,7 +264,9 @@ class _GeotaggingAndGpsCardState extends State<GeotaggingAndGpsCard> {
                       Icon(conditionIcon, size: 12, color: conditionColor),
                       const SizedBox(width: 4),
                       Text(
-                        isOptimal ? "OPTIMAL" : (isMock ? "FRAUD" : "PERINGATAN"),
+                        isOptimal
+                            ? "OPTIMAL"
+                            : (isMock ? "FRAUD" : "PERINGATAN"),
                         style: TextStyle(
                           fontSize: 10,
                           fontWeight: FontWeight.bold,
@@ -268,7 +283,10 @@ class _GeotaggingAndGpsCardState extends State<GeotaggingAndGpsCard> {
 
             // 2. Geotagging Condition Alert Banner ("Kondisi Geotagging Tidak Sesuai")
             _buildGeotaggingConditionBanner(
-                context, conditionColor, conditionIcon),
+              context,
+              conditionColor,
+              conditionIcon,
+            ),
             const SizedBox(height: 16),
 
             // 3. 📸 CAMERA GEOTAGGING CAPTURE & WATERMARK SECTION
@@ -363,20 +381,23 @@ class _GeotaggingAndGpsCardState extends State<GeotaggingAndGpsCard> {
                   onTap: () => _openSqliteGallery(context),
                   borderRadius: BorderRadius.circular(20),
                   child: Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 4,
+                    ),
                     decoration: BoxDecoration(
                       color: Colors.white.withOpacity(0.2),
                       borderRadius: BorderRadius.circular(20),
-                      border: Border.all(
-                        color: Colors.white.withOpacity(0.35),
-                      ),
+                      border: Border.all(color: Colors.white.withOpacity(0.35)),
                     ),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        const Icon(Icons.storage_rounded,
-                            size: 11, color: Colors.white),
+                        const Icon(
+                          Icons.storage_rounded,
+                          size: 11,
+                          color: Colors.white,
+                        ),
                         const SizedBox(width: 4),
                         Text(
                           "$_savedSqliteCount SQLite",
@@ -404,9 +425,7 @@ class _GeotaggingAndGpsCardState extends State<GeotaggingAndGpsCard> {
                   decoration: BoxDecoration(
                     color: Colors.black.withOpacity(0.25),
                     borderRadius: BorderRadius.circular(12),
-                    border: Border.all(
-                      color: Colors.white.withOpacity(0.2),
-                    ),
+                    border: Border.all(color: Colors.white.withOpacity(0.2)),
                   ),
                   child: Row(
                     children: [
@@ -459,16 +478,20 @@ class _GeotaggingAndGpsCardState extends State<GeotaggingAndGpsCard> {
                                   const SizedBox(width: 4),
                                   Container(
                                     padding: const EdgeInsets.symmetric(
-                                        horizontal: 4, vertical: 1.5),
+                                      horizontal: 4,
+                                      vertical: 1.5,
+                                    ),
                                     decoration: BoxDecoration(
-                                      color: const Color(0xFF10B981)
-                                          .withOpacity(0.25),
+                                      color: const Color(
+                                        0xFF10B981,
+                                      ).withOpacity(0.25),
                                       borderRadius: BorderRadius.circular(4),
                                     ),
                                     child: Text(
                                       _recentPhoto!.formattedSavings.isNotEmpty
                                           ? "-${_recentPhoto!.formattedSavings}"
-                                          : _recentPhoto!.formattedCompressedSize,
+                                          : _recentPhoto!
+                                              .formattedCompressedSize,
                                       style: const TextStyle(
                                         color: Color(0xFF6EE7B7),
                                         fontSize: 8.5,
@@ -551,16 +574,17 @@ class _GeotaggingAndGpsCardState extends State<GeotaggingAndGpsCard> {
                         borderRadius: BorderRadius.circular(10),
                       ),
                     ),
-                    icon: _isCapturing
-                        ? const SizedBox(
-                            width: 14,
-                            height: 14,
-                            child: CircularProgressIndicator(
-                              strokeWidth: 2,
-                              color: Color(0xFF0369A1),
-                            ),
-                          )
-                        : const Icon(Icons.camera_alt_rounded, size: 16),
+                    icon:
+                        _isCapturing
+                            ? const SizedBox(
+                              width: 14,
+                              height: 14,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                                color: Color(0xFF0369A1),
+                              ),
+                            )
+                            : const Icon(Icons.camera_alt_rounded, size: 16),
                     label: Text(
                       _isCapturing ? "Membaca GPS..." : "Ambil Foto Kamera",
                       style: const TextStyle(
@@ -568,9 +592,11 @@ class _GeotaggingAndGpsCardState extends State<GeotaggingAndGpsCard> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    onPressed: _isCapturing
-                        ? null
-                        : () => _openCameraCapture(context, ImageSource.camera),
+                    onPressed:
+                        _isCapturing
+                            ? null
+                            : () =>
+                                _openCameraCapture(context, ImageSource.camera),
                   ),
                 ),
                 const SizedBox(width: 8),
@@ -587,9 +613,11 @@ class _GeotaggingAndGpsCardState extends State<GeotaggingAndGpsCard> {
                     color: Colors.white,
                     size: 18,
                   ),
-                  onPressed: _isCapturing
-                      ? null
-                      : () => _openCameraCapture(context, ImageSource.gallery),
+                  onPressed:
+                      _isCapturing
+                          ? null
+                          : () =>
+                              _openCameraCapture(context, ImageSource.gallery),
                 ),
                 const SizedBox(width: 4),
                 IconButton(
@@ -617,7 +645,10 @@ class _GeotaggingAndGpsCardState extends State<GeotaggingAndGpsCard> {
 
   /// Banner evaluating what happens when geotagging condition is abnormal or optimal
   Widget _buildGeotaggingConditionBanner(
-      BuildContext context, Color color, IconData icon) {
+    BuildContext context,
+    Color color,
+    IconData icon,
+  ) {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(14),
@@ -679,7 +710,8 @@ class _GeotaggingAndGpsCardState extends State<GeotaggingAndGpsCard> {
               ],
             ),
           ),
-          if (widget.locationCarrier.condition == GeotaggingCondition.gpsDisabled) ...[
+          if (widget.locationCarrier.condition ==
+              GeotaggingCondition.gpsDisabled) ...[
             const SizedBox(height: 10),
             SizedBox(
               width: double.infinity,
@@ -699,11 +731,14 @@ class _GeotaggingAndGpsCardState extends State<GeotaggingAndGpsCard> {
                   style: TextStyle(fontSize: 11.5, fontWeight: FontWeight.bold),
                 ),
                 onPressed: () {
-                  GeotagPermissionDialogs.showGpsRequiredDialog(context: context);
+                  GeotagPermissionDialogs.showGpsRequiredDialog(
+                    context: context,
+                  );
                 },
               ),
             ),
-          ] else if (widget.locationCarrier.condition == GeotaggingCondition.permissionDenied) ...[
+          ] else if (widget.locationCarrier.condition ==
+              GeotaggingCondition.permissionDenied) ...[
             const SizedBox(height: 10),
             SizedBox(
               width: double.infinity,
@@ -723,7 +758,9 @@ class _GeotaggingAndGpsCardState extends State<GeotaggingAndGpsCard> {
                   style: TextStyle(fontSize: 11.5, fontWeight: FontWeight.bold),
                 ),
                 onPressed: () async {
-                  final result = await LocationAndCarrierService.instance.requestLocationPermission();
+                  final result =
+                      await LocationAndCarrierService.instance
+                          .requestLocationPermission();
                   if (result['isLocationGranted'] != true && context.mounted) {
                     await GeotagPermissionDialogs.showPermissionRequiredDialog(
                       context: context,
@@ -785,8 +822,11 @@ class _GeotaggingAndGpsCardState extends State<GeotaggingAndGpsCard> {
                     ),
                     InkWell(
                       onTap: () {
-                        Clipboard.setData(ClipboardData(
-                            text: widget.locationCarrier.formattedCoordinates));
+                        Clipboard.setData(
+                          ClipboardData(
+                            text: widget.locationCarrier.formattedCoordinates,
+                          ),
+                        );
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: Text(
@@ -800,7 +840,9 @@ class _GeotaggingAndGpsCardState extends State<GeotaggingAndGpsCard> {
                       },
                       child: Container(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 6, vertical: 2),
+                          horizontal: 6,
+                          vertical: 2,
+                        ),
                         decoration: BoxDecoration(
                           color: const Color(0xFF334155),
                           borderRadius: BorderRadius.circular(6),
@@ -808,8 +850,11 @@ class _GeotaggingAndGpsCardState extends State<GeotaggingAndGpsCard> {
                         child: const Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Icon(Icons.copy_rounded,
-                                color: Color(0xFF38BDF8), size: 10),
+                            Icon(
+                              Icons.copy_rounded,
+                              color: Color(0xFF38BDF8),
+                              size: 10,
+                            ),
                             SizedBox(width: 4),
                             Text(
                               "Salin",
@@ -843,8 +888,11 @@ class _GeotaggingAndGpsCardState extends State<GeotaggingAndGpsCard> {
                 const SizedBox(height: 8),
                 Row(
                   children: [
-                    const Icon(Icons.explore_rounded,
-                        color: Color(0xFF38BDF8), size: 14),
+                    const Icon(
+                      Icons.explore_rounded,
+                      color: Color(0xFF38BDF8),
+                      size: 14,
+                    ),
                     const SizedBox(width: 6),
                     Expanded(
                       child: Text(
@@ -892,8 +940,11 @@ class _GeotaggingAndGpsCardState extends State<GeotaggingAndGpsCard> {
                 const Expanded(
                   child: Row(
                     children: [
-                      Icon(Icons.map_rounded,
-                          size: 16, color: Color(0xFF0284C7)),
+                      Icon(
+                        Icons.map_rounded,
+                        size: 16,
+                        color: Color(0xFF0284C7),
+                      ),
                       SizedBox(width: 6),
                       Expanded(
                         child: Text(
@@ -917,23 +968,31 @@ class _GeotaggingAndGpsCardState extends State<GeotaggingAndGpsCard> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => InteractiveGeotagMapPage(
-                          latitude: lat,
-                          longitude: lon,
-                          altitude: widget.locationCarrier.altitudeMeters,
-                          accuracy: widget.locationCarrier.accuracyMeters,
-                          bearing: widget.locationCarrier.bearingDegrees,
-                          address: GeotaggingCameraService.instance.lastCapturedPhoto?.address ??
-                              widget.locationCarrier.formattedCoordinates,
-                          carrier: widget.locationCarrier.carrierName,
-                          locationData: widget.locationCarrier,
-                        ),
+                        builder:
+                            (context) => InteractiveGeotagMapPage(
+                              latitude: lat,
+                              longitude: lon,
+                              altitude: widget.locationCarrier.altitudeMeters,
+                              accuracy: widget.locationCarrier.accuracyMeters,
+                              bearing: widget.locationCarrier.bearingDegrees,
+                              address:
+                                  GeotaggingCameraService
+                                      .instance
+                                      .lastCapturedPhoto
+                                      ?.address ??
+                                  widget.locationCarrier.formattedCoordinates,
+                              carrier: widget.locationCarrier.carrierName,
+                              locationData: widget.locationCarrier,
+                            ),
                       ),
                     );
                   },
                   borderRadius: BorderRadius.circular(6),
                   child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 7,
+                      vertical: 3,
+                    ),
                     decoration: BoxDecoration(
                       color: const Color(0xFF0284C7).withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(6),
@@ -941,8 +1000,11 @@ class _GeotaggingAndGpsCardState extends State<GeotaggingAndGpsCard> {
                     child: const Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Icon(Icons.fullscreen_rounded,
-                            size: 13, color: Color(0xFF0284C7)),
+                        Icon(
+                          Icons.fullscreen_rounded,
+                          size: 13,
+                          color: Color(0xFF0284C7),
+                        ),
                         SizedBox(width: 3),
                         Text(
                           "Peta Penuh",
@@ -973,17 +1035,22 @@ class _GeotaggingAndGpsCardState extends State<GeotaggingAndGpsCard> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => InteractiveGeotagMapPage(
-                      latitude: lat,
-                      longitude: lon,
-                      altitude: widget.locationCarrier.altitudeMeters,
-                      accuracy: widget.locationCarrier.accuracyMeters,
-                      bearing: widget.locationCarrier.bearingDegrees,
-                      address: GeotaggingCameraService.instance.lastCapturedPhoto?.address ??
-                          widget.locationCarrier.formattedCoordinates,
-                      carrier: widget.locationCarrier.carrierName,
-                      locationData: widget.locationCarrier,
-                    ),
+                    builder:
+                        (context) => InteractiveGeotagMapPage(
+                          latitude: lat,
+                          longitude: lon,
+                          altitude: widget.locationCarrier.altitudeMeters,
+                          accuracy: widget.locationCarrier.accuracyMeters,
+                          bearing: widget.locationCarrier.bearingDegrees,
+                          address:
+                              GeotaggingCameraService
+                                  .instance
+                                  .lastCapturedPhoto
+                                  ?.address ??
+                              widget.locationCarrier.formattedCoordinates,
+                          carrier: widget.locationCarrier.carrierName,
+                          locationData: widget.locationCarrier,
+                        ),
                   ),
                 );
               },
@@ -995,8 +1062,11 @@ class _GeotaggingAndGpsCardState extends State<GeotaggingAndGpsCard> {
             padding: const EdgeInsets.fromLTRB(14, 10, 14, 12),
             child: Row(
               children: [
-                const Icon(Icons.pin_drop_outlined,
-                    size: 13, color: Color(0xFF64748B)),
+                const Icon(
+                  Icons.pin_drop_outlined,
+                  size: 13,
+                  color: Color(0xFF64748B),
+                ),
                 const SizedBox(width: 4),
                 Expanded(
                   child: Text(
@@ -1029,7 +1099,9 @@ class _GeotaggingAndGpsCardState extends State<GeotaggingAndGpsCard> {
         shape: BoxShape.circle,
         color: const Color(0xFF0B132B),
         border: Border.all(
-            color: const Color(0xFF38BDF8).withOpacity(0.4), width: 1.5),
+          color: const Color(0xFF38BDF8).withOpacity(0.4),
+          width: 1.5,
+        ),
         boxShadow: [
           BoxShadow(
             color: const Color(0xFF38BDF8).withOpacity(0.12),
@@ -1092,9 +1164,7 @@ class _GeotaggingAndGpsCardState extends State<GeotaggingAndGpsCard> {
             child: SizedBox(
               width: 50,
               height: 50,
-              child: CustomPaint(
-                painter: _CompassNeedlePainter(),
-              ),
+              child: CustomPaint(painter: _CompassNeedlePainter()),
             ),
           ),
 
@@ -1144,9 +1214,10 @@ class _GeotaggingAndGpsCardState extends State<GeotaggingAndGpsCard> {
                 iconColor: accColor,
                 label: "Radius Akurasi",
                 value: widget.locationCarrier.formattedAccuracy,
-                helper: widget.locationCarrier.accuracyMeters <= 25
-                    ? "Presisi Tinggi"
-                    : "Sinyal Melebar",
+                helper:
+                    widget.locationCarrier.accuracyMeters <= 25
+                        ? "Presisi Tinggi"
+                        : "Sinyal Melebar",
                 valueColor: accColor,
               ),
             ),
@@ -1161,9 +1232,10 @@ class _GeotaggingAndGpsCardState extends State<GeotaggingAndGpsCard> {
                 iconColor: const Color(0xFF0EA5E9),
                 label: "Kecepatan (Speed)",
                 value: widget.locationCarrier.formattedSpeed,
-                helper: widget.locationCarrier.speedKmh > 1.0
-                    ? "Bergerak"
-                    : "Diam/Statis",
+                helper:
+                    widget.locationCarrier.speedKmh > 1.0
+                        ? "Bergerak"
+                        : "Diam/Statis",
               ),
             ),
             const SizedBox(width: 10),
@@ -1173,12 +1245,14 @@ class _GeotaggingAndGpsCardState extends State<GeotaggingAndGpsCard> {
                 iconColor: const Color(0xFF6366F1),
                 label: "Provider Lokasi",
                 value: widget.locationCarrier.locationProvider.toUpperCase(),
-                helper: widget.locationCarrier.isLocationMock
-                    ? "MOCK GPS AKTIF"
-                    : "Hardware GPS Chip",
-                valueColor: widget.locationCarrier.isLocationMock
-                    ? const Color(0xFFEF4444)
-                    : const Color(0xFF0F172A),
+                helper:
+                    widget.locationCarrier.isLocationMock
+                        ? "MOCK GPS AKTIF"
+                        : "Hardware GPS Chip",
+                valueColor:
+                    widget.locationCarrier.isLocationMock
+                        ? const Color(0xFFEF4444)
+                        : const Color(0xFF0F172A),
               ),
             ),
           ],
@@ -1237,10 +1311,7 @@ class _GeotaggingAndGpsCardState extends State<GeotaggingAndGpsCard> {
           const SizedBox(height: 2),
           Text(
             helper,
-            style: const TextStyle(
-              fontSize: 9.5,
-              color: Color(0xFF94A3B8),
-            ),
+            style: const TextStyle(fontSize: 9.5, color: Color(0xFF94A3B8)),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
@@ -1269,10 +1340,7 @@ class _GeotaggingAndGpsCardState extends State<GeotaggingAndGpsCard> {
               color: Colors.white,
               shape: BoxShape.circle,
               boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.04),
-                  blurRadius: 4,
-                ),
+                BoxShadow(color: Colors.black.withOpacity(0.04), blurRadius: 4),
               ],
             ),
             child: Icon(
@@ -1303,7 +1371,9 @@ class _GeotaggingAndGpsCardState extends State<GeotaggingAndGpsCard> {
                     const SizedBox(width: 6),
                     Container(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 5, vertical: 1.5),
+                        horizontal: 5,
+                        vertical: 1.5,
+                      ),
                       decoration: BoxDecoration(
                         color: const Color(0xFF0284C7).withOpacity(0.12),
                         borderRadius: BorderRadius.circular(4),
@@ -1333,9 +1403,10 @@ class _GeotaggingAndGpsCardState extends State<GeotaggingAndGpsCard> {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             decoration: BoxDecoration(
-              color: hasSim
-                  ? const Color(0xFF10B981).withOpacity(0.12)
-                  : const Color(0xFF94A3B8).withOpacity(0.12),
+              color:
+                  hasSim
+                      ? const Color(0xFF10B981).withOpacity(0.12)
+                      : const Color(0xFF94A3B8).withOpacity(0.12),
               borderRadius: BorderRadius.circular(6),
             ),
             child: Text(
@@ -1400,22 +1471,28 @@ class _GeotaggingAndGpsCardState extends State<GeotaggingAndGpsCard> {
               label: "Sinyal Lemah (±118m)",
               color: const Color(0xFFF59E0B),
               icon: Icons.signal_cellular_nodata_rounded,
-              onTap: () =>
-                  widget.onSimulateCondition(GeotaggingCondition.weakSignal),
+              onTap:
+                  () => widget.onSimulateCondition(
+                    GeotaggingCondition.weakSignal,
+                  ),
             ),
             _buildSimulationChip(
               label: "GPS Dimatikan (OFF)",
               color: const Color(0xFFEF4444),
               icon: Icons.location_off_rounded,
-              onTap: () =>
-                  widget.onSimulateCondition(GeotaggingCondition.gpsDisabled),
+              onTap:
+                  () => widget.onSimulateCondition(
+                    GeotaggingCondition.gpsDisabled,
+                  ),
             ),
             _buildSimulationChip(
               label: "Fake / Mock GPS",
               color: const Color(0xFFDC2626),
               icon: Icons.gpp_bad_rounded,
-              onTap: () =>
-                  widget.onSimulateCondition(GeotaggingCondition.mockLocation),
+              onTap:
+                  () => widget.onSimulateCondition(
+                    GeotaggingCondition.mockLocation,
+                  ),
             ),
           ],
         ),
@@ -1475,31 +1552,35 @@ class _GeotaggingAndGpsCardState extends State<GeotaggingAndGpsCard> {
 class _CompassNeedlePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
-    final paintNorth = Paint()
-      ..color = const Color(0xFFEF4444)
-      ..style = PaintingStyle.fill;
+    final paintNorth =
+        Paint()
+          ..color = const Color(0xFFEF4444)
+          ..style = PaintingStyle.fill;
 
-    final paintSouth = Paint()
-      ..color = const Color(0xFFE2E8F0)
-      ..style = PaintingStyle.fill;
+    final paintSouth =
+        Paint()
+          ..color = const Color(0xFFE2E8F0)
+          ..style = PaintingStyle.fill;
 
     final centerX = size.width / 2;
     final centerY = size.height / 2;
 
     // North Pointer (Red)
-    final pathNorth = Path()
-      ..moveTo(centerX, 2)
-      ..lineTo(centerX - 4, centerY)
-      ..lineTo(centerX + 4, centerY)
-      ..close();
+    final pathNorth =
+        Path()
+          ..moveTo(centerX, 2)
+          ..lineTo(centerX - 4, centerY)
+          ..lineTo(centerX + 4, centerY)
+          ..close();
     canvas.drawPath(pathNorth, paintNorth);
 
     // South Pointer (Light Grey)
-    final pathSouth = Path()
-      ..moveTo(centerX, size.height - 2)
-      ..lineTo(centerX - 4, centerY)
-      ..lineTo(centerX + 4, centerY)
-      ..close();
+    final pathSouth =
+        Path()
+          ..moveTo(centerX, size.height - 2)
+          ..lineTo(centerX - 4, centerY)
+          ..lineTo(centerX + 4, centerY)
+          ..close();
     canvas.drawPath(pathSouth, paintSouth);
   }
 

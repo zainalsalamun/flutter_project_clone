@@ -38,9 +38,10 @@ class SystemSpecsCard extends StatelessWidget {
         color: DiagnosticsColors.cardBg,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
-          color: hasSecurityThreat
-              ? DiagnosticsColors.danger.withValues(alpha: 0.3)
-              : DiagnosticsColors.border,
+          color:
+              hasSecurityThreat
+                  ? DiagnosticsColors.danger.withValues(alpha: 0.3)
+                  : DiagnosticsColors.border,
         ),
         boxShadow: [
           BoxShadow(
@@ -60,8 +61,11 @@ class SystemSpecsCard extends StatelessWidget {
               const Expanded(
                 child: Row(
                   children: [
-                    Icon(Icons.devices_other_rounded,
-                        size: 18, color: DiagnosticsColors.primary),
+                    Icon(
+                      Icons.devices_other_rounded,
+                      size: 18,
+                      color: DiagnosticsColors.primary,
+                    ),
                     SizedBox(width: 6),
                     Expanded(
                       child: Text(
@@ -82,7 +86,10 @@ class SystemSpecsCard extends StatelessWidget {
               const SizedBox(width: 8),
               Flexible(
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 7,
+                    vertical: 3,
+                  ),
                   decoration: BoxDecoration(
                     color: DiagnosticsColors.primary.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(6),
@@ -174,9 +181,10 @@ class SystemSpecsCard extends StatelessWidget {
               color: DiagnosticsColors.surfaceSubtle,
               borderRadius: BorderRadius.circular(14),
               border: Border.all(
-                color: hasSecurityThreat
-                    ? DiagnosticsColors.dangerBorder
-                    : DiagnosticsColors.border,
+                color:
+                    hasSecurityThreat
+                        ? DiagnosticsColors.dangerBorder
+                        : DiagnosticsColors.border,
               ),
             ),
             child: Column(
@@ -187,8 +195,11 @@ class SystemSpecsCard extends StatelessWidget {
                   children: [
                     const Row(
                       children: [
-                        Icon(Icons.shield_outlined,
-                            size: 15, color: DiagnosticsColors.primary),
+                        Icon(
+                          Icons.shield_outlined,
+                          size: 15,
+                          color: DiagnosticsColors.primary,
+                        ),
                         SizedBox(width: 5),
                         Text(
                           "SECURITY & ANTI-FRAUD AUDIT",
@@ -203,11 +214,18 @@ class SystemSpecsCard extends StatelessWidget {
                     ),
                     Container(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 6, vertical: 2),
+                        horizontal: 6,
+                        vertical: 2,
+                      ),
                       decoration: BoxDecoration(
-                        color: hasSecurityThreat
-                            ? DiagnosticsColors.danger.withValues(alpha: 0.12)
-                            : DiagnosticsColors.success.withValues(alpha: 0.12),
+                        color:
+                            hasSecurityThreat
+                                ? DiagnosticsColors.danger.withValues(
+                                  alpha: 0.12,
+                                )
+                                : DiagnosticsColors.success.withValues(
+                                  alpha: 0.12,
+                                ),
                         borderRadius: BorderRadius.circular(5),
                       ),
                       child: Text(
@@ -215,9 +233,10 @@ class SystemSpecsCard extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 8.5,
                           fontWeight: FontWeight.bold,
-                          color: hasSecurityThreat
-                              ? DiagnosticsColors.danger
-                              : DiagnosticsColors.success,
+                          color:
+                              hasSecurityThreat
+                                  ? DiagnosticsColors.danger
+                                  : DiagnosticsColors.success,
                         ),
                       ),
                     ),
@@ -232,11 +251,13 @@ class SystemSpecsCard extends StatelessWidget {
                     // Fake GPS / Mock Location
                     Expanded(
                       child: _SecurityPill(
-                        icon: isMockLocation
-                            ? Icons.location_off_rounded
-                            : Icons.location_on_rounded,
+                        icon:
+                            isMockLocation
+                                ? Icons.location_off_rounded
+                                : Icons.location_on_rounded,
                         label: "Fake GPS (Mock)",
-                        status: isMockLocation ? "Aktif (Mock)" : "Clean (Aman)",
+                        status:
+                            isMockLocation ? "Aktif (Mock)" : "Clean (Aman)",
                         isDanger: isMockLocation,
                         isWarning: false,
                       ),
@@ -246,9 +267,10 @@ class SystemSpecsCard extends StatelessWidget {
                     // Emulator Detection
                     Expanded(
                       child: _SecurityPill(
-                        icon: isEmulator
-                            ? Icons.developer_board_off_rounded
-                            : Icons.phone_android_rounded,
+                        icon:
+                            isEmulator
+                                ? Icons.developer_board_off_rounded
+                                : Icons.phone_android_rounded,
                         label: "Device Platform",
                         status: isEmulator ? "Emulator / VM" : "Fisik Asli",
                         isDanger: isEmulator,
@@ -265,17 +287,19 @@ class SystemSpecsCard extends StatelessWidget {
                     // Biometric Status
                     Expanded(
                       child: _SecurityPill(
-                        icon: hasBiometricHardware
-                            ? (isBiometricEnrolled
-                                ? Icons.fingerprint_rounded
-                                : Icons.fingerprint_outlined)
-                            : Icons.lock_outline_rounded,
+                        icon:
+                            hasBiometricHardware
+                                ? (isBiometricEnrolled
+                                    ? Icons.fingerprint_rounded
+                                    : Icons.fingerprint_outlined)
+                                : Icons.lock_outline_rounded,
                         label: "Hardware Biometrik",
-                        status: !hasBiometricHardware
-                            ? "Tidak Tersedia"
-                            : (isBiometricEnrolled
-                                ? "Terdaftar (OK)"
-                                : "Belum Didaftar"),
+                        status:
+                            !hasBiometricHardware
+                                ? "Tidak Tersedia"
+                                : (isBiometricEnrolled
+                                    ? "Terdaftar (OK)"
+                                    : "Belum Didaftar"),
                         isDanger: false,
                         isWarning: hasBiometricHardware && !isBiometricEnrolled,
                       ),
@@ -302,9 +326,10 @@ class SystemSpecsCard extends StatelessWidget {
                     // Root / Jailbreak
                     Expanded(
                       child: _SecurityPill(
-                        icon: isRooted
-                            ? Icons.warning_amber_rounded
-                            : Icons.security_rounded,
+                        icon:
+                            isRooted
+                                ? Icons.warning_amber_rounded
+                                : Icons.security_rounded,
                         label: "Root / Jailbreak",
                         status: isRooted ? "Rooted" : "Not Rooted",
                         isDanger: isRooted,
@@ -316,11 +341,13 @@ class SystemSpecsCard extends StatelessWidget {
                     // Developer Mode
                     Expanded(
                       child: _SecurityPill(
-                        icon: isDeveloperMode
-                            ? Icons.developer_mode_rounded
-                            : Icons.lock_outline_rounded,
+                        icon:
+                            isDeveloperMode
+                                ? Icons.developer_mode_rounded
+                                : Icons.lock_outline_rounded,
                         label: "Developer Options",
-                        status: isDeveloperMode ? "Dev Mode ON" : "Dev Mode OFF",
+                        status:
+                            isDeveloperMode ? "Dev Mode ON" : "Dev Mode OFF",
                         isDanger: false,
                         isWarning: isDeveloperMode,
                       ),

@@ -42,8 +42,11 @@ class ExportAndShareCard extends StatelessWidget {
               const Expanded(
                 child: Row(
                   children: [
-                    Icon(Icons.ios_share_rounded,
-                        size: 18, color: DiagnosticsColors.primary),
+                    Icon(
+                      Icons.ios_share_rounded,
+                      size: 18,
+                      color: DiagnosticsColors.primary,
+                    ),
                     SizedBox(width: 6),
                     Expanded(
                       child: Text(
@@ -99,17 +102,24 @@ class ExportAndShareCard extends StatelessWidget {
                   borderRadius: BorderRadius.circular(12),
                   child: Container(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 10, vertical: 10),
+                      horizontal: 10,
+                      vertical: 10,
+                    ),
                     decoration: BoxDecoration(
                       gradient: const LinearGradient(
-                        colors: [DiagnosticsColors.dangerDark, Color(0xFFB91C1C)],
+                        colors: [
+                          DiagnosticsColors.dangerDark,
+                          Color(0xFFB91C1C),
+                        ],
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
                       ),
                       borderRadius: BorderRadius.circular(12),
                       boxShadow: [
                         BoxShadow(
-                          color: DiagnosticsColors.dangerDark.withValues(alpha: 0.25),
+                          color: DiagnosticsColors.dangerDark.withValues(
+                            alpha: 0.25,
+                          ),
                           blurRadius: 8,
                           offset: const Offset(0, 3),
                         ),
@@ -118,8 +128,11 @@ class ExportAndShareCard extends StatelessWidget {
                     child: const Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Icons.picture_as_pdf_rounded,
-                            color: DiagnosticsColors.white, size: 16),
+                        Icon(
+                          Icons.picture_as_pdf_rounded,
+                          color: DiagnosticsColors.white,
+                          size: 16,
+                        ),
                         SizedBox(width: 6),
                         Text(
                           "Export PDF Report",
@@ -143,13 +156,17 @@ class ExportAndShareCard extends StatelessWidget {
                   borderRadius: BorderRadius.circular(12),
                   child: Container(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 10, vertical: 10),
+                      horizontal: 10,
+                      vertical: 10,
+                    ),
                     decoration: BoxDecoration(
                       color: DiagnosticsColors.darkSurface,
                       borderRadius: BorderRadius.circular(12),
                       boxShadow: [
                         BoxShadow(
-                          color: DiagnosticsColors.darkSurface.withValues(alpha: 0.2),
+                          color: DiagnosticsColors.darkSurface.withValues(
+                            alpha: 0.2,
+                          ),
                           blurRadius: 8,
                           offset: const Offset(0, 3),
                         ),
@@ -158,8 +175,11 @@ class ExportAndShareCard extends StatelessWidget {
                     child: const Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Icons.code_rounded,
-                            color: DiagnosticsColors.white, size: 16),
+                        Icon(
+                          Icons.code_rounded,
+                          color: DiagnosticsColors.white,
+                          size: 16,
+                        ),
                         SizedBox(width: 6),
                         Text(
                           "Export Raw JSON",
@@ -189,9 +209,14 @@ class ExportAndShareCard extends StatelessWidget {
                   pair: DiagnosticsStatusPair.primary,
                   onTap: () {
                     final text = reportService.generateMarkdownReport(
-                        event: event, state: state);
-                    reportService.copyToClipboard(context, text,
-                        label: "Ringkasan Diagnostik");
+                      event: event,
+                      state: state,
+                    );
+                    reportService.copyToClipboard(
+                      context,
+                      text,
+                      label: "Ringkasan Diagnostik",
+                    );
                   },
                 ),
               ),
@@ -203,11 +228,12 @@ class ExportAndShareCard extends StatelessWidget {
                   icon: Icons.chat_rounded,
                   label: "WhatsApp",
                   pair: DiagnosticsStatusPair.success,
-                  onTap: () => reportService.shareToWhatsApp(
-                    context: context,
-                    event: event,
-                    state: state,
-                  ),
+                  onTap:
+                      () => reportService.shareToWhatsApp(
+                        context: context,
+                        event: event,
+                        state: state,
+                      ),
                 ),
               ),
               const SizedBox(width: 6),
@@ -218,11 +244,12 @@ class ExportAndShareCard extends StatelessWidget {
                   icon: Icons.mail_outline_rounded,
                   label: "Email Report",
                   pair: DiagnosticsStatusPair.info,
-                  onTap: () => reportService.shareToEmail(
-                    context: context,
-                    event: event,
-                    state: state,
-                  ),
+                  onTap:
+                      () => reportService.shareToEmail(
+                        context: context,
+                        event: event,
+                        state: state,
+                      ),
                 ),
               ),
             ],
@@ -233,7 +260,9 @@ class ExportAndShareCard extends StatelessWidget {
   }
 
   void _showPdfOptions(
-      BuildContext context, DiagnosticsReportService reportService) {
+    BuildContext context,
+    DiagnosticsReportService reportService,
+  ) {
     showModalBottomSheet(
       context: context,
       backgroundColor: DiagnosticsColors.cardBg,
@@ -253,8 +282,11 @@ class ExportAndShareCard extends StatelessWidget {
                   children: [
                     const Row(
                       children: [
-                        Icon(Icons.picture_as_pdf_rounded,
-                            color: DiagnosticsColors.dangerDark, size: 20),
+                        Icon(
+                          Icons.picture_as_pdf_rounded,
+                          color: DiagnosticsColors.dangerDark,
+                          size: 20,
+                        ),
                         SizedBox(width: 8),
                         Text(
                           "Pilihan Laporan PDF",
@@ -275,27 +307,40 @@ class ExportAndShareCard extends StatelessWidget {
                 const SizedBox(height: 8),
                 const Text(
                   "Dokumen PDF mencakup seluruh riwayat telemetri, identitas hardware, audit keamanan, dan log debug sistem.",
-                  style: TextStyle(fontSize: 11, color: DiagnosticsColors.textSubtle),
+                  style: TextStyle(
+                    fontSize: 11,
+                    color: DiagnosticsColors.textSubtle,
+                  ),
                 ),
                 const SizedBox(height: 16),
                 ListTile(
                   leading: Container(
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      color: DiagnosticsColors.dangerDark.withValues(alpha: 0.1),
+                      color: DiagnosticsColors.dangerDark.withValues(
+                        alpha: 0.1,
+                      ),
                       borderRadius: BorderRadius.circular(8),
                     ),
-                    child: const Icon(Icons.print_rounded,
-                        color: DiagnosticsColors.dangerDark, size: 20),
+                    child: const Icon(
+                      Icons.print_rounded,
+                      color: DiagnosticsColors.dangerDark,
+                      size: 20,
+                    ),
                   ),
-                  title: const Text("Print / Preview PDF",
-                      style: TextStyle(
-                          fontSize: 13, fontWeight: FontWeight.bold)),
+                  title: const Text(
+                    "Print / Preview PDF",
+                    style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
+                  ),
                   subtitle: const Text(
-                      "Buka halaman pratinjau dokumen dan cetak langsung",
-                      style: TextStyle(fontSize: 10.5)),
-                  trailing: const Icon(Icons.arrow_forward_ios_rounded,
-                      size: 14, color: DiagnosticsColors.textMuted),
+                    "Buka halaman pratinjau dokumen dan cetak langsung",
+                    style: TextStyle(fontSize: 10.5),
+                  ),
+                  trailing: const Icon(
+                    Icons.arrow_forward_ios_rounded,
+                    size: 14,
+                    color: DiagnosticsColors.textMuted,
+                  ),
                   onTap: () {
                     Navigator.pop(ctx);
                     reportService.previewOrPrintPdf(
@@ -313,17 +358,25 @@ class ExportAndShareCard extends StatelessWidget {
                       color: DiagnosticsColors.primary.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(8),
                     ),
-                    child: const Icon(Icons.share_rounded,
-                        color: DiagnosticsColors.primary, size: 20),
+                    child: const Icon(
+                      Icons.share_rounded,
+                      color: DiagnosticsColors.primary,
+                      size: 20,
+                    ),
                   ),
-                  title: const Text("Bagikan File PDF (Share Sheet)",
-                      style: TextStyle(
-                          fontSize: 13, fontWeight: FontWeight.bold)),
+                  title: const Text(
+                    "Bagikan File PDF (Share Sheet)",
+                    style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
+                  ),
                   subtitle: const Text(
-                      "Kirim file .pdf via AirDrop, Bluetooth, Telegram, Drive, dll",
-                      style: TextStyle(fontSize: 10.5)),
-                  trailing: const Icon(Icons.arrow_forward_ios_rounded,
-                      size: 14, color: DiagnosticsColors.textMuted),
+                    "Kirim file .pdf via AirDrop, Bluetooth, Telegram, Drive, dll",
+                    style: TextStyle(fontSize: 10.5),
+                  ),
+                  trailing: const Icon(
+                    Icons.arrow_forward_ios_rounded,
+                    size: 14,
+                    color: DiagnosticsColors.textMuted,
+                  ),
                   onTap: () {
                     Navigator.pop(ctx);
                     reportService.sharePdfReport(
@@ -343,9 +396,13 @@ class ExportAndShareCard extends StatelessWidget {
   }
 
   void _showJsonModal(
-      BuildContext context, DiagnosticsReportService reportService) {
-    final jsonStr =
-        reportService.generateJsonReport(event: event, state: state);
+    BuildContext context,
+    DiagnosticsReportService reportService,
+  ) {
+    final jsonStr = reportService.generateJsonReport(
+      event: event,
+      state: state,
+    );
 
     showModalBottomSheet(
       context: context,
@@ -365,14 +422,19 @@ class ExportAndShareCard extends StatelessWidget {
               children: [
                 Padding(
                   padding: const EdgeInsets.symmetric(
-                       horizontal: 16, vertical: 12),
+                    horizontal: 16,
+                    vertical: 12,
+                  ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       const Row(
                         children: [
-                          Icon(Icons.code_rounded,
-                              color: DiagnosticsColors.primary, size: 20),
+                          Icon(
+                            Icons.code_rounded,
+                            color: DiagnosticsColors.primary,
+                            size: 20,
+                          ),
                           SizedBox(width: 8),
                           Text(
                             "Raw Telemetry JSON Payload",
@@ -417,7 +479,9 @@ class ExportAndShareCard extends StatelessWidget {
                 SafeArea(
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 16, vertical: 8),
+                      horizontal: 16,
+                      vertical: 8,
+                    ),
                     child: SizedBox(
                       width: double.infinity,
                       child: ElevatedButton.icon(
@@ -432,8 +496,11 @@ class ExportAndShareCard extends StatelessWidget {
                         icon: const Icon(Icons.copy_rounded, size: 16),
                         label: const Text("Salin Seluruh JSON ke Clipboard"),
                         onPressed: () {
-                          reportService.copyToClipboard(context, jsonStr,
-                              label: "Payload JSON");
+                          reportService.copyToClipboard(
+                            context,
+                            jsonStr,
+                            label: "Payload JSON",
+                          );
                           Navigator.pop(ctx);
                         },
                       ),

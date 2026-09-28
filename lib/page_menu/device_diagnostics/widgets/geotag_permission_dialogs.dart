@@ -14,7 +14,10 @@ class GeotagPermissionDialogs {
       builder: (BuildContext ctx) {
         return Dialog(
           backgroundColor: Colors.transparent,
-          insetPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
+          insetPadding: const EdgeInsets.symmetric(
+            horizontal: 20,
+            vertical: 24,
+          ),
           child: Container(
             decoration: BoxDecoration(
               color: DiagnosticsColors.cardBg,
@@ -105,7 +108,8 @@ class GeotagPermissionDialogs {
                     ),
                     onPressed: () async {
                       Navigator.of(ctx).pop();
-                      await LocationAndCarrierService.instance.openLocationSettings();
+                      await LocationAndCarrierService.instance
+                          .openLocationSettings();
                       onSettingsOpened?.call();
                     },
                   ),
@@ -152,7 +156,10 @@ class GeotagPermissionDialogs {
       builder: (BuildContext ctx) {
         return Dialog(
           backgroundColor: Colors.transparent,
-          insetPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
+          insetPadding: const EdgeInsets.symmetric(
+            horizontal: 20,
+            vertical: 24,
+          ),
           child: Container(
             decoration: BoxDecoration(
               color: DiagnosticsColors.cardBg,
@@ -243,13 +250,16 @@ class GeotagPermissionDialogs {
                     ),
                     onPressed: () async {
                       Navigator.of(ctx).pop();
-                      final result = await LocationAndCarrierService.instance.requestLocationPermission();
+                      final result =
+                          await LocationAndCarrierService.instance
+                              .requestLocationPermission();
                       final isGranted = result['isLocationGranted'] == true;
                       if (isGranted) {
                         onPermissionGranted?.call();
                       } else {
                         // Directly open Android App Settings so user can toggle Location Permission
-                        await LocationAndCarrierService.instance.openAppSettings();
+                        await LocationAndCarrierService.instance
+                            .openAppSettings();
                         onPermissionGranted?.call();
                       }
                     },

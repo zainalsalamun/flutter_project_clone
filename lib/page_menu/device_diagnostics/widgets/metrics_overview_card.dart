@@ -35,19 +35,23 @@ class MetricsOverviewCard extends StatelessWidget {
             // Battery Metric Tile
             Expanded(
               child: _MetricTile(
-                icon: event.batteryState == 'charging'
-                    ? Icons.battery_charging_full_rounded
-                    : Icons.battery_std_rounded,
-                iconColor: event.batteryState == 'charging'
-                    ? DiagnosticsColors.success
-                    : DiagnosticsColors.warning,
+                icon:
+                    event.batteryState == 'charging'
+                        ? Icons.battery_charging_full_rounded
+                        : Icons.battery_std_rounded,
+                iconColor:
+                    event.batteryState == 'charging'
+                        ? DiagnosticsColors.success
+                        : DiagnosticsColors.warning,
                 title: "Battery Level",
                 value: "${event.batteryLevel}%",
-                subtitle: "${event.batteryState.toUpperCase()} • ${event.formattedBatteryTemp}",
+                subtitle:
+                    "${event.batteryState.toUpperCase()} • ${event.formattedBatteryTemp}",
                 progress: (event.batteryLevel / 100.0).clamp(0.0, 1.0),
-                progressColor: event.batteryLevel > 20
-                    ? DiagnosticsColors.success
-                    : DiagnosticsColors.danger,
+                progressColor:
+                    event.batteryLevel > 20
+                        ? DiagnosticsColors.success
+                        : DiagnosticsColors.danger,
                 badgeText: event.batteryState == 'charging' ? "CHG" : null,
               ),
             ),
@@ -60,9 +64,10 @@ class MetricsOverviewCard extends StatelessWidget {
                 iconColor: DiagnosticsColors.info,
                 title: "Sisa RAM",
                 value: event.formattedAvailableRam,
-                subtitle: event.totalRamBytes > 0
-                    ? "dari ${event.formattedTotalRam}"
-                    : "Sys Memory",
+                subtitle:
+                    event.totalRamBytes > 0
+                        ? "dari ${event.formattedTotalRam}"
+                        : "Sys Memory",
                 progress: event.ramFreeRatio,
                 progressColor: DiagnosticsColors.info,
                 badgeText: event.totalRamBytes > 0 ? "$freeRamPct% Sisa" : null,
@@ -77,12 +82,16 @@ class MetricsOverviewCard extends StatelessWidget {
                 iconColor: DiagnosticsColors.pink,
                 title: "Sisa Storage",
                 value: event.formattedAvailableStorage,
-                subtitle: event.totalStorageBytes > 0
-                    ? "dari ${event.formattedTotalStorage}"
-                    : "Flash Memory",
+                subtitle:
+                    event.totalStorageBytes > 0
+                        ? "dari ${event.formattedTotalStorage}"
+                        : "Flash Memory",
                 progress: event.storageFreeRatio,
                 progressColor: DiagnosticsColors.pink,
-                badgeText: event.totalStorageBytes > 0 ? "$freeStoragePct% Sisa" : null,
+                badgeText:
+                    event.totalStorageBytes > 0
+                        ? "$freeStoragePct% Sisa"
+                        : null,
               ),
             ),
           ],
@@ -114,8 +123,11 @@ class MetricsOverviewCard extends StatelessWidget {
               // Header
               const Row(
                 children: [
-                  Icon(Icons.pie_chart_outline_rounded,
-                      size: 16, color: DiagnosticsColors.primary),
+                  Icon(
+                    Icons.pie_chart_outline_rounded,
+                    size: 16,
+                    color: DiagnosticsColors.primary,
+                  ),
                   SizedBox(width: 6),
                   Expanded(
                     child: Text(
@@ -228,7 +240,9 @@ class _MetricTile extends StatelessWidget {
                 Flexible(
                   child: Container(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 4.5, vertical: 1.5),
+                      horizontal: 4.5,
+                      vertical: 1.5,
+                    ),
                     decoration: BoxDecoration(
                       color: iconColor.withValues(alpha: 0.12),
                       borderRadius: BorderRadius.circular(4),
@@ -524,9 +538,10 @@ class _BatteryThermalHealthCard extends StatelessWidget {
         color: DiagnosticsColors.cardBg,
         borderRadius: BorderRadius.circular(18),
         border: Border.all(
-          color: temp >= 42.0
-              ? DiagnosticsColors.danger.withValues(alpha: 0.3)
-              : DiagnosticsColors.border,
+          color:
+              temp >= 42.0
+                  ? DiagnosticsColors.danger.withValues(alpha: 0.3)
+                  : DiagnosticsColors.border,
         ),
         boxShadow: [
           BoxShadow(
@@ -567,7 +582,10 @@ class _BatteryThermalHealthCard extends StatelessWidget {
               const SizedBox(width: 8),
               Flexible(
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 7,
+                    vertical: 3,
+                  ),
                   decoration: BoxDecoration(
                     color: thermalColor.withValues(alpha: 0.12),
                     borderRadius: BorderRadius.circular(6),
@@ -633,7 +651,8 @@ class _BatteryThermalHealthCard extends StatelessWidget {
                   iconColor: DiagnosticsColors.primary,
                   label: "Kesehatan Baterai",
                   value: event.batteryHealth.toUpperCase(),
-                  subtitle: "${event.batteryTechnology} • ${event.formattedVoltage}",
+                  subtitle:
+                      "${event.batteryTechnology} • ${event.formattedVoltage}",
                   progress: 1.0,
                   progressColor: DiagnosticsColors.primary,
                 ),
@@ -643,15 +662,18 @@ class _BatteryThermalHealthCard extends StatelessWidget {
               // 3. Power Save Mode
               Expanded(
                 child: _ThermalInfoTile(
-                  icon: event.isPowerSaveMode
-                      ? Icons.eco_rounded
-                      : Icons.battery_charging_full_rounded,
-                  iconColor: event.isPowerSaveMode
-                      ? DiagnosticsColors.success
-                      : DiagnosticsColors.textSubtle,
+                  icon:
+                      event.isPowerSaveMode
+                          ? Icons.eco_rounded
+                          : Icons.battery_charging_full_rounded,
+                  iconColor:
+                      event.isPowerSaveMode
+                          ? DiagnosticsColors.success
+                          : DiagnosticsColors.textSubtle,
                   label: "Mode Hemat Daya",
                   value: event.isPowerSaveMode ? "Aktif" : "Nonaktif",
-                  subtitle: event.isPowerSaveMode ? "Power Saver ON" : "Normal Mode",
+                  subtitle:
+                      event.isPowerSaveMode ? "Power Saver ON" : "Normal Mode",
                   progress: event.isPowerSaveMode ? 1.0 : 0.0,
                   progressColor: DiagnosticsColors.success,
                 ),
@@ -673,7 +695,11 @@ class _BatteryThermalHealthCard extends StatelessWidget {
               ),
               child: const Row(
                 children: [
-                  Icon(Icons.eco_rounded, size: 14, color: DiagnosticsColors.successDark),
+                  Icon(
+                    Icons.eco_rounded,
+                    size: 14,
+                    color: DiagnosticsColors.successDark,
+                  ),
                   SizedBox(width: 6),
                   Expanded(
                     child: Text(

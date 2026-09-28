@@ -128,44 +128,48 @@ class _NetworkStatusCardState extends State<NetworkStatusCard>
     if (isOffline) {
       iconData = Icons.wifi_off_rounded;
     } else if (isWifi) {
-      iconData = isBad ? Icons.wifi_protected_setup_rounded : Icons.wifi_rounded;
+      iconData =
+          isBad ? Icons.wifi_protected_setup_rounded : Icons.wifi_rounded;
     } else if (isCellular) {
       iconData = Icons.signal_cellular_alt_rounded;
     } else {
       iconData = Icons.device_hub_rounded;
     }
 
-    final headerBadge = isOffline
-        ? "OFFLINE"
-        : (isBad
-            ? "UNSTABLE / POOR"
-            : (isWifi ? "WIFI ON" : (isCellular ? "DATA ON" : "ONLINE")));
+    final headerBadge =
+        isOffline
+            ? "OFFLINE"
+            : (isBad
+                ? "UNSTABLE / POOR"
+                : (isWifi ? "WIFI ON" : (isCellular ? "DATA ON" : "ONLINE")));
 
     return AnimatedBuilder(
-      animation: Listenable.merge([_pulseAnimation, _shiverAnimation, _blinkAnimation]),
+      animation: Listenable.merge([
+        _pulseAnimation,
+        _shiverAnimation,
+        _blinkAnimation,
+      ]),
       builder: (context, _) {
         final glowOpacity = isBad ? (_pulseAnimation.value * 0.25) : 0.04;
-        final borderColor = isBad
-            ? Color.lerp(
-                DiagnosticsColors.warning,
-                const Color(0xFFEA580C),
-                _pulseAnimation.value,
-              )!
-            : (isOnline
-                ? DiagnosticsColors.success.withValues(alpha: 0.3)
-                : (isOffline
-                    ? DiagnosticsColors.danger.withValues(alpha: 0.2)
-                    : DiagnosticsColors.border));
+        final borderColor =
+            isBad
+                ? Color.lerp(
+                  DiagnosticsColors.warning,
+                  const Color(0xFFEA580C),
+                  _pulseAnimation.value,
+                )!
+                : (isOnline
+                    ? DiagnosticsColors.success.withValues(alpha: 0.3)
+                    : (isOffline
+                        ? DiagnosticsColors.danger.withValues(alpha: 0.2)
+                        : DiagnosticsColors.border));
 
         return Container(
           padding: const EdgeInsets.all(14),
           decoration: BoxDecoration(
             color: DiagnosticsColors.cardBg,
             borderRadius: BorderRadius.circular(20),
-            border: Border.all(
-              color: borderColor,
-              width: isBad ? 1.5 : 1.0,
-            ),
+            border: Border.all(color: borderColor, width: isBad ? 1.5 : 1.0),
             boxShadow: [
               BoxShadow(
                 color: themeColor.withValues(alpha: glowOpacity),
@@ -189,7 +193,9 @@ class _NetworkStatusCardState extends State<NetworkStatusCard>
                         Container(
                           padding: const EdgeInsets.all(4),
                           decoration: BoxDecoration(
-                            color: themeColor.withValues(alpha: _pulseAnimation.value * 0.35),
+                            color: themeColor.withValues(
+                              alpha: _pulseAnimation.value * 0.35,
+                            ),
                             shape: BoxShape.circle,
                           ),
                           child: Container(
@@ -223,20 +229,30 @@ class _NetworkStatusCardState extends State<NetworkStatusCard>
                   // ON/OFF State Badge
                   Flexible(
                     child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 7,
+                        vertical: 3,
+                      ),
                       decoration: BoxDecoration(
                         color: themeColor.withValues(alpha: 0.12),
                         borderRadius: BorderRadius.circular(6),
-                        border: isBad
-                            ? Border.all(color: themeColor.withValues(alpha: 0.4), width: 0.8)
-                            : null,
+                        border:
+                            isBad
+                                ? Border.all(
+                                  color: themeColor.withValues(alpha: 0.4),
+                                  width: 0.8,
+                                )
+                                : null,
                       ),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           if (isBad) ...[
-                            Icon(Icons.warning_amber_rounded,
-                                size: 11, color: themeColor),
+                            Icon(
+                              Icons.warning_amber_rounded,
+                              size: 11,
+                              color: themeColor,
+                            ),
                             const SizedBox(width: 3),
                           ],
                           Flexible(
@@ -261,16 +277,21 @@ class _NetworkStatusCardState extends State<NetworkStatusCard>
 
               // 2. Main Connection Status Hero Tile
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 10,
+                ),
                 decoration: BoxDecoration(
-                  color: isBad
-                      ? DiagnosticsColors.warningBg
-                      : DiagnosticsColors.surfaceSubtle,
+                  color:
+                      isBad
+                          ? DiagnosticsColors.warningBg
+                          : DiagnosticsColors.surfaceSubtle,
                   borderRadius: BorderRadius.circular(14),
                   border: Border.all(
-                    color: isBad
-                        ? DiagnosticsColors.warningBorder
-                        : DiagnosticsColors.borderLight,
+                    color:
+                        isBad
+                            ? DiagnosticsColors.warningBorder
+                            : DiagnosticsColors.borderLight,
                   ),
                 ),
                 child: Row(
@@ -278,7 +299,10 @@ class _NetworkStatusCardState extends State<NetworkStatusCard>
                     // Shivering Icon Container (Jitters when bad connection)
                     Transform.translate(
                       offset: Offset(
-                        isBad ? math.sin(_shiverAnimation.value * math.pi * 2) * 2.5 : 0.0,
+                        isBad
+                            ? math.sin(_shiverAnimation.value * math.pi * 2) *
+                                2.5
+                            : 0.0,
                         0.0,
                       ),
                       child: Stack(
@@ -346,11 +370,12 @@ class _NetworkStatusCardState extends State<NetworkStatusCard>
                             style: TextStyle(
                               fontSize: 11,
                               fontWeight: FontWeight.w500,
-                              color: isBad
-                                  ? DiagnosticsColors.warningDark
-                                  : (isOnline
-                                      ? DiagnosticsColors.success
-                                      : DiagnosticsColors.textSubtle),
+                              color:
+                                  isBad
+                                      ? DiagnosticsColors.warningDark
+                                      : (isOnline
+                                          ? DiagnosticsColors.success
+                                          : DiagnosticsColors.textSubtle),
                             ),
                           ),
                         ],
@@ -364,16 +389,23 @@ class _NetworkStatusCardState extends State<NetworkStatusCard>
                       children: [
                         // Ping Button
                         InkWell(
-                          onTap: widget.isTestingPing ? null : widget.onTestPing,
+                          onTap:
+                              widget.isTestingPing ? null : widget.onTestPing,
                           borderRadius: BorderRadius.circular(8),
                           child: Container(
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 9, vertical: 6),
+                              horizontal: 9,
+                              vertical: 6,
+                            ),
                             decoration: BoxDecoration(
-                              color: DiagnosticsColors.primary.withValues(alpha: 0.1),
+                              color: DiagnosticsColors.primary.withValues(
+                                alpha: 0.1,
+                              ),
                               borderRadius: BorderRadius.circular(8),
                               border: Border.all(
-                                color: DiagnosticsColors.primary.withValues(alpha: 0.2),
+                                color: DiagnosticsColors.primary.withValues(
+                                  alpha: 0.2,
+                                ),
                               ),
                             ),
                             child: Row(
@@ -389,8 +421,11 @@ class _NetworkStatusCardState extends State<NetworkStatusCard>
                                     ),
                                   )
                                 else
-                                  const Icon(Icons.speed_rounded,
-                                      size: 13, color: DiagnosticsColors.primary),
+                                  const Icon(
+                                    Icons.speed_rounded,
+                                    size: 13,
+                                    color: DiagnosticsColors.primary,
+                                  ),
                                 const SizedBox(width: 4),
                                 Text(
                                   widget.isTestingPing ? "..." : "Ping",
@@ -413,22 +448,34 @@ class _NetworkStatusCardState extends State<NetworkStatusCard>
                             borderRadius: BorderRadius.circular(8),
                             child: Container(
                               padding: const EdgeInsets.symmetric(
-                                  horizontal: 7, vertical: 6),
+                                horizontal: 7,
+                                vertical: 6,
+                              ),
                               decoration: BoxDecoration(
-                                color: isBad
-                                    ? DiagnosticsColors.danger.withValues(alpha: 0.12)
-                                    : DiagnosticsColors.warning.withValues(alpha: 0.12),
+                                color:
+                                    isBad
+                                        ? DiagnosticsColors.danger.withValues(
+                                          alpha: 0.12,
+                                        )
+                                        : DiagnosticsColors.warning.withValues(
+                                          alpha: 0.12,
+                                        ),
                                 borderRadius: BorderRadius.circular(8),
                                 border: Border.all(
-                                  color: isBad
-                                      ? DiagnosticsColors.danger.withValues(alpha: 0.3)
-                                      : DiagnosticsColors.warning.withValues(alpha: 0.3),
+                                  color:
+                                      isBad
+                                          ? DiagnosticsColors.danger.withValues(
+                                            alpha: 0.3,
+                                          )
+                                          : DiagnosticsColors.warning
+                                              .withValues(alpha: 0.3),
                                 ),
                               ),
                               child: Tooltip(
-                                message: isBad
-                                    ? "Kembalikan ke koneksi normal"
-                                    : "Simulasi koneksi jelek (High Ping)",
+                                message:
+                                    isBad
+                                        ? "Kembalikan ke koneksi normal"
+                                        : "Simulasi koneksi jelek (High Ping)",
                                 child: Row(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
@@ -437,9 +484,10 @@ class _NetworkStatusCardState extends State<NetworkStatusCard>
                                           ? Icons.restart_alt_rounded
                                           : Icons.bolt_rounded,
                                       size: 13,
-                                      color: isBad
-                                          ? DiagnosticsColors.danger
-                                          : DiagnosticsColors.warningDark,
+                                      color:
+                                          isBad
+                                              ? DiagnosticsColors.danger
+                                              : DiagnosticsColors.warningDark,
                                     ),
                                     const SizedBox(width: 2),
                                     Text(
@@ -447,9 +495,10 @@ class _NetworkStatusCardState extends State<NetworkStatusCard>
                                       style: TextStyle(
                                         fontSize: 9.5,
                                         fontWeight: FontWeight.bold,
-                                        color: isBad
-                                            ? DiagnosticsColors.danger
-                                            : DiagnosticsColors.warningDark,
+                                        color:
+                                            isBad
+                                                ? DiagnosticsColors.danger
+                                                : DiagnosticsColors.warningDark,
                                       ),
                                     ),
                                   ],
@@ -470,8 +519,10 @@ class _NetworkStatusCardState extends State<NetworkStatusCard>
                 secondChild: Padding(
                   padding: const EdgeInsets.only(top: 10),
                   child: Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 8,
+                    ),
                     decoration: BoxDecoration(
                       color: DiagnosticsColors.warningSubtle,
                       borderRadius: BorderRadius.circular(10),
@@ -520,9 +571,10 @@ class _NetworkStatusCardState extends State<NetworkStatusCard>
                     ),
                   ),
                 ),
-                crossFadeState: isBad
-                    ? CrossFadeState.showSecond
-                    : CrossFadeState.showFirst,
+                crossFadeState:
+                    isBad
+                        ? CrossFadeState.showSecond
+                        : CrossFadeState.showFirst,
                 duration: const Duration(milliseconds: 300),
               ),
               const SizedBox(height: 12),
@@ -534,12 +586,14 @@ class _NetworkStatusCardState extends State<NetworkStatusCard>
                     child: _NetworkMetricTile(
                       label: "Internet State",
                       value: isOnline ? "Online" : "Offline",
-                      valueColor: isOnline
-                          ? DiagnosticsColors.success
-                          : DiagnosticsColors.danger,
-                      icon: isOnline
-                          ? Icons.check_circle_rounded
-                          : Icons.cancel_rounded,
+                      valueColor:
+                          isOnline
+                              ? DiagnosticsColors.success
+                              : DiagnosticsColors.danger,
+                      icon:
+                          isOnline
+                              ? Icons.check_circle_rounded
+                              : Icons.cancel_rounded,
                     ),
                   ),
                   const SizedBox(width: 8),
@@ -555,12 +609,14 @@ class _NetworkStatusCardState extends State<NetworkStatusCard>
                   Expanded(
                     child: _NetworkMetricTile(
                       label: "Ping Latency",
-                      value: info.latencyMs >= 0 ? "${info.latencyMs} ms" : "N/A",
-                      valueColor: info.latencyMs >= 0 && info.latencyMs < 100
-                          ? DiagnosticsColors.success
-                          : (info.latencyMs < 200
-                              ? DiagnosticsColors.warning
-                              : DiagnosticsColors.danger),
+                      value:
+                          info.latencyMs >= 0 ? "${info.latencyMs} ms" : "N/A",
+                      valueColor:
+                          info.latencyMs >= 0 && info.latencyMs < 100
+                              ? DiagnosticsColors.success
+                              : (info.latencyMs < 200
+                                  ? DiagnosticsColors.warning
+                                  : DiagnosticsColors.danger),
                       icon: Icons.timer_outlined,
                     ),
                   ),
@@ -569,11 +625,12 @@ class _NetworkStatusCardState extends State<NetworkStatusCard>
                     child: _NetworkMetricTile(
                       label: "Quality Tier",
                       value: info.qualityLabel,
-                      valueColor: isBad
-                          ? DiagnosticsColors.warningDark
-                          : (isOnline
-                              ? DiagnosticsColors.success
-                              : DiagnosticsColors.danger),
+                      valueColor:
+                          isBad
+                              ? DiagnosticsColors.warningDark
+                              : (isOnline
+                                  ? DiagnosticsColors.success
+                                  : DiagnosticsColors.danger),
                       icon: Icons.network_check_rounded,
                     ),
                   ),
@@ -588,14 +645,24 @@ class _NetworkStatusCardState extends State<NetworkStatusCard>
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF0F172A),
                     foregroundColor: const Color(0xFF38BDF8),
-                    padding: const EdgeInsets.symmetric(vertical: 9, horizontal: 12),
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 9,
+                      horizontal: 12,
+                    ),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
-                      side: const BorderSide(color: Color(0xFF0284C7), width: 1.2),
+                      side: const BorderSide(
+                        color: Color(0xFF0284C7),
+                        width: 1.2,
+                      ),
                     ),
                     elevation: 0,
                   ),
-                  icon: const Icon(Icons.speed_rounded, size: 16, color: Color(0xFF38BDF8)),
+                  icon: const Icon(
+                    Icons.speed_rounded,
+                    size: 16,
+                    color: Color(0xFF38BDF8),
+                  ),
                   label: const Text(
                     "Uji Kecepatan & Diagnostik Jaringan Lengkap",
                     style: TextStyle(
@@ -608,7 +675,8 @@ class _NetworkStatusCardState extends State<NetworkStatusCard>
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const NetworkSpeedDiagnosticsPage(),
+                        builder:
+                            (context) => const NetworkSpeedDiagnosticsPage(),
                       ),
                     );
                   },
@@ -637,15 +705,15 @@ class _NetworkStatusCardState extends State<NetworkStatusCard>
             barColor = DiagnosticsColors.warning;
           } else {
             // Flickering amber/red bars for bad connection
-            barColor = DiagnosticsColors.danger
-                .withValues(alpha: _blinkAnimation.value);
+            barColor = DiagnosticsColors.danger.withValues(
+              alpha: _blinkAnimation.value,
+            );
           }
         } else if (isOnline) {
           barColor = DiagnosticsColors.success;
         } else {
-          barColor = index == 0
-              ? DiagnosticsColors.warning
-              : DiagnosticsColors.border;
+          barColor =
+              index == 0 ? DiagnosticsColors.warning : DiagnosticsColors.border;
         }
 
         return Container(

@@ -42,108 +42,120 @@ class DeviceIdHeroCard extends StatelessWidget {
   void _showQrDialog(BuildContext context) {
     showDialog(
       context: context,
-      builder: (ctx) => Dialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
-        backgroundColor: DiagnosticsColors.darkSurface,
-        child: Padding(
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      builder:
+          (ctx) => Dialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(24),
+            ),
+            backgroundColor: DiagnosticsColors.darkSurface,
+            child: Padding(
+              padding: const EdgeInsets.all(24),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Expanded(
-                    child: Row(
-                      children: [
-                        Icon(Icons.qr_code_2_rounded,
-                            color: DiagnosticsColors.primaryLight, size: 24),
-                        SizedBox(width: 8),
-                        Expanded(
-                          child: Text(
-                            "Device ID QR Code",
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              color: DiagnosticsColors.white,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Expanded(
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.qr_code_2_rounded,
+                              color: DiagnosticsColors.primaryLight,
+                              size: 24,
                             ),
+                            SizedBox(width: 8),
+                            Expanded(
+                              child: Text(
+                                "Device ID QR Code",
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  color: DiagnosticsColors.white,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.close, color: Colors.white54),
+                        onPressed: () => Navigator.pop(ctx),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                  Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: DiagnosticsColors.white,
+                      borderRadius: BorderRadius.circular(16),
+                      boxShadow: [
+                        BoxShadow(
+                          color: DiagnosticsColors.primaryLight.withValues(
+                            alpha: 0.3,
                           ),
+                          blurRadius: 16,
+                          offset: const Offset(0, 4),
                         ),
                       ],
                     ),
+                    child: QrImageView(
+                      data: event.deviceIdHash,
+                      version: QrVersions.auto,
+                      size: 180,
+                      backgroundColor: DiagnosticsColors.white,
+                    ),
                   ),
-                  IconButton(
-                    icon: const Icon(Icons.close, color: Colors.white54),
-                    onPressed: () => Navigator.pop(ctx),
+                  const SizedBox(height: 16),
+                  Text(
+                    event.model,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      color: DiagnosticsColors.white,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 14,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    "ID: ${event.maskedDeviceId}",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: DiagnosticsColors.white.withValues(alpha: 0.6),
+                      fontFamily: 'monospace',
+                      fontSize: 12,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton.icon(
+                      onPressed: () {
+                        Navigator.pop(ctx);
+                        _copyToClipboard(
+                          context,
+                          event.deviceIdHash,
+                          "Full Device ID",
+                        );
+                      },
+                      icon: const Icon(Icons.copy_rounded, size: 18),
+                      label: const Text("Copy Full Device ID"),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: DiagnosticsColors.primary,
+                        foregroundColor: DiagnosticsColors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                      ),
+                    ),
                   ),
                 ],
               ),
-              const SizedBox(height: 16),
-              Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: DiagnosticsColors.white,
-                  borderRadius: BorderRadius.circular(16),
-                  boxShadow: [
-                    BoxShadow(
-                      color: DiagnosticsColors.primaryLight.withValues(alpha: 0.3),
-                      blurRadius: 16,
-                      offset: const Offset(0, 4),
-                    ),
-                  ],
-                ),
-                child: QrImageView(
-                  data: event.deviceIdHash,
-                  version: QrVersions.auto,
-                  size: 180,
-                  backgroundColor: DiagnosticsColors.white,
-                ),
-              ),
-              const SizedBox(height: 16),
-              Text(
-                event.model,
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  color: DiagnosticsColors.white,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 14,
-                ),
-              ),
-              const SizedBox(height: 4),
-              Text(
-                "ID: ${event.maskedDeviceId}",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: DiagnosticsColors.white.withValues(alpha: 0.6),
-                  fontFamily: 'monospace',
-                  fontSize: 12,
-                ),
-              ),
-              const SizedBox(height: 20),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton.icon(
-                  onPressed: () {
-                    Navigator.pop(ctx);
-                    _copyToClipboard(context, event.deviceIdHash, "Full Device ID");
-                  },
-                  icon: const Icon(Icons.copy_rounded, size: 18),
-                  label: const Text("Copy Full Device ID"),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: DiagnosticsColors.primary,
-                    foregroundColor: DiagnosticsColors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    padding: const EdgeInsets.symmetric(vertical: 12),
-                  ),
-                ),
-              ),
-            ],
+            ),
           ),
-        ),
-      ),
     );
   }
 
@@ -199,12 +211,18 @@ class DeviceIdHeroCard extends StatelessWidget {
                     Flexible(
                       child: Container(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 8, vertical: 4),
+                          horizontal: 8,
+                          vertical: 4,
+                        ),
                         decoration: BoxDecoration(
-                          color: DiagnosticsColors.primary.withValues(alpha: 0.25),
+                          color: DiagnosticsColors.primary.withValues(
+                            alpha: 0.25,
+                          ),
                           borderRadius: BorderRadius.circular(20),
                           border: Border.all(
-                            color: DiagnosticsColors.primaryLight.withValues(alpha: 0.5),
+                            color: DiagnosticsColors.primaryLight.withValues(
+                              alpha: 0.5,
+                            ),
                           ),
                         ),
                         child: const Row(
@@ -236,11 +254,18 @@ class DeviceIdHeroCard extends StatelessWidget {
                     const SizedBox(width: 8),
                     Container(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 8, vertical: 4),
+                        horizontal: 8,
+                        vertical: 4,
+                      ),
                       decoration: BoxDecoration(
-                        color: isLiveDevice
-                            ? DiagnosticsColors.success.withValues(alpha: 0.2)
-                            : DiagnosticsColors.warning.withValues(alpha: 0.2),
+                        color:
+                            isLiveDevice
+                                ? DiagnosticsColors.success.withValues(
+                                  alpha: 0.2,
+                                )
+                                : DiagnosticsColors.warning.withValues(
+                                  alpha: 0.2,
+                                ),
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Row(
@@ -250,18 +275,20 @@ class DeviceIdHeroCard extends StatelessWidget {
                             isLiveDevice
                                 ? Icons.sensors_rounded
                                 : Icons.devices_other_rounded,
-                            color: isLiveDevice
-                                ? DiagnosticsColors.success
-                                : DiagnosticsColors.warning,
+                            color:
+                                isLiveDevice
+                                    ? DiagnosticsColors.success
+                                    : DiagnosticsColors.warning,
                             size: 12,
                           ),
                           const SizedBox(width: 4),
                           Text(
                             isLiveDevice ? "REAL DEVICE" : "PRESET",
                             style: TextStyle(
-                              color: isLiveDevice
-                                  ? DiagnosticsColors.success
-                                  : DiagnosticsColors.warning,
+                              color:
+                                  isLiveDevice
+                                      ? DiagnosticsColors.success
+                                      : DiagnosticsColors.warning,
                               fontSize: 10,
                               fontWeight: FontWeight.bold,
                             ),
@@ -356,21 +383,29 @@ class DeviceIdHeroCard extends StatelessWidget {
                       ),
                       style: OutlinedButton.styleFrom(
                         side: BorderSide(
-                          color: DiagnosticsColors.white.withValues(alpha: 0.25),
+                          color: DiagnosticsColors.white.withValues(
+                            alpha: 0.25,
+                          ),
                         ),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 12, vertical: 8),
+                          horizontal: 12,
+                          vertical: 8,
+                        ),
                         visualDensity: VisualDensity.compact,
                       ),
                     ),
 
                     // Copy Button
                     ElevatedButton.icon(
-                      onPressed: () => _copyToClipboard(
-                          context, event.deviceIdHash, "Device ID"),
+                      onPressed:
+                          () => _copyToClipboard(
+                            context,
+                            event.deviceIdHash,
+                            "Device ID",
+                          ),
                       icon: const Icon(Icons.copy_rounded, size: 15),
                       label: const Text(
                         "Copy ID",
@@ -383,7 +418,9 @@ class DeviceIdHeroCard extends StatelessWidget {
                           borderRadius: BorderRadius.circular(10),
                         ),
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 12, vertical: 8),
+                          horizontal: 12,
+                          vertical: 8,
+                        ),
                         visualDensity: VisualDensity.compact,
                       ),
                     ),
@@ -393,7 +430,9 @@ class DeviceIdHeroCard extends StatelessWidget {
                       onPressed: () => _showQrDialog(context),
                       icon: const Icon(Icons.qr_code_2_rounded, size: 18),
                       style: IconButton.styleFrom(
-                        backgroundColor: DiagnosticsColors.white.withValues(alpha: 0.12),
+                        backgroundColor: DiagnosticsColors.white.withValues(
+                          alpha: 0.12,
+                        ),
                         foregroundColor: DiagnosticsColors.primaryLight,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
@@ -408,7 +447,9 @@ class DeviceIdHeroCard extends StatelessWidget {
                         onPressed: onRegenerateId,
                         icon: const Icon(Icons.refresh_rounded, size: 18),
                         style: IconButton.styleFrom(
-                          backgroundColor: DiagnosticsColors.white.withValues(alpha: 0.12),
+                          backgroundColor: DiagnosticsColors.white.withValues(
+                            alpha: 0.12,
+                          ),
                           foregroundColor: DiagnosticsColors.success,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
@@ -424,7 +465,9 @@ class DeviceIdHeroCard extends StatelessWidget {
                 // 4. Meta Info: Installation ID & User ID
                 Container(
                   padding: const EdgeInsets.symmetric(
-                      horizontal: 10, vertical: 8),
+                    horizontal: 10,
+                    vertical: 8,
+                  ),
                   decoration: BoxDecoration(
                     color: DiagnosticsColors.white.withValues(alpha: 0.05),
                     borderRadius: BorderRadius.circular(10),
@@ -434,9 +477,13 @@ class DeviceIdHeroCard extends StatelessWidget {
                       Expanded(
                         child: Row(
                           children: [
-                            Icon(Icons.person_outline_rounded,
-                                size: 13,
-                                color: DiagnosticsColors.white.withValues(alpha: 0.6)),
+                            Icon(
+                              Icons.person_outline_rounded,
+                              size: 13,
+                              color: DiagnosticsColors.white.withValues(
+                                alpha: 0.6,
+                              ),
+                            ),
                             const SizedBox(width: 4),
                             Expanded(
                               child: Text(
@@ -456,16 +503,22 @@ class DeviceIdHeroCard extends StatelessWidget {
                       Expanded(
                         child: Row(
                           children: [
-                            Icon(Icons.app_registration_rounded,
-                                size: 13,
-                                color: DiagnosticsColors.white.withValues(alpha: 0.6)),
+                            Icon(
+                              Icons.app_registration_rounded,
+                              size: 13,
+                              color: DiagnosticsColors.white.withValues(
+                                alpha: 0.6,
+                              ),
+                            ),
                             const SizedBox(width: 4),
                             Expanded(
                               child: Text(
                                 "Install: ${event.maskedInstallationId}",
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
-                                  color: DiagnosticsColors.white.withValues(alpha: 0.7),
+                                  color: DiagnosticsColors.white.withValues(
+                                    alpha: 0.7,
+                                  ),
                                   fontSize: 10,
                                   fontFamily: 'monospace',
                                 ),

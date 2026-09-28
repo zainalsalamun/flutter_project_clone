@@ -5,10 +5,7 @@ import '../theme/diagnostics_colors.dart';
 class DisplaySpecsCard extends StatelessWidget {
   final DisplaySpecsData displaySpecs;
 
-  const DisplaySpecsCard({
-    super.key,
-    required this.displaySpecs,
-  });
+  const DisplaySpecsCard({super.key, required this.displaySpecs});
 
   @override
   Widget build(BuildContext context) {
@@ -38,8 +35,11 @@ class DisplaySpecsCard extends StatelessWidget {
               const Expanded(
                 child: Row(
                   children: [
-                    Icon(Icons.screenshot_monitor_rounded,
-                        size: 18, color: DiagnosticsColors.primary),
+                    Icon(
+                      Icons.screenshot_monitor_rounded,
+                      size: 18,
+                      color: DiagnosticsColors.primary,
+                    ),
                     SizedBox(width: 6),
                     Expanded(
                       child: Text(
@@ -60,11 +60,15 @@ class DisplaySpecsCard extends StatelessWidget {
               const SizedBox(width: 8),
               Flexible(
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 7,
+                    vertical: 3,
+                  ),
                   decoration: BoxDecoration(
-                    color: isHighRefresh
-                        ? DiagnosticsColors.success.withValues(alpha: 0.12)
-                        : DiagnosticsColors.primary.withValues(alpha: 0.1),
+                    color:
+                        isHighRefresh
+                            ? DiagnosticsColors.success.withValues(alpha: 0.12)
+                            : DiagnosticsColors.primary.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(6),
                   ),
                   child: Text(
@@ -74,9 +78,10 @@ class DisplaySpecsCard extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 10.5,
                       fontWeight: FontWeight.bold,
-                      color: isHighRefresh
-                          ? DiagnosticsColors.success
-                          : DiagnosticsColors.primary,
+                      color:
+                          isHighRefresh
+                              ? DiagnosticsColors.success
+                              : DiagnosticsColors.primary,
                     ),
                   ),
                 ),
@@ -90,17 +95,22 @@ class DisplaySpecsCard extends StatelessWidget {
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
               gradient: LinearGradient(
-                colors: isHighRefresh
-                    ? [DiagnosticsColors.successBg, const Color(0xFFECFDF5)]
-                    : [DiagnosticsColors.primaryBg, DiagnosticsColors.surfaceSubtle],
+                colors:
+                    isHighRefresh
+                        ? [DiagnosticsColors.successBg, const Color(0xFFECFDF5)]
+                        : [
+                          DiagnosticsColors.primaryBg,
+                          DiagnosticsColors.surfaceSubtle,
+                        ],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
               borderRadius: BorderRadius.circular(14),
               border: Border.all(
-                color: isHighRefresh
-                    ? DiagnosticsColors.successBorder
-                    : DiagnosticsColors.primaryBorder,
+                color:
+                    isHighRefresh
+                        ? DiagnosticsColors.successBorder
+                        : DiagnosticsColors.primaryBorder,
               ),
             ),
             child: Row(
@@ -108,13 +118,17 @@ class DisplaySpecsCard extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.all(9),
                   decoration: BoxDecoration(
-                    color: isHighRefresh
-                        ? DiagnosticsColors.success
-                        : DiagnosticsColors.primary,
+                    color:
+                        isHighRefresh
+                            ? DiagnosticsColors.success
+                            : DiagnosticsColors.primary,
                     shape: BoxShape.circle,
                   ),
-                  child: const Icon(Icons.speed_rounded,
-                      color: DiagnosticsColors.white, size: 18),
+                  child: const Icon(
+                    Icons.speed_rounded,
+                    color: DiagnosticsColors.white,
+                    size: 18,
+                  ),
                 ),
                 const SizedBox(width: 10),
                 Expanded(
@@ -128,16 +142,19 @@ class DisplaySpecsCard extends StatelessWidget {
                             style: TextStyle(
                               fontSize: 12.5,
                               fontWeight: FontWeight.bold,
-                              color: isHighRefresh
-                                  ? DiagnosticsColors.successDark
-                                  : DiagnosticsColors.primaryDark,
+                              color:
+                                  isHighRefresh
+                                      ? DiagnosticsColors.successDark
+                                      : DiagnosticsColors.primaryDark,
                             ),
                           ),
                           const SizedBox(width: 6),
                           if (isHighRefresh)
                             Container(
                               padding: const EdgeInsets.symmetric(
-                                  horizontal: 5, vertical: 1.5),
+                                horizontal: 5,
+                                vertical: 1.5,
+                              ),
                               decoration: BoxDecoration(
                                 color: DiagnosticsColors.success,
                                 borderRadius: BorderRadius.circular(4),
@@ -158,9 +175,12 @@ class DisplaySpecsCard extends StatelessWidget {
                         "Supported Modes: ${displaySpecs.supportedRefreshRates.map((r) => '$r Hz').join(', ')}",
                         style: TextStyle(
                           fontSize: 10,
-                          color: isHighRefresh
-                              ? DiagnosticsColors.successDark.withValues(alpha: 0.9)
-                              : DiagnosticsColors.textSubtle,
+                          color:
+                              isHighRefresh
+                                  ? DiagnosticsColors.successDark.withValues(
+                                    alpha: 0.9,
+                                  )
+                                  : DiagnosticsColors.textSubtle,
                         ),
                       ),
                     ],
@@ -229,11 +249,13 @@ class DisplaySpecsCard extends StatelessWidget {
               const SizedBox(width: 8),
               Expanded(
                 child: _DisplaySpecItem(
-                  icon: displaySpecs.isHdr
-                      ? Icons.hdr_on_rounded
-                      : Icons.hdr_off_rounded,
+                  icon:
+                      displaySpecs.isHdr
+                          ? Icons.hdr_on_rounded
+                          : Icons.hdr_off_rounded,
                   label: "Dukungan HDR Display",
-                  value: displaySpecs.isHdr ? "HDR10 / Wide Gamut" : "SDR Display",
+                  value:
+                      displaySpecs.isHdr ? "HDR10 / Wide Gamut" : "SDR Display",
                 ),
               ),
             ],

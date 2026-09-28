@@ -6,11 +6,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../services/location_and_carrier_service.dart';
 import '../theme/diagnostics_colors.dart';
 
-enum MapTileLayer {
-  street,
-  satellite,
-  dark,
-}
+enum MapTileLayer { street, satellite, dark }
 
 class LiveGeotagMapView extends StatefulWidget {
   final double latitude;
@@ -41,9 +37,7 @@ class LiveGeotagMapView extends StatefulWidget {
   }
 
   static String _toDmsString(double val, {required bool isLat}) {
-    final direction = isLat
-        ? (val >= 0 ? "N" : "S")
-        : (val >= 0 ? "E" : "W");
+    final direction = isLat ? (val >= 0 ? "N" : "S") : (val >= 0 ? "E" : "W");
     final absVal = val.abs();
     final degrees = absVal.floor();
     final minutesNotTruncated = (absVal - degrees) * 60;
@@ -113,7 +107,8 @@ class _LiveGeotagMapViewState extends State<LiveGeotagMapView>
     double targetLon = widget.longitude;
 
     if (targetLat == 0.0 && targetLon == 0.0) {
-      final fresh = await LocationAndCarrierService.instance.checkLocationAndCarrier();
+      final fresh =
+          await LocationAndCarrierService.instance.checkLocationAndCarrier();
       if (fresh.latitude != 0.0 && fresh.longitude != 0.0) {
         targetLat = fresh.latitude;
         targetLon = fresh.longitude;
@@ -146,7 +141,9 @@ class _LiveGeotagMapViewState extends State<LiveGeotagMapView>
   Future<void> _openGoogleMaps() async {
     final lat = widget.latitude != 0.0 ? widget.latitude : -6.2088;
     final lon = widget.longitude != 0.0 ? widget.longitude : 106.8456;
-    final url = Uri.parse("https://www.google.com/maps/search/?api=1&query=$lat,$lon");
+    final url = Uri.parse(
+      "https://www.google.com/maps/search/?api=1&query=$lat,$lon",
+    );
     try {
       if (await canLaunchUrl(url)) {
         await launchUrl(url, mode: LaunchMode.externalApplication);
@@ -162,9 +159,16 @@ class _LiveGeotagMapViewState extends State<LiveGeotagMapView>
       SnackBar(
         content: Row(
           children: [
-            const Icon(Icons.check_circle_rounded, color: Colors.greenAccent, size: 16),
+            const Icon(
+              Icons.check_circle_rounded,
+              color: Colors.greenAccent,
+              size: 16,
+            ),
             const SizedBox(width: 8),
-            Text("Koordinat disalin: $lat, $lon", style: const TextStyle(fontSize: 12)),
+            Text(
+              "Koordinat disalin: $lat, $lon",
+              style: const TextStyle(fontSize: 12),
+            ),
           ],
         ),
         backgroundColor: DiagnosticsColors.darkCard,
@@ -196,7 +200,8 @@ class _LiveGeotagMapViewState extends State<LiveGeotagMapView>
 
   static double _latToTileY(double lat, int zoom) {
     final latRad = lat * math.pi / 180.0;
-    return ((1.0 - math.log(math.tan(latRad) + 1.0 / math.cos(latRad)) / math.pi) /
+    return ((1.0 -
+            math.log(math.tan(latRad) + 1.0 / math.cos(latRad)) / math.pi) /
         2.0 *
         (1 << zoom));
   }
@@ -214,10 +219,7 @@ class _LiveGeotagMapViewState extends State<LiveGeotagMapView>
       decoration: BoxDecoration(
         color: const Color(0xFF0F172A),
         borderRadius: BorderRadius.circular(18),
-        border: Border.all(
-          color: DiagnosticsColors.border,
-          width: 1.2,
-        ),
+        border: Border.all(color: DiagnosticsColors.border, width: 1.2),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.08),
@@ -239,10 +241,14 @@ class _LiveGeotagMapViewState extends State<LiveGeotagMapView>
                 final double midX = width / 2 + _panOffsetX;
                 final double midY = height / 2 + _panOffsetY;
 
-                final int startTileX = (centerTileX - (midX / tileSize) - 1).floor();
-                final int endTileX = (centerTileX + ((width - midX) / tileSize) + 1).ceil();
-                final int startTileY = (centerTileY - (midY / tileSize) - 1).floor();
-                final int endTileY = (centerTileY + ((height - midY) / tileSize) + 1).ceil();
+                final int startTileX =
+                    (centerTileX - (midX / tileSize) - 1).floor();
+                final int endTileX =
+                    (centerTileX + ((width - midX) / tileSize) + 1).ceil();
+                final int startTileY =
+                    (centerTileY - (midY / tileSize) - 1).floor();
+                final int endTileY =
+                    (centerTileY + ((height - midY) / tileSize) + 1).ceil();
 
                 final int maxTiles = (1 << intZoom);
 
@@ -251,7 +257,8 @@ class _LiveGeotagMapViewState extends State<LiveGeotagMapView>
                 for (int tx = startTileX; tx <= endTileX; tx++) {
                   for (int ty = startTileY; ty <= endTileY; ty++) {
                     if (ty < 0 || ty >= maxTiles) continue;
-                    final int wrappedX = ((tx % maxTiles) + maxTiles) % maxTiles;
+                    final int wrappedX =
+                        ((tx % maxTiles) + maxTiles) % maxTiles;
 
                     final double left = midX + (tx - centerTileX) * tileSize;
                     final double top = midY + (ty - centerTileY) * tileSize;
@@ -267,21 +274,28 @@ class _LiveGeotagMapViewState extends State<LiveGeotagMapView>
                         child: CachedNetworkImage(
                           imageUrl: url,
                           httpHeaders: const {
-                            'User-Agent': 'DeviceDiagnosticsFlutterApp/1.0 (Android; LocationViewer)',
+                            'User-Agent':
+                                'DeviceDiagnosticsFlutterApp/1.0 (Android; LocationViewer)',
                           },
                           fit: BoxFit.cover,
-                          placeholder: (context, _) => Container(
-                            color: _currentLayer == MapTileLayer.dark
-                                ? const Color(0xFF1E293B)
-                                : const Color(0xFFE2E8F0),
-                          ),
-                          errorWidget: (context, _, __) => Container(
-                            color: const Color(0xFF334155),
-                            child: const Center(
-                              child: Icon(Icons.broken_image_rounded,
-                                  size: 16, color: Colors.white24),
-                            ),
-                          ),
+                          placeholder:
+                              (context, _) => Container(
+                                color:
+                                    _currentLayer == MapTileLayer.dark
+                                        ? const Color(0xFF1E293B)
+                                        : const Color(0xFFE2E8F0),
+                              ),
+                          errorWidget:
+                              (context, _, __) => Container(
+                                color: const Color(0xFF334155),
+                                child: const Center(
+                                  child: Icon(
+                                    Icons.broken_image_rounded,
+                                    size: 16,
+                                    color: Colors.white24,
+                                  ),
+                                ),
+                              ),
                         ),
                       ),
                     );
@@ -289,14 +303,15 @@ class _LiveGeotagMapViewState extends State<LiveGeotagMapView>
                 }
 
                 return GestureDetector(
-                  onPanUpdate: widget.isInteractive
-                      ? (details) {
-                          setState(() {
-                            _panOffsetX += details.delta.dx;
-                            _panOffsetY += details.delta.dy;
-                          });
-                        }
-                      : null,
+                  onPanUpdate:
+                      widget.isInteractive
+                          ? (details) {
+                            setState(() {
+                              _panOffsetX += details.delta.dx;
+                              _panOffsetY += details.delta.dy;
+                            });
+                          }
+                          : null,
                   child: Stack(
                     children: [
                       ...tileWidgets,
@@ -309,18 +324,27 @@ class _LiveGeotagMapViewState extends State<LiveGeotagMapView>
                           animation: _pulseAnimation,
                           builder: (context, child) {
                             final pulse = _pulseAnimation.value;
-                            final double diameter =
-                                (widget.accuracyMeters * 3.5 * pulse).clamp(24.0, 110.0);
+                            final double diameter = (widget.accuracyMeters *
+                                    3.5 *
+                                    pulse)
+                                .clamp(24.0, 110.0);
                             return Transform.translate(
-                              offset: Offset((80 - diameter) / 2, (80 - diameter) / 2),
+                              offset: Offset(
+                                (80 - diameter) / 2,
+                                (80 - diameter) / 2,
+                              ),
                               child: Container(
                                 width: diameter,
                                 height: diameter,
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
-                                  color: const Color(0xFF0284C7).withValues(alpha: 0.18),
+                                  color: const Color(
+                                    0xFF0284C7,
+                                  ).withValues(alpha: 0.18),
                                   border: Border.all(
-                                    color: const Color(0xFF0284C7).withValues(alpha: 0.55),
+                                    color: const Color(
+                                      0xFF0284C7,
+                                    ).withValues(alpha: 0.55),
                                     width: 1.5,
                                   ),
                                 ),
@@ -342,7 +366,10 @@ class _LiveGeotagMapViewState extends State<LiveGeotagMapView>
                               decoration: BoxDecoration(
                                 color: const Color(0xFFEF4444),
                                 shape: BoxShape.circle,
-                                border: Border.all(color: Colors.white, width: 2.2),
+                                border: Border.all(
+                                  color: Colors.white,
+                                  width: 2.2,
+                                ),
                                 boxShadow: [
                                   BoxShadow(
                                     color: Colors.black.withValues(alpha: 0.35),
@@ -383,7 +410,9 @@ class _LiveGeotagMapViewState extends State<LiveGeotagMapView>
                 decoration: BoxDecoration(
                   color: Colors.black.withValues(alpha: 0.72),
                   borderRadius: BorderRadius.circular(10),
-                  border: Border.all(color: Colors.white.withValues(alpha: 0.15)),
+                  border: Border.all(
+                    color: Colors.white.withValues(alpha: 0.15),
+                  ),
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
@@ -457,15 +486,14 @@ class _LiveGeotagMapViewState extends State<LiveGeotagMapView>
                   decoration: BoxDecoration(
                     color: Colors.black.withValues(alpha: 0.75),
                     borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: Colors.white.withValues(alpha: 0.15)),
+                    border: Border.all(
+                      color: Colors.white.withValues(alpha: 0.15),
+                    ),
                   ),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      _buildZoomButton(
-                        icon: Icons.add_rounded,
-                        onTap: _zoomIn,
-                      ),
+                      _buildZoomButton(icon: Icons.add_rounded, onTap: _zoomIn),
                       Container(
                         width: 24,
                         height: 1,
@@ -499,7 +527,9 @@ class _LiveGeotagMapViewState extends State<LiveGeotagMapView>
                 decoration: BoxDecoration(
                   color: Colors.black.withValues(alpha: 0.75),
                   borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: Colors.white.withValues(alpha: 0.15)),
+                  border: Border.all(
+                    color: Colors.white.withValues(alpha: 0.15),
+                  ),
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
@@ -544,9 +574,7 @@ class _LiveGeotagMapViewState extends State<LiveGeotagMapView>
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3.5),
         decoration: BoxDecoration(
-          color: isSelected
-              ? const Color(0xFF0284C7)
-              : Colors.transparent,
+          color: isSelected ? const Color(0xFF0284C7) : Colors.transparent,
           borderRadius: BorderRadius.circular(7),
         ),
         child: Row(

@@ -91,12 +91,17 @@ class DiagnosticsColors {
   static const Color terminalBg = Color(0xFF0B1120);
 
   // --- Pre-packaged Status Pairs ---
-  static const DiagnosticsStatusPair statusDanger = DiagnosticsStatusPair.danger;
-  static const DiagnosticsStatusPair statusWarning = DiagnosticsStatusPair.warning;
-  static const DiagnosticsStatusPair statusSuccess = DiagnosticsStatusPair.success;
+  static const DiagnosticsStatusPair statusDanger =
+      DiagnosticsStatusPair.danger;
+  static const DiagnosticsStatusPair statusWarning =
+      DiagnosticsStatusPair.warning;
+  static const DiagnosticsStatusPair statusSuccess =
+      DiagnosticsStatusPair.success;
   static const DiagnosticsStatusPair statusInfo = DiagnosticsStatusPair.info;
-  static const DiagnosticsStatusPair statusPrimary = DiagnosticsStatusPair.primary;
-  static const DiagnosticsStatusPair statusPurple = DiagnosticsStatusPair.purple;
+  static const DiagnosticsStatusPair statusPrimary =
+      DiagnosticsStatusPair.primary;
+  static const DiagnosticsStatusPair statusPurple =
+      DiagnosticsStatusPair.purple;
   static const DiagnosticsStatusPair statusPink = DiagnosticsStatusPair.pink;
   static const DiagnosticsStatusPair statusTeal = DiagnosticsStatusPair.teal;
 }
