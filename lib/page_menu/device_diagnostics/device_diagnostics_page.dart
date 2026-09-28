@@ -30,7 +30,8 @@ class DeviceDiagnosticsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => DiagnosticsBloc()..add(const LoadInitialDiagnostics()),
+      create:
+          (context) => DiagnosticsBloc()..add(const LoadInitialDiagnostics()),
       child: const _DeviceDiagnosticsView(),
     );
   }
@@ -73,13 +74,15 @@ class _DeviceDiagnosticsViewState extends State<_DeviceDiagnosticsView>
   }
 
   Future<void> _checkGpsAndPermissionsOnStartup() async {
-    final status = await LocationAndCarrierService.instance.checkLocationStatus();
+    final status =
+        await LocationAndCarrierService.instance.checkLocationStatus();
     final bool isGranted = status['isLocationGranted'] == true;
     final bool isGpsEnabled = status['isGpsEnabled'] == true;
 
     if (!isGranted) {
       // Prompt runtime permission request
-      final permResult = await LocationAndCarrierService.instance.requestLocationPermission();
+      final permResult =
+          await LocationAndCarrierService.instance.requestLocationPermission();
       final grantedNow = permResult['isLocationGranted'] == true;
       final gpsActiveNow = permResult['isGpsEnabled'] == true;
 
@@ -89,14 +92,18 @@ class _DeviceDiagnosticsViewState extends State<_DeviceDiagnosticsView>
           await GeotagPermissionDialogs.showGpsRequiredDialog(
             context: context,
             onSettingsOpened: () {
-              context.read<DiagnosticsBloc>().add(const ScanLiveDeviceHardware());
+              context.read<DiagnosticsBloc>().add(
+                const ScanLiveDeviceHardware(),
+              );
             },
           );
         } else if (!grantedNow) {
           await GeotagPermissionDialogs.showPermissionRequiredDialog(
             context: context,
             onPermissionGranted: () {
-              context.read<DiagnosticsBloc>().add(const ScanLiveDeviceHardware());
+              context.read<DiagnosticsBloc>().add(
+                const ScanLiveDeviceHardware(),
+              );
             },
           );
         } else {
@@ -145,14 +152,20 @@ class _DeviceDiagnosticsViewState extends State<_DeviceDiagnosticsView>
         backgroundColor: DiagnosticsColors.white,
         elevation: 0.5,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new_rounded,
-              color: DiagnosticsColors.textPrimary, size: 20),
+          icon: const Icon(
+            Icons.arrow_back_ios_new_rounded,
+            color: DiagnosticsColors.textPrimary,
+            size: 20,
+          ),
           onPressed: () => Navigator.maybePop(context),
         ),
         actions: [
           IconButton(
             tooltip: "Share & Export Report",
-            icon: const Icon(Icons.ios_share_rounded, color: DiagnosticsColors.primary),
+            icon: const Icon(
+              Icons.ios_share_rounded,
+              color: DiagnosticsColors.primary,
+            ),
             onPressed: () {
               final state = context.read<DiagnosticsBloc>().state;
               final event = state.currentEvent;
@@ -179,11 +192,14 @@ class _DeviceDiagnosticsViewState extends State<_DeviceDiagnosticsView>
           ),
           IconButton(
             tooltip: "Rescan Live Device",
-            icon: const Icon(Icons.refresh_rounded, color: DiagnosticsColors.primary),
+            icon: const Icon(
+              Icons.refresh_rounded,
+              color: DiagnosticsColors.primary,
+            ),
             onPressed: () {
-              context
-                  .read<DiagnosticsBloc>()
-                  .add(const ScanLiveDeviceHardware());
+              context.read<DiagnosticsBloc>().add(
+                const ScanLiveDeviceHardware(),
+              );
             },
           ),
           const SizedBox(width: 8),
@@ -196,8 +212,11 @@ class _DeviceDiagnosticsViewState extends State<_DeviceDiagnosticsView>
               SnackBar(
                 content: Row(
                   children: [
-                    const Icon(Icons.error_outline_rounded,
-                        color: Colors.white, size: 18),
+                    const Icon(
+                      Icons.error_outline_rounded,
+                      color: Colors.white,
+                      size: 18,
+                    ),
                     const SizedBox(width: 8),
                     Expanded(
                       child: Text(
@@ -210,7 +229,8 @@ class _DeviceDiagnosticsViewState extends State<_DeviceDiagnosticsView>
                 backgroundColor: DiagnosticsColors.danger,
                 behavior: SnackBarBehavior.floating,
                 shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10)),
+                  borderRadius: BorderRadius.circular(10),
+                ),
               ),
             );
           } else if (state.successMessage != null) {
@@ -218,8 +238,11 @@ class _DeviceDiagnosticsViewState extends State<_DeviceDiagnosticsView>
               SnackBar(
                 content: Row(
                   children: [
-                    const Icon(Icons.check_circle_rounded,
-                        color: Colors.greenAccent, size: 18),
+                    const Icon(
+                      Icons.check_circle_rounded,
+                      color: Colors.greenAccent,
+                      size: 18,
+                    ),
                     const SizedBox(width: 8),
                     Expanded(
                       child: Text(
@@ -233,7 +256,8 @@ class _DeviceDiagnosticsViewState extends State<_DeviceDiagnosticsView>
                 duration: const Duration(seconds: 2),
                 behavior: SnackBarBehavior.floating,
                 shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10)),
+                  borderRadius: BorderRadius.circular(10),
+                ),
               ),
             );
           }
@@ -251,7 +275,10 @@ class _DeviceDiagnosticsViewState extends State<_DeviceDiagnosticsView>
                   SizedBox(height: 16),
                   Text(
                     "Collecting telemetry directly from device...",
-                    style: TextStyle(color: DiagnosticsColors.textSubtle, fontSize: 13),
+                    style: TextStyle(
+                      color: DiagnosticsColors.textSubtle,
+                      fontSize: 13,
+                    ),
                   ),
                 ],
               ),
@@ -261,9 +288,10 @@ class _DeviceDiagnosticsViewState extends State<_DeviceDiagnosticsView>
           if (event == null) {
             return Center(
               child: ElevatedButton.icon(
-                onPressed: () => context
-                    .read<DiagnosticsBloc>()
-                    .add(const LoadInitialDiagnostics()),
+                onPressed:
+                    () => context.read<DiagnosticsBloc>().add(
+                      const LoadInitialDiagnostics(),
+                    ),
                 icon: const Icon(Icons.refresh_rounded),
                 label: const Text("Scan Device"),
               ),
@@ -273,9 +301,9 @@ class _DeviceDiagnosticsViewState extends State<_DeviceDiagnosticsView>
           return RefreshIndicator(
             color: DiagnosticsColors.primary,
             onRefresh: () async {
-              context
-                  .read<DiagnosticsBloc>()
-                  .add(const ScanLiveDeviceHardware());
+              context.read<DiagnosticsBloc>().add(
+                const ScanLiveDeviceHardware(),
+              );
               await Future.delayed(const Duration(milliseconds: 600));
             },
             child: ListView(
@@ -284,7 +312,9 @@ class _DeviceDiagnosticsViewState extends State<_DeviceDiagnosticsView>
                 // 1. Live Device Status Pill (Fully Responsive)
                 Container(
                   padding: const EdgeInsets.symmetric(
-                      horizontal: 12, vertical: 7),
+                    horizontal: 12,
+                    vertical: 7,
+                  ),
                   decoration: BoxDecoration(
                     color: DiagnosticsColors.primary.withValues(alpha: 0.08),
                     borderRadius: BorderRadius.circular(12),
@@ -294,8 +324,11 @@ class _DeviceDiagnosticsViewState extends State<_DeviceDiagnosticsView>
                   ),
                   child: Row(
                     children: [
-                      const Icon(Icons.sensors_rounded,
-                          color: DiagnosticsColors.success, size: 16),
+                      const Icon(
+                        Icons.sensors_rounded,
+                        color: DiagnosticsColors.success,
+                        size: 16,
+                      ),
                       const SizedBox(width: 6),
                       const Expanded(
                         child: Text(
@@ -329,12 +362,14 @@ class _DeviceDiagnosticsViewState extends State<_DeviceDiagnosticsView>
                   event: event,
                   isMasked: state.isDeviceIdMasked,
                   isLiveDevice: true,
-                  onToggleMask: () => context
-                      .read<DiagnosticsBloc>()
-                      .add(const ToggleDeviceIdMaskEvent()),
-                  onRegenerateId: () => context
-                      .read<DiagnosticsBloc>()
-                      .add(const RegenerateDeviceIdEvent()),
+                  onToggleMask:
+                      () => context.read<DiagnosticsBloc>().add(
+                        const ToggleDeviceIdMaskEvent(),
+                      ),
+                  onRegenerateId:
+                      () => context.read<DiagnosticsBloc>().add(
+                        const RegenerateDeviceIdEvent(),
+                      ),
                 ),
                 const SizedBox(height: 16),
 
@@ -346,12 +381,14 @@ class _DeviceDiagnosticsViewState extends State<_DeviceDiagnosticsView>
                 NetworkStatusCard(
                   networkInfo: state.networkInfo,
                   isTestingPing: state.isTestingPing,
-                  onTestPing: () => context
-                      .read<DiagnosticsBloc>()
-                      .add(const ProbePingLatencyEvent()),
-                  onSimulateBadConnection: () => context
-                      .read<DiagnosticsBloc>()
-                      .add(const SimulateBadConnectionEvent()),
+                  onTestPing:
+                      () => context.read<DiagnosticsBloc>().add(
+                        const ProbePingLatencyEvent(),
+                      ),
+                  onSimulateBadConnection:
+                      () => context.read<DiagnosticsBloc>().add(
+                        const SimulateBadConnectionEvent(),
+                      ),
                 ),
                 const SizedBox(height: 16),
 
@@ -363,12 +400,14 @@ class _DeviceDiagnosticsViewState extends State<_DeviceDiagnosticsView>
                 GeotaggingAndGpsCard(
                   locationCarrier: state.locationCarrier,
                   compassHeading: state.compassHeading,
-                  onSimulateCondition: (cond) => context
-                      .read<DiagnosticsBloc>()
-                      .add(SimulateGeotaggingConditionEvent(cond)),
-                  onResetSimulation: () => context
-                      .read<DiagnosticsBloc>()
-                      .add(const ResetGeotaggingSimulationEvent()),
+                  onSimulateCondition:
+                      (cond) => context.read<DiagnosticsBloc>().add(
+                        SimulateGeotaggingConditionEvent(cond),
+                      ),
+                  onResetSimulation:
+                      () => context.read<DiagnosticsBloc>().add(
+                        const ResetGeotaggingSimulationEvent(),
+                      ),
                 ),
                 const SizedBox(height: 16),
 
@@ -413,12 +452,14 @@ class _DeviceDiagnosticsViewState extends State<_DeviceDiagnosticsView>
 
                 // 9. LIVE IN-APP DEBUG LOG CONSOLE (Debug Log Requirement)
                 LiveDebugLogConsole(
-                  onTriggerSync: () => context
-                      .read<DiagnosticsBloc>()
-                      .add(const ScanLiveDeviceHardware()),
-                  onClearLogs: () => context
-                      .read<DiagnosticsBloc>()
-                      .add(const ClearLogsEvent()),
+                  onTriggerSync:
+                      () => context.read<DiagnosticsBloc>().add(
+                        const ScanLiveDeviceHardware(),
+                      ),
+                  onClearLogs:
+                      () => context.read<DiagnosticsBloc>().add(
+                        const ClearLogsEvent(),
+                      ),
                 ),
                 const SizedBox(height: 16),
 
