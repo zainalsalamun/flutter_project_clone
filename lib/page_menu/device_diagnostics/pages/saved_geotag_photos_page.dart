@@ -1321,7 +1321,8 @@ class _SavedGeotagPhotosPageState extends State<SavedGeotagPhotosPage> {
                                   overflow: TextOverflow.ellipsis,
                                 ),
                               ),
-                              if (photo.isCloudSynced && photo.cloudUrl.isNotEmpty)
+                              if (photo.isCloudSynced &&
+                                  photo.cloudUrl.isNotEmpty)
                                 InkWell(
                                   onTap: () {
                                     Clipboard.setData(

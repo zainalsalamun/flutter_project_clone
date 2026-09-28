@@ -96,7 +96,8 @@ class _CameraGeotagPreviewPageState extends State<CameraGeotagPreviewPage> {
       setState(() {
         _isSaving = false;
         _currentPhoto = finalModel;
-        _savedWatermarkFile = finalModel.compressedFile ?? finalModel.watermarkedFile;
+        _savedWatermarkFile =
+            finalModel.compressedFile ?? finalModel.watermarkedFile;
         _isSavedToSqlite = true;
       });
 
@@ -105,8 +106,11 @@ class _CameraGeotagPreviewPageState extends State<CameraGeotagPreviewPage> {
           SnackBar(
             content: Row(
               children: [
-                const Icon(Icons.check_circle_rounded,
-                    color: Colors.white, size: 20),
+                const Icon(
+                  Icons.check_circle_rounded,
+                  color: Colors.white,
+                  size: 20,
+                ),
                 const SizedBox(width: 8),
                 Expanded(
                   child: Column(
@@ -115,11 +119,17 @@ class _CameraGeotagPreviewPageState extends State<CameraGeotagPreviewPage> {
                     children: [
                       const Text(
                         "Foto dikompresi & tersimpan di SQLite!",
-                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12.5),
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 12.5,
+                        ),
                       ),
                       Text(
                         "${finalModel.formattedOriginalSize} ➔ ${finalModel.formattedCompressedSize} (Hemat ${finalModel.formattedSavings}) • ID #$dbId",
-                        style: const TextStyle(fontSize: 11, color: Color(0xFFD1FAE5)),
+                        style: const TextStyle(
+                          fontSize: 11,
+                          color: Color(0xFFD1FAE5),
+                        ),
                       ),
                     ],
                   ),
@@ -128,8 +138,9 @@ class _CameraGeotagPreviewPageState extends State<CameraGeotagPreviewPage> {
             ),
             backgroundColor: const Color(0xFF10B981),
             behavior: SnackBarBehavior.floating,
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
           ),
         );
       }
@@ -159,7 +170,8 @@ class _CameraGeotagPreviewPageState extends State<CameraGeotagPreviewPage> {
       final res = await GeotagCloudService.instance.saveToDeviceGallery(
         _savedWatermarkFile!,
         title: "geotag_${photo.id ?? DateTime.now().millisecondsSinceEpoch}",
-        description: "Foto Geotagging [${photo.formattedCoordinates}] - ${photo.fullAddress}",
+        description:
+            "Foto Geotagging [${photo.formattedCoordinates}] - ${photo.fullAddress}",
       );
 
       setState(() {
@@ -175,7 +187,9 @@ class _CameraGeotagPreviewPageState extends State<CameraGeotagPreviewPage> {
             content: Row(
               children: [
                 Icon(
-                  res.success ? Icons.photo_library_rounded : Icons.error_outline_rounded,
+                  res.success
+                      ? Icons.photo_library_rounded
+                      : Icons.error_outline_rounded,
                   color: Colors.white,
                   size: 20,
                 ),
@@ -189,13 +203,19 @@ class _CameraGeotagPreviewPageState extends State<CameraGeotagPreviewPage> {
                         res.success
                             ? "Foto berhasil disimpan ke Galeri HP!"
                             : "Gagal menyimpan ke galeri",
-                        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12.5),
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 12.5,
+                        ),
                       ),
                       Text(
                         res.success
                             ? "Tersimpan di album: ${res.album ?? 'Pictures/Geotagging'}"
                             : (res.errorMessage ?? 'Terjadi kesalahan sistem'),
-                        style: const TextStyle(fontSize: 11, color: Color(0xFFE0F2FE)),
+                        style: const TextStyle(
+                          fontSize: 11,
+                          color: Color(0xFFE0F2FE),
+                        ),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -204,9 +224,12 @@ class _CameraGeotagPreviewPageState extends State<CameraGeotagPreviewPage> {
                 ),
               ],
             ),
-            backgroundColor: res.success ? const Color(0xFF0284C7) : const Color(0xFFEF4444),
+            backgroundColor:
+                res.success ? const Color(0xFF0284C7) : const Color(0xFFEF4444),
             behavior: SnackBarBehavior.floating,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
           ),
         );
       }
@@ -219,8 +242,10 @@ class _CameraGeotagPreviewPageState extends State<CameraGeotagPreviewPage> {
     if (_currentPhoto == null) return;
 
     // Optional biometric authentication before cloud backup
-    final hasBiometrics = await BiometricAuthService.instance.checkBiometricStatus();
-    if (hasBiometrics['hasHardware'] == true && hasBiometrics['isEnrolled'] == true) {
+    final hasBiometrics =
+        await BiometricAuthService.instance.checkBiometricStatus();
+    if (hasBiometrics['hasHardware'] == true &&
+        hasBiometrics['isEnrolled'] == true) {
       final authOk = await BiometricAuthService.instance.authenticate(
         title: "Autentikasi Cloud Backup",
         subtitle: "Verifikasi sidik jari untuk mencadangkan foto ke Cloud",
@@ -294,7 +319,9 @@ class _CameraGeotagPreviewPageState extends State<CameraGeotagPreviewPage> {
             content: Row(
               children: [
                 Icon(
-                  result.success ? Icons.cloud_done_rounded : Icons.cloud_off_rounded,
+                  result.success
+                      ? Icons.cloud_done_rounded
+                      : Icons.cloud_off_rounded,
                   color: Colors.white,
                   size: 20,
                 ),
@@ -308,13 +335,19 @@ class _CameraGeotagPreviewPageState extends State<CameraGeotagPreviewPage> {
                         result.success
                             ? "Foto berhasil dicadangkan ke Cloud!"
                             : "Gagal mencadangkan ke cloud",
-                        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12.5),
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 12.5,
+                        ),
                       ),
                       Text(
                         result.success
                             ? "${result.provider ?? 'Cloud'}: ${result.cloudUrl}"
                             : (result.errorMessage ?? "Gagal upload"),
-                        style: const TextStyle(fontSize: 10.5, color: Color(0xFFD1FAE5)),
+                        style: const TextStyle(
+                          fontSize: 10.5,
+                          color: Color(0xFFD1FAE5),
+                        ),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -333,19 +366,25 @@ class _CameraGeotagPreviewPageState extends State<CameraGeotagPreviewPage> {
                         ),
                       );
                     },
-                    child: const Text("SALIN",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 11)),
+                    child: const Text(
+                      "SALIN",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 11,
+                      ),
+                    ),
                   ),
               ],
             ),
             backgroundColor:
-                result.success ? const Color(0xFF059669) : const Color(0xFFEF4444),
+                result.success
+                    ? const Color(0xFF059669)
+                    : const Color(0xFFEF4444),
             behavior: SnackBarBehavior.floating,
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
           ),
         );
       }
@@ -387,9 +426,7 @@ class _CameraGeotagPreviewPageState extends State<CameraGeotagPreviewPage> {
   void _openSqliteGallery() {
     Navigator.push(
       context,
-      MaterialPageRoute(
-        builder: (context) => const SavedGeotagPhotosPage(),
-      ),
+      MaterialPageRoute(builder: (context) => const SavedGeotagPhotosPage()),
     );
   }
 
@@ -405,15 +442,16 @@ class _CameraGeotagPreviewPageState extends State<CameraGeotagPreviewPage> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => InteractiveGeotagMapPage(
-          latitude: lat,
-          longitude: lon,
-          altitude: alt,
-          accuracy: acc,
-          address: addr,
-          carrier: carrier,
-          locationData: widget.locationData,
-        ),
+        builder:
+            (context) => InteractiveGeotagMapPage(
+              latitude: lat,
+              longitude: lon,
+              altitude: alt,
+              accuracy: acc,
+              address: addr,
+              carrier: carrier,
+              locationData: widget.locationData,
+            ),
       ),
     );
   }
@@ -426,8 +464,11 @@ class _CameraGeotagPreviewPageState extends State<CameraGeotagPreviewPage> {
         backgroundColor: const Color(0xFF0F172A),
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new_rounded,
-              color: Colors.white, size: 20),
+          icon: const Icon(
+            Icons.arrow_back_ios_new_rounded,
+            color: Colors.white,
+            size: 20,
+          ),
           onPressed: () => Navigator.maybePop(context, _savedWatermarkFile),
         ),
         title: const Column(
@@ -443,10 +484,7 @@ class _CameraGeotagPreviewPageState extends State<CameraGeotagPreviewPage> {
             ),
             Text(
               "Kompresi Gambar Cerdas & Database Lokal",
-              style: TextStyle(
-                color: Color(0xFF94A3B8),
-                fontSize: 11,
-              ),
+              style: TextStyle(color: Color(0xFF94A3B8), fontSize: 11),
             ),
           ],
         ),
@@ -468,32 +506,35 @@ class _CameraGeotagPreviewPageState extends State<CameraGeotagPreviewPage> {
           ),
           IconButton(
             tooltip: "Ambil Foto Baru",
-            icon: const Icon(Icons.camera_alt_rounded, color: Color(0xFF38BDF8)),
+            icon: const Icon(
+              Icons.camera_alt_rounded,
+              color: Color(0xFF38BDF8),
+            ),
             onPressed: () => _triggerCapture(ImageSource.camera),
           ),
           const SizedBox(width: 6),
         ],
       ),
-      body: _isLoading
-          ? const Center(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  CircularProgressIndicator(color: Color(0xFF38BDF8)),
-                  SizedBox(height: 16),
-                  Text(
-                    "Membaca koordinat GPS & Geocoding alamat...",
-                    style: TextStyle(color: Color(0xFF94A3B8), fontSize: 13),
-                  ),
-                ],
-              ),
-            )
-          : _currentPhoto == null
+      body:
+          _isLoading
+              ? const Center(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    CircularProgressIndicator(color: Color(0xFF38BDF8)),
+                    SizedBox(height: 16),
+                    Text(
+                      "Membaca koordinat GPS & Geocoding alamat...",
+                      style: TextStyle(color: Color(0xFF94A3B8), fontSize: 13),
+                    ),
+                  ],
+                ),
+              )
+              : _currentPhoto == null
               ? _buildEmptyState()
               : _buildPhotoWithWatermarkView(),
-      bottomNavigationBar: _currentPhoto == null
-          ? null
-          : _buildBottomActionBar(),
+      bottomNavigationBar:
+          _currentPhoto == null ? null : _buildBottomActionBar(),
     );
   }
 
@@ -537,10 +578,13 @@ class _CameraGeotagPreviewPageState extends State<CameraGeotagPreviewPage> {
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFF0284C7),
                 foregroundColor: Colors.white,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 12,
+                ),
                 shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12)),
+                  borderRadius: BorderRadius.circular(12),
+                ),
               ),
               icon: const Icon(Icons.camera_alt_rounded),
               label: const Text("Buka Kamera HP"),
@@ -725,9 +769,7 @@ class _CameraGeotagPreviewPageState extends State<CameraGeotagPreviewPage> {
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       decoration: const BoxDecoration(
         color: Color(0xFF1E293B),
-        border: Border(
-          top: BorderSide(color: Color(0xFF334155), width: 1),
-        ),
+        border: Border(top: BorderSide(color: Color(0xFF334155), width: 1)),
       ),
       child: SafeArea(
         child: Column(
@@ -737,7 +779,10 @@ class _CameraGeotagPreviewPageState extends State<CameraGeotagPreviewPage> {
             if (photo != null) ...[
               Container(
                 margin: const EdgeInsets.only(bottom: 10),
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 5,
+                ),
                 decoration: BoxDecoration(
                   color: const Color(0xFF0F172A),
                   borderRadius: BorderRadius.circular(8),
@@ -750,8 +795,11 @@ class _CameraGeotagPreviewPageState extends State<CameraGeotagPreviewPage> {
                     Flexible(
                       child: Row(
                         children: [
-                          const Icon(Icons.storage_rounded,
-                              color: Color(0xFF38BDF8), size: 13),
+                          const Icon(
+                            Icons.storage_rounded,
+                            color: Color(0xFF38BDF8),
+                            size: 13,
+                          ),
                           const SizedBox(width: 4),
                           Flexible(
                             child: Text(
@@ -780,9 +828,10 @@ class _CameraGeotagPreviewPageState extends State<CameraGeotagPreviewPage> {
                             photo.isCloudSynced
                                 ? Icons.cloud_done_rounded
                                 : Icons.cloud_queue_rounded,
-                            color: photo.isCloudSynced
-                                ? const Color(0xFF10B981)
-                                : const Color(0xFF38BDF8),
+                            color:
+                                photo.isCloudSynced
+                                    ? const Color(0xFF10B981)
+                                    : const Color(0xFF38BDF8),
                             size: 13,
                           ),
                           const SizedBox(width: 4),
@@ -794,9 +843,10 @@ class _CameraGeotagPreviewPageState extends State<CameraGeotagPreviewPage> {
                               style: TextStyle(
                                 fontSize: 10.5,
                                 fontWeight: FontWeight.bold,
-                                color: photo.isCloudSynced
-                                    ? const Color(0xFF10B981)
-                                    : const Color(0xFF38BDF8),
+                                color:
+                                    photo.isCloudSynced
+                                        ? const Color(0xFF10B981)
+                                        : const Color(0xFF38BDF8),
                               ),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
@@ -813,11 +863,16 @@ class _CameraGeotagPreviewPageState extends State<CameraGeotagPreviewPage> {
             if (_isUploadingCloud) ...[
               Container(
                 margin: const EdgeInsets.only(bottom: 10),
-                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 14,
+                  vertical: 10,
+                ),
                 decoration: BoxDecoration(
                   color: const Color(0xFF1E293B),
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: const Color(0xFF6366F1).withValues(alpha: 0.5)),
+                  border: Border.all(
+                    color: const Color(0xFF6366F1).withValues(alpha: 0.5),
+                  ),
                   boxShadow: [
                     BoxShadow(
                       color: const Color(0xFF6366F1).withValues(alpha: 0.15),
@@ -837,7 +892,10 @@ class _CameraGeotagPreviewPageState extends State<CameraGeotagPreviewPage> {
                             SizedBox(
                               width: 13,
                               height: 13,
-                              child: CircularProgressIndicator(strokeWidth: 2, color: Color(0xFF818CF8)),
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                                color: Color(0xFF818CF8),
+                              ),
                             ),
                             SizedBox(width: 8),
                             Text(
@@ -851,7 +909,10 @@ class _CameraGeotagPreviewPageState extends State<CameraGeotagPreviewPage> {
                           ],
                         ),
                         Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 6,
+                            vertical: 2,
+                          ),
                           decoration: BoxDecoration(
                             color: const Color(0xFF6366F1),
                             borderRadius: BorderRadius.circular(6),
@@ -874,7 +935,9 @@ class _CameraGeotagPreviewPageState extends State<CameraGeotagPreviewPage> {
                       child: LinearProgressIndicator(
                         value: _cloudProgress,
                         backgroundColor: const Color(0xFF0F172A),
-                        valueColor: const AlwaysStoppedAnimation<Color>(Color(0xFF818CF8)),
+                        valueColor: const AlwaysStoppedAnimation<Color>(
+                          Color(0xFF818CF8),
+                        ),
                         minHeight: 6,
                       ),
                     ),
@@ -890,29 +953,32 @@ class _CameraGeotagPreviewPageState extends State<CameraGeotagPreviewPage> {
                 Expanded(
                   child: ElevatedButton.icon(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: _isSavedToSqlite
-                          ? const Color(0xFF047857)
-                          : const Color(0xFF10B981),
+                      backgroundColor:
+                          _isSavedToSqlite
+                              ? const Color(0xFF047857)
+                              : const Color(0xFF10B981),
                       foregroundColor: Colors.white,
                       padding: const EdgeInsets.symmetric(vertical: 10),
                       shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10)),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
                     ),
-                    icon: _isSaving
-                        ? const SizedBox(
-                            width: 14,
-                            height: 14,
-                            child: CircularProgressIndicator(
-                              color: Colors.white,
-                              strokeWidth: 2,
+                    icon:
+                        _isSaving
+                            ? const SizedBox(
+                              width: 14,
+                              height: 14,
+                              child: CircularProgressIndicator(
+                                color: Colors.white,
+                                strokeWidth: 2,
+                              ),
+                            )
+                            : Icon(
+                              _isSavedToSqlite
+                                  ? Icons.check_circle_rounded
+                                  : Icons.save_alt_rounded,
+                              size: 16,
                             ),
-                          )
-                        : Icon(
-                            _isSavedToSqlite
-                                ? Icons.check_circle_rounded
-                                : Icons.save_alt_rounded,
-                            size: 16,
-                          ),
                     label: Text(
                       _isSaving
                           ? "Menyimpan..."
@@ -924,7 +990,8 @@ class _CameraGeotagPreviewPageState extends State<CameraGeotagPreviewPage> {
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    onPressed: _isSaving ? null : _saveAndCompressWatermarkedImage,
+                    onPressed:
+                        _isSaving ? null : _saveAndCompressWatermarkedImage,
                   ),
                 ),
                 const SizedBox(width: 8),
@@ -933,29 +1000,32 @@ class _CameraGeotagPreviewPageState extends State<CameraGeotagPreviewPage> {
                 Expanded(
                   child: ElevatedButton.icon(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: _isSavedToGallery
-                          ? const Color(0xFF0369A1)
-                          : const Color(0xFF0284C7),
+                      backgroundColor:
+                          _isSavedToGallery
+                              ? const Color(0xFF0369A1)
+                              : const Color(0xFF0284C7),
                       foregroundColor: Colors.white,
                       padding: const EdgeInsets.symmetric(vertical: 10),
                       shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10)),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
                     ),
-                    icon: _isSavingToGallery
-                        ? const SizedBox(
-                            width: 14,
-                            height: 14,
-                            child: CircularProgressIndicator(
-                              color: Colors.white,
-                              strokeWidth: 2,
+                    icon:
+                        _isSavingToGallery
+                            ? const SizedBox(
+                              width: 14,
+                              height: 14,
+                              child: CircularProgressIndicator(
+                                color: Colors.white,
+                                strokeWidth: 2,
+                              ),
+                            )
+                            : Icon(
+                              _isSavedToGallery
+                                  ? Icons.photo_library_rounded
+                                  : Icons.download_for_offline_rounded,
+                              size: 16,
                             ),
-                          )
-                        : Icon(
-                            _isSavedToGallery
-                                ? Icons.photo_library_rounded
-                                : Icons.download_for_offline_rounded,
-                            size: 16,
-                          ),
                     label: Text(
                       _isSavingToGallery
                           ? "Menyimpan..."
@@ -982,10 +1052,13 @@ class _CameraGeotagPreviewPageState extends State<CameraGeotagPreviewPage> {
                   style: OutlinedButton.styleFrom(
                     foregroundColor: const Color(0xFF94A3B8),
                     side: const BorderSide(color: Color(0xFF475569)),
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 10, vertical: 9),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 9,
+                    ),
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
                   ),
                   icon: const Icon(Icons.refresh_rounded, size: 15),
                   label: const Text("Ulangi", style: TextStyle(fontSize: 11)),
@@ -997,29 +1070,32 @@ class _CameraGeotagPreviewPageState extends State<CameraGeotagPreviewPage> {
                 Expanded(
                   child: ElevatedButton.icon(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: (photo?.isCloudSynced == true)
-                          ? const Color(0xFF065F46)
-                          : const Color(0xFF6366F1),
+                      backgroundColor:
+                          (photo?.isCloudSynced == true)
+                              ? const Color(0xFF065F46)
+                              : const Color(0xFF6366F1),
                       foregroundColor: Colors.white,
                       padding: const EdgeInsets.symmetric(vertical: 9),
                       shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10)),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
                     ),
-                    icon: _isUploadingCloud
-                        ? const SizedBox(
-                            width: 13,
-                            height: 13,
-                            child: CircularProgressIndicator(
-                              color: Colors.white,
-                              strokeWidth: 2,
+                    icon:
+                        _isUploadingCloud
+                            ? const SizedBox(
+                              width: 13,
+                              height: 13,
+                              child: CircularProgressIndicator(
+                                color: Colors.white,
+                                strokeWidth: 2,
+                              ),
+                            )
+                            : Icon(
+                              (photo?.isCloudSynced == true)
+                                  ? Icons.cloud_done_rounded
+                                  : Icons.cloud_upload_rounded,
+                              size: 15,
                             ),
-                          )
-                        : Icon(
-                            (photo?.isCloudSynced == true)
-                                ? Icons.cloud_done_rounded
-                                : Icons.cloud_upload_rounded,
-                            size: 15,
-                          ),
                     label: Text(
                       _isUploadingCloud
                           ? "Uploading ${(_cloudProgress * 100).toInt()}%"
@@ -1043,10 +1119,13 @@ class _CameraGeotagPreviewPageState extends State<CameraGeotagPreviewPage> {
                   style: OutlinedButton.styleFrom(
                     foregroundColor: Colors.white,
                     side: const BorderSide(color: Color(0xFF475569)),
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 10, vertical: 9),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 9,
+                    ),
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
                   ),
                   icon: const Icon(Icons.share_rounded, size: 14),
                   label: const Text("Share", style: TextStyle(fontSize: 11)),
