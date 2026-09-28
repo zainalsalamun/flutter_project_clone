@@ -63,7 +63,8 @@ class _InteractiveGeotagMapPageState extends State<InteractiveGeotagMapPage> {
 
   Future<void> _refreshCurrentLocation() async {
     setState(() => _isRefreshing = true);
-    final fresh = await LocationAndCarrierService.instance.checkLocationAndCarrier();
+    final fresh =
+        await LocationAndCarrierService.instance.checkLocationAndCarrier();
     String addr = _address;
     if (fresh.latitude != 0.0 && fresh.longitude != 0.0) {
       addr = await GeotaggingCameraService.instance.reverseGeocode(
@@ -87,7 +88,11 @@ class _InteractiveGeotagMapPageState extends State<InteractiveGeotagMapPage> {
         SnackBar(
           content: Row(
             children: [
-              const Icon(Icons.my_location_rounded, color: Colors.greenAccent, size: 16),
+              const Icon(
+                Icons.my_location_rounded,
+                color: Colors.greenAccent,
+                size: 16,
+              ),
               const SizedBox(width: 8),
               Expanded(
                 child: Text(
@@ -108,7 +113,9 @@ class _InteractiveGeotagMapPageState extends State<InteractiveGeotagMapPage> {
   Future<void> _openGoogleMaps() async {
     final lat = _lat != 0.0 ? _lat : -6.2088;
     final lon = _lon != 0.0 ? _lon : 106.8456;
-    final url = Uri.parse("https://www.google.com/maps/search/?api=1&query=$lat,$lon");
+    final url = Uri.parse(
+      "https://www.google.com/maps/search/?api=1&query=$lat,$lon",
+    );
     try {
       if (await canLaunchUrl(url)) {
         await launchUrl(url, mode: LaunchMode.externalApplication);
@@ -135,10 +142,16 @@ Link Google Maps: https://www.google.com/maps/search/?api=1&query=$_lat,$_lon
       SnackBar(
         content: const Row(
           children: [
-            Icon(Icons.check_circle_rounded, color: Colors.greenAccent, size: 16),
+            Icon(
+              Icons.check_circle_rounded,
+              color: Colors.greenAccent,
+              size: 16,
+            ),
             SizedBox(width: 8),
-            Text("Seluruh data telemetri & koordinat berhasil disalin!",
-                style: TextStyle(fontSize: 12)),
+            Text(
+              "Seluruh data telemetri & koordinat berhasil disalin!",
+              style: TextStyle(fontSize: 12),
+            ),
           ],
         ),
         backgroundColor: DiagnosticsColors.darkCard,
@@ -158,8 +171,11 @@ Link Google Maps: https://www.google.com/maps/search/?api=1&query=$_lat,$_lon
         backgroundColor: Colors.black.withValues(alpha: 0.85),
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new_rounded,
-              color: Colors.white, size: 20),
+          icon: const Icon(
+            Icons.arrow_back_ios_new_rounded,
+            color: Colors.white,
+            size: 20,
+          ),
           onPressed: () => Navigator.maybePop(context),
         ),
         title: const Column(
@@ -175,27 +191,28 @@ Link Google Maps: https://www.google.com/maps/search/?api=1&query=$_lat,$_lon
             ),
             Text(
               "Translasi Koordinat GPS & Visual Spasial",
-              style: TextStyle(
-                color: Color(0xFF94A3B8),
-                fontSize: 11,
-              ),
+              style: TextStyle(color: Color(0xFF94A3B8), fontSize: 11),
             ),
           ],
         ),
         actions: [
           IconButton(
             tooltip: "Sinkronkan Lokasi Saat Ini",
-            icon: _isRefreshing
-                ? const SizedBox(
-                    width: 16,
-                    height: 16,
-                    child: CircularProgressIndicator(
+            icon:
+                _isRefreshing
+                    ? const SizedBox(
+                      width: 16,
+                      height: 16,
+                      child: CircularProgressIndicator(
+                        color: Color(0xFF38BDF8),
+                        strokeWidth: 2,
+                      ),
+                    )
+                    : const Icon(
+                      Icons.my_location_rounded,
                       color: Color(0xFF38BDF8),
-                      strokeWidth: 2,
+                      size: 20,
                     ),
-                  )
-                : const Icon(Icons.my_location_rounded,
-                    color: Color(0xFF38BDF8), size: 20),
             onPressed: _isRefreshing ? null : _refreshCurrentLocation,
           ),
           IconButton(
@@ -205,8 +222,11 @@ Link Google Maps: https://www.google.com/maps/search/?api=1&query=$_lat,$_lon
           ),
           IconButton(
             tooltip: "Buka di Google Maps",
-            icon: const Icon(Icons.open_in_new_rounded,
-                color: Color(0xFF38BDF8), size: 20),
+            icon: const Icon(
+              Icons.open_in_new_rounded,
+              color: Color(0xFF38BDF8),
+              size: 20,
+            ),
             onPressed: _openGoogleMaps,
           ),
           const SizedBox(width: 6),
@@ -217,7 +237,7 @@ Link Google Maps: https://www.google.com/maps/search/?api=1&query=$_lat,$_lon
           // 1. Fullscreen Map Canvas
           Positioned.fill(
             child: LiveGeotagMapView(
-              key: ValueKey("map_${_lat}_${_lon}"),
+              key: ValueKey("map_${_lat}_$_lon"),
               latitude: _lat,
               longitude: _lon,
               accuracyMeters: _acc,
@@ -237,7 +257,9 @@ Link Google Maps: https://www.google.com/maps/search/?api=1&query=$_lat,$_lon
               curve: Curves.easeInOut,
               decoration: BoxDecoration(
                 color: DiagnosticsColors.cardBg,
-                borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(24),
+                ),
                 border: Border.all(color: DiagnosticsColors.border, width: 1.2),
                 boxShadow: [
                   BoxShadow(
@@ -259,7 +281,9 @@ Link Google Maps: https://www.google.com/maps/search/?api=1&query=$_lat,$_lon
                       Center(
                         child: InkWell(
                           onTap: () {
-                            setState(() => _isPanelExpanded = !_isPanelExpanded);
+                            setState(
+                              () => _isPanelExpanded = !_isPanelExpanded,
+                            );
                           },
                           child: Container(
                             width: 38,
@@ -280,7 +304,9 @@ Link Google Maps: https://www.google.com/maps/search/?api=1&query=$_lat,$_lon
                           Container(
                             padding: const EdgeInsets.all(8),
                             decoration: BoxDecoration(
-                              color: const Color(0xFF0284C7).withValues(alpha: 0.12),
+                              color: const Color(
+                                0xFF0284C7,
+                              ).withValues(alpha: 0.12),
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: const Icon(
@@ -326,14 +352,19 @@ Link Google Maps: https://www.google.com/maps/search/?api=1&query=$_lat,$_lon
                               color: DiagnosticsColors.textSubtle,
                             ),
                             onPressed: () {
-                              setState(() => _isPanelExpanded = !_isPanelExpanded);
+                              setState(
+                                () => _isPanelExpanded = !_isPanelExpanded,
+                              );
                             },
                           ),
                         ],
                       ),
 
                       if (_isPanelExpanded) ...[
-                        const Divider(height: 20, color: DiagnosticsColors.divider),
+                        const Divider(
+                          height: 20,
+                          color: DiagnosticsColors.divider,
+                        ),
 
                         // Coordinates Grid (Decimal vs DMS)
                         Row(
@@ -374,7 +405,8 @@ Link Google Maps: https://www.google.com/maps/search/?api=1&query=$_lat,$_lon
                             Expanded(
                               child: _buildCoordinateTile(
                                 label: "Akurasi & Ketinggian",
-                                value: "±${_acc.toStringAsFixed(1)}m • ${_alt.toStringAsFixed(1)}m dpl",
+                                value:
+                                    "±${_acc.toStringAsFixed(1)}m • ${_alt.toStringAsFixed(1)}m dpl",
                                 icon: Icons.satellite_alt_rounded,
                                 accentColor: const Color(0xFFF59E0B),
                               ),
@@ -398,7 +430,10 @@ Link Google Maps: https://www.google.com/maps/search/?api=1&query=$_lat,$_lon
                                       borderRadius: BorderRadius.circular(12),
                                     ),
                                   ),
-                                  icon: const Icon(Icons.open_in_new_rounded, size: 16),
+                                  icon: const Icon(
+                                    Icons.open_in_new_rounded,
+                                    size: 16,
+                                  ),
                                   label: const Text(
                                     "Buka Google Maps",
                                     style: TextStyle(
@@ -415,8 +450,11 @@ Link Google Maps: https://www.google.com/maps/search/?api=1&query=$_lat,$_lon
                               height: 44,
                               child: OutlinedButton.icon(
                                 style: OutlinedButton.styleFrom(
-                                  foregroundColor: DiagnosticsColors.textPrimary,
-                                  side: const BorderSide(color: DiagnosticsColors.border),
+                                  foregroundColor:
+                                      DiagnosticsColors.textPrimary,
+                                  side: const BorderSide(
+                                    color: DiagnosticsColors.border,
+                                  ),
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(12),
                                   ),
