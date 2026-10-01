@@ -9,9 +9,13 @@ import '../../widgets/warga_kita_service_tile.dart';
 import '../../widgets/warga_kita_sos_card.dart';
 import '../../widgets/warga_kita_sos_dialog.dart';
 import '../agenda/warga_kita_agenda_list_screen.dart';
+import '../fasilitas/warga_kita_fasilitas_screen.dart';
 import '../iuran/warga_kita_bayar_iuran_screen.dart';
+import '../jimpitan/warga_kita_jimpitan_screen.dart';
 import '../kas/warga_kita_buku_kas_screen.dart';
 import '../lapor/warga_kita_lapor_masalah_screen.dart';
+import '../pasar/warga_kita_pasar_screen.dart';
+import '../ronda/warga_kita_ronda_screen.dart';
 import '../surat/warga_kita_surat_pengantar_screen.dart';
 
 class WargaKitaHomeTab extends StatelessWidget {
@@ -162,7 +166,7 @@ class WargaKitaHomeTab extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Layanan Warga',
+                      'Layanan Warga RT 04',
                       style: WargaKitaTheme.font(
                         fontSize: 18,
                         fontWeight: FontWeight.w800,
@@ -171,9 +175,9 @@ class WargaKitaHomeTab extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      'Terintegrasi RT 04',
+                      '8 Layanan Aktif',
                       style: WargaKitaTheme.font(
-                        fontSize: 11,
+                        fontSize: 13,
                         fontWeight: FontWeight.w700,
                         color: WargaKitaTheme.primaryContainer,
                       ),
@@ -181,29 +185,26 @@ class WargaKitaHomeTab extends StatelessWidget {
                   ],
                 ),
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 16),
 
-              // Layanan Warga 2x2 Grid
+              // Layanan Warga 4x2 Grid (8 Services)
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
+                padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: GridView.count(
-                  crossAxisCount: 2,
+                  crossAxisCount: 4,
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
-                  crossAxisSpacing: 12,
-                  mainAxisSpacing: 12,
-                  childAspectRatio: 1.35,
+                  crossAxisSpacing: 8,
+                  mainAxisSpacing: 18,
+                  childAspectRatio: 0.72,
                   children: [
                     // 1. Bayar Iuran
                     WargaKitaServiceTile(
                       icon: Icons.account_balance_wallet_rounded,
-                      iconColor: Colors.white,
-                      iconBgColor: WargaKitaTheme.primaryContainer,
+                      iconColor: const Color(0xFF005D42),
+                      iconBgColor: const Color(0xFFE6F8F0),
                       title: 'Bayar Iuran',
-                      subtitle: 'Sampah, Satpam & Kas',
-                      badgeText: 'Iuran Juni',
-                      badgeBgColor: const Color(0xFF6CF8BB),
-                      badgeTextColor: const Color(0xFF005D42),
+                      subtitle: 'Iuran Warga',
                       onTap: () {
                         Navigator.push(
                           context,
@@ -214,29 +215,13 @@ class WargaKitaHomeTab extends StatelessWidget {
                       },
                     ),
 
-                    // 2. Pengumuman
+                    // 2. Surat RT
                     WargaKitaServiceTile(
-                      icon: Icons.campaign_rounded,
-                      iconColor: const Color(0xFF005D42),
-                      iconBgColor: const Color(0xFF6CF8BB),
-                      title: 'Pengumuman',
-                      subtitle: 'Surat Edaran Pengurus',
-                      badgeText: '2 Baru',
-                      badgeBgColor: const Color(0xFFFFDAD6),
-                      badgeTextColor: const Color(0xFF93000A),
-                      onTap: onNavigateToPesan,
-                    ),
-
-                    // 3. Surat Pengantar
-                    WargaKitaServiceTile(
-                      icon: Icons.description_outlined,
-                      iconColor: const Color(0xFF0284C7),
-                      iconBgColor: const Color(0xFFE0F2FE),
-                      title: 'Surat Pengantar',
-                      subtitle: 'KTP, KK, Domisili, dll',
-                      badgeText: 'Cepat • TTD QR',
-                      badgeBgColor: const Color(0xFFE2E7FF),
-                      badgeTextColor: const Color(0xFF1E293B),
+                      icon: Icons.mark_email_read_rounded,
+                      iconColor: const Color(0xFF006C5B),
+                      iconBgColor: const Color(0xFFE6F6F6),
+                      title: 'Surat RT',
+                      subtitle: 'KTP & Domisili',
                       onTap: () {
                         Navigator.push(
                           context,
@@ -247,16 +232,16 @@ class WargaKitaHomeTab extends StatelessWidget {
                       },
                     ),
 
-                    // 4. Lapor Masalah
+                    // 3. Lapor Warga
                     WargaKitaServiceTile(
-                      icon: Icons.warning_amber_rounded,
-                      iconColor: const Color(0xFF005D42),
-                      iconBgColor: const Color(0xFFE2E7FF),
-                      title: 'Lapor Masalah',
-                      subtitle: 'Lampu, Selokan, Kamtib',
-                      badgeText: '• Aktif',
-                      badgeBgColor: const Color(0xFFE0F2FE),
-                      badgeTextColor: const Color(0xFF0284C7),
+                      icon: Icons.campaign_rounded,
+                      iconColor: const Color(0xFFE11D48),
+                      iconBgColor: const Color(0xFFFFF1F2),
+                      title: 'Lapor Warga',
+                      subtitle: 'Aduan Masalah',
+                      badgeText: 'Cepat',
+                      badgeBgColor: const Color(0xFFD1FAE5),
+                      badgeTextColor: const Color(0xFF047857),
                       onTap: () {
                         Navigator.push(
                           context,
@@ -266,12 +251,93 @@ class WargaKitaHomeTab extends StatelessWidget {
                         );
                       },
                     ),
+
+                    // 4. Pengumuman
+                    WargaKitaServiceTile(
+                      icon: Icons.feed_rounded,
+                      iconColor: const Color(0xFF4338CA),
+                      iconBgColor: const Color(0xFFEEF2FF),
+                      title: 'Pengumuman',
+                      subtitle: 'Edaran Resmi',
+                      onTap: onNavigateToPesan,
+                    ),
+
+                    // 5. Scan Jimpitan
+                    WargaKitaServiceTile(
+                      icon: Icons.qr_code_scanner_rounded,
+                      iconColor: const Color(0xFFB45309),
+                      iconBgColor: const Color(0xFFFFFBEB),
+                      title: 'Scan Jimpitan',
+                      subtitle: 'Uang & Beras',
+                      badgeText: 'Ronda',
+                      badgeBgColor: const Color(0xFFD1FAE5),
+                      badgeTextColor: const Color(0xFF047857),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const WargaKitaJimpitanScreen(),
+                          ),
+                        );
+                      },
+                    ),
+
+                    // 6. Jadwal Ronda
+                    WargaKitaServiceTile(
+                      icon: Icons.shield_outlined,
+                      iconColor: const Color(0xFF0369A1),
+                      iconBgColor: const Color(0xFFF0F7FF),
+                      title: 'Jadwal Ronda',
+                      subtitle: 'Siskamling',
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const WargaKitaRondaScreen(),
+                          ),
+                        );
+                      },
+                    ),
+
+                    // 7. Pinjam Fasilitas
+                    WargaKitaServiceTile(
+                      icon: Icons.holiday_village_rounded,
+                      iconColor: const Color(0xFF6D28D9),
+                      iconBgColor: const Color(0xFFF5F3FF),
+                      title: 'Pinjam Fasili...',
+                      subtitle: 'Balai & Tenda',
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const WargaKitaFasilitasScreen(),
+                          ),
+                        );
+                      },
+                    ),
+
+                    // 8. Pasar Warga
+                    WargaKitaServiceTile(
+                      icon: Icons.storefront_rounded,
+                      iconColor: const Color(0xFF047857),
+                      iconBgColor: const Color(0xFFE6F8F0),
+                      title: 'Pasar Warga',
+                      subtitle: 'UMKM RT',
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const WargaKitaPasarScreen(),
+                          ),
+                        );
+                      },
+                    ),
                   ],
                 ),
               ),
               const SizedBox(height: 24),
 
-              // Kabar & Agenda RT Section Header
+              // Kabar & Agenda Lingkungan Section Header
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Row(
@@ -280,13 +346,13 @@ class WargaKitaHomeTab extends StatelessWidget {
                     Row(
                       children: [
                         const Icon(
-                          Icons.feed_outlined,
-                          size: 18,
+                          Icons.chat_bubble_outline_rounded,
+                          size: 20,
                           color: WargaKitaTheme.primaryContainer,
                         ),
-                        const SizedBox(width: 6),
+                        const SizedBox(width: 8),
                         Text(
-                          'Kabar & Agenda RT',
+                          'Kabar & Agenda Lingkungan',
                           style: WargaKitaTheme.font(
                             fontSize: 18,
                             fontWeight: FontWeight.w800,
@@ -308,7 +374,7 @@ class WargaKitaHomeTab extends StatelessWidget {
                       child: Text(
                         'Lihat Semua',
                         style: WargaKitaTheme.font(
-                          fontSize: 12,
+                          fontSize: 13,
                           fontWeight: FontWeight.w700,
                           color: WargaKitaTheme.primaryContainer,
                         ),
