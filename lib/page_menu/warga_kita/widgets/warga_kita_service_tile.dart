@@ -29,99 +29,94 @@ class WargaKitaServiceTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(20),
-      child: Container(
-        padding: const EdgeInsets.all(14),
-        decoration: BoxDecoration(
-          color: const Color(0xFFF6F8FD),
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(
-            color: const Color(0xFFE2E8F0),
-            width: 1,
-          ),
-          boxShadow: [
-            BoxShadow(
-              color: const Color(0xFF0F172A).withValues(alpha: 0.02),
-              blurRadius: 6,
-              offset: const Offset(0, 2),
-            ),
-          ],
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            // Top Row: Icon Container + Badge Pill
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Icon Box
-                Container(
-                  width: 42,
-                  height: 42,
-                  decoration: BoxDecoration(
-                    color: iconBgColor,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Center(
-                    child: Icon(
-                      icon,
-                      color: iconColor,
-                      size: 22,
-                    ),
+      borderRadius: BorderRadius.circular(16),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          // Icon Container with optional Badge
+          Stack(
+            clipBehavior: Clip.none,
+            alignment: Alignment.center,
+            children: [
+              Container(
+                width: 60,
+                height: 60,
+                decoration: BoxDecoration(
+                  color: iconBgColor,
+                  borderRadius: BorderRadius.circular(22),
+                ),
+                child: Center(
+                  child: Icon(
+                    icon,
+                    color: iconColor,
+                    size: 28,
                   ),
                 ),
-
-                // Badge Pill (if any)
-                if (badgeText != null)
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+              ),
+              if (badgeText != null)
+                Positioned(
+                  top: -6,
+                  right: -8,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2),
                     decoration: BoxDecoration(
-                      color: badgeBgColor ?? WargaKitaTheme.mintTint,
+                      color: badgeBgColor ?? const Color(0xFFD1FAE5),
                       borderRadius: BorderRadius.circular(20),
+                      border: Border.all(
+                        color: const Color(0xFFA7F3D0),
+                        width: 1,
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withValues(alpha: 0.04),
+                          blurRadius: 4,
+                          offset: const Offset(0, 1),
+                        ),
+                      ],
                     ),
                     child: Text(
                       badgeText!,
                       style: WargaKitaTheme.font(
-                        fontSize: 10,
-                        fontWeight: FontWeight.w700,
-                        color: badgeTextColor ?? WargaKitaTheme.primaryContainer,
+                        fontSize: 9.5,
+                        fontWeight: FontWeight.w800,
+                        color: badgeTextColor ?? const Color(0xFF047857),
                       ),
                     ),
                   ),
-              ],
-            ),
-            const SizedBox(height: 12),
+                ),
+            ],
+          ),
+          const SizedBox(height: 8),
 
-            // Text Titles
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: WargaKitaTheme.font(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w700,
-                    color: WargaKitaTheme.textPrimary,
-                    letterSpacing: -0.2,
-                  ),
-                ),
-                const SizedBox(height: 2),
-                Text(
-                  subtitle,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: WargaKitaTheme.font(
-                    fontSize: 11,
-                    fontWeight: FontWeight.w400,
-                    color: WargaKitaTheme.textSecondary,
-                  ),
-                ),
-              ],
+          // Title
+          Text(
+            title,
+            textAlign: TextAlign.center,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: WargaKitaTheme.font(
+              fontSize: 12.5,
+              fontWeight: FontWeight.w800,
+              color: WargaKitaTheme.textPrimary,
+              letterSpacing: -0.2,
             ),
-          ],
-        ),
+          ),
+          const SizedBox(height: 1),
+
+          // Subtitle
+          Text(
+            subtitle,
+            textAlign: TextAlign.center,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: WargaKitaTheme.font(
+              fontSize: 10.5,
+              fontWeight: FontWeight.w500,
+              color: const Color(0xFF64748B),
+            ),
+          ),
+        ],
       ),
     );
   }
