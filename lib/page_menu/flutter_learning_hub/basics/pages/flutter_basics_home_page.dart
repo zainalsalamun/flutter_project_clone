@@ -4,8 +4,8 @@ import '../models/basic_widget_category.dart';
 import '../models/basic_widget_model.dart';
 import '../data/basic_widgets_data.dart';
 import 'basic_widget_detail_page.dart';
-import '../../widget_catalog/pages/widget_catalog_home_page.dart';
-import '../../flutter_fundamentals/pages/fundamentals_home_page.dart';
+import '../../catalog/pages/widget_catalog_home_page.dart';
+import '../../fundamentals/pages/fundamentals_home_page.dart';
 
 class FlutterBasicsHomePage extends StatefulWidget {
   const FlutterBasicsHomePage({super.key});

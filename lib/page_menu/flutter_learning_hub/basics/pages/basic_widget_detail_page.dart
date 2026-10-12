@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../models/basic_widget_model.dart';
-import '../../flutter_fundamentals/widgets/formatted_markdown_text.dart';
+import '../../fundamentals/widgets/formatted_markdown_text.dart';
 
 class BasicWidgetDetailPage extends StatefulWidget {
   final BasicWidgetModel item;
