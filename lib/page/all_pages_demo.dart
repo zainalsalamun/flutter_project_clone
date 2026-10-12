@@ -36,6 +36,10 @@ import 'package:project_clone/page_menu/iphone_duo_app/pages/iphone_duo_home_pag
 import 'package:project_clone/page_menu/netflix_clone/pages/netflix_main_navigation_page.dart';
 import 'package:project_clone/page_menu/smart_cctv_app/pages/smart_home_main_wrapper.dart';
 import 'package:project_clone/page_menu/travel_booking_app/travel_booking_page.dart';
+import 'package:project_clone/page_menu/flutter_learning_hub/flutter_learning_hub_page.dart';
+import 'package:project_clone/page_menu/flutter_learning_hub/catalog/pages/widget_catalog_home_page.dart';
+import 'package:project_clone/page_menu/flutter_learning_hub/basics/pages/flutter_basics_home_page.dart';
+import 'package:project_clone/page_menu/flutter_learning_hub/fundamentals/pages/fundamentals_home_page.dart';
 
 class AllPagesDemo extends StatelessWidget {
   const AllPagesDemo({super.key});
@@ -60,6 +64,34 @@ class AllPagesDemo extends StatelessWidget {
         childAspectRatio: 0.85,
         padding: const EdgeInsets.all(16),
         children: [
+          _menuCard(
+            context,
+            title: "Flutter Learning Hub (Master)",
+            icon: Icons.school_rounded,
+            iconColor: const Color(0xFF6366F1),
+            page: const FlutterLearningHubPage(),
+          ),
+          _menuCard(
+            context,
+            title: "Materi Dasar Flutter",
+            icon: Icons.auto_stories_rounded,
+            iconColor: const Color(0xFF4F46E5),
+            page: const FundamentalsHomePage(),
+          ),
+          _menuCard(
+            context,
+            title: "Flutter Basic Widgets",
+            icon: Icons.flutter_dash,
+            iconColor: const Color(0xFF0284C7),
+            page: const FlutterBasicsHomePage(),
+          ),
+          _menuCard(
+            context,
+            title: "Widget Catalog (Pro Lab)",
+            icon: Icons.widgets_rounded,
+            iconColor: const Color(0xFF6366F1),
+            page: const WidgetCatalogHomePage(),
+          ),
           _menuCard(
             context,
             title: "Wanderlust (Travel & Booking)",
