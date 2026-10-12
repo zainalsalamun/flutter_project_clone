@@ -7,8 +7,8 @@ import '../widgets/category_filter_list.dart';
 import '../widgets/widget_card_item.dart';
 import '../widgets/code_viewer_dialog.dart';
 import 'widget_detail_playground_page.dart';
-import '../../flutter_basics/pages/flutter_basics_home_page.dart';
-import '../../flutter_fundamentals/pages/fundamentals_home_page.dart';
+import '../../basics/pages/flutter_basics_home_page.dart';
+import '../../fundamentals/pages/fundamentals_home_page.dart';
 
 class WidgetCatalogHomePage extends StatefulWidget {
   const WidgetCatalogHomePage({super.key});

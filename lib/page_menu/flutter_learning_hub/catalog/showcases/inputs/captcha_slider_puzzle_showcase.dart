@@ -126,7 +126,6 @@ class _CaptchaSliderPuzzleShowcaseState
       case _CaptchaStatus.dragging:
         return const Color(0xFF38BDF8);
       case _CaptchaStatus.idle:
-      default:
         return Colors.white70;
     }
   }

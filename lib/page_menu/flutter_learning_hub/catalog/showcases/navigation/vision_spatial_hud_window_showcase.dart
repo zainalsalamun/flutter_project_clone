@@ -47,8 +47,7 @@ class _SpatialAudioSource {
     required this.color,
     required this.angle,
     required this.distance,
-    this.isMuted = false,
-  });
+  }) : isMuted = false;
 
   // Pan (-1.0 left to +1.0 right)
   double get pan => math.sin(angle);

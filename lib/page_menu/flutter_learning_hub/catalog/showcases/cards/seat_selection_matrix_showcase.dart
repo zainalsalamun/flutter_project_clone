@@ -9,29 +9,12 @@ class SeatSelectionMatrixShowcase extends StatefulWidget {
       _SeatSelectionMatrixShowcaseState();
 }
 
-enum _SeatType { regular, vip, occupied }
-
-class _SeatInfo {
-  final String id; // e.g. 'A1'
-  final String row; // 'A'
-  final int col; // 1
-  final _SeatType type;
-
-  const _SeatInfo({
-    required this.id,
-    required this.row,
-    required this.col,
-    required this.type,
-  });
-}
-
 class _SeatSelectionMatrixShowcaseState
     extends State<SeatSelectionMatrixShowcase> {
   final Set<String> _selectedSeatIds = {};
 
   // 6 Rows (A - F), 8 Columns (1 - 8)
   final List<String> _rows = ['A', 'B', 'C', 'D', 'E', 'F'];
-  static const int _cols = 8;
 
   // Occupied seats
   final Set<String> _occupiedSeats = {

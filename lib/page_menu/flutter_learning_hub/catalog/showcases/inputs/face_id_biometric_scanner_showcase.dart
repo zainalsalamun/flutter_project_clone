@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -107,7 +106,6 @@ class _FaceIdBiometricScannerShowcaseState
       case _ScanState.analyzing:
         return const Color(0xFF38BDF8);
       case _ScanState.idle:
-      default:
         return Colors.white70;
     }
   }

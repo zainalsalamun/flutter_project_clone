@@ -13,7 +13,6 @@ class _FlightBoardingPassFoldShowcaseState
     with SingleTickerProviderStateMixin {
   bool _isExpanded = false;
   late AnimationController _foldController;
-  late Animation<double> _foldAnimation;
   late Animation<double> _heightFactorAnimation;
 
   // Selected Class
@@ -31,10 +30,6 @@ class _FlightBoardingPassFoldShowcaseState
     _foldController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 400),
-    );
-
-    _foldAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(parent: _foldController, curve: Curves.easeInOutCubic),
     );
 
     _heightFactorAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(

@@ -102,12 +102,10 @@ class _SwipeableCardDeckShowcaseState extends State<SwipeableCardDeckShowcase>
 
   // Pan gesture tracking
   Offset _dragOffset = Offset.zero;
-  bool _isDragging = false;
 
   // Animation controller for snap back / fly off / undo
   late AnimationController _animController;
   Animation<Offset>? _flyAnimation;
-  Animation<double>? _scaleAnimation;
 
   // Last swipe direction
   String _lastActionText =
@@ -134,7 +132,6 @@ class _SwipeableCardDeckShowcaseState extends State<SwipeableCardDeckShowcase>
   void _onPanStart(DragStartDetails details) {
     if (_animController.isAnimating || _activeDeck.isEmpty) return;
     setState(() {
-      _isDragging = true;
       _dragOffset = Offset.zero;
     });
   }
@@ -148,7 +145,6 @@ class _SwipeableCardDeckShowcaseState extends State<SwipeableCardDeckShowcase>
 
   void _onPanEnd(DragEndDetails details) {
     if (_animController.isAnimating || _activeDeck.isEmpty) return;
-    _isDragging = false;
 
     final screenWidth = MediaQuery.of(context).size.width;
     final threshold = screenWidth * 0.3;

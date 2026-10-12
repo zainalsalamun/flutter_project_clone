@@ -22,9 +22,8 @@ class _MoleState {
   _MoleState({
     this.isUp = false,
     this.type = _MoleType.regular,
-    this.isHit = false,
-    this.popTime,
-  });
+  })  : isHit = false,
+        popTime = null;
 }
 
 class _FloatingScore {
@@ -668,7 +667,6 @@ class _WhackAMoleArcadeShowcaseState extends State<WhackAMoleArcadeShowcase> {
       case _MoleType.bomb:
         return const Text('', style: TextStyle(fontSize: 40));
       case _MoleType.regular:
-      default:
         return const Text('', style: TextStyle(fontSize: 42));
     }
   }
