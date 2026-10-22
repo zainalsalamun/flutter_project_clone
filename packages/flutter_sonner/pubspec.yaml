@@ -1,0 +1,26 @@
+name: flutter_sonner
+description: An opinionated, beautifully stacked, spring-animated toast and notification package for Flutter inspired by Sonner and Dynamic Island.
+version: 0.1.0
+homepage: https://github.com/zainalsalamun/flutter_sonner
+repository: https://github.com/zainalsalamun/flutter_sonner
+issue_tracker: https://github.com/zainalsalamun/flutter_sonner/issues
+
+topics:
+  - toast
+  - notification
+  - sonner
+  - ui
+  - animation
+
+environment:
+  sdk: ^3.0.0
+  flutter: ">=3.10.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
