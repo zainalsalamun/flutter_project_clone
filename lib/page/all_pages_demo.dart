@@ -36,10 +36,30 @@ import 'package:project_clone/page_menu/iphone_duo_app/pages/iphone_duo_home_pag
 import 'package:project_clone/page_menu/netflix_clone/pages/netflix_main_navigation_page.dart';
 import 'package:project_clone/page_menu/smart_cctv_app/pages/smart_home_main_wrapper.dart';
 import 'package:project_clone/page_menu/travel_booking_app/travel_booking_page.dart';
+import 'package:project_clone/page_menu/music_player_app/music_player_app.dart';
+import 'package:project_clone/page_menu/meditation_sleep_app/meditation_sleep_app.dart';
+import 'package:project_clone/page_menu/mood_reaction_app/mood_reaction_app.dart';
+import 'package:project_clone/page_menu/fixly_service_app/fixly_service_app.dart';
 import 'package:project_clone/page_menu/flutter_learning_hub/flutter_learning_hub_page.dart';
 import 'package:project_clone/page_menu/flutter_learning_hub/catalog/pages/widget_catalog_home_page.dart';
 import 'package:project_clone/page_menu/flutter_learning_hub/basics/pages/flutter_basics_home_page.dart';
 import 'package:project_clone/page_menu/flutter_learning_hub/fundamentals/pages/fundamentals_home_page.dart';
+import 'package:project_clone/page_menu/device_diagnostics/device_diagnostics_page.dart';
+import 'package:project_clone/page_menu/merchant_fuzzy_search/merchant_fuzzy_search_page.dart';
+import 'package:project_clone/page_menu/queue_countdown_app/queue_countdown_page.dart';
+import 'package:project_clone/page_menu/ai_cloud_dashboard/ai_cloud_dashboard_page.dart';
+import 'package:project_clone/page_menu/smart_logistics_fleet/smart_logistics_fleet_page.dart';
+import 'package:project_clone/page_menu/issue_tracker/issue_tracker_page.dart';
+import 'package:project_clone/page_menu/the_travel_nest/the_travel_nest_page.dart';
+import 'package:project_clone/page_menu/fresh_grocery_app/fresh_grocery_page.dart';
+import 'package:project_clone/page_menu/taskly_app/taskly_page.dart';
+import 'package:project_clone/page_menu/warga_kita/warga_kita_page.dart';
+import 'package:project_clone/page_menu/botanica_beauty_app/botanica_beauty_page.dart';
+import 'package:project_clone/page_menu/nusanvara_travel_app/nusanvara_travel_page.dart';
+import 'package:project_clone/page_menu/velox_rental_app/velox_rental_page.dart';
+import 'package:project_clone/page_menu/aura_habit_app/aura_habit_page.dart';
+import 'package:project_clone/page_menu/flutter_sonner_showcase_page.dart';
+import 'package:project_clone/page_menu/liquid_island_showcase_page.dart';
 
 class AllPagesDemo extends StatelessWidget {
   const AllPagesDemo({super.key});
@@ -64,6 +84,111 @@ class AllPagesDemo extends StatelessWidget {
         childAspectRatio: 0.85,
         padding: const EdgeInsets.all(16),
         children: [
+          _menuCard(
+            context,
+            title: "AURA HABIT (Habit & Wellness Companion)",
+            icon: Icons.bubble_chart_rounded,
+            iconColor: const Color(0xFF6366F1),
+            page: const AuraHabitPage(),
+          ),
+          _menuCard(
+            context,
+            title: "🌊 LIQUID ISLAND (Fluid Dynamic Island)",
+            icon: Icons.bubble_chart_rounded,
+            iconColor: const Color(0xFF38BDF8),
+            page: const LiquidIslandShowcasePage(),
+          ),
+          _menuCard(
+            context,
+            title: "🔥 FLUTTER SONNER (Plugin Showcase)",
+            icon: Icons.layers_rounded,
+            iconColor: const Color(0xFF6366F1),
+            page: const FlutterSonnerShowcasePage(),
+          ),
+          _menuCard(
+            context,
+            title: "VELOX Mobility & Car Rental (10 Screens)",
+            icon: Icons.directions_car_filled_rounded,
+            iconColor: const Color(0xFF1E40AF),
+            page: const VeloxRentalPage(),
+          ),
+          _menuCard(
+            context,
+            title: "NUSANVARA Travel & Beyond",
+            icon: Icons.explore_rounded,
+            iconColor: const Color(0xFFE05338),
+            page: const NusanvaraTravelPage(),
+          ),
+          _menuCard(
+            context,
+            title: "BOTANICA Beauty & Care",
+            icon: Icons.spa_rounded,
+            iconColor: const Color(0xFF0F3E33),
+            page: const BotanicaBeautyPage(),
+          ),
+          _menuCard(
+            context,
+            title: "WargaKita Civic System (RT/RW)",
+            icon: Icons.holiday_village_rounded,
+            iconColor: const Color(0xFF005D42),
+            page: const WargaKitaPage(),
+          ),
+          _menuCard(
+            context,
+            title: "Taskly Project & Task (10 Screens)",
+            icon: Icons.checklist_rounded,
+            iconColor: const Color(0xFF4F46E5),
+            page: const TasklyPage(),
+          ),
+          _menuCard(
+            context,
+            title: "Fresh Food & Groceries (10 Screens)",
+            icon: Icons.eco_rounded,
+            iconColor: const Color(0xFF16A34A),
+            page: const FreshGroceryPage(),
+          ),
+          _menuCard(
+            context,
+            title: "TheTravelNest (All 10 Screens)",
+            icon: Icons.travel_explore_rounded,
+            iconColor: const Color(0xFF1E5AFF),
+            page: const TheTravelNestPage(),
+          ),
+          _menuCard(
+            context,
+            title: "QA Issue Tracker (SQLite DB)",
+            icon: Icons.bug_report_rounded,
+            iconColor: const Color(0xFFEF4444),
+            page: const IssueTrackerPage(),
+          ),
+          _menuCard(
+            context,
+            title: "Fleet Command Center (Logistics)",
+            icon: Icons.local_shipping_rounded,
+            iconColor: const Color(0xFFF59E0B),
+            page: const SmartLogisticsFleetPage(),
+          ),
+          _menuCard(
+            context,
+            title: "AI Cloud SaaS Dashboard (Web)",
+            icon: Icons.cloud_done_rounded,
+            iconColor: const Color(0xFF6366F1),
+            page: const AiCloudDashboardPage(),
+          ),
+          _menuCard(
+            context,
+            title: "Antrean Tiket (Countdown)",
+            icon: Icons.train_rounded,
+            iconColor: const Color(0xFF2563EB),
+            page: const QueueCountdownPage(),
+          ),
+          _menuCard(
+            context,
+            title: "Fuzzy Search Merchant",
+            icon: Icons.manage_search_rounded,
+            iconColor: const Color(0xFF4F46E5),
+            page: const MerchantFuzzySearchPage(),
+          ),
           _menuCard(
             context,
             title: "Flutter Learning Hub (Master)",
@@ -94,6 +219,13 @@ class AllPagesDemo extends StatelessWidget {
           ),
           _menuCard(
             context,
+            title: "Device Diagnostics & ID",
+            icon: Icons.fingerprint_rounded,
+            iconColor: const Color(0xFF0284C7),
+            page: const DeviceDiagnosticsPage(),
+          ),
+          _menuCard(
+            context,
             title: "Wanderlust (Travel & Booking)",
             icon: Icons.flight_takeoff_rounded,
             iconColor: const Color(0xFF0F4C81),
@@ -112,6 +244,34 @@ class AllPagesDemo extends StatelessWidget {
             icon: Icons.movie_filter_rounded,
             iconColor: const Color(0xFFE50914),
             page: const NetflixMainNavigationPage(),
+          ),
+          _menuCard(
+            context,
+            title: "Music Player App",
+            icon: Icons.album_rounded,
+            iconColor: const Color(0xFF15D2B8),
+            page: const MusicPlayerApp(),
+          ),
+          _menuCard(
+            context,
+            title: "Meditation Sleep App",
+            icon: Icons.spa_rounded,
+            iconColor: const Color(0xFF77E4C8),
+            page: const MeditationSleepApp(),
+          ),
+          _menuCard(
+            context,
+            title: "Mood Reaction App",
+            icon: Icons.sentiment_satisfied_alt_rounded,
+            iconColor: const Color(0xFFFF1D16),
+            page: const MoodReactionApp(),
+          ),
+          _menuCard(
+            context,
+            title: "Fixly Service App",
+            icon: Icons.home_repair_service_rounded,
+            iconColor: const Color(0xFF2F6BFF),
+            page: const FixlyServiceApp(),
           ),
           _menuCard(
             context,
